@@ -6,7 +6,7 @@ export const leadSchema = z.object({
   phone: z.string().min(8).max(20),
   company: z.string().min(2).max(120),
   cnpj: z.string().optional(),
-  country: z.string().length(2).default("BR"),
+  country: z.string().length(2),
   state: z.string().optional(),
   city: z.string().optional(),
   role: z.string().optional(),
@@ -41,7 +41,7 @@ export const catalogSchema = z.object({
   name: z.string().min(2).max(120),
   email: z.string().email(),
   company: z.string().min(2).max(120),
-  country: z.string().length(2).default("BR"),
+  country: z.string().length(2),
 });
 
 export type CatalogInput = z.infer<typeof catalogSchema>;
