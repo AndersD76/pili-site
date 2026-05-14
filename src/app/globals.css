@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+:root {
+  /* Core palette */
+  --pili-black: #0A0A0A;
+  --pili-graphite: #1A1A1A;
+  --pili-steel: #2A2A2A;
+  --pili-iron: #3D3D3D;
+  --pili-concrete: #6B6B6B;
+  --pili-cement: #9A9A9A;
+  --pili-mist: #D4D4D4;
+  --pili-paper: #F5F5F5;
+  --pili-white: #FFFFFF;
+
+  /* Accent (safety yellow) */
+  --pili-safety: #FFCC00;
+  --pili-safety-bright: #FFD700;
+  --pili-safety-deep: #E6B800;
+
+  /* Semantic */
+  --pili-success: #1F7A4D;
+  --pili-warning: #D97706;
+  --pili-danger: #B91C1C;
+  --pili-info: #1E40AF;
+
+  /* Typography scale */
+  --text-display-1: clamp(3.5rem, 8vw, 8rem);
+  --text-display-2: clamp(2.5rem, 5vw, 5rem);
+  --text-h1: clamp(2rem, 4vw, 3.5rem);
+  --text-h2: clamp(1.5rem, 3vw, 2.5rem);
+  --text-h3: 1.5rem;
+  --text-body-lg: 1.125rem;
+  --text-body: 1rem;
+  --text-sm: 0.875rem;
+  --text-spec: 0.875rem;
+  --text-caption: 0.75rem;
+
+  /* Spacing */
+  --header-height: 4.5rem;
+}
+
+@theme inline {
+  --color-background: var(--pili-white);
+  --color-foreground: var(--pili-black);
+
+  --color-pili-black: var(--pili-black);
+  --color-pili-graphite: var(--pili-graphite);
+  --color-pili-steel: var(--pili-steel);
+  --color-pili-iron: var(--pili-iron);
+  --color-pili-concrete: var(--pili-concrete);
+  --color-pili-cement: var(--pili-cement);
+  --color-pili-mist: var(--pili-mist);
+  --color-pili-paper: var(--pili-paper);
+  --color-pili-white: var(--pili-white);
+
+  --color-pili-safety: var(--pili-safety);
+  --color-pili-safety-bright: var(--pili-safety-bright);
+  --color-pili-safety-deep: var(--pili-safety-deep);
+
+  --color-pili-success: var(--pili-success);
+  --color-pili-warning: var(--pili-warning);
+  --color-pili-danger: var(--pili-danger);
+  --color-pili-info: var(--pili-info);
+
+  --font-display: var(--font-saira-condensed);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-jetbrains-mono);
+
+  --text-display-1: var(--text-display-1);
+  --text-display-2: var(--text-display-2);
+}
+
+body {
+  background: var(--pili-white);
+  color: var(--pili-black);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Skip to content */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  z-index: 9999;
+  padding: 0.75rem 1.5rem;
+  background: var(--pili-safety);
+  color: var(--pili-black);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.skip-to-content:focus {
+  left: 0;
+  top: 0;
+}
+
+/* Focus visible */
+*:focus-visible {
+  outline: 2px solid var(--pili-safety);
+  outline-offset: 2px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--pili-paper);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--pili-cement);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--pili-concrete);
+}
+
+/* Hairline borders utility */
+.hairline {
+  border-width: 0.5px;
+}

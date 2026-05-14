@@ -1,0 +1,66 @@
+{
+  "metadata": {
+    "title": "PILI Industrial — Volcadores Hidráulicos",
+    "description": "Fabricante de volcadores hidráulicos y plataformas de descarga de granos desde 1979. De 9 a 30 metros, 35 a 100 toneladas."
+  },
+  "nav": {
+    "products": "Productos",
+    "solutions": "Soluciones",
+    "projects": "Obras",
+    "ecosystem": "Ecosistema",
+    "company": "Empresa",
+    "blog": "Blog",
+    "contact": "Contacto",
+    "quote": "Presupuesto"
+  },
+  "hero": {
+    "headline": "Descarga que sostiene el agro brasileño",
+    "sub": "Plataformas hidráulicas de 9 a 30 metros · 35 a 100 toneladas · {years} años · {countries} países",
+    "cta_primary": "Pedir presupuesto",
+    "cta_secondary": "Ver productos"
+  },
+  "stats": {
+    "years": "{count} años",
+    "equipment": "{count} equipos",
+    "countries": "{count} países",
+    "capacity": "{count} máxima"
+  },
+  "sections": {
+    "featured_products": "Productos destacados",
+    "applications": "Soluciones por sector",
+    "featured_case": "Caso destacado",
+    "ecosystem": "Ecosistema PILI",
+    "clients": "Quién confía en PILI",
+    "certifications": "Certificaciones",
+    "latest_news": "Últimas noticias",
+    "cta_title": "¿Listo para modernizar su descarga?",
+    "cta_subtitle": "Hable con nuestro equipo comercial"
+  },
+  "footer": {
+    "products": "Productos",
+    "ecosystem": "Ecosistema",
+    "contact": "Contacto",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Uso",
+    "rights": "Todos los derechos reservados"
+  },
+  "forms": {
+    "name": "Nombre",
+    "email": "Email",
+    "phone": "Teléfono",
+    "company": "Empresa",
+    "message": "Mensaje",
+    "submit": "Enviar",
+    "consent": "Acepto la política de privacidad",
+    "success": "¡Enviado con éxito! Nos pondremos en contacto pronto.",
+    "error": "Ocurrió un error. Inténtelo de nuevo."
+  },
+  "common": {
+    "learn_more": "Más información",
+    "view_all": "Ver todos",
+    "download_catalog": "Descargar catálogo",
+    "talk_specialist": "Hablar con un especialista",
+    "back": "Volver",
+    "loading": "Cargando..."
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "metadata": {
+    "title": "PILI Industrial — Tombadores Hidráulicos",
+    "description": "Fabricante de tombadores hidráulicos e plataformas de descarga de grãos desde 1979. De 9 a 30 metros, 35 a 100 toneladas."
+  },
+  "nav": {
+    "products": "Produtos",
+    "solutions": "Soluções",
+    "projects": "Obras",
+    "ecosystem": "Ecossistema",
+    "company": "Empresa",
+    "blog": "Blog",
+    "contact": "Contato",
+    "quote": "Orçamento"
+  },
+  "hero": {
+    "headline": "Descarga que sustenta o agro brasileiro",
+    "sub": "Plataformas hidráulicas de 9 a 30 metros · 35 a 100 toneladas · {years} anos · {countries} países",
+    "cta_primary": "Pedir orçamento",
+    "cta_secondary": "Ver produtos"
+  },
+  "stats": {
+    "years": "{count} anos",
+    "equipment": "{count} equipamentos",
+    "countries": "{count} países",
+    "capacity": "{count} máxima"
+  },
+  "sections": {
+    "featured_products": "Produtos em destaque",
+    "applications": "Soluções por setor",
+    "featured_case": "Case em destaque",
+    "ecosystem": "Ecossistema PILI",
+    "clients": "Quem confia na PILI",
+    "certifications": "Certificações",
+    "latest_news": "Últimas notícias",
+    "cta_title": "Pronto pra modernizar sua descarga?",
+    "cta_subtitle": "Fale com nosso time comercial"
+  },
+  "footer": {
+    "products": "Produtos",
+    "ecosystem": "Ecossistema",
+    "contact": "Contato",
+    "privacy": "Política de Privacidade",
+    "terms": "Termos de Uso",
+    "rights": "Todos os direitos reservados"
+  },
+  "forms": {
+    "name": "Nome",
+    "email": "Email",
+    "phone": "Telefone",
+    "company": "Empresa",
+    "message": "Mensagem",
+    "submit": "Enviar",
+    "consent": "Aceito a política de privacidade",
+    "success": "Enviado com sucesso! Entraremos em contato em breve.",
+    "error": "Ocorreu um erro. Tente novamente."
+  },
+  "common": {
+    "learn_more": "Saiba mais",
+    "view_all": "Ver todos",
+    "download_catalog": "Baixar catálogo",
+    "talk_specialist": "Falar com especialista",
+    "back": "Voltar",
+    "loading": "Carregando..."
+  }
+}

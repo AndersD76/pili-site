@@ -1,0 +1,66 @@
+{
+  "metadata": {
+    "title": "PILI Industrial — Hydraulic Tippers",
+    "description": "Manufacturer of hydraulic tippers and grain unloading platforms since 1979. From 9 to 30 meters, 35 to 100 tonnes."
+  },
+  "nav": {
+    "products": "Products",
+    "solutions": "Solutions",
+    "projects": "Projects",
+    "ecosystem": "Ecosystem",
+    "company": "Company",
+    "blog": "Blog",
+    "contact": "Contact",
+    "quote": "Get a quote"
+  },
+  "hero": {
+    "headline": "Unloading that sustains Brazilian agribusiness",
+    "sub": "Hydraulic platforms from 9 to 30 meters · 35 to 100 tonnes · {years} years · {countries} countries",
+    "cta_primary": "Request a quote",
+    "cta_secondary": "View products"
+  },
+  "stats": {
+    "years": "{count} years",
+    "equipment": "{count} equipment",
+    "countries": "{count} countries",
+    "capacity": "{count} max"
+  },
+  "sections": {
+    "featured_products": "Featured products",
+    "applications": "Solutions by sector",
+    "featured_case": "Featured project",
+    "ecosystem": "PILI Ecosystem",
+    "clients": "Trusted by",
+    "certifications": "Certifications",
+    "latest_news": "Latest news",
+    "cta_title": "Ready to modernize your unloading?",
+    "cta_subtitle": "Talk to our sales team"
+  },
+  "footer": {
+    "products": "Products",
+    "ecosystem": "Ecosystem",
+    "contact": "Contact",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use",
+    "rights": "All rights reserved"
+  },
+  "forms": {
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "company": "Company",
+    "message": "Message",
+    "submit": "Submit",
+    "consent": "I accept the privacy policy",
+    "success": "Sent successfully! We will contact you soon.",
+    "error": "An error occurred. Please try again."
+  },
+  "common": {
+    "learn_more": "Learn more",
+    "view_all": "View all",
+    "download_catalog": "Download catalog",
+    "talk_specialist": "Talk to a specialist",
+    "back": "Back",
+    "loading": "Loading..."
+  }
+}
