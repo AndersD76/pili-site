@@ -24,24 +24,24 @@ type CaseWithRelations = Case & {
 const caseSchema = z.object({
   slug: z
     .string()
-    .min(1, "Slug obrigatorio")
-    .regex(/^[a-z0-9-]+$/, "Apenas letras minusculas, numeros e hifens"),
-  client: z.string().min(1, "Cliente obrigatorio"),
-  location: z.string().min(1, "Local obrigatorio"),
+    .min(1, "Slug obrigatório")
+    .regex(/^[a-z0-9-]+$/, "Apenas letras minúsculas, números e hífens"),
+  client: z.string().min(1, "Cliente obrigatório"),
+  location: z.string().min(1, "Local obrigatório"),
   year: z
     .number({ coerce: true })
     .int()
-    .min(1900, "Ano invalido")
-    .max(2100, "Ano invalido"),
-  title: z.string().min(1, "Titulo obrigatorio"),
-  summary: z.string().min(1, "Resumo obrigatorio"),
-  content: z.string().min(1, "Conteudo obrigatorio"),
+    .min(1900, "Ano inválido")
+    .max(2100, "Ano inválido"),
+  title: z.string().min(1, "Título obrigatório"),
+  summary: z.string().min(1, "Resumo obrigatório"),
+  content: z.string().min(1, "Conteúdo obrigatório"),
   active: z.boolean(),
   featured: z.boolean(),
   metrics: z.array(
     z.object({
-      label: z.string().min(1, "Campo obrigatorio"),
-      value: z.string().min(1, "Campo obrigatorio"),
+      label: z.string().min(1, "Campo obrigatório"),
+      value: z.string().min(1, "Campo obrigatório"),
     })
   ),
 });
@@ -150,11 +150,11 @@ export function CaseForm({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="title">Titulo</Label>
+          <Label htmlFor="title">Título</Label>
           <Input
             id="title"
             {...register("title", { onBlur: handleTitleBlur })}
-            placeholder="Titulo da obra"
+            placeholder="Título da obra"
           />
           {errors.title && (
             <p className="text-xs text-red-600">{errors.title.message}</p>
@@ -223,11 +223,11 @@ export function CaseForm({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="content">Conteudo</Label>
+        <Label htmlFor="content">Conteúdo</Label>
         <Textarea
           id="content"
           {...register("content")}
-          placeholder="Descricao completa da obra"
+          placeholder="Descrição completa da obra"
           className="min-h-40"
         />
         {errors.content && (
@@ -259,7 +259,7 @@ export function CaseForm({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="font-display text-lg font-semibold text-pili-black">
-            Metricas
+            Métricas
           </h2>
           <Button
             type="button"
@@ -274,7 +274,7 @@ export function CaseForm({
 
         {fields.length === 0 && (
           <p className="text-sm text-pili-cement">
-            Nenhuma metrica adicionada
+            Nenhuma métrica adicionada
           </p>
         )}
 
@@ -283,7 +283,7 @@ export function CaseForm({
             <div className="flex-1 space-y-1">
               <Input
                 {...register(`metrics.${index}.label`)}
-                placeholder="Metrica (ex: Tempo de instalacao)"
+                placeholder="Métrica (ex: Tempo de instalação)"
               />
               {errors.metrics?.[index]?.label && (
                 <p className="text-xs text-red-600">
@@ -310,7 +310,7 @@ export function CaseForm({
               onClick={() => remove(index)}
             >
               <Trash2 className="size-4" />
-              <span className="sr-only">Remover metrica</span>
+              <span className="sr-only">Remover métrica</span>
             </Button>
           </div>
         ))}
@@ -328,7 +328,7 @@ export function CaseForm({
         </Button>
         <Button type="submit" disabled={isPending}>
           {isPending && <Loader2 className="size-4 animate-spin" />}
-          {isEditing ? "Salvar alteracoes" : "Criar obra"}
+          {isEditing ? "Salvar alterações" : "Criar obra"}
         </Button>
       </div>
     </form>

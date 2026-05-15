@@ -45,7 +45,7 @@ export default function AdminLoginPage() {
           Acesso restrito
         </h1>
         <p className="text-sm text-pili-cement">
-          Area administrativa PILI Industrial
+          Área administrativa PILI Industrial
         </p>
       </CardHeader>
       <CardContent className="space-y-4">

@@ -47,13 +47,13 @@ export default async function ObrasPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Titulo</TableHead>
+              <TableHead>Título</TableHead>
               <TableHead>Cliente</TableHead>
               <TableHead>Local</TableHead>
               <TableHead>Ano</TableHead>
               <TableHead>Ativo</TableHead>
               <TableHead>Destaque</TableHead>
-              <TableHead className="text-right">Acoes</TableHead>
+              <TableHead className="text-right">Ações</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -81,7 +81,7 @@ export default async function ObrasPage() {
                     <Badge
                       variant={caseItem.active ? "default" : "outline"}
                     >
-                      {caseItem.active ? "Sim" : "Nao"}
+                      {caseItem.active ? "Sim" : "Não"}
                     </Badge>
                   </TableCell>
                   <TableCell>

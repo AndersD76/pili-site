@@ -50,7 +50,7 @@ export function LeadActionsDropdown({ leadId }: LeadActionsDropdownProps) {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon-xs" disabled={isPending}>
           <MoreHorizontal className="size-4" />
-          <span className="sr-only">Acoes</span>
+          <span className="sr-only">Ações</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

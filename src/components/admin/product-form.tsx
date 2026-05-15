@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRouter } from "next/navigation";
 import { useForm, useFieldArray } from "react-hook-form";
@@ -37,7 +37,7 @@ type ProductWithRelations = Product & {
 
 const CATEGORY_OPTIONS: { value: ProductCategory; label: string }[] = [
   { value: "TOMBADOR_FIXO", label: "Tombador fixo" },
-  { value: "TOMBADOR_MOVEL", label: "Tombador movel" },
+  { value: "TOMBADOR_MOVEL", label: "Tombador móvel" },
   { value: "COLETOR_AMOSTRAS", label: "Coletor de amostras" },
   { value: "UNIDADE_TRANSBORDO", label: "Unidade de transbordo" },
   { value: "ESPECIAL", label: "Especial" },
@@ -46,7 +46,7 @@ const CATEGORY_OPTIONS: { value: ProductCategory; label: string }[] = [
 const productSchema = z.object({
   slug: z
     .string()
-    .min(1, "Slug obrigatorio")
+    .min(1, "Slug obrigatório")
     .regex(/^[a-z0-9-]+$/, "Apenas letras minusculas, numeros e hifens"),
   category: z.enum([
     "TOMBADOR_FIXO",
@@ -55,15 +55,15 @@ const productSchema = z.object({
     "UNIDADE_TRANSBORDO",
     "ESPECIAL",
   ]),
-  name: z.string().min(1, "Nome obrigatorio"),
+  name: z.string().min(1, "Nome obrigatório"),
   tagline: z.string().optional(),
-  description: z.string().min(1, "Descricao obrigatoria"),
+  description: z.string().min(1, "Descrição obrigatória"),
   active: z.boolean(),
   featured: z.boolean(),
   specs: z.array(
     z.object({
-      key: z.string().min(1, "Campo obrigatorio"),
-      value: z.string().min(1, "Campo obrigatorio"),
+      key: z.string().min(1, "Campo obrigatório"),
+      value: z.string().min(1, "Campo obrigatório"),
     })
   ),
 });
@@ -217,17 +217,17 @@ export function ProductForm({
           <Input
             id="tagline"
             {...register("tagline")}
-            placeholder="Breve descricao do produto"
+            placeholder="Breve descrição do produto"
           />
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description">Descricao</Label>
+        <Label htmlFor="description">Descrição</Label>
         <Textarea
           id="description"
           {...register("description")}
-          placeholder="Descricao completa do produto"
+          placeholder="Descrição completa do produto"
           className="min-h-32"
         />
         {errors.description && (
@@ -259,7 +259,7 @@ export function ProductForm({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="font-display text-lg font-semibold text-pili-black">
-            Especificacoes
+            Especificações
           </h2>
           <Button
             type="button"
@@ -274,7 +274,7 @@ export function ProductForm({
 
         {fields.length === 0 && (
           <p className="text-sm text-pili-cement">
-            Nenhuma especificacao adicionada
+            Nenhuma especificação adicionada
           </p>
         )}
 
@@ -310,7 +310,7 @@ export function ProductForm({
               onClick={() => remove(index)}
             >
               <Trash2 className="size-4" />
-              <span className="sr-only">Remover especificacao</span>
+              <span className="sr-only">Remover especificação</span>
             </Button>
           </div>
         ))}
@@ -328,7 +328,7 @@ export function ProductForm({
         </Button>
         <Button type="submit" disabled={isPending}>
           {isPending && <Loader2 className="size-4 animate-spin" />}
-          {isEditing ? "Salvar alteracoes" : "Criar produto"}
+          {isEditing ? "Salvar alterações" : "Criar produto"}
         </Button>
       </div>
     </form>

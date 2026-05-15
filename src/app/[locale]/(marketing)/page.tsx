@@ -11,10 +11,10 @@ import { ClientsBand } from "@/components/marketing/clients-band";
 import { CertificationsBand } from "@/components/marketing/certifications-band";
 import { LeadForm } from "@/components/marketing/lead-form";
 import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
+import { FinancingSimulator } from "@/components/marketing/financing-simulator";
 import {
   ArrowRight,
   Calculator,
-  Landmark,
   ChevronDown,
   Play,
 } from "lucide-react";
@@ -46,7 +46,7 @@ const APPLICATION_IMAGES: Record<
   cimento: {
     src: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80",
     label: "Cimento",
-    desc: "Descarga de minerais e clinquer",
+    desc: "Descarga de minerais e clínquer",
   },
 };
 
@@ -60,8 +60,8 @@ export default function HomePage() {
       {/* ──── 1. HERO — Full-screen with yellow accent ──── */}
       <section className="relative flex min-h-screen items-end bg-pili-black pb-20 px-6 lg:px-16">
         <Image
-          src="https://images.unsplash.com/photo-1590069261209-f8e9b8642343?w=1920&q=80"
-          alt="Terminal portuário com operação de descarga"
+          src="/images/hero-tombador.svg"
+          alt="Tombador hidráulico PILI em operação"
           fill
           priority
           className="object-cover"
@@ -329,87 +329,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ──── 7. FINANCIE SEU TOMBADOR ──── */}
+      {/* ──── 7. SIMULADOR DE FINANCIAMENTO ──── */}
       <section className="py-24 px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
-          <div className="grid gap-0 lg:grid-cols-2">
-            <AnimateOnScroll direction="left">
-              <div className="flex h-full flex-col justify-center bg-pili-black p-10 lg:p-14">
-                <div className="flex items-center gap-3">
-                  <Landmark className="h-8 w-8 text-pili-safety" />
-                  <span className="font-mono text-xs uppercase tracking-widest text-pili-safety">
-                    Financiamento
-                  </span>
-                </div>
-                <h2 className="mt-6 font-display text-[length:var(--text-h2)] font-black uppercase leading-tight text-pili-white">
-                  Financie seu tombador
-                </h2>
-                <p className="mt-4 leading-relaxed text-pili-cement">
-                  A PILI Industrial oferece condições especiais de financiamento
-                  em parceria com o BRDE (Banco Regional de Desenvolvimento do
-                  Extremo Sul) e outras instituições financeiras. Linhas de
-                  crédito com taxas competitivas e prazos de até 10 anos para
-                  aquisição de equipamentos.
-                </p>
-                <ul className="mt-6 space-y-3">
-                  {[
-                    "Taxas a partir de 8,5% a.a.",
-                    "Prazo de até 120 meses",
-                    "Carência de até 24 meses",
-                    "Financiamento de até 80% do valor",
-                    "Assessoria completa na documentação",
-                  ].map((item) => (
-                    <li
-                      key={item}
-                      className="flex items-start gap-3 text-sm text-pili-mist"
-                    >
-                      <div className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-pili-safety" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/contato"
-                  className="mt-8 inline-flex self-start items-center gap-2 bg-pili-safety px-6 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-all hover:bg-pili-safety-deep"
-                >
-                  Simular financiamento
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            </AnimateOnScroll>
-            <AnimateOnScroll direction="right" delay={0.15}>
-              <div className="relative h-full min-h-[400px] bg-pili-paper">
-                <Image
-                  src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80"
-                  alt="Terminal portuário com tombadores PILI"
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-pili-black/20" />
-                {/* Stats overlay */}
-                <div className="absolute bottom-0 right-0 bg-pili-black/90 p-6 backdrop-blur-sm">
-                  <div className="flex gap-8">
-                    <div>
-                      <span className="font-display text-3xl font-black text-pili-safety">
-                        10
-                      </span>
-                      <span className="ml-1 font-mono text-[10px] uppercase tracking-wider text-pili-cement">
-                        anos prazo
-                      </span>
-                    </div>
-                    <div>
-                      <span className="font-display text-3xl font-black text-pili-safety">
-                        80%
-                      </span>
-                      <span className="ml-1 font-mono text-[10px] uppercase tracking-wider text-pili-cement">
-                        financiável
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </AnimateOnScroll>
-          </div>
+          <FinancingSimulator />
         </div>
       </section>
 

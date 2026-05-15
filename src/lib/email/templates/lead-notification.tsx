@@ -62,7 +62,7 @@ export function LeadNotificationEmail({
 
             {application && (
               <>
-                <Text style={label}>Aplicacao</Text>
+                <Text style={label}>Aplicação</Text>
                 <Text style={value}>{application}</Text>
               </>
             )}
@@ -85,7 +85,7 @@ export function LeadNotificationEmail({
           <Hr style={hr} />
 
           <Text style={meta}>
-            Fonte: {source} | Pagina: {pageUrl ?? "N/A"}
+            Fonte: {source} | Página: {pageUrl ?? "N/A"}
           </Text>
         </Container>
       </Body>

@@ -102,7 +102,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 href="/orcamento"
                 className="bg-pili-safety px-6 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
               >
-                Solicitar orcamento
+                Solicitar orçamento
               </Link>
               <Link
                 href="/produtos/comparar"
@@ -134,7 +134,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         <section className="bg-pili-paper py-16 px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <h2 className="font-display text-[length:var(--text-h2)] font-black uppercase text-pili-black">
-              Aplicacoes
+              Aplicações
             </h2>
             <div className="mt-6 flex flex-wrap gap-3">
               {product.applications.map((app) => (
@@ -185,10 +185,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <section className="bg-pili-graphite py-16 px-6 lg:px-8">
         <div className="mx-auto max-w-3xl">
           <h2 className="text-center font-display text-[length:var(--text-h2)] font-black uppercase text-pili-white">
-            Solicitar orcamento
+            Solicitar orçamento
           </h2>
           <p className="mt-2 text-center text-sm text-pili-cement">
-            {product.name} — preencha o formulario e nossa equipe entra em contato
+            {product.name} — preencha o formulário e nossa equipe entra em contato
           </p>
           <div className="mt-8">
             <LeadForm productInterest={product.name} source="FORMULARIO" />

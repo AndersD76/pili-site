@@ -23,12 +23,12 @@ type PostWithRelations = Post & {
 const postSchema = z.object({
   slug: z
     .string()
-    .min(1, "Slug obrigatorio")
-    .regex(/^[a-z0-9-]+$/, "Apenas letras minusculas, numeros e hifens"),
-  author: z.string().min(1, "Autor obrigatorio"),
-  title: z.string().min(1, "Titulo obrigatorio"),
-  excerpt: z.string().min(1, "Resumo obrigatorio"),
-  content: z.string().min(1, "Conteudo obrigatorio"),
+    .min(1, "Slug obrigatório")
+    .regex(/^[a-z0-9-]+$/, "Apenas letras minúsculas, números e hífens"),
+  author: z.string().min(1, "Autor obrigatório"),
+  title: z.string().min(1, "Título obrigatório"),
+  excerpt: z.string().min(1, "Resumo obrigatório"),
+  content: z.string().min(1, "Conteúdo obrigatório"),
   tags: z.string().optional(),
   published: z.boolean(),
 });
@@ -121,11 +121,11 @@ export function PostForm({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="title">Titulo</Label>
+          <Label htmlFor="title">Título</Label>
           <Input
             id="title"
             {...register("title", { onBlur: handleTitleBlur })}
-            placeholder="Titulo do artigo"
+            placeholder="Título do artigo"
           />
           {errors.title && (
             <p className="text-xs text-red-600">{errors.title.message}</p>
@@ -159,11 +159,11 @@ export function PostForm({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="tags">Tags (separadas por virgula)</Label>
+          <Label htmlFor="tags">Tags (separadas por vírgula)</Label>
           <Input
             id="tags"
             {...register("tags")}
-            placeholder="tecnologia, logistica, graos"
+            placeholder="tecnologia, logística, grãos"
           />
         </div>
       </div>
@@ -182,11 +182,11 @@ export function PostForm({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="content">Conteudo</Label>
+        <Label htmlFor="content">Conteúdo</Label>
         <Textarea
           id="content"
           {...register("content")}
-          placeholder="Conteudo completo do artigo"
+          placeholder="Conteúdo completo do artigo"
           className="min-h-64"
         />
         {errors.content && (
@@ -217,7 +217,7 @@ export function PostForm({
         </Button>
         <Button type="submit" disabled={isPending}>
           {isPending && <Loader2 className="size-4 animate-spin" />}
-          {isEditing ? "Salvar alteracoes" : "Criar artigo"}
+          {isEditing ? "Salvar alterações" : "Criar artigo"}
         </Button>
       </div>
     </form>

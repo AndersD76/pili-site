@@ -91,17 +91,17 @@ export default async function AdminDashboardPage() {
         <StatsCard
           title="Leads novos"
           value={data.newCount}
-          description="Aguardando qualificacao"
+          description="Aguardando qualificação"
           icon={BarChart3}
         />
         <StatsCard
           title="Total de leads"
           value={data.totalLeads}
-          description="Desde o inicio"
+          description="Desde o início"
           icon={TrendingUp}
         />
         <StatsCard
-          title="Taxa de conversao"
+          title="Taxa de conversão"
           value={`${data.conversionRate}%`}
           description="Leads ganhos / total"
           icon={Target}

@@ -30,8 +30,8 @@ const navItems = [
   { label: "Obras", href: "/admin/obras", icon: Building2 },
   { label: "Blog", href: "/admin/blog", icon: FileText },
   { label: "Media", href: "/admin/media", icon: Image },
-  { label: "Usuarios", href: "/admin/usuarios", icon: UserCog },
-  { label: "Configuracoes", href: "/admin/config", icon: Settings },
+  { label: "Usuários", href: "/admin/usuarios", icon: UserCog },
+  { label: "Configurações", href: "/admin/config", icon: Settings },
 ] as const;
 
 function NavLink({

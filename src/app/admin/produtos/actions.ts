@@ -52,12 +52,12 @@ export async function createProduct(data: FormData) {
       try {
         specs = JSON.parse(specsRaw);
       } catch {
-        return { success: false, error: "Formato de especificacoes invalido" };
+        return { success: false, error: "Formato de especificações inválido" };
       }
     }
 
     if (!slug || !category || !name || !description) {
-      return { success: false, error: "Campos obrigatorios nao preenchidos" };
+      return { success: false, error: "Campos obrigatórios não preenchidos" };
     }
 
     const product = await db.product.create({
@@ -111,12 +111,12 @@ export async function updateProduct(id: string, data: FormData) {
       try {
         specs = JSON.parse(specsRaw);
       } catch {
-        return { success: false, error: "Formato de especificacoes invalido" };
+        return { success: false, error: "Formato de especificações inválido" };
       }
     }
 
     if (!slug || !category || !name || !description) {
-      return { success: false, error: "Campos obrigatorios nao preenchidos" };
+      return { success: false, error: "Campos obrigatórios não preenchidos" };
     }
 
     await db.$transaction([
@@ -180,7 +180,7 @@ export async function toggleProductFeatured(id: string) {
       where: { id },
       select: { featured: true },
     });
-    if (!product) return { success: false, error: "Produto nao encontrado" };
+    if (!product) return { success: false, error: "Produto não encontrado" };
 
     await db.product.update({
       where: { id },

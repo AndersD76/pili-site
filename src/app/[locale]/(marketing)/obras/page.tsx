@@ -7,7 +7,7 @@ export function generateMetadata() {
   return generatePageMetadata({
     title: "Obras",
     description:
-      "Casos e projetos realizados pela PILI Industrial em portos, cooperativas e industrias no Brasil e no exterior.",
+      "Casos e projetos realizados pela PILI Industrial em portos, cooperativas e indústrias no Brasil e no exterior.",
     path: "/obras",
   });
 }
@@ -22,16 +22,16 @@ export default function ObrasPage() {
             Obras
           </h1>
           <p className="mt-4 max-w-2xl text-pili-cement">
-            Conheca os projetos realizados pela PILI Industrial. Tombadores
-            instalados em portos, cooperativas, industrias e terminais
-            graneleiros em mais de 18 paises.
+            Conheça os projetos realizados pela PILI Industrial. Tombadores
+            instalados em portos, cooperativas, indústrias e terminais
+            graneleiros em mais de 18 países.
           </p>
           <div className="mt-8 flex gap-4">
             <Link
               href="/orcamento"
               className="bg-pili-safety px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
             >
-              Solicitar orcamento
+              Solicitar orçamento
             </Link>
             <Link
               href="/produtos"

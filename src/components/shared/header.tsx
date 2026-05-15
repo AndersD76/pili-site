@@ -19,10 +19,10 @@ const NAV_ITEMS = [
 ] as const;
 
 const ECOSYSTEM_ITEMS = [
-  { label: "PILI Store", href: ECOSYSTEM.store, desc: "Peças e acessórios" },
-  { label: "PILI Tech", href: ECOSYSTEM.tech, desc: "Gestão de pátio IoT" },
-  { label: "PILI Raste", href: ECOSYSTEM.raste, desc: "Rastreabilidade + EUDR" },
-  { label: "PILI Harbor", href: ECOSYSTEM.harbor, desc: "Yard management IoT" },
+  { label: "PILI Store", slug: "store", extHref: ECOSYSTEM.store, desc: "Peças e acessórios" },
+  { label: "PILI Tech", slug: "tech", extHref: ECOSYSTEM.tech, desc: "Gestão de pátio IoT" },
+  { label: "PILI Raster", slug: "raste", extHref: ECOSYSTEM.raste, desc: "Rastreabilidade + EUDR" },
+  { label: "PILI Harbor", slug: "harbor", extHref: ECOSYSTEM.harbor, desc: "Yard management IoT" },
 ] as const;
 
 export function Header() {
@@ -63,11 +63,14 @@ export function Header() {
           <Image
             src="/images/logo-pili-white.png"
             alt="PILI Industrial"
-            width={220}
-            height={72}
-            className="h-14 w-auto lg:h-16"
+            width={160}
+            height={52}
+            className="h-10 w-auto"
             priority
           />
+          <span className="ml-3 hidden text-lg font-bold uppercase tracking-wide text-pili-white sm:block">
+            Industrial
+          </span>
         </Link>
 
         {/* Desktop nav */}
@@ -108,25 +111,30 @@ export function Header() {
             </button>
 
             {ecoOpen && (
-              <div className="absolute right-0 top-full w-64 border border-pili-iron bg-pili-graphite p-2">
+              <div className="absolute right-0 top-full w-72 border border-pili-iron bg-pili-graphite p-2">
                 {ECOSYSTEM_ITEMS.map((item) => (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between p-3 transition-colors hover:bg-pili-steel"
-                  >
-                    <div>
+                  <div key={item.label} className="p-3 transition-colors hover:bg-pili-steel">
+                    <Link
+                      href={`/ecossistema/${item.slug}`}
+                      className="block"
+                    >
                       <div className="text-sm font-semibold text-pili-white">
                         {item.label}
                       </div>
                       <div className="text-xs text-pili-cement">
                         {item.desc}
                       </div>
-                    </div>
-                    <ExternalLink className="h-3.5 w-3.5 text-pili-cement" />
-                  </a>
+                    </Link>
+                    <a
+                      href={item.extHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-1.5 inline-flex items-center gap-1 text-[11px] font-medium text-pili-safety transition-colors hover:text-pili-safety-bright"
+                    >
+                      Acessar plataforma
+                      <ExternalLink className="h-3 w-3" />
+                    </a>
+                  </div>
                 ))}
               </div>
             )}
@@ -183,16 +191,23 @@ export function Header() {
                 Ecossistema
               </span>
               {ECOSYSTEM_ITEMS.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between py-3 text-sm text-pili-mist"
-                >
-                  {item.label}
-                  <ExternalLink className="h-3.5 w-3.5 text-pili-cement" />
-                </a>
+                <div key={item.label} className="py-3">
+                  <Link
+                    href={`/ecossistema/${item.slug}`}
+                    className="text-sm font-medium text-pili-mist"
+                  >
+                    {item.label}
+                  </Link>
+                  <a
+                    href={item.extHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ml-3 inline-flex items-center gap-1 text-[11px] text-pili-safety"
+                  >
+                    Acessar
+                    <ExternalLink className="h-3 w-3" />
+                  </a>
+                </div>
               ))}
             </div>
 

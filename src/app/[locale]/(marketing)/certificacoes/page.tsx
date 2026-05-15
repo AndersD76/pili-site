@@ -4,9 +4,9 @@ import { ShieldCheck, FileCheck, Award, Clock, CheckCircle2 } from "lucide-react
 
 export function generateMetadata() {
   return generatePageMetadata({
-    title: "Certificacoes e Garantia",
+    title: "Certificações e Garantia",
     description:
-      "PILI Industrial: ISO 9001, conformidade NR-10 e NR-12, garantia estrutural de 5 anos. Qualidade e seguranca em todos os equipamentos.",
+      "PILI Industrial: ISO 9001, conformidade NR-10 e NR-12, garantia estrutural de 5 anos. Qualidade e segurança em todos os equipamentos.",
     path: "/certificacoes",
   });
 }
@@ -15,37 +15,37 @@ const CERTIFICATIONS = [
   {
     icon: ShieldCheck,
     title: "ISO 9001:2015",
-    subtitle: "Sistema de Gestao da Qualidade",
+    subtitle: "Sistema de Gestão da Qualidade",
     points: [
-      "Processos padronizados de projeto, fabricacao e montagem",
-      "Auditorias internas periodicas e melhoria continua",
+      "Processos padronizados de projeto, fabricação e montagem",
+      "Auditorias internas periódicas e melhoria contínua",
       "Rastreabilidade completa de materiais e componentes",
       "Controle dimensional rigoroso em todas as etapas",
-      "Qualificacao e certificacao de soldadores",
+      "Qualificação e certificação de soldadores",
     ],
   },
   {
     icon: Award,
     title: "NR-10",
-    subtitle: "Seguranca em Instalacoes Eletricas",
+    subtitle: "Segurança em Instalações Elétricas",
     points: [
-      "Projetos eletricos conforme norma regulamentadora NR-10",
-      "Paineis de comando com protecao contra sobrecarga",
-      "Aterramento e equipotencializacao de toda a estrutura",
-      "Sinalizacao de seguranca e procedimentos de bloqueio",
-      "Documentacao tecnica completa para fiscalizacao",
+      "Projetos elétricos conforme norma regulamentadora NR-10",
+      "Painéis de comando com proteção contra sobrecarga",
+      "Aterramento e equipotencialização de toda a estrutura",
+      "Sinalização de segurança e procedimentos de bloqueio",
+      "Documentação técnica completa para fiscalização",
     ],
   },
   {
     icon: FileCheck,
     title: "NR-12",
-    subtitle: "Seguranca em Maquinas e Equipamentos",
+    subtitle: "Segurança em Máquinas e Equipamentos",
     points: [
-      "Protecoes mecanicas fixas e moveis em pontos de risco",
-      "Sistemas de parada de emergencia acessiveis",
-      "Intertravamentos e dispositivos de seguranca categoria 3",
-      "Manual de operacao e manutencao completo",
-      "Laudo tecnico de conformidade NR-12 incluso",
+      "Proteções mecânicas fixas e móveis em pontos de risco",
+      "Sistemas de parada de emergência acessíveis",
+      "Intertravamentos e dispositivos de segurança categoria 3",
+      "Manual de operação e manutenção completo",
+      "Laudo técnico de conformidade NR-12 incluso",
     ],
   },
   {
@@ -53,11 +53,11 @@ const CERTIFICATIONS = [
     title: "Garantia de 5 anos",
     subtitle: "Garantia Estrutural",
     points: [
-      "5 anos de garantia sobre a estrutura metalica principal",
-      "Cobertura contra defeitos de fabricacao e materiais",
-      "Suporte tecnico remoto e presencial durante o periodo",
-      "Disponibilidade de pecas de reposicao originais",
-      "Possibilidade de extensao da garantia mediante contrato",
+      "5 anos de garantia sobre a estrutura metálica principal",
+      "Cobertura contra defeitos de fabricação e materiais",
+      "Suporte técnico remoto e presencial durante o período",
+      "Disponibilidade de peças de reposição originais",
+      "Possibilidade de extensão da garantia mediante contrato",
     ],
   },
 ] as const;
@@ -69,12 +69,12 @@ export default function CertificacoesPage() {
       <section className="bg-pili-black py-20 px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <h1 className="font-display text-[length:var(--text-display-2)] font-black uppercase text-pili-white">
-            Certificacoes e Garantia
+            Certificações e Garantia
           </h1>
           <p className="mt-4 max-w-2xl text-pili-cement">
-            Todos os equipamentos PILI sao projetados e fabricados em
+            Todos os equipamentos PILI são projetados e fabricados em
             conformidade com as normas brasileiras e internacionais de qualidade
-            e seguranca. Garantia estrutural de 5 anos em toda a linha.
+            e segurança. Garantia estrutural de 5 anos em toda a linha.
           </p>
         </div>
       </section>
@@ -118,25 +118,25 @@ export default function CertificacoesPage() {
       <section className="bg-pili-paper py-20 px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="font-display text-[length:var(--text-h2)] font-black uppercase text-pili-black">
-            Documentacao tecnica
+            Documentação técnica
           </h2>
           <p className="mt-4 text-pili-concrete">
-            Precisa de laudos, certificados ou documentacao tecnica para
-            licitacao? Nossa equipe pode fornecer todos os documentos
-            necessarios.
+            Precisa de laudos, certificados ou documentação técnica para
+            licitação? Nossa equipe pode fornecer todos os documentos
+            necessários.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
               href="/catalogo"
               className="bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
             >
-              Baixar catalogo
+              Baixar catálogo
             </Link>
             <Link
               href="/contato"
               className="border border-pili-black px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors hover:bg-pili-black hover:text-pili-white"
             >
-              Solicitar documentacao
+              Solicitar documentação
             </Link>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import {
   Search,
   ChevronLeft,
@@ -49,14 +49,14 @@ const STATUS_COLORS: Record<LeadStatus, string> = {
 };
 
 const SOURCE_LABELS: Record<LeadSource, string> = {
-  ORGANICO: "Organico",
+  ORGANICO: "Orgânico",
   PAGO: "Pago",
   REFERRAL: "Referral",
   WHATSAPP: "WhatsApp",
-  CATALOGO: "Catalogo",
+  CATALOGO: "Catálogo",
   CALCULADORA: "Calculadora",
   COMPARATIVO: "Comparativo",
-  FORMULARIO: "Formulario",
+  FORMULARIO: "Formulário",
 };
 
 function formatDate(date: Date) {
@@ -196,7 +196,7 @@ export default async function LeadsPage({ searchParams }: PageProps) {
                 <TableHead>Origem</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Data</TableHead>
-                <TableHead className="w-[60px]">Acoes</TableHead>
+                <TableHead className="w-[60px]">Ações</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -243,7 +243,7 @@ export default async function LeadsPage({ searchParams }: PageProps) {
       {totalPages > 1 && (
         <div className="flex items-center justify-between">
           <p className="text-sm text-pili-steel">
-            Pagina {page} de {totalPages}
+            Página {page} de {totalPages}
           </p>
           <div className="flex gap-2">
             {page > 1 ? (
@@ -262,13 +262,13 @@ export default async function LeadsPage({ searchParams }: PageProps) {
             {page < totalPages ? (
               <Button variant="outline" size="sm" asChild>
                 <Link href={buildUrl({ page: String(page + 1) })}>
-                  Proximo
+                  Próximo
                   <ChevronRight className="ml-1 size-4" />
                 </Link>
               </Button>
             ) : (
               <Button variant="outline" size="sm" disabled>
-                Proximo
+                Próximo
                 <ChevronRight className="ml-1 size-4" />
               </Button>
             )}

@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Plus, Pencil, Trash2, Star } from "lucide-react";
 import { requireRole } from "@/lib/auth-guard";
 import { getProducts, deleteProduct, toggleProductFeatured } from "./actions";
@@ -15,7 +15,7 @@ import {
 
 const CATEGORY_LABELS: Record<string, string> = {
   TOMBADOR_FIXO: "Tombador fixo",
-  TOMBADOR_MOVEL: "Tombador movel",
+  TOMBADOR_MOVEL: "Tombador móvel",
   COLETOR_AMOSTRAS: "Coletor de amostras",
   UNIDADE_TRANSBORDO: "Unidade de transbordo",
   ESPECIAL: "Especial",
@@ -34,7 +34,7 @@ export default async function ProdutosPage() {
             Produtos
           </h1>
           <p className="text-sm text-pili-cement">
-            Gerencie o catalogo de produtos
+            Gerencie o catálogo de produtos
           </p>
         </div>
         <Button asChild>
@@ -59,7 +59,7 @@ export default async function ProdutosPage() {
               <TableHead>Categoria</TableHead>
               <TableHead>Ativo</TableHead>
               <TableHead>Destaque</TableHead>
-              <TableHead className="text-right">Acoes</TableHead>
+              <TableHead className="text-right">Ações</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -89,7 +89,7 @@ export default async function ProdutosPage() {
                     <Badge
                       variant={product.active ? "default" : "outline"}
                     >
-                      {product.active ? "Sim" : "Nao"}
+                      {product.active ? "Sim" : "Não"}
                     </Badge>
                   </TableCell>
                   <TableCell>

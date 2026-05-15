@@ -29,9 +29,9 @@ export default function CatalogoPage() {
     const newErrors: Partial<CatalogFormData> = {};
     if (formData.name.length < 2) newErrors.name = "Informe seu nome";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-      newErrors.email = "E-mail invalido";
+      newErrors.email = "E-mail inválido";
     if (formData.company.length < 2) newErrors.company = "Informe a empresa";
-    if (formData.country.length !== 2) newErrors.country = "Pais invalido";
+    if (formData.country.length !== 2) newErrors.country = "País inválido";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   }
@@ -66,10 +66,10 @@ export default function CatalogoPage() {
       <section className="bg-pili-black py-20 px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <h1 className="font-display text-[length:var(--text-display-2)] font-black uppercase text-pili-white">
-            Catalogo PILI
+            Catálogo PILI
           </h1>
           <p className="mt-4 max-w-2xl text-pili-cement">
-            Baixe o catalogo completo com especificacoes tecnicas, dimensionais e
+            Baixe o catálogo completo com especificações técnicas, dimensionais e
             fotos de todos os equipamentos PILI Industrial.
           </p>
         </div>
@@ -82,10 +82,10 @@ export default function CatalogoPage() {
             <div className="border border-pili-success/30 bg-pili-success/5 p-10 text-center">
               <Download className="mx-auto h-12 w-12 text-pili-success" />
               <h2 className="mt-6 font-display text-xl font-bold uppercase text-pili-black">
-                Catalogo liberado
+                Catálogo liberado
               </h2>
               <p className="mt-3 text-sm text-pili-concrete">
-                Clique no botao abaixo para fazer o download. O catalogo tambem
+                Clique no botão abaixo para fazer o download. O catálogo também
                 foi enviado para o seu e-mail.
               </p>
               <a
@@ -94,7 +94,7 @@ export default function CatalogoPage() {
                 className="mt-6 inline-flex items-center gap-2 bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
               >
                 <Download className="h-4 w-4" />
-                Baixar catalogo PDF
+                Baixar catálogo PDF
               </a>
             </div>
           ) : (
@@ -104,7 +104,7 @@ export default function CatalogoPage() {
                 <FileText className="h-10 w-10 text-pili-safety" />
                 <div>
                   <h2 className="font-display text-xl font-bold uppercase text-pili-black">
-                    Download do catalogo
+                    Download do catálogo
                   </h2>
                   <p className="mt-1 text-sm text-pili-concrete">
                     Preencha os dados abaixo para liberar o download.
@@ -164,7 +164,7 @@ export default function CatalogoPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="cat-country">Pais *</Label>
+                    <Label htmlFor="cat-country">País *</Label>
                     <select
                       id="cat-country"
                       value={formData.country}
@@ -178,7 +178,7 @@ export default function CatalogoPage() {
                       <option value="AR">Argentina</option>
                       <option value="UY">Uruguai</option>
                       <option value="CL">Chile</option>
-                      <option value="CO">Colombia</option>
+                      <option value="CO">Colômbia</option>
                       <option value="PE">Peru</option>
                       <option value="US">Estados Unidos</option>
                       <option value="XX">Outro</option>

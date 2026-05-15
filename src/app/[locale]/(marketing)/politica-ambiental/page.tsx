@@ -4,9 +4,9 @@ import { Leaf, Droplets, Recycle, Zap } from "lucide-react";
 
 export function generateMetadata() {
   return generatePageMetadata({
-    title: "Politica Ambiental",
+    title: "Política Ambiental",
     description:
-      "Compromisso ambiental da PILI Industrial. Gestao de residuos, eficiencia energetica e praticas sustentaveis na fabricacao de equipamentos industriais.",
+      "Compromisso ambiental da PILI Industrial. Gestão de resíduos, eficiência energética e práticas sustentáveis na fabricação de equipamentos industriais.",
     path: "/politica-ambiental",
   });
 }
@@ -14,23 +14,23 @@ export function generateMetadata() {
 const COMMITMENTS = [
   {
     icon: Recycle,
-    title: "Gestao de residuos",
-    desc: "Programa de gestao de residuos industriais com segregacao na origem, destinacao certificada e reciclagem de aco e materiais metalicos. Laudos de destinacao conforme legislacao ambiental vigente.",
+    title: "Gestão de resíduos",
+    desc: "Programa de gestão de resíduos industriais com segregação na origem, destinação certificada e reciclagem de aço e materiais metálicos. Laudos de destinação conforme legislação ambiental vigente.",
   },
   {
     icon: Droplets,
-    title: "Recursos hidricos",
-    desc: "Controle do consumo de agua no processo fabril, tratamento de efluentes industriais e reuso de agua em processos nao criticos. Monitoramento periodico da qualidade dos efluentes descartados.",
+    title: "Recursos hídricos",
+    desc: "Controle do consumo de água no processo fabril, tratamento de efluentes industriais e reuso de água em processos não críticos. Monitoramento periódico da qualidade dos efluentes descartados.",
   },
   {
     icon: Zap,
-    title: "Eficiencia energetica",
-    desc: "Otimizacao do consumo energetico na producao, utilizacao de equipamentos de alta eficiencia e iluminacao LED no parque fabril. Estudo continuo de fontes de energia renovavel.",
+    title: "Eficiência energética",
+    desc: "Otimização do consumo energético na produção, utilização de equipamentos de alta eficiência e iluminação LED no parque fabril. Estudo contínuo de fontes de energia renovável.",
   },
   {
     icon: Leaf,
-    title: "Projetos sustentaveis",
-    desc: "Desenvolvimento de equipamentos com maior vida util, menor consumo energetico operacional e componentes reciclaveis. Projetos que reduzem o tempo de descarga e, consequentemente, as emissoes de veiculos em espera.",
+    title: "Projetos sustentáveis",
+    desc: "Desenvolvimento de equipamentos com maior vida útil, menor consumo energético operacional e componentes recicláveis. Projetos que reduzem o tempo de descarga e, consequentemente, as emissões de veículos em espera.",
   },
 ] as const;
 
@@ -41,7 +41,7 @@ export default function PoliticaAmbientalPage() {
       <section className="bg-pili-black py-16 px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
           <h1 className="font-display text-[length:var(--text-h1)] font-black uppercase text-pili-white">
-            Politica Ambiental
+            Política Ambiental
           </h1>
           <p className="mt-3 font-mono text-xs uppercase tracking-wider text-pili-cement">
             Compromisso com a responsabilidade ambiental
@@ -57,18 +57,18 @@ export default function PoliticaAmbientalPage() {
           </h2>
           <p className="mt-6 leading-relaxed text-pili-concrete">
             A {COMPANY.name} reconhece sua responsabilidade com o meio ambiente
-            e se compromete a conduzir suas atividades de fabricacao,
-            comercializacao e prestacao de servicos de forma ambientalmente
-            responsavel. Buscamos continuamente a reducao do impacto ambiental de
-            nossas operacoes e produtos, respeitando a legislacao vigente e
-            promovendo boas praticas entre colaboradores, fornecedores e
+            e se compromete a conduzir suas atividades de fabricação,
+            comercialização e prestação de serviços de forma ambientalmente
+            responsável. Buscamos continuamente a redução do impacto ambiental de
+            nossas operações e produtos, respeitando a legislação vigente e
+            promovendo boas práticas entre colaboradores, fornecedores e
             parceiros.
           </p>
           <p className="mt-4 leading-relaxed text-pili-concrete">
             Entendemos que nossos equipamentos contribuem diretamente para a
-            eficiencia logistica do agronegocio, reduzindo tempos de espera de
-            caminhoes e, por consequencia, as emissoes de gases de efeito estufa
-            associadas a logistica de graos e insumos.
+            eficiência logística do agronegócio, reduzindo tempos de espera de
+            caminhões e, por consequência, as emissões de gases de efeito estufa
+            associadas à logística de grãos e insumos.
           </p>
         </div>
       </section>
@@ -99,16 +99,16 @@ export default function PoliticaAmbientalPage() {
       <section className="py-16 px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
           <h2 className="font-display text-[length:var(--text-h2)] font-black uppercase text-pili-black">
-            Principios orientadores
+            Princípios orientadores
           </h2>
           <ul className="mt-8 space-y-4">
             {[
-              "Cumprir integralmente a legislacao ambiental brasileira e as normas aplicaveis ao setor metalurgico e industrial.",
-              "Promover a conscientizacao ambiental entre colaboradores, fornecedores e parceiros comerciais.",
-              "Buscar continuamente a reducao na geracao de residuos, emissoes e consumo de recursos naturais.",
-              "Priorizar materiais reciclaveis e fornecedores comprometidos com praticas ambientais responsaveis.",
+              "Cumprir integralmente a legislação ambiental brasileira e as normas aplicáveis ao setor metalúrgico e industrial.",
+              "Promover a conscientização ambiental entre colaboradores, fornecedores e parceiros comerciais.",
+              "Buscar continuamente a redução na geração de resíduos, emissões e consumo de recursos naturais.",
+              "Priorizar materiais recicláveis e fornecedores comprometidos com práticas ambientais responsáveis.",
               "Investir em pesquisa e desenvolvimento de produtos com menor impacto ambiental ao longo de seu ciclo de vida.",
-              "Manter transparencia nas informacoes ambientais e nos resultados das acoes de sustentabilidade.",
+              "Manter transparência nas informações ambientais e nos resultados das ações de sustentabilidade.",
             ].map((principle, i) => (
               <li
                 key={i}
@@ -126,7 +126,7 @@ export default function PoliticaAmbientalPage() {
       <section className="bg-pili-paper py-12 px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
           <p className="text-sm text-pili-concrete">
-            Duvidas sobre nossa politica ambiental? Entre em contato pelo e-mail{" "}
+            Dúvidas sobre nossa política ambiental? Entre em contato pelo e-mail{" "}
             <a
               href={`mailto:${COMPANY.email}`}
               className="font-semibold text-pili-black underline transition-colors hover:text-pili-safety-deep"

@@ -184,7 +184,7 @@ export default async function CaseDetailPage({
           </h2>
           <p className="mt-2 text-center text-sm text-pili-cement">
             {caseData.client} &mdash; {caseData.application}. Preencha o
-            formulario e nossa equipe entra em contato.
+            formulário e nossa equipe entra em contato.
           </p>
           <div className="mt-8">
             <LeadForm

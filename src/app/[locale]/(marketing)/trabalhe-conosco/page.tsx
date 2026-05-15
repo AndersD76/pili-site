@@ -16,10 +16,10 @@ interface ApplicationForm {
 
 const AREAS = [
   "Engenharia",
-  "Producao",
+  "Produção",
   "Comercial",
   "Administrativo",
-  "Logistica",
+  "Logística",
   "TI / Tecnologia",
   "Qualidade",
   "Outro",
@@ -42,9 +42,9 @@ export default function TrabalheConoscoPage() {
     const newErrors: Partial<ApplicationForm> = {};
     if (formData.name.length < 2) newErrors.name = "Informe seu nome";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-      newErrors.email = "E-mail invalido";
-    if (formData.phone.length < 8) newErrors.phone = "Telefone invalido";
-    if (!formData.area) newErrors.area = "Selecione uma area";
+      newErrors.email = "E-mail inválido";
+    if (formData.phone.length < 8) newErrors.phone = "Telefone inválido";
+    if (!formData.area) newErrors.area = "Selecione uma área";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   }
@@ -65,7 +65,7 @@ export default function TrabalheConoscoPage() {
           company: "Candidato",
           consent: true,
           source: "TRABALHE_CONOSCO",
-          message: `Area: ${formData.area}\n\n${formData.message}`,
+          message: `Área: ${formData.area}\n\n${formData.message}`,
           pageUrl: window.location.href,
         }),
       });
@@ -86,8 +86,8 @@ export default function TrabalheConoscoPage() {
             Trabalhe conosco
           </h1>
           <p className="mt-4 max-w-2xl text-pili-cement">
-            A PILI Industrial esta sempre em busca de profissionais talentosos
-            que compartilhem nossos valores de qualidade, seguranca e inovacao.
+            A PILI Industrial está sempre em busca de profissionais talentosos
+            que compartilhem nossos valores de qualidade, segurança e inovação.
           </p>
         </div>
       </section>
@@ -98,19 +98,19 @@ export default function TrabalheConoscoPage() {
           <div>
             <Users className="h-10 w-10 text-pili-safety" />
             <h2 className="mt-6 font-display text-[length:var(--text-h2)] font-black uppercase text-pili-black">
-              Faca parte do time
+              Faça parte do time
             </h2>
             <p className="mt-4 leading-relaxed text-pili-concrete">
               Com mais de {new Date().getFullYear() - COMPANY.founded} anos de
-              historia, a PILI e referencia na fabricacao de equipamentos
-              industriais para o agronegocio. Atuamos em {18} paises e
-              investimos continuamente em tecnologia e inovacao.
+              história, a PILI é referência na fabricação de equipamentos
+              industriais para o agronegócio. Atuamos em {18} países e
+              investimos continuamente em tecnologia e inovação.
             </p>
             <p className="mt-4 leading-relaxed text-pili-concrete">
               Oferecemos um ambiente de trabalho que valoriza o desenvolvimento
-              profissional, a colaboracao entre equipes e o compromisso com a
-              excelencia. Nosso time reune engenheiros, tecnicos, gestores e
-              especialistas que juntos transformam a logistica industrial.
+              profissional, a colaboração entre equipes e o compromisso com a
+              excelência. Nosso time reúne engenheiros, técnicos, gestores e
+              especialistas que juntos transformam a logística industrial.
             </p>
 
             <div className="mt-8 space-y-4">
@@ -119,9 +119,9 @@ export default function TrabalheConoscoPage() {
               </h3>
               <ul className="space-y-3">
                 {[
-                  "Empresa solida com mais de 4 decadas de mercado",
+                  "Empresa sólida com mais de 4 décadas de mercado",
                   "Projetos de alcance internacional",
-                  "Investimento em inovacao e tecnologia propria",
+                  "Investimento em inovação e tecnologia própria",
                   "Ambiente colaborativo e orientado a resultados",
                   "Oportunidades de crescimento profissional",
                 ].map((item, i) => (
@@ -147,7 +147,7 @@ export default function TrabalheConoscoPage() {
                 <p className="mt-3 text-sm text-pili-concrete">
                   Obrigado pelo interesse em fazer parte da equipe PILI.
                   Analisaremos seu perfil e entraremos em contato caso haja uma
-                  vaga compativel.
+                  vaga compatível.
                 </p>
               </div>
             ) : (
@@ -156,7 +156,7 @@ export default function TrabalheConoscoPage() {
                   Envie sua candidatura
                 </h2>
                 <p className="mt-2 text-sm text-pili-concrete">
-                  Preencha o formulario abaixo. Nao temos vagas abertas no
+                  Preencha o formulário abaixo. Não temos vagas abertas no
                   momento? Sem problema, manteremos seu perfil em nosso banco de
                   talentos.
                 </p>
@@ -218,7 +218,7 @@ export default function TrabalheConoscoPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="app-area">Area de interesse *</Label>
+                    <Label htmlFor="app-area">Área de interesse *</Label>
                     <select
                       id="app-area"
                       value={formData.area}
@@ -243,7 +243,7 @@ export default function TrabalheConoscoPage() {
 
                   <div>
                     <Label htmlFor="app-message">
-                      Mensagem / experiencia relevante
+                      Mensagem / experiência relevante
                     </Label>
                     <textarea
                       id="app-message"

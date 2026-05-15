@@ -4,9 +4,9 @@ import { ArrowRight } from "lucide-react";
 
 export function generateMetadata() {
   return generatePageMetadata({
-    title: "Solucoes por setor",
+    title: "Soluções por setor",
     description:
-      "Solucoes de descarga para portos, cooperativas, industria alimenticia, fertilizantes e cimento.",
+      "Soluções de descarga para portos, cooperativas, indústria alimentícia, fertilizantes e cimento.",
     path: "/solucoes",
   });
 }
@@ -15,32 +15,32 @@ const SECTORS = [
   {
     slug: "porto",
     title: "Porto",
-    headline: "Operacoes portuarias de alto fluxo",
-    desc: "Tombadores de 26 a 30 metros para terminais maritimos com fluxo de ate 700 caminhoes por dia em operacao 24/7.",
+    headline: "Operações portuárias de alto fluxo",
+    desc: "Tombadores de 26 a 30 metros para terminais marítimos com fluxo de até 700 caminhões por dia em operação 24/7.",
   },
   {
     slug: "cooperativa",
     title: "Cooperativa",
-    headline: "Recepcao agil de graos de associados",
-    desc: "Modelos de 10 a 26 metros para cooperativas de todos os portes, com ciclos rapidos e filas reduzidas na safra.",
+    headline: "Recepção ágil de grãos de associados",
+    desc: "Modelos de 10 a 26 metros para cooperativas de todos os portes, com ciclos rápidos e filas reduzidas na safra.",
   },
   {
     slug: "industria",
-    title: "Industria alimenticia",
-    headline: "Abastecimento continuo de plantas industriais",
-    desc: "Tombadores integrados a linhas de processamento com automacao e rastreabilidade de lote.",
+    title: "Indústria alimentícia",
+    headline: "Abastecimento contínuo de plantas industriais",
+    desc: "Tombadores integrados a linhas de processamento com automação e rastreabilidade de lote.",
   },
   {
     slug: "fertilizante",
     title: "Fertilizante",
     headline: "Materiais corrosivos e abrasivos",
-    desc: "Versoes especiais com revestimento inox, vedacao reforcada e sistema de lavagem para operacao com fertilizantes.",
+    desc: "Versões especiais com revestimento inox, vedação reforçada e sistema de lavagem para operação com fertilizantes.",
   },
   {
     slug: "cimento",
     title: "Cimento",
-    headline: "Descarga de minerais e clinquer",
-    desc: "Tombadores compactos e robustos para operacao com materiais densos e abrasivos na industria cimenteira.",
+    headline: "Descarga de minerais e clínquer",
+    desc: "Tombadores compactos e robustos para operação com materiais densos e abrasivos na indústria cimenteira.",
   },
 ] as const;
 
@@ -50,11 +50,11 @@ export default function SolucoesPage() {
       <section className="bg-pili-black py-20 px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <h1 className="font-display text-[length:var(--text-display-2)] font-black uppercase text-pili-white">
-            Solucoes por setor
+            Soluções por setor
           </h1>
           <p className="mt-4 max-w-2xl text-pili-cement">
-            Cada setor tem desafios unicos de descarga. A PILI desenvolve
-            solucoes especificas para cada aplicacao.
+            Cada setor tem desafios únicos de descarga. A PILI desenvolve
+            soluções específicas para cada aplicação.
           </p>
         </div>
       </section>
@@ -81,7 +81,7 @@ export default function SolucoesPage() {
                   {sector.desc}
                 </p>
                 <span className="mt-6 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-pili-black transition-colors group-hover:text-pili-safety-deep">
-                  Ver solucao
+                  Ver solução
                   <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                 </span>
               </Link>

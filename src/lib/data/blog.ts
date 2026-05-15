@@ -56,16 +56,16 @@ As primeiras duas unidades já foram encomendadas por um terminal portuário no 
     tags: ["tombador", "lançamento", "100 toneladas", "porto"],
   },
   {
-    slug: "pili-raste-conformidade-eudr-exportadores",
+    slug: "pili-raster-conformidade-eudr-exportadores",
     title:
-      "PILI Raste garante conformidade EUDR para exportadores brasileiros",
+      "PILI Raster garante conformidade EUDR para exportadores brasileiros",
     excerpt:
-      "A plataforma de rastreabilidade de grãos PILI Raste permite que exportadores brasileiros atendam às exigências do Regulamento Europeu contra Desmatamento.",
-    content: `O Regulamento da União Europeia contra o Desmatamento (EUDR), que entra em vigor em dezembro de 2025, exige que exportadores de commodities como soja, café e cacau comprovem que seus produtos não estão associados a áreas desmatadas após dezembro de 2020. A plataforma PILI Raste foi desenvolvida especificamente para atender essa demanda, oferecendo rastreabilidade completa da cadeia produtiva de grãos desde a lavoura até o porto de embarque.
+      "A plataforma de rastreabilidade de grãos PILI Raster permite que exportadores brasileiros atendam às exigências do Regulamento Europeu contra Desmatamento.",
+    content: `O Regulamento da União Europeia contra o Desmatamento (EUDR), que entra em vigor em dezembro de 2025, exige que exportadores de commodities como soja, café e cacau comprovem que seus produtos não estão associados a áreas desmatadas após dezembro de 2020. A plataforma PILI Raster foi desenvolvida especificamente para atender essa demanda, oferecendo rastreabilidade completa da cadeia produtiva de grãos desde a lavoura até o porto de embarque.
 
 O sistema integra dados de geolocalização das propriedades rurais com imagens de satélite e registros do Cadastro Ambiental Rural (CAR), gerando relatórios de due diligence automatizados que atendem aos requisitos do EUDR. Cada lote de grãos recebe um certificado digital com QR Code que permite rastrear a origem, o transporte e o processamento do produto em toda a cadeia.
 
-"O Brasil é o maior exportador de soja do mundo e precisa demonstrar que sua produção é sustentável. O PILI Raste elimina a complexidade da rastreabilidade e transforma conformidade regulatória em vantagem competitiva", explica a equipe de desenvolvimento da plataforma. Já são mais de 150 propriedades cadastradas em Mato Grosso, Goiás e Paraná, com expectativa de alcançar 500 até o final de 2025.
+"O Brasil é o maior exportador de soja do mundo e precisa demonstrar que sua produção é sustentável. O PILI Raster elimina a complexidade da rastreabilidade e transforma conformidade regulatória em vantagem competitiva", explica a equipe de desenvolvimento da plataforma. Já são mais de 150 propriedades cadastradas em Mato Grosso, Goiás e Paraná, com expectativa de alcançar 500 até o final de 2025.
 
 A plataforma opera em integração nativa com o PILI Tech e o PILI Harbor, permitindo que a rastreabilidade acompanhe o grão desde a colheita, passando pela recepção na cooperativa ou terminal, até o embarque no navio. Essa integração completa posiciona o ecossistema PILI como solução única para conformidade EUDR no agronegócio brasileiro.`,
     category: "noticia",
@@ -181,7 +181,7 @@ A terceira e quarta tendências convergem: descarbonização da cadeia logístic
 
 O PILI Harbor mapeia digitalmente todo o pátio de operações, identificando automaticamente veículos por placa e RFID, direcionando caminhões para filas de descarga otimizadas e monitorando o status de cada equipamento em tempo real. O módulo de previsão de demanda utiliza dados históricos e informações de safra para antecipar picos de movimento e sugerir escalas de operação adequadas.
 
-A integração com o PILI Tech e o PILI Raste cria um ecossistema completo: o Harbor gerencia o pátio, o Tech monitora os equipamentos de descarga e o Raste garante a rastreabilidade do grão. Juntas, as três plataformas eliminam processos manuais, reduzem tempos de espera e geram dados que transformam a operação logística de reativa para preditiva.
+A integração com o PILI Tech e o PILI Raster cria um ecossistema completo: o Harbor gerencia o pátio, o Tech monitora os equipamentos de descarga e o Raster garante a rastreabilidade do grão. Juntas, as três plataformas eliminam processos manuais, reduzem tempos de espera e geram dados que transformam a operação logística de reativa para preditiva.
 
 O sistema já opera em fase piloto em três terminais no Paraná e Mato Grosso do Sul, com resultados iniciais que indicam redução de 35% no tempo de permanência de veículos no pátio e aumento de 25% na utilização dos equipamentos de descarga. O lançamento comercial está previsto para o primeiro trimestre de 2025, com planos de assinatura mensal que incluem hardware IoT, software e suporte técnico 24/7.`,
     category: "lancamento",

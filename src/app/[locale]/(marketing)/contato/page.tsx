@@ -7,7 +7,7 @@ export function generateMetadata() {
   return generatePageMetadata({
     title: "Contato",
     description:
-      "Entre em contato com a PILI Industrial. Atendimento comercial, suporte tecnico e orcamentos para tombadores hidraulicos e equipamentos de descarga.",
+      "Entre em contato com a PILI Industrial. Atendimento comercial, suporte técnico e orçamentos para tombadores hidráulicos e equipamentos de descarga.",
     path: "/contato",
   });
 }
@@ -50,7 +50,7 @@ export default function ContatoPage() {
           </h1>
           <p className="mt-4 max-w-2xl text-pili-cement">
             Fale com a equipe PILI Industrial. Atendimento comercial,
-            dimensionamento tecnico e suporte pos-venda.
+            dimensionamento técnico e suporte pós-venda.
           </p>
         </div>
       </section>
@@ -68,7 +68,7 @@ export default function ContatoPage() {
               <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-pili-safety" />
               <div>
                 <span className="font-display text-sm font-bold uppercase text-pili-black">
-                  Endereco
+                  Endereço
                 </span>
                 <p className="mt-1 text-sm leading-relaxed text-pili-concrete">
                   {COMPANY.name}
@@ -135,8 +135,8 @@ export default function ContatoPage() {
               Envie uma mensagem
             </h2>
             <p className="mt-4 text-sm text-pili-concrete">
-              Preencha o formulario abaixo e nossa equipe retornara em ate 24
-              horas uteis.
+              Preencha o formulário abaixo e nossa equipe retornará em até 24
+              horas úteis.
             </p>
             <div className="mt-8">
               <LeadForm source="CONTATO" />

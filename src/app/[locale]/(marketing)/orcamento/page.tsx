@@ -4,9 +4,9 @@ import { COMPANY } from "@/lib/constants";
 
 export function generateMetadata() {
   return generatePageMetadata({
-    title: "Solicitar Orcamento",
+    title: "Solicitar Orçamento",
     description:
-      "Solicite um orcamento para tombadores hidraulicos, coletores de amostras e equipamentos de descarga PILI Industrial. Resposta em ate 24h.",
+      "Solicite um orçamento para tombadores hidráulicos, coletores de amostras e equipamentos de descarga PILI Industrial. Resposta em até 24h.",
     path: "/orcamento",
   });
 }
@@ -18,12 +18,12 @@ export default function OrcamentoPage() {
       <section className="bg-pili-black py-20 px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <h1 className="font-display text-[length:var(--text-display-2)] font-black uppercase text-pili-white">
-            Solicitar orcamento
+            Solicitar orçamento
           </h1>
           <p className="mt-4 max-w-2xl text-pili-cement">
-            Preencha o formulario abaixo com os dados do seu projeto. Nossa
-            equipe tecnica ira dimensionar o equipamento ideal e retornar com uma
-            proposta em ate 24 horas uteis.
+            Preencha o formulário abaixo com os dados do seu projeto. Nossa
+            equipe técnica irá dimensionar o equipamento ideal e retornar com uma
+            proposta em até 24 horas úteis.
           </p>
         </div>
       </section>
@@ -36,8 +36,8 @@ export default function OrcamentoPage() {
               Dados do projeto
             </h2>
             <p className="mt-3 text-sm text-pili-concrete">
-              Campos marcados com * sao obrigatorios. Quanto mais detalhes
-              informar, mais precisa sera a proposta.
+              Campos marcados com * são obrigatórios. Quanto mais detalhes
+              informar, mais precisa será a proposta.
             </p>
             <div className="mt-8">
               <LeadForm compact={false} source="ORCAMENTO" />

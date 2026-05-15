@@ -51,15 +51,17 @@ export function PiliRobo() {
   const [showTooltip, setShowTooltip] = useState(false);
   const bodyRef = useRef<HTMLDivElement>(null);
 
-  /* ---------- Welcome typing sequence ---------- */
-  useEffect(() => {
-    if (!open) return;
-
-    /* Reset state every time the panel opens */
+  const handleOpen = useCallback(() => {
     setMessages([]);
     setTypingIndex(0);
     setShowActions(false);
     setVisibleActions(0);
+    setOpen(true);
+  }, []);
+
+  /* ---------- Welcome typing sequence ---------- */
+  useEffect(() => {
+    if (!open) return;
 
     const timers: ReturnType<typeof setTimeout>[] = [];
 
@@ -137,7 +139,7 @@ export function PiliRobo() {
       {!open && (
         <button
           type="button"
-          onClick={() => setOpen(true)}
+          onClick={handleOpen}
           onMouseEnter={() => setShowTooltip(true)}
           onMouseLeave={() => setShowTooltip(false)}
           className="fixed bottom-24 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-pili-safety text-pili-white shadow-lg transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pili-safety focus-visible:ring-offset-2"

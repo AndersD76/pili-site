@@ -76,7 +76,7 @@ export async function addNote(leadId: string, content: string) {
   const session = await auth();
 
   if (!session?.user?.id) {
-    throw new Error("Voce precisa estar autenticado para adicionar notas.");
+    throw new Error("Você precisa estar autenticado para adicionar notas.");
   }
 
   try {
@@ -135,18 +135,18 @@ export async function exportLeadsCsv(params: {
       "Telefone",
       "Empresa",
       "CNPJ",
-      "Pais",
+      "País",
       "Estado",
       "Cidade",
       "Cargo",
-      "Aplicacao",
+      "Aplicação",
       "Produto de interesse",
-      "Tipo de grao",
-      "Volume caminhao",
+      "Tipo de grão",
+      "Volume caminhão",
       "Mensagem",
       "Origem",
       "Status",
-      "Pagina",
+      "Página",
       "Criado em",
     ].join(";");
 

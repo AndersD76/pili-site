@@ -23,7 +23,7 @@ const BRANDS = [
     slug: "tech",
   },
   {
-    name: "PILI Raste",
+    name: "PILI Raster",
     desc: "Plataforma de rastreabilidade, compliance EUDR e inteligência de preço de commodities.",
     href: ECOSYSTEM.raste,
     icon: BarChart3,

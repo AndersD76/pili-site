@@ -34,7 +34,7 @@ export default function CompararPage() {
             Comparar produtos
           </h1>
           <p className="mt-4 text-pili-cement">
-            Selecione ate {MAX_COMPARE} produtos para comparar lado a lado.
+            Selecione até {MAX_COMPARE} produtos para comparar lado a lado.
           </p>
         </div>
       </section>
@@ -80,7 +80,7 @@ export default function CompararPage() {
                 <thead>
                   <tr className="border-b border-pili-mist">
                     <th className="py-4 pr-6 text-left text-xs font-medium uppercase tracking-wider text-pili-cement">
-                      Especificacao
+                      Especificação
                     </th>
                     {selectedProducts.map((p) => (
                       <th
@@ -127,14 +127,14 @@ export default function CompararPage() {
                 href="/orcamento"
                 className="bg-pili-safety px-8 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
               >
-                Solicitar orcamento desta selecao
+                Solicitar orçamento desta seleção
               </Link>
             </div>
           )}
 
           {selectedProducts.length < 2 && (
             <p className="mt-12 text-center text-pili-concrete">
-              Selecione pelo menos 2 produtos para iniciar a comparacao.
+              Selecione pelo menos 2 produtos para iniciar a comparação.
             </p>
           )}
         </div>

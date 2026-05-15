@@ -73,7 +73,7 @@ export function Footer() {
               {[
                 { label: "PILI Store", href: ECOSYSTEM.store },
                 { label: "PILI Tech", href: ECOSYSTEM.tech },
-                { label: "PILI Raste", href: ECOSYSTEM.raste },
+                { label: "PILI Raster", href: ECOSYSTEM.raste },
                 { label: "PILI Harbor", href: ECOSYSTEM.harbor },
               ].map((item) => (
                 <li key={item.label}>
@@ -83,7 +83,7 @@ export function Footer() {
                     rel="noopener noreferrer"
                     className="text-sm text-pili-mist transition-colors hover:text-pili-white"
                   >
-                    {item.label} &nearr;
+                    {item.label} {"↗"}
                   </a>
                 </li>
               ))}

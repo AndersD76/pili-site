@@ -51,7 +51,7 @@ export async function createPost(data: FormData) {
       : [];
 
     if (!slug || !title || !excerpt || !content) {
-      return { success: false, error: "Campos obrigatorios nao preenchidos" };
+      return { success: false, error: "Campos obrigatórios não preenchidos" };
     }
 
     const post = await db.post.create({
@@ -101,7 +101,7 @@ export async function updatePost(id: string, data: FormData) {
       : [];
 
     if (!slug || !title || !excerpt || !content) {
-      return { success: false, error: "Campos obrigatorios nao preenchidos" };
+      return { success: false, error: "Campos obrigatórios não preenchidos" };
     }
 
     const existing = await db.post.findUnique({
@@ -167,7 +167,7 @@ export async function togglePublish(id: string) {
       where: { id },
       select: { published: true },
     });
-    if (!post) return { success: false, error: "Artigo nao encontrado" };
+    if (!post) return { success: false, error: "Artigo não encontrado" };
 
     const newPublished = !post.published;
     await db.post.update({
@@ -181,6 +181,6 @@ export async function togglePublish(id: string) {
     revalidatePath("/admin/blog");
     return { success: true, error: null };
   } catch {
-    return { success: false, error: "Erro ao alterar publicacao" };
+    return { success: false, error: "Erro ao alterar publicação" };
   }
 }

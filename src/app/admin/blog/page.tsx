@@ -53,11 +53,11 @@ export default async function BlogPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Titulo</TableHead>
+              <TableHead>Título</TableHead>
               <TableHead>Autor</TableHead>
               <TableHead>Publicado</TableHead>
-              <TableHead>Data publicacao</TableHead>
-              <TableHead className="text-right">Acoes</TableHead>
+              <TableHead>Data publicação</TableHead>
+              <TableHead className="text-right">Ações</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

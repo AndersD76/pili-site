@@ -53,14 +53,14 @@ const STATUS_COLORS: Record<LeadStatus, string> = {
 };
 
 const SOURCE_LABELS: Record<LeadSource, string> = {
-  ORGANICO: "Organico",
+  ORGANICO: "Orgânico",
   PAGO: "Pago",
   REFERRAL: "Referral",
   WHATSAPP: "WhatsApp",
-  CATALOGO: "Catalogo",
+  CATALOGO: "Catálogo",
   CALCULADORA: "Calculadora",
   COMPARATIVO: "Comparativo",
-  FORMULARIO: "Formulario",
+  FORMULARIO: "Formulário",
 };
 
 function formatDateTime(date: Date) {
@@ -148,7 +148,7 @@ export default async function LeadDetailPage({ params }: PageProps) {
                 )}
                 <InfoRow
                   icon={MapPin}
-                  label="Localizacao"
+                  label="Localização"
                   value={[lead.city, lead.state, lead.country]
                     .filter(Boolean)
                     .join(", ")}
@@ -159,7 +159,7 @@ export default async function LeadDetailPage({ params }: PageProps) {
                 {lead.application && (
                   <InfoRow
                     icon={User}
-                    label="Aplicacao"
+                    label="Aplicação"
                     value={lead.application}
                   />
                 )}
@@ -173,14 +173,14 @@ export default async function LeadDetailPage({ params }: PageProps) {
                 {lead.grainType && (
                   <InfoRow
                     icon={Wheat}
-                    label="Tipo de grao"
+                    label="Tipo de grão"
                     value={lead.grainType}
                   />
                 )}
                 {lead.truckVolume && (
                   <InfoRow
                     icon={Truck}
-                    label="Volume caminhao"
+                    label="Volume caminhão"
                     value={`${lead.truckVolume} t`}
                   />
                 )}

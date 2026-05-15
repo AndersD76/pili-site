@@ -52,12 +52,12 @@ export async function createCase(data: FormData) {
       try {
         metrics = JSON.parse(metricsRaw);
       } catch {
-        return { success: false, error: "Formato de metricas invalido" };
+        return { success: false, error: "Formato de métricas inválido" };
       }
     }
 
     if (!slug || !client || !location || !year || !title || !summary || !content) {
-      return { success: false, error: "Campos obrigatorios nao preenchidos" };
+      return { success: false, error: "Campos obrigatórios não preenchidos" };
     }
 
     const caseItem = await db.case.create({
@@ -114,12 +114,12 @@ export async function updateCase(id: string, data: FormData) {
       try {
         metrics = JSON.parse(metricsRaw);
       } catch {
-        return { success: false, error: "Formato de metricas invalido" };
+        return { success: false, error: "Formato de métricas inválido" };
       }
     }
 
     if (!slug || !client || !location || !year || !title || !summary || !content) {
-      return { success: false, error: "Campos obrigatorios nao preenchidos" };
+      return { success: false, error: "Campos obrigatórios não preenchidos" };
     }
 
     await db.$transaction([

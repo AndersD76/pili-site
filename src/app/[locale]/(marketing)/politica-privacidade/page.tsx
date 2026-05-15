@@ -3,10 +3,10 @@ import { COMPANY } from "@/lib/constants";
 
 export function generateMetadata() {
   return generatePageMetadata({
-    title: "Politica de Privacidade",
+    title: "Política de Privacidade",
     description:
-      "Politica de privacidade da PILI Industrial. Saiba como coletamos, armazenamos e utilizamos seus dados pessoais em conformidade com a LGPD.",
-    path: "/politica-privacidade",
+      "Política de privacidade da PILI Industrial. Saiba como coletamos, armazenamos e utilizamos seus dados pessoais em conformidade com a LGPD.",
+    path: "/política-privacidade",
     noIndex: true,
   });
 }
@@ -18,10 +18,10 @@ export default function PoliticaPrivacidadePage() {
       <section className="bg-pili-black py-16 px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
           <h1 className="font-display text-[length:var(--text-h1)] font-black uppercase text-pili-white">
-            Politica de Privacidade
+            Política de Privacidade
           </h1>
           <p className="mt-3 font-mono text-xs uppercase tracking-wider text-pili-cement">
-            Ultima atualizacao: Janeiro 2025
+            Última atualização: Janeiro 2025
           </p>
         </div>
       </section>
@@ -34,7 +34,7 @@ export default function PoliticaPrivacidadePage() {
               1. Controlador dos dados
             </h2>
             <p className="mt-3 leading-relaxed text-pili-concrete">
-              O controlador responsavel pelo tratamento dos seus dados pessoais e:
+              O controlador responsável pelo tratamento dos seus dados pessoais é:
             </p>
             <div className="mt-4 border border-pili-mist bg-pili-paper p-6">
               <p className="font-mono text-sm text-pili-black">
@@ -57,20 +57,20 @@ export default function PoliticaPrivacidadePage() {
               2. Dados pessoais coletados
             </h2>
             <p className="mt-3 leading-relaxed text-pili-concrete">
-              Coletamos os seguintes dados pessoais atraves dos formularios
-              disponiveis neste site:
+              Coletamos os seguintes dados pessoais através dos formulários
+              disponíveis neste site:
             </p>
             <ul className="mt-4 space-y-2 text-sm text-pili-concrete">
               {[
                 "Nome completo",
-                "Endereco de e-mail",
-                "Numero de telefone",
+                "Endereço de e-mail",
+                "Número de telefone",
                 "Nome da empresa e CNPJ",
-                "Cargo ou funcao",
-                "Pais e estado",
-                "Tipo de aplicacao e produto de interesse",
-                "Mensagens enviadas pelo formulario de contato",
-                "Dados de navegacao (cookies, IP, paginas visitadas)",
+                "Cargo ou função",
+                "País e estado",
+                "Tipo de aplicação e produto de interesse",
+                "Mensagens enviadas pelo formulário de contato",
+                "Dados de navegação (cookies, IP, páginas visitadas)",
               ].map((item, i) => (
                 <li key={i} className="flex gap-3">
                   <span className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-pili-cement" />
@@ -86,17 +86,17 @@ export default function PoliticaPrivacidadePage() {
               3. Finalidades do tratamento
             </h2>
             <p className="mt-3 leading-relaxed text-pili-concrete">
-              Os dados pessoais coletados sao utilizados para as seguintes
+              Os dados pessoais coletados são utilizados para as seguintes
               finalidades:
             </p>
             <ul className="mt-4 space-y-2 text-sm text-pili-concrete">
               {[
-                "Responder solicitacoes de orcamento e contato comercial",
-                "Enviar catalogos, materiais tecnicos e propostas comerciais",
+                "Responder solicitações de orçamento e contato comercial",
+                "Enviar catálogos, materiais técnicos e propostas comerciais",
                 "Gerenciar o relacionamento com clientes e prospects",
-                "Enviar comunicacoes sobre produtos, servicos e novidades (com consentimento)",
-                "Melhorar a experiencia de navegacao e funcionalidade do site",
-                "Cumprir obrigacoes legais e regulatorias",
+                "Enviar comunicações sobre produtos, serviços e novidades (com consentimento)",
+                "Melhorar a experiência de navegação e funcionalidade do site",
+                "Cumprir obrigações legais e regulatorias",
               ].map((item, i) => (
                 <li key={i} className="flex gap-3">
                   <span className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-pili-cement" />
@@ -113,15 +113,15 @@ export default function PoliticaPrivacidadePage() {
             </h2>
             <p className="mt-3 leading-relaxed text-pili-concrete">
               O tratamento de dados pessoais e realizado com base nas seguintes
-              hipoteses legais previstas na Lei Geral de Protecao de Dados (Lei
+              hipóteses legais previstas na Lei Geral de Proteção de Dados (Lei
               n. 13.709/2018 - LGPD):
             </p>
             <ul className="mt-4 space-y-2 text-sm text-pili-concrete">
               {[
                 "Consentimento do titular (Art. 7, I)",
-                "Execucao de contrato ou procedimentos preliminares (Art. 7, V)",
+                "Execução de contrato ou procedimentos preliminares (Art. 7, V)",
                 "Interesse legitimo do controlador (Art. 7, IX)",
-                "Cumprimento de obrigacao legal ou regulatoria (Art. 7, II)",
+                "Cumprimento de obrigação legal ou regulatoria (Art. 7, II)",
               ].map((item, i) => (
                 <li key={i} className="flex gap-3">
                   <span className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-pili-cement" />
@@ -141,8 +141,8 @@ export default function PoliticaPrivacidadePage() {
             </p>
             <ul className="mt-4 space-y-2 text-sm text-pili-concrete">
               {[
-                "Prestadores de servicos de tecnologia (hospedagem, e-mail, analytics)",
-                "Representantes comerciais autorizados, para atendimento da sua solicitacao",
+                "Prestadores de serviços de tecnologia (hospedagem, e-mail, analytics)",
+                "Representantes comerciais autorizados, para atendimento da sua solicitação",
                 "Autoridades governamentais, quando exigido por lei ou ordem judicial",
               ].map((item, i) => (
                 <li key={i} className="flex gap-3">
@@ -152,22 +152,22 @@ export default function PoliticaPrivacidadePage() {
               ))}
             </ul>
             <p className="mt-4 leading-relaxed text-pili-concrete">
-              Nao vendemos, alugamos ou comercializamos seus dados pessoais a
+              Não vendemos, alugamos ou comercializamos seus dados pessoais a
               terceiros para fins de marketing.
             </p>
           </div>
 
-          {/* 6. Retencao */}
+          {/* 6. Retenção */}
           <div>
             <h2 className="font-display text-lg font-bold uppercase text-pili-black">
-              6. Retencao dos dados
+              6. Retenção dos dados
             </h2>
             <p className="mt-3 leading-relaxed text-pili-concrete">
-              Os dados pessoais serao armazenados pelo periodo necessario para
-              cumprir as finalidades descritas nesta politica, ou enquanto houver
+              Os dados pessoais serão armazenados pelo período necessário para
+              cumprir as finalidades descritas nesta política, ou enquanto houver
               base legal para o tratamento. Dados de contato comercial sao
-              mantidos por ate 5 anos apos a ultima interacao, salvo solicitacao
-              de eliminacao pelo titular.
+              mantidos por até 5 anos após a última interação, salvo solicitação
+              de eliminação pelo titular.
             </p>
           </div>
 
@@ -177,18 +177,18 @@ export default function PoliticaPrivacidadePage() {
               7. Direitos do titular
             </h2>
             <p className="mt-3 leading-relaxed text-pili-concrete">
-              Nos termos da LGPD, voce tem direito a:
+              Nos termos da LGPD, você tem direito a:
             </p>
             <ul className="mt-4 space-y-2 text-sm text-pili-concrete">
               {[
-                "Confirmacao da existencia de tratamento de dados",
+                "Confirmação da existência de tratamento de dados",
                 "Acesso aos seus dados pessoais",
-                "Correcao de dados incompletos, inexatos ou desatualizados",
-                "Anonimizacao, bloqueio ou eliminacao de dados desnecessarios",
+                "Correção de dados incompletos, inexatos ou desatualizados",
+                "Anonimização, bloqueio ou eliminação de dados desnecessários",
                 "Portabilidade dos dados a outro fornecedor",
-                "Eliminacao dos dados tratados com consentimento",
-                "Revogacao do consentimento a qualquer momento",
-                "Informacao sobre entidades com as quais os dados foram compartilhados",
+                "Eliminação dos dados tratados com consentimento",
+                "Revogação do consentimento a qualquer momento",
+                "Informação sobre entidades com as quais os dados foram compartilhados",
               ].map((item, i) => (
                 <li key={i} className="flex gap-3">
                   <span className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-pili-cement" />
@@ -215,35 +215,35 @@ export default function PoliticaPrivacidadePage() {
             </h2>
             <p className="mt-3 leading-relaxed text-pili-concrete">
               Este site utiliza cookies e tecnologias similares para melhorar a
-              experiencia de navegacao, analisar o trafego e personalizar
-              conteudo. Voce pode configurar seu navegador para recusar cookies,
+              experiência de navegação, analisar o tráfego e personalizar
+              conteúdo. Você pode configurar seu navegador para recusar cookies,
               embora isso possa afetar algumas funcionalidades do site.
             </p>
           </div>
 
-          {/* 9. Seguranca */}
+          {/* 9. Segurança */}
           <div>
             <h2 className="font-display text-lg font-bold uppercase text-pili-black">
-              9. Seguranca dos dados
+              9. Segurança dos dados
             </h2>
             <p className="mt-3 leading-relaxed text-pili-concrete">
-              Adotamos medidas tecnicas e organizacionais adequadas para proteger
-              seus dados pessoais contra acesso nao autorizado, perda, alteracao
-              ou destruicao. Isso inclui criptografia em transito (HTTPS),
-              controle de acesso baseado em funcoes e backups regulares.
+              Adotamos medidas técnicas e organizacionais adequadas para proteger
+              seus dados pessoais contra acesso não autorizado, perda, alteração
+              ou destruição. Isso inclui criptografia em trânsito (HTTPS),
+              controle de acesso baseado em funções e backups regulares.
             </p>
           </div>
 
-          {/* 10. Alteracoes */}
+          {/* 10. Alterações */}
           <div>
             <h2 className="font-display text-lg font-bold uppercase text-pili-black">
-              10. Alteracoes nesta politica
+              10. Alterações nesta política
             </h2>
             <p className="mt-3 leading-relaxed text-pili-concrete">
-              Esta politica de privacidade pode ser atualizada periodicamente. A
-              versao mais recente estara sempre disponivel nesta pagina com a
-              data da ultima atualizacao. Recomendamos que voce revise esta
-              politica regularmente.
+              Esta política de privacidade pode ser atualizada periodicamente. A
+              versão mais recente estará sempre disponível nesta página com a
+              data da última atualização. Recomendamos que você revise esta
+              política regularmente.
             </p>
           </div>
 
@@ -253,8 +253,8 @@ export default function PoliticaPrivacidadePage() {
               11. Contato
             </h2>
             <p className="mt-3 leading-relaxed text-pili-concrete">
-              Para duvidas, solicitacoes ou reclamacoes relacionadas a esta
-              politica de privacidade ou ao tratamento de seus dados pessoais,
+              Para dúvidas, solicitações ou reclamações relacionadas a esta
+              política de privacidade ou ao tratamento de seus dados pessoais,
               entre em contato:
             </p>
             <div className="mt-4 border border-pili-mist bg-pili-paper p-6">

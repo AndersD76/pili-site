@@ -255,7 +255,7 @@ export const ECOSYSTEM_PROJECTS: EcosystemProject[] = [
   },
   {
     slug: "raste",
-    name: "PILI Raste",
+    name: "PILI Raster",
     tagline: "Rastreabilidade de grãos e conformidade EUDR",
     description:
       "Plataforma de rastreabilidade completa para a cadeia de grãos, com rastreamento da origem ao destino, conformidade automatizada com o Regulamento Europeu de Desmatamento (EUDR) e certificação digital. Integra-se a ERPs, sistemas de classificação e plataformas de exportação para garantir que cada lote embarcado atenda aos requisitos de rastreabilidade exigidos pelos mercados internacionais.",
@@ -329,21 +329,21 @@ export const ECOSYSTEM_PROJECTS: EcosystemProject[] = [
     ],
     testimonial: {
       quote:
-        "O PILI Raste nos permitiu atender aos requisitos EUDR de forma automatizada, sem precisar contratar consultoria externa. Hoje exportamos com total conformidade e rastreabilidade.",
+        "O PILI Raster nos permitiu atender aos requisitos EUDR de forma automatizada, sem precisar contratar consultoria externa. Hoje exportamos com total conformidade e rastreabilidade.",
       author: "Ana Paula Ferreira",
       role: "Diretora de exportação",
       company: "Trading Grãos do Sul",
     },
     faq: [
       {
-        question: "O PILI Raste atende ao regulamento EUDR?",
+        question: "O PILI Raster atende ao regulamento EUDR?",
         answer:
           "Sim, a plataforma foi desenvolvida especificamente para atender aos requisitos do Regulamento Europeu de Desmatamento (EUDR), incluindo geolocalização de parcelas, verificação de cobertura florestal e emissão de certificados de conformidade.",
       },
       {
         question: "Como funciona a integração com ERPs?",
         answer:
-          "O PILI Raste possui conectores nativos para SAP, TOTVS Protheus e outros ERPs. A integração é feita via API REST, permitindo troca automática de dados de lotes, notas fiscais e certificados.",
+          "O PILI Raster possui conectores nativos para SAP, TOTVS Protheus e outros ERPs. A integração é feita via API REST, permitindo troca automática de dados de lotes, notas fiscais e certificados.",
       },
       {
         question: "Posso rastrear grãos de diferentes origens em um mesmo lote?",
@@ -353,7 +353,7 @@ export const ECOSYSTEM_PROJECTS: EcosystemProject[] = [
       {
         question: "Os certificados digitais têm validade jurídica?",
         answer:
-          "Os certificados emitidos pelo PILI Raste utilizam validação criptográfica e são reconhecidos pelos principais mercados internacionais. Cada certificado contém um hash único verificável.",
+          "Os certificados emitidos pelo PILI Raster utilizam validação criptográfica e são reconhecidos pelos principais mercados internacionais. Cada certificado contém um hash único verificável.",
       },
     ],
   },

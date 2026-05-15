@@ -49,7 +49,7 @@ function calculateRecommendation(
       throughput: `${Math.round(dailyTonnage)} t/dia`,
       estimatedROI: "18 a 24 meses",
       description:
-        "Tombador compacto ideal para cooperativas e unidades de menor volume. Alta confiabilidade e manutencao simplificada.",
+        "Tombador compacto ideal para cooperativas e unidades de menor volume. Alta confiabilidade e manutenção simplificada.",
     };
   }
 
@@ -61,7 +61,7 @@ function calculateRecommendation(
       throughput: `${Math.round(dailyTonnage)} t/dia`,
       estimatedROI: "14 a 18 meses",
       description:
-        "Tombador de porte medio para operacoes de fluxo moderado. Compativel com carretas graneleiras padrao e bitrens.",
+        "Tombador de porte médio para operações de fluxo moderado. Compatível com carretas graneleiras padrão e bitrens.",
     };
   }
 
@@ -73,7 +73,7 @@ function calculateRecommendation(
       throughput: `${Math.round(dailyTonnage)} t/dia`,
       estimatedROI: "10 a 14 meses",
       description:
-        "Tombador de grande porte para terminais portuarios e cooperativas de alto volume. Aceita rodotrens e treminhoes.",
+        "Tombador de grande porte para terminais portuários e cooperativas de alto volume. Aceita rodotrens e treminhões.",
     };
   }
 
@@ -84,7 +84,7 @@ function calculateRecommendation(
     throughput: `${Math.round(dailyTonnage)} t/dia`,
     estimatedROI: "8 a 12 meses",
     description:
-      "Tombador de capacidade maxima para portos de grande escala. Projetado para operacao continua 24/7 com os maiores rodotrens do mercado.",
+      "Tombador de capacidade máxima para portos de grande escala. Projetado para operação contínua 24/7 com os maiores rodotrens do mercado.",
   };
 }
 
@@ -145,9 +145,9 @@ export default function CalculadoraPage() {
             Calculadora de capacidade
           </h1>
           <p className="mt-4 max-w-2xl text-pili-cement">
-            Informe os dados da sua operacao e descubra qual tombador PILI e o
-            mais adequado para o seu projeto. Calculo baseado em volume diario,
-            tipo de produto e distancia de espera.
+            Informe os dados da sua operação e descubra qual tombador PILI é o
+            mais adequado para o seu projeto. Cálculo baseado em volume diário,
+            tipo de produto e distância de espera.
           </p>
         </div>
       </section>
@@ -160,7 +160,7 @@ export default function CalculadoraPage() {
               <div className="flex items-center gap-3">
                 <Calculator className="h-8 w-8 text-pili-safety" />
                 <h2 className="font-display text-xl font-bold uppercase text-pili-black">
-                  Dados da operacao
+                  Dados da operação
                 </h2>
               </div>
 
@@ -169,7 +169,7 @@ export default function CalculadoraPage() {
                 className="mt-8 flex flex-col gap-6"
               >
                 <div>
-                  <Label htmlFor="trucks">Caminhoes por dia *</Label>
+                  <Label htmlFor="trucks">Caminhões por dia *</Label>
                   <Input
                     id="trucks"
                     type="number"
@@ -199,7 +199,7 @@ export default function CalculadoraPage() {
 
                 <div>
                   <Label htmlFor="distance">
-                    Distancia media de espera (km)
+                    Distância média de espera (km)
                   </Label>
                   <Input
                     id="distance"
@@ -211,7 +211,7 @@ export default function CalculadoraPage() {
                     onChange={(e) => setWaitDistance(e.target.value)}
                   />
                   <p className="mt-1 text-xs text-pili-cement">
-                    Distancia entre o ponto de espera e o tombador.
+                    Distância entre o ponto de espera e o tombador.
                   </p>
                 </div>
 
@@ -256,7 +256,7 @@ export default function CalculadoraPage() {
                         </div>
                         <div>
                           <span className="font-mono text-[10px] uppercase tracking-wider text-pili-cement">
-                            Vazao estimada
+                            Vazão estimada
                           </span>
                           <p className="font-mono text-sm font-bold text-pili-black">
                             {result.throughput}
@@ -281,7 +281,7 @@ export default function CalculadoraPage() {
                           href="/orcamento"
                           className="mt-4 inline-block bg-pili-safety px-6 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
                         >
-                          Solicitar orcamento
+                          Solicitar orçamento
                         </Link>
                       </div>
                     ) : (
@@ -294,7 +294,7 @@ export default function CalculadoraPage() {
                         </div>
                         <p className="mt-2 text-sm text-pili-concrete">
                           Informe seu e-mail para ver a estimativa de retorno e
-                          descricao detalhada do equipamento.
+                          descrição detalhada do equipamento.
                         </p>
                         <form
                           onSubmit={handleUnlock}
@@ -331,7 +331,7 @@ export default function CalculadoraPage() {
                   <div className="text-center">
                     <Calculator className="mx-auto h-12 w-12 text-pili-mist" />
                     <p className="mt-4 text-sm text-pili-cement">
-                      Preencha os dados da operacao e clique em &quot;Calcular&quot;
+                      Preencha os dados da operação e clique em &quot;Calcular&quot;
                       para ver o modelo recomendado.
                     </p>
                   </div>
@@ -346,11 +346,11 @@ export default function CalculadoraPage() {
       <section className="bg-pili-paper py-10 px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
           <p className="font-mono text-xs leading-relaxed text-pili-cement">
-            * Os valores apresentados sao estimativas baseadas em parametros
-            medios de operacao. O dimensionamento definitivo deve ser realizado
-            pela equipe de engenharia da PILI considerando as condicoes
-            especificas do projeto, tipo de solo, infraestrutura existente e
-            normas locais. Entre em contato para um estudo tecnico completo.
+            * Os valores apresentados são estimativas baseadas em parâmetros
+            médios de operação. O dimensionamento definitivo deve ser realizado
+            pela equipe de engenharia da PILI considerando as condições
+            específicas do projeto, tipo de solo, infraestrutura existente e
+            normas locais. Entre em contato para um estudo técnico completo.
           </p>
         </div>
       </section>

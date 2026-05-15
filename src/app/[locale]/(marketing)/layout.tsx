@@ -12,7 +12,7 @@ export default function MarketingLayout({
   return (
     <>
       <a href="#main-content" className="skip-to-content">
-        Pular para conteudo
+        Pular para conteúdo
       </a>
       <Header />
       <div id="main-content">{children}</div>
