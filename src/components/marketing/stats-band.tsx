@@ -1,8 +1,13 @@
+"use client";
+
 import { STATS } from "@/lib/constants";
+import { AnimatedCounter } from "@/components/shared/animated-counter";
+import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
 
 interface Stat {
   value: string | number;
   label: string;
+  suffix?: string;
 }
 
 interface StatsBandProps {
@@ -10,31 +15,30 @@ interface StatsBandProps {
 }
 
 const DEFAULT_STATS: Stat[] = [
-  { value: `${STATS.years}`, label: "anos" },
-  { value: STATS.equipment, label: "equipamentos" },
-  { value: `${STATS.countries}`, label: "paises" },
-  { value: STATS.maxCapacity, label: "maxima" },
+  { value: `${STATS.years}`, label: "anos de mercado", suffix: "+" },
+  { value: STATS.equipment, label: "equipamentos instalados" },
+  { value: `${STATS.countries}`, label: "paises atendidos" },
+  { value: STATS.maxCapacity, label: "capacidade maxima" },
 ];
 
 export function StatsBand({ stats = DEFAULT_STATS }: StatsBandProps) {
   return (
-    <section
-      className="relative bg-pili-black border-t border-pili-iron py-20 border-b-2 border-b-pili-safety/30"
-      style={{
-        backgroundImage:
-          "repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.02) 20px, rgba(255,255,255,0.02) 21px)",
-      }}
-    >
-      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-6 lg:grid-cols-4 lg:px-8">
-        {stats.map((stat) => (
-          <div key={stat.label} className="text-center">
-            <div className="font-display text-5xl font-black text-pili-safety lg:text-6xl">
-              {stat.value}
+    <section className="relative bg-pili-black py-20 border-b-[3px] border-b-pili-safety">
+      {/* Grid pattern background */}
+      <div className="absolute inset-0 grid-pattern opacity-30" />
+      <div className="relative mx-auto grid max-w-6xl grid-cols-2 gap-8 px-6 lg:grid-cols-4 lg:px-8">
+        {stats.map((stat, index) => (
+          <AnimateOnScroll key={stat.label} delay={index * 0.15}>
+            <div className="text-center">
+              <AnimatedCounter
+                value={String(stat.value)}
+                className="font-display text-5xl font-black text-pili-safety lg:text-7xl"
+              />
+              <div className="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-pili-cement">
+                {stat.label}
+              </div>
             </div>
-            <div className="mt-3 font-mono text-xs uppercase tracking-widest text-pili-cement">
-              {stat.label}
-            </div>
-          </div>
+          </AnimateOnScroll>
         ))}
       </div>
     </section>
