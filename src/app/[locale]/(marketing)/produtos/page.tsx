@@ -56,7 +56,7 @@ export default function ProdutosPage() {
             </Link>
             <Link
               href="/catalogo"
-              className="bg-pili-safety px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-pili-black transition-colors hover:bg-pili-safety-deep"
+              className="bg-pili-safety px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
             >
               {t("common.download_catalog")}
             </Link>
@@ -120,7 +120,7 @@ export default function ProdutosPage() {
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
               href="/calculadora"
-              className="inline-flex items-center gap-2 bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors hover:bg-pili-safety-deep"
+              className="inline-flex items-center gap-2 bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
             >
               Calculadora
               <ArrowRight className="h-4 w-4" />

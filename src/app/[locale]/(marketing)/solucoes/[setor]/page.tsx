@@ -166,7 +166,7 @@ export default async function SectorPage({
           <div className="mt-10 flex flex-wrap gap-4">
             <a
               href="#orcamento"
-              className="inline-flex items-center justify-center bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors hover:bg-pili-safety-deep"
+              className="inline-flex items-center justify-center bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
             >
               Solicitar orcamento
             </a>

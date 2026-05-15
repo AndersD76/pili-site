@@ -49,7 +49,7 @@ export default function CompararPage() {
                 onClick={() => toggle(p.slug)}
                 className={`border px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all ${
                   selected.includes(p.slug)
-                    ? "border-pili-safety bg-pili-safety text-pili-black"
+                    ? "border-pili-safety bg-pili-safety text-pili-white"
                     : "border-pili-mist text-pili-iron hover:border-pili-black"
                 } ${
                   !selected.includes(p.slug) && selected.length >= MAX_COMPARE
@@ -125,7 +125,7 @@ export default function CompararPage() {
             <div className="mt-8">
               <Link
                 href="/orcamento"
-                className="bg-pili-safety px-8 py-3 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors hover:bg-pili-safety-deep"
+                className="bg-pili-safety px-8 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
               >
                 Solicitar orcamento desta selecao
               </Link>

@@ -229,7 +229,7 @@ export default function EmpresaPage() {
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <Link
                 href="/produtos"
-                className="inline-flex items-center gap-2 bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors hover:bg-pili-safety-deep"
+                className="inline-flex items-center gap-2 bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
               >
                 Ver produtos
                 <ArrowRight className="h-4 w-4" />

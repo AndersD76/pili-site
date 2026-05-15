@@ -217,7 +217,7 @@ export default function CalculadoraPage() {
 
                 <button
                   type="submit"
-                  className="self-start bg-pili-safety px-8 py-3 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors hover:bg-pili-safety-deep"
+                  className="self-start bg-pili-safety px-8 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
                 >
                   Calcular
                 </button>
@@ -279,7 +279,7 @@ export default function CalculadoraPage() {
                         </p>
                         <Link
                           href="/orcamento"
-                          className="mt-4 inline-block bg-pili-safety px-6 py-3 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors hover:bg-pili-safety-deep"
+                          className="mt-4 inline-block bg-pili-safety px-6 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
                         >
                           Solicitar orcamento
                         </Link>
@@ -310,7 +310,7 @@ export default function CalculadoraPage() {
                           <button
                             type="submit"
                             disabled={gateStatus === "loading"}
-                            className="shrink-0 bg-pili-safety px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-pili-black transition-colors hover:bg-pili-safety-deep disabled:opacity-50"
+                            className="shrink-0 bg-pili-safety px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep disabled:opacity-50"
                           >
                             {gateStatus === "loading"
                               ? "..."

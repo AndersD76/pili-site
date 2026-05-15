@@ -51,7 +51,7 @@ export function CookieBanner() {
           </button>
           <button
             onClick={accept}
-            className="bg-pili-safety px-4 py-2 text-xs font-semibold uppercase tracking-wider text-pili-black transition-colors hover:bg-pili-safety-deep"
+            className="bg-pili-safety px-4 py-2 text-xs font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
           >
             Aceitar
           </button>

@@ -100,7 +100,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <div className="mt-8 flex gap-4">
               <Link
                 href="/orcamento"
-                className="bg-pili-safety px-6 py-3 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors hover:bg-pili-safety-deep"
+                className="bg-pili-safety px-6 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
               >
                 Solicitar orcamento
               </Link>

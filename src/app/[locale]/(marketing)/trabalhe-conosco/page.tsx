@@ -259,7 +259,7 @@ export default function TrabalheConoscoPage() {
                   <button
                     type="submit"
                     disabled={status === "loading"}
-                    className="self-start bg-pili-safety px-8 py-3 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors hover:bg-pili-safety-deep disabled:opacity-50"
+                    className="self-start bg-pili-safety px-8 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep disabled:opacity-50"
                   >
                     {status === "loading" ? "Enviando..." : "Enviar candidatura"}
                   </button>

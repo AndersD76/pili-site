@@ -12,10 +12,10 @@
   --pili-paper: #F5F5F5;
   --pili-white: #FFFFFF;
 
-  /* Accent (safety yellow) */
-  --pili-safety: #FFCC00;
-  --pili-safety-bright: #FFD700;
-  --pili-safety-deep: #E6B800;
+  /* Accent (PILI red) */
+  --pili-safety: #E31E24;
+  --pili-safety-bright: #FF2D33;
+  --pili-safety-deep: #CC1A1F;
 
   /* Semantic */
   --pili-success: #1F7A4D;
@@ -148,8 +148,8 @@ main {
     -45deg,
     transparent,
     transparent 8px,
-    rgba(255, 204, 0, 0.04) 8px,
-    rgba(255, 204, 0, 0.04) 9px
+    rgba(227, 30, 36, 0.06) 8px,
+    rgba(227, 30, 36, 0.06) 9px
   );
 }
 
@@ -190,7 +190,7 @@ main {
   background-size: 60px 60px;
 }
 
-/* Yellow glow effect */
+/* Red glow effect */
 .glow-safety {
-  box-shadow: 0 0 40px rgba(255, 204, 0, 0.15);
+  box-shadow: 0 0 40px rgba(227, 30, 36, 0.15);
 }

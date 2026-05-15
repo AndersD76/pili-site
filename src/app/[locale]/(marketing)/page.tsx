@@ -107,7 +107,7 @@ export default function HomePage() {
             <div className="mt-10 flex flex-wrap gap-4">
               <Link
                 href="/orcamento"
-                className="group inline-flex items-center justify-center bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-black transition-all hover:bg-pili-safety-deep hover:shadow-[0_0_30px_rgba(255,204,0,0.3)]"
+                className="group inline-flex items-center justify-center bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-all hover:bg-pili-safety-deep hover:shadow-[0_0_30px_rgba(227,30,36,0.3)]"
               >
                 {t("hero.cta_primary")}
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -288,7 +288,7 @@ export default function HomePage() {
                   </div>
                   <Link
                     href={`/obras/${featuredCases[0].slug}`}
-                    className="mt-8 inline-flex self-start items-center gap-2 bg-pili-safety px-6 py-3 text-sm font-semibold uppercase tracking-wider text-pili-black transition-all hover:bg-pili-safety-deep hover:shadow-[0_0_20px_rgba(255,204,0,0.2)]"
+                    className="mt-8 inline-flex self-start items-center gap-2 bg-pili-safety px-6 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-all hover:bg-pili-safety-deep hover:shadow-[0_0_20px_rgba(227,30,36,0.2)]"
                   >
                     Ver caso completo
                     <ArrowRight className="h-4 w-4" />
@@ -305,7 +305,7 @@ export default function HomePage() {
         <div className="absolute inset-0 grid-pattern opacity-30" />
         <div className="relative mx-auto max-w-4xl text-center">
           <AnimateOnScroll>
-            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border-2 border-pili-safety/40 transition-all hover:border-pili-safety hover:shadow-[0_0_40px_rgba(255,204,0,0.2)]">
+            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border-2 border-pili-safety/40 transition-all hover:border-pili-safety hover:shadow-[0_0_40px_rgba(227,30,36,0.2)]">
               <Play className="h-8 w-8 text-pili-safety" />
             </div>
             <h2 className="mt-8 font-display text-[length:var(--text-h2)] font-black uppercase text-pili-white">
@@ -370,7 +370,7 @@ export default function HomePage() {
                 </ul>
                 <Link
                   href="/contato"
-                  className="mt-8 inline-flex self-start items-center gap-2 bg-pili-safety px-6 py-3 text-sm font-semibold uppercase tracking-wider text-pili-black transition-all hover:bg-pili-safety-deep"
+                  className="mt-8 inline-flex self-start items-center gap-2 bg-pili-safety px-6 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-all hover:bg-pili-safety-deep"
                 >
                   Simular financiamento
                   <ArrowRight className="h-4 w-4" />

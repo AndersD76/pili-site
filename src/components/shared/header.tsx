@@ -136,7 +136,7 @@ export function Header() {
 
           <Link
             href="/orcamento"
-            className="hidden items-center justify-center bg-pili-safety px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-pili-black transition-colors hover:bg-pili-safety-deep lg:inline-flex"
+            className="hidden items-center justify-center bg-pili-safety px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep lg:inline-flex"
           >
             {t("quote")}
           </Link>
@@ -195,7 +195,7 @@ export function Header() {
 
             <Link
               href="/orcamento"
-              className="mt-4 flex items-center justify-center bg-pili-safety py-3 text-sm font-semibold uppercase tracking-wider text-pili-black"
+              className="mt-4 flex items-center justify-center bg-pili-safety py-3 text-sm font-semibold uppercase tracking-wider text-pili-white"
             >
               {t("quote")}
             </Link>

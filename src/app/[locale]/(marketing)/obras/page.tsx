@@ -29,7 +29,7 @@ export default function ObrasPage() {
           <div className="mt-8 flex gap-4">
             <Link
               href="/orcamento"
-              className="bg-pili-safety px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-pili-black transition-colors hover:bg-pili-safety-deep"
+              className="bg-pili-safety px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
             >
               Solicitar orcamento
             </Link>

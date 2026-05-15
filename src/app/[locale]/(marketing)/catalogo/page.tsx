@@ -91,7 +91,7 @@ export default function CatalogoPage() {
               <a
                 href="/documents/catalogo-pili-industrial.pdf"
                 download
-                className="mt-6 inline-flex items-center gap-2 bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors hover:bg-pili-safety-deep"
+                className="mt-6 inline-flex items-center gap-2 bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
               >
                 <Download className="h-4 w-4" />
                 Baixar catalogo PDF
@@ -194,7 +194,7 @@ export default function CatalogoPage() {
                 <button
                   type="submit"
                   disabled={status === "loading"}
-                  className="self-start bg-pili-safety px-8 py-3 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors hover:bg-pili-safety-deep disabled:opacity-50"
+                  className="self-start bg-pili-safety px-8 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep disabled:opacity-50"
                 >
                   {status === "loading" ? "Enviando..." : "Liberar download"}
                 </button>

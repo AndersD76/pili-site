@@ -128,7 +128,7 @@ export default function CertificacoesPage() {
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
               href="/catalogo"
-              className="bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors hover:bg-pili-safety-deep"
+              className="bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
             >
               Baixar catalogo
             </Link>

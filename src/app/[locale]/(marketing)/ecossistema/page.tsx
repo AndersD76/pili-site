@@ -157,7 +157,7 @@ export default function EcossistemaPage() {
           </p>
           <Link
             href="/contato"
-            className="mt-8 inline-flex items-center justify-center bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors hover:bg-pili-safety-deep"
+            className="mt-8 inline-flex items-center justify-center bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
           >
             Fale com a equipe PILI
           </Link>
