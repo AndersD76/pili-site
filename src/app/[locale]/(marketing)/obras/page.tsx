@@ -55,6 +55,7 @@ export default function ObrasPage() {
                 client={c.client}
                 location={c.location}
                 year={c.year}
+                application={c.application}
                 metrics={c.metrics}
               />
             ))}

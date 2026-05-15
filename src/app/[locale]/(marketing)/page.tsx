@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
+import Image from "next/image";
 import { STATS } from "@/lib/constants";
 import { getFeaturedProducts } from "@/lib/data/products";
 import { getFeaturedCases } from "@/lib/data/cases";
@@ -19,6 +20,13 @@ export default function HomePage() {
     <main>
       {/* 1. Hero fullscreen */}
       <section className="relative flex min-h-screen items-end bg-pili-black pb-20 px-6 lg:px-16">
+        <Image
+          src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1920&q=80"
+          alt="Grain harvest — industrial agriculture"
+          fill
+          priority
+          className="object-cover"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-pili-black via-pili-black/80 to-pili-black/40" />
         <div className="relative z-10 max-w-4xl">
           <h1 className="font-display text-[length:var(--text-display-1)] font-black uppercase leading-[0.9] tracking-tight text-pili-white">
@@ -119,7 +127,15 @@ export default function HomePage() {
               {t("sections.featured_case")}
             </h2>
             <div className="mt-12 grid gap-8 lg:grid-cols-2">
-              <div className="aspect-[16/10] bg-pili-steel" />
+              <div className="relative aspect-[16/10] overflow-hidden">
+                <Image
+                  src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80"
+                  alt={featuredCases[0].title}
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-pili-black/60 to-transparent" />
+              </div>
               <div className="flex flex-col justify-center">
                 <span className="font-mono text-xs uppercase tracking-wider text-pili-cement">
                   {featuredCases[0].client} &middot; {featuredCases[0].location} &middot; {featuredCases[0].year}

@@ -1,5 +1,21 @@
 import { Link } from "@/i18n/routing";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Truck, FlaskConical, ArrowUpDown, Wrench } from "lucide-react";
+
+const CATEGORY_GRADIENTS: Record<string, string> = {
+  TOMBADOR_FIXO: "bg-gradient-to-br from-gray-800 to-gray-900",
+  TOMBADOR_MOVEL: "bg-gradient-to-br from-gray-700 to-gray-800",
+  COLETOR_AMOSTRAS: "bg-gradient-to-br from-amber-900/20 to-gray-900",
+  UNIDADE_TRANSBORDO: "bg-gradient-to-br from-blue-900/20 to-gray-900",
+  ESPECIAL: "bg-gradient-to-br from-gray-800 to-gray-900",
+};
+
+const CATEGORY_ICONS: Record<string, typeof Truck> = {
+  TOMBADOR_FIXO: Truck,
+  TOMBADOR_MOVEL: Truck,
+  COLETOR_AMOSTRAS: FlaskConical,
+  UNIDADE_TRANSBORDO: ArrowUpDown,
+  ESPECIAL: Wrench,
+};
 
 interface ProductCardProps {
   name: string;
@@ -18,13 +34,16 @@ export function ProductCard({
   length,
   image,
 }: ProductCardProps) {
+  const gradientClass = CATEGORY_GRADIENTS[category] ?? "bg-gradient-to-br from-gray-800 to-gray-900";
+  const IconComponent = CATEGORY_ICONS[category] ?? Wrench;
+
   return (
     <Link
       href={`/produtos/${slug}`}
       className="group relative flex flex-col overflow-hidden border border-pili-mist bg-pili-white transition-all hover:border-pili-black"
     >
       {/* Image area */}
-      <div className="relative aspect-[4/3] bg-pili-paper">
+      <div className={`relative aspect-[4/3] overflow-hidden ${image ? "bg-pili-paper" : gradientClass}`}>
         {image ? (
           <img
             src={image}
@@ -32,11 +51,34 @@ export function ProductCard({
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="flex h-full items-center justify-center">
-            <span className="font-mono text-xs uppercase tracking-widest text-pili-cement">
-              {category}
-            </span>
-          </div>
+          <>
+            {/* Diagonal line pattern overlay */}
+            <div
+              className="absolute inset-0 opacity-[0.07]"
+              style={{
+                backgroundImage:
+                  "repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.5) 10px, rgba(255,255,255,0.5) 11px)",
+              }}
+            />
+            {/* Large typographic length overlay */}
+            {length && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="font-display text-[6rem] font-black uppercase leading-none text-white/10 lg:text-[7rem]">
+                  {length}
+                </span>
+              </div>
+            )}
+            {/* Category icon top-right */}
+            <div className="absolute right-3 top-3">
+              <IconComponent className="h-6 w-6 text-white/20" />
+            </div>
+            {/* Category label bottom-left */}
+            <div className="absolute bottom-3 left-3">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-white/40">
+                {category.replace(/_/g, " ")}
+              </span>
+            </div>
+          </>
         )}
       </div>
 

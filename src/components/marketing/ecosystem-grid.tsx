@@ -7,24 +7,28 @@ const BRANDS = [
     desc: "Loja online de pecas de reposicao e acessorios para tombadores e equipamentos PILI.",
     href: ECOSYSTEM.store,
     icon: Store,
+    gradient: "from-amber-900/20 to-transparent",
   },
   {
     name: "PILI Tech",
     desc: "SaaS de gestao de patio industrial com IoT, MQTT e monitoramento em tempo real.",
     href: ECOSYSTEM.tech,
     icon: Cpu,
+    gradient: "from-cyan-900/20 to-transparent",
   },
   {
     name: "PILI Raste",
     desc: "Plataforma de rastreabilidade, compliance EUDR e inteligencia de preco de commodities.",
     href: ECOSYSTEM.raste,
     icon: BarChart3,
+    gradient: "from-emerald-900/20 to-transparent",
   },
   {
     name: "PILI Harbor",
     desc: "IoT mesh de yard management com ESP32, Kalman filter e posicionamento de precisao.",
     href: ECOSYSTEM.harbor,
     icon: Radio,
+    gradient: "from-violet-900/20 to-transparent",
   },
 ] as const;
 
@@ -47,7 +51,7 @@ export function EcosystemGrid() {
               href={brand.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col border border-pili-iron p-6 transition-all hover:border-pili-safety"
+              className={`group flex flex-col border border-pili-iron p-6 transition-all duration-300 hover:border-pili-safety hover:scale-[1.02] bg-gradient-to-br ${brand.gradient}`}
             >
               <brand.icon className="h-8 w-8 text-pili-safety" />
               <h3 className="mt-4 font-display text-lg font-bold uppercase text-pili-white">
