@@ -3,11 +3,11 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 
 const APPLICATION_IMAGES: Record<string, string> = {
-  porto: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&q=75",
-  cooperativa: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=600&q=75",
-  industria: "https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=600&q=75",
-  fertilizante: "https://images.unsplash.com/photo-1592928302636-c83cf1e1c887?w=600&q=75",
-  cimento: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=75",
+  porto: "/images/tombador-pili.jpg",
+  cooperativa: "/images/tombador-pili.jpg",
+  industria: "/images/tombador-pili.jpg",
+  fertilizante: "/images/tombador-pili.jpg",
+  cimento: "/images/tombador-pili.jpg",
 };
 
 interface CaseCardProps {

@@ -51,8 +51,7 @@ As primeiras duas unidades já foram encomendadas por um terminal portuário no 
     author: "Eng. Carlos Monteiro",
     readTime: 6,
     featured: true,
-    image:
-      "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&h=630&fit=crop",
+    image: "/images/tombador-pili.jpg",
     tags: ["tombador", "lançamento", "100 toneladas", "porto"],
   },
   {
@@ -94,8 +93,7 @@ Condições do terreno e infraestrutura existente também influenciam a decisão
     author: "Eng. Carlos Monteiro",
     readTime: 8,
     featured: false,
-    image:
-      "https://images.unsplash.com/photo-1590682680695-43b964a3ae17?w=1200&h=630&fit=crop",
+    image: "/images/tombador-pili.jpg",
     tags: [
       "tombador",
       "dimensionamento",

@@ -15,16 +15,16 @@ const PRODUCT_IMAGES: Record<string, string> = {
   // "tombador-10m-fixo": "/images/tombadores/tombador-10m-fixo.jpg",
 };
 
-/** Category -> SVG placeholder */
+/** Category -> placeholder image (falls back to real PILI tombador photo) */
 const CATEGORY_PLACEHOLDERS: Record<string, string> = {
-  TOMBADOR_FIXO: "/images/tombadores/placeholder-fixo.svg",
-  TOMBADOR_MOVEL: "/images/tombadores/placeholder-movel.svg",
-  COLETOR_AMOSTRAS: "/images/tombadores/placeholder-coletor.svg",
-  UNIDADE_TRANSBORDO: "/images/tombadores/placeholder-transbordo.svg",
-  ESPECIAL: "/images/tombadores/placeholder-especial.svg",
+  TOMBADOR_FIXO: "/images/tombador-pili.jpg",
+  TOMBADOR_MOVEL: "/images/tombador-pili.jpg",
+  COLETOR_AMOSTRAS: "/images/tombador-pili.jpg",
+  UNIDADE_TRANSBORDO: "/images/tombador-pili.jpg",
+  ESPECIAL: "/images/tombador-pili.jpg",
 };
 
-const DEFAULT_PLACEHOLDER = "/images/tombadores/placeholder.svg";
+const DEFAULT_PLACEHOLDER = "/images/tombador-pili.jpg";
 
 /**
  * Returns the best available image path for a product.

@@ -24,27 +24,27 @@ const APPLICATION_IMAGES: Record<
   { src: string; label: string; desc: string }
 > = {
   porto: {
-    src: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80",
+    src: "/images/tombador-pili.jpg",
     label: "Porto",
     desc: "Terminais marítimos de alta vazão",
   },
   cooperativa: {
-    src: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800&q=80",
+    src: "/images/tombador-pili.jpg",
     label: "Cooperativa",
     desc: "Recepção de grãos de associados",
   },
   industria: {
-    src: "https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=800&q=80",
+    src: "/images/tombador-pili.jpg",
     label: "Indústria alimentícia",
     desc: "Abastecimento de plantas industriais",
   },
   fertilizante: {
-    src: "https://images.unsplash.com/photo-1592928302636-c83cf1e1c887?w=800&q=80",
+    src: "/images/tombador-pili.jpg",
     label: "Fertilizante",
     desc: "Materiais corrosivos e abrasivos",
   },
   cimento: {
-    src: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80",
+    src: "/images/tombador-pili.jpg",
     label: "Cimento",
     desc: "Descarga de minerais e clínquer",
   },
@@ -60,7 +60,7 @@ export default function HomePage() {
       {/* ──── 1. HERO — Full-screen with yellow accent ──── */}
       <section className="relative flex min-h-screen items-end bg-pili-black pb-20 px-6 lg:px-16">
         <Image
-          src="/images/hero-tombador.svg"
+          src="/images/tombador-pili.jpg"
           alt="Tombador hidráulico PILI em operação"
           fill
           priority
@@ -250,7 +250,7 @@ export default function HomePage() {
               <AnimateOnScroll direction="left">
                 <div className="relative aspect-[16/10] overflow-hidden">
                   <Image
-                    src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80"
+                    src="/images/tombador-pili.jpg"
                     alt={featuredCases[0].title}
                     fill
                     className="object-cover"
