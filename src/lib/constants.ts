@@ -23,10 +23,10 @@ export const ECOSYSTEM = {
 } as const;
 
 export const SOCIAL = {
-  instagram: "https://www.instagram.com/piliindustrial",
-  linkedin: "https://www.linkedin.com/company/pili-industrial",
-  facebook: "https://www.facebook.com/piliindustrial",
-  youtube: "https://www.youtube.com/@piliindustrial",
+  instagram: "https://www.instagram.com/pili.ind",
+  linkedin: "https://www.linkedin.com/company/103457141",
+  facebook: "https://www.facebook.com/pilierechim",
+  youtube: "https://www.youtube.com/channel/UCkjB-kHuDaB9tKHtFcp-S8g",
 } as const;
 
 export const LOCALES = ["pt-BR", "en", "es"] as const;

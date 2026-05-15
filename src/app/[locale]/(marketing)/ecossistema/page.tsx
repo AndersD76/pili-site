@@ -1,7 +1,15 @@
 import { Link } from "@/i18n/routing";
 import { generatePageMetadata } from "@/lib/seo";
-import { ECOSYSTEM } from "@/lib/constants";
-import { ExternalLink, Factory, Store, Cpu, BarChart3, Radio } from "lucide-react";
+import { ECOSYSTEM_PROJECTS } from "@/lib/data/ecosystem";
+import {
+  ExternalLink,
+  Factory,
+  Store,
+  Cpu,
+  BarChart3,
+  Radio,
+  ArrowRight,
+} from "lucide-react";
 
 export function generateMetadata() {
   return generatePageMetadata({
@@ -12,48 +20,13 @@ export function generateMetadata() {
   });
 }
 
-const BRANDS = [
+const BRAND_ICONS: Record<string, React.ComponentType<{ className?: string }>> =
   {
-    name: "PILI Industrial",
-    tagline: "Fabricante de equipamentos desde 1979",
-    desc: "Fabricante brasileira de tombadores hidraulicos, coletores de amostras e unidades de transbordo. Mais de 850 equipamentos instalados em 18 paises, com projetos de 9 a 30 metros e capacidade de 35 a 100 toneladas.",
-    href: "/",
-    icon: Factory,
-    external: false,
-  },
-  {
-    name: "PILI Store",
-    tagline: "Pecas e acessorios online",
-    desc: "Loja online de pecas de reposicao e acessorios para tombadores e equipamentos PILI. Disponibilidade imediata, envio para todo o Brasil e America Latina com rastreamento completo.",
-    href: ECOSYSTEM.store,
-    icon: Store,
-    external: true,
-  },
-  {
-    name: "PILI Tech",
-    tagline: "Gestao de patio industrial",
-    desc: "SaaS de gestao de patio industrial com IoT, protocolo MQTT e monitoramento em tempo real. Controle de filas, agendamento de caminhoes e dashboards operacionais para terminais portuarios e cooperativas.",
-    href: ECOSYSTEM.tech,
-    icon: Cpu,
-    external: true,
-  },
-  {
-    name: "PILI Raste",
-    tagline: "Rastreabilidade e compliance",
-    desc: "Plataforma de rastreabilidade de graos, compliance EUDR e inteligencia de preco de commodities. Certificacao de origem, cadeia de custodia e relatorios para exportacao europeia.",
-    href: ECOSYSTEM.raste,
-    icon: BarChart3,
-    external: true,
-  },
-  {
-    name: "PILI Harbor",
-    tagline: "IoT para yard management",
-    desc: "Sistema IoT mesh de yard management com ESP32, filtro de Kalman e posicionamento de precisao. Localizacao de veiculos em tempo real, otimizacao de rotas internas e reducao de tempo de permanencia.",
-    href: ECOSYSTEM.harbor,
-    icon: Radio,
-    external: true,
-  },
-] as const;
+    store: Store,
+    tech: Cpu,
+    raste: BarChart3,
+    harbor: Radio,
+  };
 
 export default function EcossistemaPage() {
   return (
@@ -73,51 +46,97 @@ export default function EcossistemaPage() {
         </div>
       </section>
 
-      {/* Brand cards */}
+      {/* PILI Industrial card (first, special) */}
       <section className="py-16 px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
+          <Link
+            href="/produtos"
+            className="group block border border-pili-mist p-8 transition-all hover:border-pili-black"
+          >
+            <div className="flex items-center gap-4">
+              <Factory className="h-10 w-10 text-pili-safety" />
+              <div>
+                <h2 className="font-display text-xl font-bold uppercase text-pili-black">
+                  PILI Industrial
+                </h2>
+                <span className="font-mono text-xs uppercase tracking-wider text-pili-cement">
+                  Fabricante de equipamentos desde 1979
+                </span>
+              </div>
+            </div>
+            <p className="mt-6 leading-relaxed text-pili-concrete">
+              Fabricante brasileira de tombadores hidraulicos, coletores de
+              amostras e unidades de transbordo. Mais de 850 equipamentos
+              instalados em 18 paises, com projetos de 9 a 30 metros e
+              capacidade de 35 a 100 toneladas.
+            </p>
+            <div className="mt-6 flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors group-hover:text-pili-safety-deep">
+              Ver produtos
+            </div>
+          </Link>
+        </div>
+      </section>
+
+      {/* Ecosystem project cards */}
+      <section className="pb-16 px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
           <div className="grid gap-8 lg:grid-cols-2">
-            {BRANDS.map((brand) => {
-              const content = (
-                <div className="group flex h-full flex-col border border-pili-mist p-8 transition-all hover:border-pili-black">
+            {ECOSYSTEM_PROJECTS.map((project) => {
+              const Icon = BRAND_ICONS[project.slug];
+              return (
+                <div
+                  key={project.slug}
+                  className="group flex h-full flex-col border border-pili-mist p-8 transition-all hover:border-pili-black"
+                >
                   <div className="flex items-center gap-4">
-                    <brand.icon className="h-10 w-10 text-pili-safety" />
+                    {Icon && <Icon className="h-10 w-10 text-pili-safety" />}
                     <div>
                       <h2 className="font-display text-xl font-bold uppercase text-pili-black">
-                        {brand.name}
+                        {project.name}
                       </h2>
                       <span className="font-mono text-xs uppercase tracking-wider text-pili-cement">
-                        {brand.tagline}
+                        {project.tagline}
                       </span>
                     </div>
                   </div>
                   <p className="mt-6 flex-1 leading-relaxed text-pili-concrete">
-                    {brand.desc}
+                    {project.description.slice(0, 200)}...
                   </p>
-                  <div className="mt-6 flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors group-hover:text-pili-safety-deep">
-                    {brand.external ? "Acessar plataforma" : "Ver produtos"}
-                    {brand.external && <ExternalLink className="h-4 w-4" />}
+
+                  {/* Stats preview */}
+                  <div className="mt-6 flex flex-wrap gap-6 border-t border-pili-mist pt-6">
+                    {project.stats.map((stat) => (
+                      <div key={stat.label}>
+                        <span className="font-mono text-lg font-bold text-pili-black">
+                          {stat.value}
+                        </span>
+                        <span className="ml-1.5 font-mono text-[10px] uppercase tracking-wider text-pili-cement">
+                          {stat.label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Actions */}
+                  <div className="mt-6 flex flex-wrap items-center gap-4">
+                    <Link
+                      href={`/ecossistema/${project.slug}`}
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors hover:text-pili-safety-deep"
+                    >
+                      Conhecer
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                    <a
+                      href={project.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wider text-pili-concrete transition-colors hover:text-pili-black"
+                    >
+                      Acessar plataforma
+                      <ExternalLink className="h-4 w-4" />
+                    </a>
                   </div>
                 </div>
-              );
-
-              if (brand.external) {
-                return (
-                  <a
-                    key={brand.name}
-                    href={brand.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {content}
-                  </a>
-                );
-              }
-
-              return (
-                <Link key={brand.name} href="/produtos">
-                  {content}
-                </Link>
               );
             })}
           </div>
