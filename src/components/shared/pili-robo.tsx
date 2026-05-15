@@ -142,13 +142,13 @@ export function PiliRobo() {
           onClick={handleOpen}
           onMouseEnter={() => setShowTooltip(true)}
           onMouseLeave={() => setShowTooltip(false)}
-          className="fixed bottom-24 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-pili-safety text-pili-white shadow-lg transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pili-safety focus-visible:ring-offset-2"
+          className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-pili-safety text-pili-white shadow-lg transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pili-safety focus-visible:ring-offset-2"
           aria-label="Abrir assistente virtual PILI Robô"
         >
           {/* Pulse ring */}
           <span className="absolute inset-0 animate-[robo-ping_2.5s_ease-in-out_infinite] rounded-full bg-pili-safety opacity-40" />
 
-          <Bot className="relative h-6 w-6" />
+          <Bot className="relative h-7 w-7" />
 
           {/* Notification badge */}
           <span className="absolute -right-0.5 -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-pili-graphite text-[10px] font-bold leading-none text-pili-white">
@@ -168,8 +168,8 @@ export function PiliRobo() {
       {/* -------- Chat panel -------- */}
       {open && (
         <div
-          className="fixed bottom-24 right-6 z-50 flex w-[calc(100vw-3rem)] max-w-[380px] animate-[robo-slide-up_0.3s_ease-out] flex-col overflow-hidden rounded-2xl bg-pili-white shadow-2xl sm:w-[380px]"
-          style={{ height: "min(500px, calc(100vh - 8rem))" }}
+          className="fixed bottom-6 right-6 z-50 flex w-[calc(100vw-3rem)] max-w-[380px] animate-[robo-slide-up_0.3s_ease-out] flex-col overflow-hidden rounded-2xl bg-pili-white shadow-2xl sm:w-[380px]"
+          style={{ height: "min(500px, calc(100vh - 4rem))" }}
           role="dialog"
           aria-label="PILI Robô - Assistente virtual"
         >

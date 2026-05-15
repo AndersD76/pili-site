@@ -68,9 +68,6 @@ export function Header() {
             className="h-10 w-auto"
             priority
           />
-          <span className="ml-3 hidden text-lg font-bold uppercase tracking-wide text-pili-white sm:block">
-            Industrial
-          </span>
         </Link>
 
         {/* Desktop nav */}
