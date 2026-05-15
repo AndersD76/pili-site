@@ -102,7 +102,7 @@ export function LeadForm({
         {!compact && (
           <>
             <div>
-              <Label htmlFor="application">Aplicacao</Label>
+              <Label htmlFor="application">Aplicação</Label>
               <select
                 id="application"
                 {...register("application")}
@@ -111,7 +111,7 @@ export function LeadForm({
                 <option value="">Selecione...</option>
                 <option value="porto">Porto</option>
                 <option value="cooperativa">Cooperativa</option>
-                <option value="industria">Industria alimenticia</option>
+                <option value="industria">Indústria alimentícia</option>
                 <option value="fertilizante">Fertilizante</option>
                 <option value="cimento">Cimento</option>
                 <option value="outro">Outro</option>

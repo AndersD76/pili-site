@@ -6,11 +6,11 @@ import Image from "next/image";
 
 const PRODUCT_LINKS = [
   { label: "Tombador fixo", href: "/produtos?cat=TOMBADOR_FIXO" },
-  { label: "Tombador movel", href: "/produtos?cat=TOMBADOR_MOVEL" },
+  { label: "Tombador móvel", href: "/produtos?cat=TOMBADOR_MOVEL" },
   { label: "Coletor de amostras", href: "/produtos?cat=COLETOR_AMOSTRAS" },
   { label: "Unidade de transbordo", href: "/produtos?cat=UNIDADE_TRANSBORDO" },
   { label: "Comparar", href: "/produtos/comparar" },
-  { label: "Catalogo PDF", href: "/catalogo" },
+  { label: "Catálogo PDF", href: "/catalogo" },
 ] as const;
 
 const SOCIAL_ICONS = [
@@ -32,9 +32,9 @@ export function Footer() {
             <Image
               src="/images/logo-pili-white.png"
               alt="PILI Industrial"
-              width={160}
-              height={53}
-              className="h-10 w-auto"
+              width={200}
+              height={66}
+              className="h-14 w-auto"
             />
             <p className="mt-4 font-mono text-xs leading-relaxed text-pili-concrete">
               {COMPANY.name}

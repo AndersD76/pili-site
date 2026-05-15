@@ -19,38 +19,38 @@ export const PRODUCTS: ProductData[] = [
     slug: "tombador-10m-fixo",
     category: "TOMBADOR_FIXO",
     name: "Tombador 10 Metros Fixo",
-    tagline: "Performance comprovada para operacoes de entrada",
+    tagline: "Performance comprovada para operações de entrada",
     description:
-      "Plataforma de descarga fixa de 10 metros com capacidade para 45 toneladas. Ideal para pequenas cooperativas e propriedades rurais que necessitam de ciclo rapido com caminhoes truck convencionais.",
+      "Plataforma de descarga fixa de 10 metros com capacidade para 45 toneladas. Ideal para pequenas cooperativas e propriedades rurais que necessitam de ciclo rápido com caminhões truck convencionais.",
     capacity: "45 t",
     length: "10.000 mm",
     specs: [
       { label: "Capacidade", value: "45 t" },
       { label: "Comprimento", value: "10.000 mm" },
       { label: "Largura", value: "3.000 mm" },
-      { label: "Angulo maximo", value: "45°" },
+      { label: "Ângulo máximo", value: "45°" },
       { label: "Ciclo", value: "~60 s" },
       { label: "Motor", value: "75 CV" },
-      { label: "Estrutura", value: "Aco ASTM A572 Gr.50" },
+      { label: "Estrutura", value: "Aço ASTM A572 Gr.50" },
       { label: "Peso", value: "~12.000 kg" },
     ],
     features: [
       {
-        title: "Ciclo rapido",
+        title: "Ciclo rápido",
         description:
-          "Descarga completa em aproximadamente 60 segundos, garantindo alta produtividade mesmo em operacoes compactas.",
+          "Descarga completa em aproximadamente 60 segundos, garantindo alta produtividade mesmo em operações compactas.",
         icon: "Timer",
       },
       {
-        title: "Instalacao simplificada",
+        title: "Instalação simplificada",
         description:
-          "Fundacao reduzida e montagem rapida, permitindo inicio de operacao em poucas semanas.",
+          "Fundacao reduzida e montagem rápida, permitindo inicio de operação em poucas semanas.",
         icon: "Wrench",
       },
       {
-        title: "Seguranca NR-12",
+        title: "Segurança NR-12",
         description:
-          "Projeto em conformidade com NR-12 e NR-10, incluindo sensores de presenca e alarmes de operacao.",
+          "Projeto em conformidade com NR-12 e NR-10, incluindo sensores de presenca e alarmes de operação.",
         icon: "Shield",
       },
     ],
@@ -71,10 +71,10 @@ export const PRODUCTS: ProductData[] = [
       { label: "Capacidade", value: "50 t" },
       { label: "Comprimento", value: "11.000 mm" },
       { label: "Largura", value: "3.000 mm" },
-      { label: "Angulo maximo", value: "45°" },
+      { label: "Ângulo máximo", value: "45°" },
       { label: "Ciclo", value: "~60 s" },
       { label: "Motor", value: "75 CV" },
-      { label: "Estrutura", value: "Aco ASTM A572 Gr.50" },
+      { label: "Estrutura", value: "Aço ASTM A572 Gr.50" },
       { label: "Peso", value: "~14.000 kg" },
     ],
     features: [
@@ -114,10 +114,10 @@ export const PRODUCTS: ProductData[] = [
       { label: "Capacidade", value: "55 t" },
       { label: "Comprimento", value: "12.000 mm" },
       { label: "Largura", value: "3.200 mm" },
-      { label: "Angulo maximo", value: "45°" },
+      { label: "Ângulo máximo", value: "45°" },
       { label: "Ciclo", value: "~65 s" },
       { label: "Motor", value: "100 CV" },
-      { label: "Estrutura", value: "Aco ASTM A572 Gr.50" },
+      { label: "Estrutura", value: "Aço ASTM A572 Gr.50" },
       { label: "Peso", value: "~18.000 kg" },
     ],
     features: [
@@ -130,19 +130,19 @@ export const PRODUCTS: ProductData[] = [
       {
         title: "Estrutura reforçada",
         description:
-          "Aco ASTM A572 Gr.50 com tratamento anticorrosivo por jateamento e pintura epoxi.",
+          "Aço ASTM A572 Gr.50 com tratamento anticorrosivo por jateamento e pintura epoxi.",
         icon: "Shield",
       },
       {
         title: "Operacao continua",
         description:
-          "Projetado para operacao 24/7 com intervalos minimos de manutencao preventiva.",
+          "Projetado para operação 24/7 com intervalos minimos de manutencao preventiva.",
         icon: "Activity",
       },
       {
         title: "Manutencao facilitada",
         description:
-          "Acesso simplificado a todos os componentes hidraulicos e eletricos para rapida intervencao.",
+          "Acesso simplificado a todos os componentes hidraulicos e eletricos para rápida intervencao.",
         icon: "Wrench",
       },
     ],
@@ -154,7 +154,7 @@ export const PRODUCTS: ProductData[] = [
     slug: "tombador-18m-fixo",
     category: "TOMBADOR_FIXO",
     name: "Tombador 18 Metros Fixo",
-    tagline: "Projetado para rodotrens e operacoes de alto fluxo",
+    tagline: "Projetado para rodotrens e operações de alto fluxo",
     description:
       "Plataforma de descarga fixa de 18 metros com capacidade para 70 toneladas. Dimensionado para rodotrens, ideal para grandes cooperativas e terminais com alta demanda de recebimento.",
     capacity: "70 t",
@@ -163,10 +163,10 @@ export const PRODUCTS: ProductData[] = [
       { label: "Capacidade", value: "70 t" },
       { label: "Comprimento", value: "18.000 mm" },
       { label: "Largura", value: "3.400 mm" },
-      { label: "Angulo maximo", value: "42°" },
+      { label: "Ângulo máximo", value: "42°" },
       { label: "Ciclo", value: "~70 s" },
       { label: "Motor", value: "150 CV" },
-      { label: "Estrutura", value: "Aco ASTM A572 Gr.50" },
+      { label: "Estrutura", value: "Aço ASTM A572 Gr.50" },
       { label: "Peso", value: "~28.000 kg" },
     ],
     features: [
@@ -179,13 +179,13 @@ export const PRODUCTS: ProductData[] = [
       {
         title: "Motor de 150 CV",
         description:
-          "Potencia robusta para ciclos rapidos mesmo com 70 toneladas de carga.",
+          "Potencia robusta para ciclos rápidos mesmo com 70 toneladas de carga.",
         icon: "Zap",
       },
       {
         title: "Sistema hidraulico redundante",
         description:
-          "Duplo circuito hidraulico com valvulas de seguranca para operacao ininterrupta.",
+          "Duplo circuito hidraulico com valvulas de seguranca para operação ininterrupta.",
         icon: "Shield",
       },
       {
@@ -205,24 +205,24 @@ export const PRODUCTS: ProductData[] = [
     name: "Tombador 21 Metros Fixo",
     tagline: "Grande porte para terminais portuarios e cooperativas de escala",
     description:
-      "Plataforma de descarga fixa de 21 metros com capacidade para 80 toneladas. Projetado para grandes rodotrens em operacoes portuarias e cooperativas de grande escala que demandam alta capacidade.",
+      "Plataforma de descarga fixa de 21 metros com capacidade para 80 toneladas. Projetado para grandes rodotrens em operações portuarias e cooperativas de grande escala que demandam alta capacidade.",
     capacity: "80 t",
     length: "21.000 mm",
     specs: [
       { label: "Capacidade", value: "80 t" },
       { label: "Comprimento", value: "21.000 mm" },
       { label: "Largura", value: "3.400 mm" },
-      { label: "Angulo maximo", value: "42°" },
+      { label: "Ângulo máximo", value: "42°" },
       { label: "Ciclo", value: "~75 s" },
       { label: "Motor", value: "200 CV" },
-      { label: "Estrutura", value: "Aco ASTM A572 Gr.50" },
+      { label: "Estrutura", value: "Aço ASTM A572 Gr.50" },
       { label: "Peso", value: "~35.000 kg" },
     ],
     features: [
       {
         title: "Alta capacidade",
         description:
-          "80 toneladas de capacidade nominal para os maiores rodotrens em operacao no Brasil.",
+          "80 toneladas de capacidade nominal para os maiores rodotrens em operação no Brasil.",
         icon: "Weight",
       },
       {
@@ -240,7 +240,7 @@ export const PRODUCTS: ProductData[] = [
       {
         title: "Instalacao modular",
         description:
-          "Transporte em modulos pre-montados para instalacao rapida em ate 45 dias.",
+          "Transporte em modulos pre-montados para instalacao rápida em ate 45 dias.",
         icon: "Factory",
       },
     ],
@@ -254,17 +254,17 @@ export const PRODUCTS: ProductData[] = [
     name: "Tombador 26 Metros Fixo",
     tagline: "Operacao pesada para terminais graneleiros de grande porte",
     description:
-      "Plataforma de descarga fixa de 26 metros com capacidade para 90 toneladas. Projetado para operacoes portuarias pesadas com configuracoes de multiplos eixos e composicoes especiais.",
+      "Plataforma de descarga fixa de 26 metros com capacidade para 90 toneladas. Projetado para operações portuarias pesadas com configuracoes de multiplos eixos e composicoes especiais.",
     capacity: "90 t",
     length: "26.000 mm",
     specs: [
       { label: "Capacidade", value: "90 t" },
       { label: "Comprimento", value: "26.000 mm" },
       { label: "Largura", value: "3.400 mm" },
-      { label: "Angulo maximo", value: "42°" },
+      { label: "Ângulo máximo", value: "42°" },
       { label: "Ciclo", value: "~80 s" },
       { label: "Motor", value: "250 CV" },
-      { label: "Estrutura", value: "Aco ASTM A572 Gr.50" },
+      { label: "Estrutura", value: "Aço ASTM A572 Gr.50" },
       { label: "Peso", value: "~40.000 kg" },
     ],
     features: [
@@ -283,7 +283,7 @@ export const PRODUCTS: ProductData[] = [
       {
         title: "Seguranca reforçada",
         description:
-          "Sistemas redundantes de seguranca conforme NR-12 e NR-10 para operacao critica.",
+          "Sistemas redundantes de seguranca conforme NR-12 e NR-10 para operação critica.",
         icon: "AlertTriangle",
       },
       {
@@ -303,17 +303,17 @@ export const PRODUCTS: ProductData[] = [
     name: "Tombador 30 Metros Fixo",
     tagline: "O maior tombador hidraulico do mercado brasileiro",
     description:
-      "Plataforma de descarga fixa de 30 metros com capacidade para 100 toneladas. O tombador de maior porte da America Latina, projetado para os maiores terminais portuarios e operacoes com os maiores rodotrens do mercado.",
+      "Plataforma de descarga fixa de 30 metros com capacidade para 100 toneladas. O tombador de maior porte da America Latina, projetado para os maiores terminais portuarios e operações com os maiores rodotrens do mercado.",
     capacity: "100 t",
     length: "30.000 mm",
     specs: [
       { label: "Capacidade", value: "100 t" },
       { label: "Comprimento", value: "30.000 mm" },
       { label: "Largura", value: "3.400 mm" },
-      { label: "Angulo maximo", value: "45°" },
+      { label: "Ângulo máximo", value: "45°" },
       { label: "Ciclo", value: "~90 s" },
       { label: "Motor", value: "300 CV" },
-      { label: "Estrutura", value: "Aco ASTM A572 Gr.50" },
+      { label: "Estrutura", value: "Aço ASTM A572 Gr.50" },
       { label: "Peso", value: "~48.000 kg" },
     ],
     features: [
@@ -338,7 +338,7 @@ export const PRODUCTS: ProductData[] = [
       {
         title: "Sistema hidraulico redundante",
         description:
-          "Duplo circuito hidraulico com valvulas de seguranca para operacao continua sem interrupcoes.",
+          "Duplo circuito hidraulico com valvulas de seguranca para operação continua sem interrupcoes.",
         icon: "Gauge",
       },
       {
@@ -364,14 +364,14 @@ export const PRODUCTS: ProductData[] = [
     name: "Tombador com Cabine Externa",
     tagline: "Operacao segura com cabine fechada em conformidade NR-12",
     description:
-      "Tombador fixo de 12 metros equipado com cabine externa de operacao fechada. Proporciona seguranca maxima ao operador com visao panoramica e conforto termico, em total conformidade com NR-12.",
+      "Tombador fixo de 12 metros equipado com cabine externa de operação fechada. Proporciona seguranca maxima ao operador com visao panoramica e conforto termico, em total conformidade com NR-12.",
     capacity: "55 t",
     length: "12.000 mm",
     specs: [
       { label: "Capacidade", value: "55 t" },
       { label: "Comprimento", value: "12.000 mm" },
       { label: "Largura", value: "3.200 mm" },
-      { label: "Angulo maximo", value: "45°" },
+      { label: "Ângulo máximo", value: "45°" },
       { label: "Ciclo", value: "~65 s" },
       { label: "Motor", value: "100 CV" },
       { label: "Cabine", value: "Fechada, climatizada" },
@@ -413,16 +413,16 @@ export const PRODUCTS: ProductData[] = [
     slug: "tombador-10m-movel",
     category: "TOMBADOR_MOVEL",
     name: "Tombador 10 Metros Movel",
-    tagline: "Mobilidade e rapidez para operacoes sazonais",
+    tagline: "Mobilidade e rapidez para operações sazonais",
     description:
-      "Tombador movel de 10 metros com capacidade para 40 toneladas. Pode ser transportado e reinstalado entre diferentes unidades, ideal para operacoes sazonais e locais temporarios de recebimento.",
+      "Tombador movel de 10 metros com capacidade para 40 toneladas. Pode ser transportado e reinstalado entre diferentes unidades, ideal para operações sazonais e locais temporarios de recebimento.",
     capacity: "40 t",
     length: "10.000 mm",
     specs: [
       { label: "Capacidade", value: "40 t" },
       { label: "Comprimento", value: "10.000 mm" },
       { label: "Largura", value: "3.000 mm" },
-      { label: "Angulo maximo", value: "42°" },
+      { label: "Ângulo máximo", value: "42°" },
       { label: "Ciclo", value: "~65 s" },
       { label: "Motor", value: "75 CV" },
       { label: "Tipo", value: "Movel / Portatil" },
@@ -432,11 +432,11 @@ export const PRODUCTS: ProductData[] = [
       {
         title: "Mobilidade total",
         description:
-          "Estrutura projetada para transporte rodoviario e reinstalacao rapida entre unidades.",
+          "Estrutura projetada para transporte rodoviario e reinstalacao rápida entre unidades.",
         icon: "Truck",
       },
       {
-        title: "Instalacao rapida",
+        title: "Instalacao rápida",
         description:
           "Dispensa fundacao especial — operacional em poucos dias apos chegada ao local.",
         icon: "Timer",
@@ -458,14 +458,14 @@ export const PRODUCTS: ProductData[] = [
     name: "Tombador 11 Metros Movel",
     tagline: "Padrao movel para frotas de locacao e safra",
     description:
-      "Tombador movel de 11 metros com capacidade para 45 toneladas. Dimensao padrao para operacoes sazonais, frotas de locacao e pontos temporarios de recebimento de graos.",
+      "Tombador movel de 11 metros com capacidade para 45 toneladas. Dimensao padrao para operações sazonais, frotas de locacao e pontos temporarios de recebimento de graos.",
     capacity: "45 t",
     length: "11.000 mm",
     specs: [
       { label: "Capacidade", value: "45 t" },
       { label: "Comprimento", value: "11.000 mm" },
       { label: "Largura", value: "3.000 mm" },
-      { label: "Angulo maximo", value: "42°" },
+      { label: "Ângulo máximo", value: "42°" },
       { label: "Ciclo", value: "~65 s" },
       { label: "Motor", value: "75 CV" },
       { label: "Tipo", value: "Movel / Portatil" },
@@ -508,7 +508,7 @@ export const PRODUCTS: ProductData[] = [
       { label: "Capacidade", value: "50 t" },
       { label: "Comprimento", value: "12.000 mm" },
       { label: "Largura", value: "3.200 mm" },
-      { label: "Angulo maximo", value: "42°" },
+      { label: "Ângulo máximo", value: "42°" },
       { label: "Ciclo", value: "~70 s" },
       { label: "Motor", value: "100 CV" },
       { label: "Tipo", value: "Movel / Portatil" },
@@ -518,7 +518,7 @@ export const PRODUCTS: ProductData[] = [
       {
         title: "Motor de 100 CV",
         description:
-          "Potencia suficiente para descarga rapida de bi-trucks com ate 50 toneladas.",
+          "Potencia suficiente para descarga rápida de bi-trucks com ate 50 toneladas.",
         icon: "Zap",
       },
       {
@@ -544,14 +544,14 @@ export const PRODUCTS: ProductData[] = [
     name: "Tombador 18 Metros Movel",
     tagline: "Grande porte movel para rodotrens itinerantes",
     description:
-      "Tombador movel de 18 metros com capacidade para 65 toneladas. Unidade de grande porte com mobilidade, projetada para operacoes com rodotrens em locais temporarios de recebimento.",
+      "Tombador movel de 18 metros com capacidade para 65 toneladas. Unidade de grande porte com mobilidade, projetada para operações com rodotrens em locais temporarios de recebimento.",
     capacity: "65 t",
     length: "18.000 mm",
     specs: [
       { label: "Capacidade", value: "65 t" },
       { label: "Comprimento", value: "18.000 mm" },
       { label: "Largura", value: "3.400 mm" },
-      { label: "Angulo maximo", value: "42°" },
+      { label: "Ângulo máximo", value: "42°" },
       { label: "Ciclo", value: "~75 s" },
       { label: "Motor", value: "150 CV" },
       { label: "Tipo", value: "Movel / Portatil" },
@@ -573,7 +573,7 @@ export const PRODUCTS: ProductData[] = [
       {
         title: "Estrutura transportavel",
         description:
-          "Projetado em modulos para transporte rodoviario e montagem rapida em campo.",
+          "Projetado em modulos para transporte rodoviario e montagem rápida em campo.",
         icon: "Cog",
       },
       {
@@ -593,14 +593,14 @@ export const PRODUCTS: ProductData[] = [
     name: "Tombador 21 Metros Movel",
     tagline: "O maior tombador movel do mercado nacional",
     description:
-      "Tombador movel de 21 metros com capacidade para 75 toneladas. A maior unidade movel disponivel no mercado, combinando capacidade de grande porte com a flexibilidade de operacao temporaria em diferentes locais.",
+      "Tombador movel de 21 metros com capacidade para 75 toneladas. A maior unidade movel disponivel no mercado, combinando capacidade de grande porte com a flexibilidade de operação temporaria em diferentes locais.",
     capacity: "75 t",
     length: "21.000 mm",
     specs: [
       { label: "Capacidade", value: "75 t" },
       { label: "Comprimento", value: "21.000 mm" },
       { label: "Largura", value: "3.400 mm" },
-      { label: "Angulo maximo", value: "42°" },
+      { label: "Ângulo máximo", value: "42°" },
       { label: "Ciclo", value: "~80 s" },
       { label: "Motor", value: "200 CV" },
       { label: "Tipo", value: "Movel / Portatil" },
@@ -695,7 +695,7 @@ export const PRODUCTS: ProductData[] = [
     name: "Unidade de Transbordo PILI",
     tagline: "Logistica intermodal agil para transbordo de graos entre veiculos",
     description:
-      "Unidade de transbordo com capacidade de 40 toneladas por ciclo para transferencia de graos entre veiculos. Solucao essencial para logistica intermodal, permitindo transbordo rapido em pontos estrategicos da cadeia.",
+      "Unidade de transbordo com capacidade de 40 toneladas por ciclo para transferencia de graos entre veiculos. Solucao essencial para logistica intermodal, permitindo transbordo rápido em pontos estrategicos da cadeia.",
     capacity: "40 t/ciclo",
     length: "-",
     specs: [
@@ -703,14 +703,14 @@ export const PRODUCTS: ProductData[] = [
       { label: "Motor", value: "100 CV" },
       { label: "Tipo", value: "Transbordo intermodal" },
       { label: "Acionamento", value: "Hidraulico" },
-      { label: "Estrutura", value: "Aco ASTM A572 Gr.50" },
+      { label: "Estrutura", value: "Aço ASTM A572 Gr.50" },
       { label: "Mobilidade", value: "Transportavel" },
       { label: "Aplicacao", value: "Graos a granel" },
       { label: "Normas", value: "NR-12 / NR-10" },
     ],
     features: [
       {
-        title: "Transbordo rapido",
+        title: "Transbordo rápido",
         description:
           "Transferencia de 40 toneladas por ciclo entre veiculos de diferentes portes.",
         icon: "Timer",
@@ -718,7 +718,7 @@ export const PRODUCTS: ProductData[] = [
       {
         title: "Logistica intermodal",
         description:
-          "Permite transbordo entre caminhoes, vagoes e outros veiculos em pontos estrategicos.",
+          "Permite transbordo entre caminhões, vagoes e outros veiculos em pontos estrategicos.",
         icon: "Truck",
       },
       {
@@ -730,7 +730,7 @@ export const PRODUCTS: ProductData[] = [
       {
         title: "Robustez industrial",
         description:
-          "Estrutura em aco de alta resistencia para operacao continua em ambientes severos.",
+          "Estrutura em aco de alta resistencia para operação continua em ambientes severos.",
         icon: "Shield",
       },
     ],
@@ -765,7 +765,7 @@ export const PRODUCTS: ProductData[] = [
         icon: "Zap",
       },
       {
-        title: "Ciclo rapido",
+        title: "Ciclo rápido",
         description:
           "Aproximadamente 15 segundos por ciclo, garantindo alta produtividade no processamento.",
         icon: "Timer",

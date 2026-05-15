@@ -17,8 +17,8 @@ interface StatsBandProps {
 const DEFAULT_STATS: Stat[] = [
   { value: `${STATS.years}`, label: "anos de mercado", suffix: "+" },
   { value: STATS.equipment, label: "equipamentos instalados" },
-  { value: `${STATS.countries}`, label: "paises atendidos" },
-  { value: STATS.maxCapacity, label: "capacidade maxima" },
+  { value: `${STATS.countries}`, label: "países atendidos" },
+  { value: STATS.maxCapacity, label: "capacidade máxima" },
 ];
 
 export function StatsBand({ stats = DEFAULT_STATS }: StatsBandProps) {

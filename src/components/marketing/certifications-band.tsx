@@ -1,9 +1,9 @@
 import { ShieldCheck, Award, Clock, FileCheck } from "lucide-react";
 
 const CERTS = [
-  { icon: ShieldCheck, label: "ISO 9001", desc: "Sistema de gestao da qualidade" },
-  { icon: FileCheck, label: "NR-12", desc: "Seguranca em maquinas e equipamentos" },
-  { icon: Award, label: "NR-10", desc: "Seguranca em instalacoes eletricas" },
+  { icon: ShieldCheck, label: "ISO 9001", desc: "Sistema de gestão da qualidade" },
+  { icon: FileCheck, label: "NR-12", desc: "Segurança em máquinas e equipamentos" },
+  { icon: Award, label: "NR-10", desc: "Segurança em instalações elétricas" },
   { icon: Clock, label: "5 anos", desc: "Garantia estrutural" },
 ] as const;
 

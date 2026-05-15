@@ -1,6 +1,7 @@
 import { Header } from "@/components/shared/header";
 import { Footer } from "@/components/shared/footer";
 import { WhatsAppFab } from "@/components/shared/whatsapp-fab";
+import { PiliRobo } from "@/components/shared/pili-robo";
 import { CookieBanner } from "@/components/shared/cookie-banner";
 
 export default function MarketingLayout({
@@ -17,6 +18,7 @@ export default function MarketingLayout({
       <div id="main-content">{children}</div>
       <Footer />
       <WhatsAppFab />
+      <PiliRobo />
       <CookieBanner />
     </>
   );

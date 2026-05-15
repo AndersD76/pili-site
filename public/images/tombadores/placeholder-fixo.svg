@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="800" y2="600" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1A1A1A"/>
+      <stop offset="100%" stop-color="#0A0A0A"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#2A2A2A" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect width="800" height="600" fill="url(#grid)" opacity="0.4"/>
+
+  <!-- Foundation blocks (fixed installation) -->
+  <rect x="100" y="480" width="80" height="40" fill="#2A2A2A" stroke="#3D3D3D" stroke-width="1"/>
+  <rect x="620" y="480" width="80" height="40" fill="#2A2A2A" stroke="#3D3D3D" stroke-width="1"/>
+  <rect x="100" y="516" width="600" height="8" fill="#2A2A2A"/>
+
+  <!-- Ground line -->
+  <line x1="0" y1="480" x2="800" y2="480" stroke="#3D3D3D" stroke-width="2"/>
+
+  <!-- Platform base -->
+  <rect x="100" y="440" width="600" height="14" rx="2" fill="#3D3D3D" stroke="#E31E24" stroke-width="1.5"/>
+
+  <!-- Tilted platform (ghost) -->
+  <g opacity="0.2" transform="rotate(-28, 100, 454)">
+    <rect x="100" y="440" width="600" height="14" rx="2" fill="none" stroke="#E31E24" stroke-width="1.5" stroke-dasharray="8,4"/>
+  </g>
+
+  <!-- Hydraulic cylinders -->
+  <g stroke="#6B6B6B" stroke-width="3.5">
+    <line x1="260" y1="478" x2="235" y2="340"/>
+    <line x1="540" y1="478" x2="515" y2="340"/>
+  </g>
+  <rect x="228" y="328" width="14" height="44" rx="3" fill="#3D3D3D" stroke="#6B6B6B" stroke-width="1.5"/>
+  <rect x="508" y="328" width="14" height="44" rx="3" fill="#3D3D3D" stroke="#6B6B6B" stroke-width="1.5"/>
+
+  <!-- Pivot points -->
+  <circle cx="120" cy="447" r="7" fill="#E31E24" opacity="0.9"/>
+  <circle cx="680" cy="447" r="7" fill="#E31E24" opacity="0.9"/>
+
+  <!-- Truck silhouette -->
+  <g opacity="0.25" fill="#6B6B6B">
+    <rect x="180" y="392" width="420" height="44" rx="3"/>
+    <rect x="560" y="372" width="60" height="64" rx="4"/>
+    <circle cx="240" cy="438" r="12" fill="#2A2A2A" stroke="#6B6B6B" stroke-width="2"/>
+    <circle cx="360" cy="438" r="12" fill="#2A2A2A" stroke="#6B6B6B" stroke-width="2"/>
+    <circle cx="500" cy="438" r="12" fill="#2A2A2A" stroke="#6B6B6B" stroke-width="2"/>
+    <circle cx="590" cy="438" r="12" fill="#2A2A2A" stroke="#6B6B6B" stroke-width="2"/>
+  </g>
+
+  <!-- Red accent -->
+  <rect x="0" y="0" width="800" height="3" fill="#E31E24"/>
+
+  <!-- Labels -->
+  <text x="400" y="130" text-anchor="middle" font-family="monospace" font-size="11" letter-spacing="6" fill="#6B6B6B" opacity="0.5">TOMBADOR FIXO</text>
+  <text x="400" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" letter-spacing="8" fill="#3D3D3D">PILI INDUSTRIAL</text>
+
+  <!-- "FIXO" badge -->
+  <rect x="20" y="20" width="60" height="24" rx="2" fill="#E31E24" opacity="0.15" stroke="#E31E24" stroke-width="0.5"/>
+  <text x="50" y="36" text-anchor="middle" font-family="monospace" font-size="10" font-weight="700" letter-spacing="2" fill="#E31E24" opacity="0.7">FIXO</text>
+</svg>

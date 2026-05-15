@@ -15,7 +15,7 @@ export function generateMetadata() {
   return generatePageMetadata({
     title: "Ecossistema PILI",
     description:
-      "Conheca o ecossistema PILI: Industrial, Store, Tech, Raste e Harbor. Tecnologia, pecas, rastreabilidade e gestao de patio industrial.",
+      "Conheça o ecossistema PILI: Industrial, Store, Tech, Raste e Harbor. Tecnologia, peças, rastreabilidade e gestão de pátio industrial.",
     path: "/ecossistema",
   });
 }
@@ -38,10 +38,10 @@ export default function EcossistemaPage() {
             Ecossistema PILI
           </h1>
           <p className="mt-4 max-w-3xl text-pili-cement">
-            Alem de fabricar equipamentos de alta performance, a PILI desenvolve
-            tecnologia propria para logistica, rastreabilidade e gestao
+            Além de fabricar equipamentos de alta performance, a PILI desenvolve
+            tecnologia própria para logística, rastreabilidade e gestão
             industrial. Cinco plataformas integradas que cobrem toda a cadeia de
-            valor do agronegocio e da industria.
+            valor do agronegócio e da indústria.
           </p>
         </div>
       </section>
@@ -65,9 +65,9 @@ export default function EcossistemaPage() {
               </div>
             </div>
             <p className="mt-6 leading-relaxed text-pili-concrete">
-              Fabricante brasileira de tombadores hidraulicos, coletores de
+              Fabricante brasileira de tombadores hidráulicos, coletores de
               amostras e unidades de transbordo. Mais de 850 equipamentos
-              instalados em 18 paises, com projetos de 9 a 30 metros e
+              instalados em 18 países, com projetos de 9 a 30 metros e
               capacidade de 35 a 100 toneladas.
             </p>
             <div className="mt-6 flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors group-hover:text-pili-safety-deep">
@@ -151,9 +151,9 @@ export default function EcossistemaPage() {
           </h2>
           <p className="mt-4 text-pili-concrete">
             Todas as plataformas do ecossistema PILI compartilham dados e se
-            integram nativamente. Da fabricacao do equipamento ao monitoramento
-            em tempo real da operacao, passando pela rastreabilidade de graos e
-            gestao de patio.
+            integram nativamente. Da fabricação do equipamento ao monitoramento
+            em tempo real da operação, passando pela rastreabilidade de grãos e
+            gestão de pátio.
           </p>
           <Link
             href="/contato"

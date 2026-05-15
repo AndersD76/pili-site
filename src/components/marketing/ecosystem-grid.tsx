@@ -8,7 +8,7 @@ import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
 const BRANDS = [
   {
     name: "PILI Store",
-    desc: "Loja online de pecas de reposicao e acessorios para tombadores e equipamentos PILI.",
+    desc: "Loja online de peças de reposição e acessórios para tombadores e equipamentos PILI.",
     href: ECOSYSTEM.store,
     icon: Store,
     accent: "border-t-amber-500",
@@ -16,7 +16,7 @@ const BRANDS = [
   },
   {
     name: "PILI Tech",
-    desc: "SaaS de gestao de patio industrial com IoT, MQTT e monitoramento em tempo real.",
+    desc: "SaaS de gestão de pátio industrial com IoT, MQTT e monitoramento em tempo real.",
     href: ECOSYSTEM.tech,
     icon: Cpu,
     accent: "border-t-cyan-500",
@@ -24,7 +24,7 @@ const BRANDS = [
   },
   {
     name: "PILI Raste",
-    desc: "Plataforma de rastreabilidade, compliance EUDR e inteligencia de preco de commodities.",
+    desc: "Plataforma de rastreabilidade, compliance EUDR e inteligência de preço de commodities.",
     href: ECOSYSTEM.raste,
     icon: BarChart3,
     accent: "border-t-emerald-500",
@@ -32,7 +32,7 @@ const BRANDS = [
   },
   {
     name: "PILI Harbor",
-    desc: "IoT mesh de yard management com ESP32, Kalman filter e posicionamento de precisao.",
+    desc: "IoT mesh de yard management com ESP32, Kalman filter e posicionamento de precisão.",
     href: ECOSYSTEM.harbor,
     icon: Radio,
     accent: "border-t-violet-500",
@@ -47,7 +47,7 @@ export function EcosystemGrid() {
       <div className="mx-auto max-w-6xl">
         <AnimateOnScroll>
           <span className="font-mono text-xs uppercase tracking-widest text-pili-safety">
-            Tecnologia propria
+            Tecnologia própria
           </span>
           <h2 className="mt-2 font-display text-[length:var(--text-h1)] font-black uppercase text-pili-white">
             Ecossistema PILI
@@ -55,8 +55,8 @@ export function EcosystemGrid() {
           <div className="mt-2 flex items-center gap-4">
             <div className="h-px w-12 bg-pili-safety" />
             <p className="max-w-2xl text-pili-cement">
-              Alem de fabricar equipamentos, a PILI desenvolve tecnologia propria
-              para logistica, rastreabilidade e gestao industrial.
+              Além de fabricar equipamentos, a PILI desenvolve tecnologia própria
+              para logística, rastreabilidade e gestão industrial.
             </p>
           </div>
         </AnimateOnScroll>

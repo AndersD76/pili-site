@@ -63,21 +63,21 @@ export function Header() {
           <Image
             src="/images/logo-pili-white.png"
             alt="PILI Industrial"
-            width={120}
-            height={40}
-            className="h-8 w-auto"
+            width={220}
+            height={72}
+            className="h-14 w-auto lg:h-16"
             priority
           />
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-1 lg:flex">
+        <nav className="hidden items-center gap-2 lg:flex">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.key}
               href={item.href}
               className={cn(
-                "px-3 py-2 text-sm font-medium uppercase tracking-wider transition-colors",
+                "px-3 py-2 text-base font-semibold uppercase tracking-wider transition-colors",
                 pathname.startsWith(item.href)
                   ? "text-pili-safety"
                   : "text-pili-mist hover:text-pili-white"
@@ -94,7 +94,7 @@ export function Header() {
             onMouseLeave={() => setEcoOpen(false)}
           >
             <button
-              className="flex items-center gap-1 px-3 py-2 text-sm font-medium uppercase tracking-wider text-pili-mist transition-colors hover:text-pili-white"
+              className="flex items-center gap-1 px-3 py-2 text-base font-semibold uppercase tracking-wider text-pili-mist transition-colors hover:text-pili-white"
               aria-expanded={ecoOpen}
               aria-haspopup="true"
             >
@@ -139,7 +139,7 @@ export function Header() {
 
           <Link
             href="/orcamento"
-            className="hidden items-center justify-center bg-pili-safety px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep lg:inline-flex"
+            className="hidden items-center justify-center bg-pili-safety px-6 py-3 text-sm font-bold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep lg:inline-flex"
           >
             {t("quote")}
           </Link>

@@ -10,17 +10,17 @@ export function generateMetadata() {
   return generatePageMetadata({
     title: "Produtos",
     description:
-      "Tombadores hidraulicos de 9 a 30 metros, coletores de amostras e unidades de transbordo. Conheça a linha completa PILI Industrial.",
+      "Tombadores hidráulicos de 9 a 30 metros, coletores de amostras e unidades de transbordo. Conheça a linha completa PILI Industrial.",
     path: "/produtos",
   });
 }
 
 const CATEGORIES = [
   { key: "TOMBADOR_FIXO", label: "Tombadores fixos", desc: "Plataformas de descarga fixas de 10 a 30 metros, com capacidade de 45 a 100 toneladas." },
-  { key: "TOMBADOR_MOVEL", label: "Tombadores moveis", desc: "Plataformas de descarga sobre rodas para operacoes que exigem mobilidade e flexibilidade." },
-  { key: "COLETOR_AMOSTRAS", label: "Coletores de amostras", desc: "Sistemas automatizados para coleta de amostras de graos durante a descarga." },
-  { key: "UNIDADE_TRANSBORDO", label: "Unidades de transbordo", desc: "Equipamentos para transferencia de carga entre diferentes modais de transporte." },
-  { key: "ESPECIAL", label: "Produtos especiais", desc: "Solucoes customizadas para aplicacoes industriais especificas." },
+  { key: "TOMBADOR_MOVEL", label: "Tombadores móveis", desc: "Plataformas de descarga sobre rodas para operações que exigem mobilidade e flexibilidade." },
+  { key: "COLETOR_AMOSTRAS", label: "Coletores de amostras", desc: "Sistemas automatizados para coleta de amostras de grãos durante a descarga." },
+  { key: "UNIDADE_TRANSBORDO", label: "Unidades de transbordo", desc: "Equipamentos para transferência de carga entre diferentes modais de transporte." },
+  { key: "ESPECIAL", label: "Produtos especiais", desc: "Soluções customizadas para aplicações industriais específicas." },
 ] as const;
 
 export default function ProdutosPage() {
@@ -43,8 +43,8 @@ export default function ProdutosPage() {
             <div className="h-px w-12 bg-pili-safety" />
             <p className="max-w-2xl text-pili-cement">
               Plataformas de descarga de 9 a 30 metros, coletores de amostras e
-              equipamentos especiais. Todos fabricados em Erechim/RS com aco de
-              alta resistencia.
+              equipamentos especiais. Todos fabricados em Erechim/RS com aço de
+              alta resistência.
             </p>
           </div>
           <div className="mt-8 flex gap-4">
@@ -115,7 +115,7 @@ export default function ProdutosPage() {
           </h2>
           <p className="mt-4 text-pili-cement">
             Use nossa calculadora de capacidade ou fale diretamente com a equipe
-            tecnica da PILI para receber uma recomendacao personalizada.
+            técnica da PILI para receber uma recomendação personalizada.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
@@ -129,7 +129,7 @@ export default function ProdutosPage() {
               href="/orcamento"
               className="inline-flex items-center gap-2 border border-pili-white px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-white hover:text-pili-black"
             >
-              Solicitar orcamento
+              Solicitar orçamento
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>

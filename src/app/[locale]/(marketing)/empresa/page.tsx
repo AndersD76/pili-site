@@ -9,7 +9,7 @@ import { StatsBand } from "@/components/marketing/stats-band";
 export function generateMetadata() {
   return generatePageMetadata({
     title: "A Empresa",
-    description: `${COMPANY.name}: fabricante de tombadores hidraulicos desde ${COMPANY.founded}. ${STATS.years}+ anos de experiencia, ${STATS.equipment} equipamentos instalados em ${STATS.countries} paises.`,
+    description: `${COMPANY.name}: fabricante de tombadores hidráulicos desde ${COMPANY.founded}. ${STATS.years}+ anos de experiência, ${STATS.equipment} equipamentos instalados em ${STATS.countries} países.`,
     path: "/empresa",
   });
 }
@@ -17,33 +17,33 @@ export function generateMetadata() {
 const TIMELINE = [
   {
     year: "1979",
-    title: "Fundacao",
-    desc: "A PILI e fundada em Erechim/RS, inicialmente voltada para metalurgia industrial e equipamentos sob medida para o setor agroindustrial.",
+    title: "Fundação",
+    desc: "A PILI é fundada em Erechim/RS, inicialmente voltada para metalurgia industrial e equipamentos sob medida para o setor agroindustrial.",
   },
   {
     year: "1990",
     title: "Primeiro tombador",
-    desc: "Desenvolvimento do primeiro tombador hidraulico PILI, marcando o inicio da especializacao em plataformas de descarga de graos.",
+    desc: "Desenvolvimento do primeiro tombador hidráulico PILI, marcando o início da especialização em plataformas de descarga de grãos.",
   },
   {
     year: "2010",
-    title: "Expansao nacional",
-    desc: "A PILI ultrapassa 300 equipamentos instalados no Brasil, consolidando-se como lider em tombadores hidraulicos no mercado nacional.",
+    title: "Expansão nacional",
+    desc: "A PILI ultrapassa 300 equipamentos instalados no Brasil, consolidando-se como líder em tombadores hidráulicos no mercado nacional.",
   },
   {
     year: "2017",
-    title: "Unidade Paranagua",
-    desc: "Inauguracao da base operacional em Paranagua/PR, junto ao maior complexo portuario de exportacao de graos da America Latina.",
+    title: "Unidade Paranaguá",
+    desc: "Inauguração da base operacional em Paranaguá/PR, junto ao maior complexo portuário de exportação de grãos da América Latina.",
   },
   {
     year: "2020",
     title: "Ecossistema digital",
-    desc: "Lancamento das plataformas PILI Tech, Store e Raste, integrando IoT, e-commerce e rastreabilidade ao portfolio de solucoes.",
+    desc: "Lançamento das plataformas PILI Tech, Store e Raste, integrando IoT, e-commerce e rastreabilidade ao portfólio de soluções.",
   },
   {
     year: "Hoje",
-    title: "Referencia global",
-    desc: `Mais de ${STATS.equipment} equipamentos em ${STATS.countries} paises. Ecossistema completo de hardware + software para a cadeia do agronegocio.`,
+    title: "Referência global",
+    desc: `Mais de ${STATS.equipment} equipamentos em ${STATS.countries} países. Ecossistema completo de hardware + software para a cadeia do agronegócio.`,
   },
 ] as const;
 
@@ -51,17 +51,17 @@ const VALUES = [
   {
     icon: ShieldCheck,
     title: "Qualidade",
-    desc: "Certificacao ISO 9001, materia-prima rastreada e controle dimensional rigoroso em cada etapa da fabricacao.",
+    desc: "Certificação ISO 9001, matéria-prima rastreada e controle dimensional rigoroso em cada etapa da fabricação.",
   },
   {
     icon: HardHat,
-    title: "Seguranca",
+    title: "Segurança",
     desc: "Projetos conforme NR-10, NR-12 e normas internacionais. Garantia estrutural de 5 anos em todos os equipamentos.",
   },
   {
     icon: Lightbulb,
-    title: "Inovacao",
-    desc: "Investimento continuo em P&D, IoT industrial e automacao. Ecossistema digital proprio para gestao de patio e rastreabilidade.",
+    title: "Inovação",
+    desc: "Investimento contínuo em P&D, IoT industrial e automação. Ecossistema digital próprio para gestão de pátio e rastreabilidade.",
   },
 ] as const;
 
@@ -90,11 +90,11 @@ export default function EmpresaPage() {
             <div className="mt-4 flex items-center gap-4">
               <div className="h-px w-12 bg-pili-safety" />
               <p className="max-w-2xl text-pili-cement">
-                Fundada em {COMPANY.founded} em Erechim/RS, a PILI Industrial e
-                referencia na fabricacao de tombadores hidraulicos e plataformas
-                de descarga de graos. Sao {STATS.years}+ anos de experiencia,
+                Fundada em {COMPANY.founded} em Erechim/RS, a PILI Industrial é
+                referência na fabricação de tombadores hidráulicos e plataformas
+                de descarga de grãos. São {STATS.years}+ anos de experiência,
                 mais de {STATS.equipment} equipamentos instalados em{" "}
-                {STATS.countries} paises.
+                {STATS.countries} países.
               </p>
             </div>
           </AnimateOnScroll>
@@ -109,10 +109,10 @@ export default function EmpresaPage() {
         <div className="mx-auto max-w-6xl">
           <AnimateOnScroll>
             <span className="font-mono text-xs uppercase tracking-widest text-pili-safety">
-              Nossa trajetoria
+              Nossa trajetória
             </span>
             <h2 className="mt-2 font-display text-[length:var(--text-h1)] font-black uppercase text-pili-black accent-line">
-              Historia
+              História
             </h2>
           </AnimateOnScroll>
           <div className="mt-16 space-y-0">
@@ -188,15 +188,15 @@ export default function EmpresaPage() {
             {[
               {
                 title: "Engenharia e Projetos",
-                desc: "Equipe de engenheiros especializados em estruturas metalicas, hidraulica e automacao industrial. Projetos em CAD 3D com simulacao estrutural.",
+                desc: "Equipe de engenheiros especializados em estruturas metálicas, hidráulica e automação industrial. Projetos em CAD 3D com simulação estrutural.",
               },
               {
-                title: "Producao",
-                desc: "Parque fabril em Erechim/RS com capacidade para produzir e montar equipamentos de ate 30 metros. Corte laser, solda robotizada e jateamento.",
+                title: "Produção",
+                desc: "Parque fabril em Erechim/RS com capacidade para produzir e montar equipamentos de até 30 metros. Corte laser, solda robotizada e jateamento.",
               },
               {
-                title: "Pos-venda",
-                desc: "Atendimento tecnico dedicado, pecas de reposicao via PILI Store, monitoramento remoto via PILI Tech e assistencia em campo em todo o Brasil.",
+                title: "Pós-venda",
+                desc: "Atendimento técnico dedicado, peças de reposição via PILI Store, monitoramento remoto via PILI Tech e assistência em campo em todo o Brasil.",
               },
             ].map((area, i) => (
               <AnimateOnScroll key={area.title} delay={i * 0.1}>
@@ -219,12 +219,12 @@ export default function EmpresaPage() {
         <div className="relative mx-auto max-w-4xl text-center">
           <AnimateOnScroll>
             <h2 className="font-display text-[length:var(--text-h2)] font-black uppercase text-pili-white">
-              Conheca nossos produtos
+              Conheça nossos produtos
             </h2>
             <p className="mt-4 text-pili-cement">
-              Tombadores hidraulicos de 9 a 30 metros, coletores de amostras e
-              equipamentos especiais. Fabricados em Erechim/RS com aco de alta
-              resistencia.
+              Tombadores hidráulicos de 9 a 30 metros, coletores de amostras e
+              equipamentos especiais. Fabricados em Erechim/RS com aço de alta
+              resistência.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <Link

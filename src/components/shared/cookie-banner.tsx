@@ -32,13 +32,13 @@ export function CookieBanner() {
     <div className="fixed inset-x-0 bottom-0 z-50 border-t border-pili-iron bg-pili-graphite p-4 sm:p-6">
       <div className="mx-auto flex max-w-5xl flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-pili-mist">
-          Utilizamos cookies para melhorar sua experiencia. Ao continuar
-          navegando, voce concorda com nossa{" "}
+          Utilizamos cookies para melhorar sua experiência. Ao continuar
+          navegando, você concorda com nossa{" "}
           <Link
             href="/politica-privacidade"
             className="underline underline-offset-2 hover:text-pili-white"
           >
-            politica de privacidade
+            política de privacidade
           </Link>
           .
         </p>

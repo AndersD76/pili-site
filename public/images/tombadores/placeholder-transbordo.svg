@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="800" y2="600" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1A1A1A"/>
+      <stop offset="50%" stop-color="#101420"/>
+      <stop offset="100%" stop-color="#0A0A0A"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#2A2A2A" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect width="800" height="600" fill="url(#grid)" opacity="0.3"/>
+
+  <!-- Ground line -->
+  <line x1="0" y1="480" x2="800" y2="480" stroke="#3D3D3D" stroke-width="2"/>
+
+  <!-- Transfer hopper structure -->
+  <g>
+    <!-- Hopper body -->
+    <polygon points="260,280 540,280 580,440 220,440" fill="#2A2A2A" stroke="#3D3D3D" stroke-width="2"/>
+
+    <!-- Hopper opening -->
+    <rect x="260" y="272" width="280" height="12" rx="2" fill="#3D3D3D" stroke="#E31E24" stroke-width="1"/>
+
+    <!-- Discharge chute -->
+    <polygon points="360,440 440,440 420,478 380,478" fill="#3D3D3D" stroke="#6B6B6B" stroke-width="1.5"/>
+
+    <!-- Support structure -->
+    <line x1="220" y1="440" x2="200" y2="478" stroke="#3D3D3D" stroke-width="3"/>
+    <line x1="580" y1="440" x2="600" y2="478" stroke="#3D3D3D" stroke-width="3"/>
+    <line x1="300" y1="440" x2="300" y2="478" stroke="#3D3D3D" stroke-width="2"/>
+    <line x1="500" y1="440" x2="500" y2="478" stroke="#3D3D3D" stroke-width="2"/>
+  </g>
+
+  <!-- Transfer arrows -->
+  <g opacity="0.4" stroke="#E31E24" stroke-width="2" fill="none">
+    <!-- Input arrow -->
+    <path d="M 120 240 L 260 240 L 250 230 M 260 240 L 250 250"/>
+    <!-- Output arrow -->
+    <path d="M 400 478 L 400 520 L 390 510 M 400 520 L 410 510"/>
+  </g>
+
+  <!-- Truck silhouettes (one feeding, one receiving) -->
+  <g opacity="0.15" fill="#6B6B6B">
+    <!-- Feeding truck (left) -->
+    <rect x="40" y="400" width="160" height="40" rx="3"/>
+    <rect x="40" y="385" width="50" height="55" rx="3"/>
+    <circle cx="80" cy="444" r="8"/>
+    <circle cx="160" cy="444" r="8"/>
+
+    <!-- Receiving truck (right, below chute) -->
+    <rect x="560" y="430" width="180" height="40" rx="3"/>
+    <rect x="700" y="415" width="50" height="55" rx="3"/>
+    <circle cx="600" cy="474" r="8"/>
+    <circle cx="700" cy="474" r="8"/>
+  </g>
+
+  <!-- Red accent -->
+  <rect x="0" y="0" width="800" height="3" fill="#E31E24"/>
+
+  <!-- Labels -->
+  <text x="400" y="110" text-anchor="middle" font-family="monospace" font-size="11" letter-spacing="6" fill="#6B6B6B" opacity="0.5">UNIDADE DE TRANSBORDO</text>
+  <text x="400" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" letter-spacing="8" fill="#3D3D3D">PILI INDUSTRIAL</text>
+
+  <!-- Badge -->
+  <rect x="20" y="20" width="110" height="24" rx="2" fill="#E31E24" opacity="0.15" stroke="#E31E24" stroke-width="0.5"/>
+  <text x="75" y="36" text-anchor="middle" font-family="monospace" font-size="9" font-weight="700" letter-spacing="2" fill="#E31E24" opacity="0.7">TRANSBORDO</text>
+</svg>

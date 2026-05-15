@@ -26,16 +26,16 @@ const APPLICATION_IMAGES: Record<
   porto: {
     src: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80",
     label: "Porto",
-    desc: "Terminais maritimos de alta vazao",
+    desc: "Terminais marítimos de alta vazão",
   },
   cooperativa: {
     src: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800&q=80",
     label: "Cooperativa",
-    desc: "Recepcao de graos de associados",
+    desc: "Recepção de grãos de associados",
   },
   industria: {
     src: "https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=800&q=80",
-    label: "Industria alimenticia",
+    label: "Indústria alimentícia",
     desc: "Abastecimento de plantas industriais",
   },
   fertilizante: {
@@ -60,8 +60,8 @@ export default function HomePage() {
       {/* ──── 1. HERO — Full-screen with yellow accent ──── */}
       <section className="relative flex min-h-screen items-end bg-pili-black pb-20 px-6 lg:px-16">
         <Image
-          src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1920&q=80"
-          alt="Grain harvest — industrial agriculture"
+          src="https://images.unsplash.com/photo-1590069261209-f8e9b8642343?w=1920&q=80"
+          alt="Terminal portuário com operação de descarga"
           fill
           priority
           className="object-cover"
@@ -80,7 +80,7 @@ export default function HomePage() {
               <div className="h-2 w-2 bg-pili-safety" />
               <span className="font-mono text-xs uppercase tracking-widest text-pili-cement">
                 Desde {COMPANY.founded} &middot; {STATS.equipment}{" "}
-                equipamentos &middot; {STATS.countries} paises
+                equipamentos &middot; {STATS.countries} países
               </span>
             </div>
           </AnimateOnScroll>
@@ -188,7 +188,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-6xl">
           <AnimateOnScroll>
             <span className="font-mono text-xs uppercase tracking-widest text-pili-safety">
-              Setores de atuacao
+              Setores de atuação
             </span>
             <h2 className="mt-2 font-display text-[length:var(--text-h1)] font-black uppercase text-pili-white">
               {t("sections.applications")}
@@ -222,7 +222,7 @@ export default function HomePage() {
                         {app.desc}
                       </p>
                       <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-pili-safety opacity-0 transition-all group-hover:opacity-100">
-                        Ver solucao
+                        Ver solução
                         <ArrowRight className="h-3 w-3" />
                       </span>
                     </div>
@@ -240,7 +240,7 @@ export default function HomePage() {
           <div className="mx-auto max-w-6xl">
             <AnimateOnScroll>
               <span className="font-mono text-xs uppercase tracking-widest text-pili-safety">
-                Referencia comprovada
+                Referência comprovada
               </span>
               <h2 className="mt-2 font-display text-[length:var(--text-h1)] font-black uppercase text-pili-black accent-line">
                 {t("sections.featured_case")}
@@ -309,12 +309,12 @@ export default function HomePage() {
               <Play className="h-8 w-8 text-pili-safety" />
             </div>
             <h2 className="mt-8 font-display text-[length:var(--text-h2)] font-black uppercase text-pili-white">
-              Veja nossos equipamentos em acao
+              Veja nossos equipamentos em ação
             </h2>
             <p className="mt-4 text-pili-cement">
               Mais de {STATS.equipment} tombadores instalados em {STATS.countries}{" "}
-              paises. Assista ao funcionamento dos nossos equipamentos em
-              operacoes reais.
+              países. Assista ao funcionamento dos nossos equipamentos em
+              operações reais.
             </p>
             <a
               href="https://www.youtube.com/channel/UCkjB-kHuDaB9tKHtFcp-S8g"
@@ -345,19 +345,19 @@ export default function HomePage() {
                   Financie seu tombador
                 </h2>
                 <p className="mt-4 leading-relaxed text-pili-cement">
-                  A PILI Industrial oferece condicoes especiais de financiamento
+                  A PILI Industrial oferece condições especiais de financiamento
                   em parceria com o BRDE (Banco Regional de Desenvolvimento do
-                  Extremo Sul) e outras instituicoes financeiras. Linhas de
-                  credito com taxas competitivas e prazos de ate 10 anos para
-                  aquisicao de equipamentos.
+                  Extremo Sul) e outras instituições financeiras. Linhas de
+                  crédito com taxas competitivas e prazos de até 10 anos para
+                  aquisição de equipamentos.
                 </p>
                 <ul className="mt-6 space-y-3">
                   {[
                     "Taxas a partir de 8,5% a.a.",
-                    "Prazo de ate 120 meses",
-                    "Carencia de ate 24 meses",
-                    "Financiamento de ate 80% do valor",
-                    "Assessoria completa na documentacao",
+                    "Prazo de até 120 meses",
+                    "Carência de até 24 meses",
+                    "Financiamento de até 80% do valor",
+                    "Assessoria completa na documentação",
                   ].map((item) => (
                     <li
                       key={item}
@@ -381,7 +381,7 @@ export default function HomePage() {
               <div className="relative h-full min-h-[400px] bg-pili-paper">
                 <Image
                   src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80"
-                  alt="Terminal portuario com tombadores PILI"
+                  alt="Terminal portuário com tombadores PILI"
                   fill
                   className="object-cover"
                 />
@@ -402,7 +402,7 @@ export default function HomePage() {
                         80%
                       </span>
                       <span className="ml-1 font-mono text-[10px] uppercase tracking-wider text-pili-cement">
-                        financiavel
+                        financiável
                       </span>
                     </div>
                   </div>
@@ -423,8 +423,8 @@ export default function HomePage() {
             </h2>
             <p className="mt-4 text-pili-concrete">
               Use nossa calculadora de capacidade para descobrir qual modelo PILI
-              e o ideal para a sua operacao. Informe o volume diario e o tipo de
-              produto para receber uma recomendacao personalizada.
+              é o ideal para a sua operação. Informe o volume diário e o tipo de
+              produto para receber uma recomendação personalizada.
             </p>
             <Link
               href="/calculadora"
