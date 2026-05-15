@@ -7,6 +7,7 @@ import { Menu, X, ChevronDown, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ECOSYSTEM } from "@/lib/constants";
 import { LanguageSwitcher } from "./language-switcher";
+import Image from "next/image";
 
 const NAV_ITEMS = [
   { key: "products", href: "/produtos" },
@@ -58,13 +59,15 @@ export function Header() {
     >
       <div className="mx-auto flex h-[var(--header-height)] max-w-7xl items-center justify-between px-6 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <span className="font-display text-xl font-black uppercase tracking-tight text-pili-white">
-            PILI
-          </span>
-          <span className="hidden font-sans text-xs font-medium uppercase tracking-widest text-pili-cement sm:block">
-            Industrial
-          </span>
+        <Link href="/" className="flex items-center">
+          <Image
+            src="/images/logo-pili-white.png"
+            alt="PILI Industrial"
+            width={120}
+            height={40}
+            className="h-8 w-auto"
+            priority
+          />
         </Link>
 
         {/* Desktop nav */}

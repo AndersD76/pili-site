@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { COMPANY, ECOSYSTEM, SOCIAL } from "@/lib/constants";
 import { Globe, Link2, Video, Camera } from "lucide-react";
+import Image from "next/image";
 
 const PRODUCT_LINKS = [
   { label: "Tombador fixo", href: "/produtos?cat=TOMBADOR_FIXO" },
@@ -28,9 +29,13 @@ export function Footer() {
         <div className="grid gap-12 lg:grid-cols-4">
           {/* Col 1 — Brand */}
           <div>
-            <span className="font-display text-2xl font-black uppercase text-pili-white">
-              PILI Industrial
-            </span>
+            <Image
+              src="/images/logo-pili-white.png"
+              alt="PILI Industrial"
+              width={160}
+              height={53}
+              className="h-10 w-auto"
+            />
             <p className="mt-4 font-mono text-xs leading-relaxed text-pili-concrete">
               {COMPANY.name}
               <br />
