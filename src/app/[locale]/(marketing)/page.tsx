@@ -17,6 +17,7 @@ import {
   Calculator,
   ChevronDown,
   Play,
+  TrendingUp,
 } from "lucide-react";
 
 const APPLICATION_IMAGES: Record<
@@ -329,14 +330,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ──── 7. SIMULADOR DE FINANCIAMENTO ──── */}
-      <section className="py-24 px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <FinancingSimulator />
-        </div>
-      </section>
-
-      {/* ──── 8. CALCULADORA CTA ──── */}
+      {/* ──── 7. DIMENSIONE SEU TOMBADOR ──── */}
       <section className="bg-pili-paper py-20 px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
           <AnimateOnScroll>
@@ -357,6 +351,103 @@ export default function HomePage() {
               <ArrowRight className="h-4 w-4" />
             </Link>
           </AnimateOnScroll>
+        </div>
+      </section>
+
+      {/* ──── 8. PAYBACK — ROI DO TOMBADOR ──── */}
+      <section className="bg-pili-black py-24 px-6 lg:px-8 stripe-pattern">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid gap-0 lg:grid-cols-2">
+            <AnimateOnScroll direction="left">
+              <div className="flex h-full flex-col justify-center p-10 lg:p-14">
+                <div className="flex items-center gap-3">
+                  <TrendingUp className="h-8 w-8 text-pili-safety" />
+                  <span className="font-mono text-xs uppercase tracking-widest text-pili-safety">
+                    Retorno sobre investimento
+                  </span>
+                </div>
+                <h2 className="mt-6 font-display text-[length:var(--text-h2)] font-black uppercase leading-tight text-pili-white">
+                  Calcule o payback do seu tombador
+                </h2>
+                <p className="mt-4 leading-relaxed text-pili-cement">
+                  Descubra em quanto tempo o investimento em um tombador PILI se
+                  paga. Nossos equipamentos reduzem custos operacionais, eliminam
+                  filas e aumentam a produtividade da sua operação.
+                </p>
+                <ul className="mt-6 space-y-3">
+                  {[
+                    "Redução de até 60% no tempo de espera",
+                    "Economia com demurrage e estadias",
+                    "Aumento de 30-50% na produtividade",
+                    "Menor custo de manutenção por tonelada",
+                    "Payback médio entre 18 e 36 meses",
+                  ].map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-start gap-3 text-sm text-pili-mist"
+                    >
+                      <div className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-pili-safety" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href="/orcamento"
+                  className="mt-8 inline-flex self-start items-center gap-2 bg-pili-safety px-6 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-all hover:bg-pili-safety-deep"
+                >
+                  Solicitar análise de payback
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </AnimateOnScroll>
+            <AnimateOnScroll direction="right" delay={0.15}>
+              <div className="flex h-full flex-col justify-center bg-pili-graphite p-10 lg:p-14">
+                <div className="grid grid-cols-2 gap-8">
+                  <div className="text-center">
+                    <span className="font-display text-4xl font-black text-pili-safety">60%</span>
+                    <span className="mt-2 block font-mono text-[10px] uppercase tracking-wider text-pili-cement">
+                      redução tempo de espera
+                    </span>
+                  </div>
+                  <div className="text-center">
+                    <span className="font-display text-4xl font-black text-pili-safety">45s</span>
+                    <span className="mt-2 block font-mono text-[10px] uppercase tracking-wider text-pili-cement">
+                      ciclo médio descarga
+                    </span>
+                  </div>
+                  <div className="text-center">
+                    <span className="font-display text-4xl font-black text-pili-safety">R$2M</span>
+                    <span className="mt-2 block font-mono text-[10px] uppercase tracking-wider text-pili-cement">
+                      economia por safra
+                    </span>
+                  </div>
+                  <div className="text-center">
+                    <span className="font-display text-4xl font-black text-pili-safety">24</span>
+                    <span className="mt-2 block font-mono text-[10px] uppercase tracking-wider text-pili-cement">
+                      meses payback médio
+                    </span>
+                  </div>
+                </div>
+                <div className="mt-10 border-t border-pili-iron pt-8">
+                  <p className="font-display text-lg font-bold uppercase text-pili-white">
+                    Exemplo real
+                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-pili-cement">
+                    Terminal portuário em Paranaguá: investimento de R$ 2,4M em 2
+                    tombadores de 30m. Economia de R$ 1,2M/ano em demurrage e
+                    ganho de 40% de produtividade. Payback em 20 meses.
+                  </p>
+                </div>
+              </div>
+            </AnimateOnScroll>
+          </div>
+        </div>
+      </section>
+
+      {/* ──── 9. SIMULADOR DE FINANCIAMENTO ──── */}
+      <section className="py-24 px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <FinancingSimulator />
         </div>
       </section>
 
