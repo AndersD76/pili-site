@@ -383,7 +383,7 @@ export default function HomePage() {
           </AnimateOnScroll>
           <AnimateOnScroll delay={0.2}>
             <div className="mt-10">
-              <LeadForm compact source="FORMULARIO" />
+              <LeadForm compact dark source="FORMULARIO" />
             </div>
           </AnimateOnScroll>
         </div>

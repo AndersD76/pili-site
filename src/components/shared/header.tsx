@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/routing";
-import { Menu, X, ChevronDown, ExternalLink } from "lucide-react";
+import NextLink from "next/link";
+import { Menu, X, ChevronDown, ExternalLink, UserCircle, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ECOSYSTEM } from "@/lib/constants";
 import { LanguageSwitcher } from "./language-switcher";
@@ -142,6 +143,23 @@ export function Header() {
         <div className="flex items-center gap-3">
           <LanguageSwitcher />
 
+          <NextLink
+            href="/portal"
+            className="hidden items-center gap-1.5 px-3 py-2 text-sm font-semibold text-pili-mist transition-colors hover:text-pili-white lg:inline-flex"
+            title="Portal do Cliente"
+          >
+            <UserCircle className="h-4 w-4" />
+            Portal
+          </NextLink>
+
+          <NextLink
+            href="/admin"
+            className="hidden items-center gap-1.5 px-2 py-2 text-xs font-medium text-pili-iron transition-colors hover:text-pili-mist lg:inline-flex"
+            title="Painel administrativo"
+          >
+            <ShieldCheck className="h-3.5 w-3.5" />
+          </NextLink>
+
           <Link
             href="/orcamento"
             className="hidden items-center justify-center bg-pili-safety px-6 py-3 text-sm font-bold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep lg:inline-flex"
@@ -206,6 +224,23 @@ export function Header() {
                   </a>
                 </div>
               ))}
+            </div>
+
+            <div className="border-t border-pili-iron pt-3 mt-2">
+              <NextLink
+                href="/portal"
+                className="flex items-center gap-2 py-3 text-sm font-medium text-pili-mist"
+              >
+                <UserCircle className="h-4 w-4" />
+                Portal do Cliente
+              </NextLink>
+              <NextLink
+                href="/admin"
+                className="flex items-center gap-2 py-3 text-sm font-medium text-pili-cement"
+              >
+                <ShieldCheck className="h-4 w-4" />
+                Painel administrativo
+              </NextLink>
             </div>
 
             <Link
