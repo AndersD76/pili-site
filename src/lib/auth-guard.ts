@@ -5,9 +5,9 @@ type RoleString = "ADMIN" | "COMERCIAL" | "TECNICO" | "CLIENTE";
 
 export async function requireRole(...roles: RoleString[]) {
   const session = await auth();
-  if (!session?.user) redirect("/admin/login");
+  if (!session?.user) redirect("/portal/login");
   const userRole: string = session.user.role;
-  if (!roles.includes(userRole as RoleString)) redirect("/admin/login");
+  if (!roles.includes(userRole as RoleString)) redirect("/portal/login");
   return session;
 }
 

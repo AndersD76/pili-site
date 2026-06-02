@@ -6,9 +6,7 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   HardDrive,
-  Wrench,
   FileText,
-  Headphones,
   Menu,
   ExternalLink,
 } from "lucide-react";
@@ -25,9 +23,7 @@ import {
 const navItems = [
   { label: "Painel", href: "/portal", icon: LayoutDashboard },
   { label: "Equipamentos", href: "/portal/equipamentos", icon: HardDrive },
-  { label: "Ordens de Serviço", href: "/portal/servicos", icon: Wrench },
   { label: "Documentos", href: "/portal/documentos", icon: FileText },
-  { label: "Suporte", href: "/portal/suporte", icon: Headphones },
 ] as const;
 
 function NavLink({

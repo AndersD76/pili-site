@@ -1,54 +1,41 @@
-import {
-  MOCK_CLIENT,
-  MOCK_EQUIPMENT,
-  MOCK_SERVICE_ORDERS,
-  MOCK_DOCUMENTS,
-} from "@/lib/data/portal-mock";
+import { auth } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import {
   HardDrive,
-  Wrench,
   FileText,
-  Clock,
   ArrowRight,
+  ShoppingCart,
+  Package,
 } from "lucide-react";
 
-const equipmentStatusLabel: Record<string, { label: string; className: string }> = {
-  operando: { label: "Operando", className: "bg-emerald-50 text-emerald-700" },
-  manutencao: { label: "Em manutencao", className: "bg-amber-50 text-amber-700" },
-  parado: { label: "Parado", className: "bg-red-50 text-red-700" },
-};
-
-const orderStatusLabel: Record<string, { label: string; className: string }> = {
-  aberta: { label: "Aberta", className: "bg-blue-50 text-blue-700" },
-  agendada: { label: "Agendada", className: "bg-violet-50 text-violet-700" },
-  em_andamento: { label: "Em andamento", className: "bg-amber-50 text-amber-700" },
-  concluida: { label: "Concluida", className: "bg-emerald-50 text-emerald-700" },
-  cancelada: { label: "Cancelada", className: "bg-gray-100 text-gray-500" },
-};
-
-function formatDate(dateStr: string) {
-  const [year, month, day] = dateStr.split("-");
-  return `${day}/${month}/${year}`;
+function formatDate(date: Date) {
+  return date.toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
 }
 
-export default function PortalDashboardPage() {
-  const openOrders = MOCK_SERVICE_ORDERS.filter(
-    (o) => o.status !== "concluida" && o.status !== "cancelada"
+export default async function PortalDashboardPage() {
+  const session = await auth();
+  if (!session?.user) redirect("/portal/login");
+
+  const user = await db.user.findUnique({
+    where: { id: session.user.id },
+  });
+
+  if (!user) redirect("/portal/login");
+
+  const equipment = await db.clientEquipment.findMany({
+    where: { userId: session.user.id },
+    orderBy: { createdAt: "desc" },
+  });
+
+  const warrantyActive = equipment.filter(
+    (eq) => eq.warrantyEndsAt && eq.warrantyEndsAt > new Date()
   );
-
-  const nextMaintenanceEquipment = [...MOCK_EQUIPMENT].sort(
-    (a, b) =>
-      new Date(a.nextMaintenance).getTime() -
-      new Date(b.nextMaintenance).getTime()
-  )[0] as (typeof MOCK_EQUIPMENT)[number] | undefined;
-
-  const recentOrders = [...MOCK_SERVICE_ORDERS]
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    )
-    .slice(0, 3);
 
   return (
     <div className="min-h-screen bg-pili-paper">
@@ -56,15 +43,17 @@ export default function PortalDashboardPage() {
         {/* Welcome header */}
         <div className="mb-10">
           <h1 className="font-display text-3xl font-bold tracking-tight text-pili-graphite">
-            Bem-vindo, {MOCK_CLIENT.name.split(" ")[0]}
+            Bem-vindo, {user.name?.split(" ")[0] ?? "Cliente"}
           </h1>
-          <p className="mt-1 text-base text-pili-concrete">
-            {MOCK_CLIENT.company}
-          </p>
+          {user.company && (
+            <p className="mt-1 text-base text-pili-concrete">
+              {user.company}
+            </p>
+          )}
         </div>
 
         {/* Stats cards row */}
-        <div className="mb-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mb-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {/* Equipamentos */}
           <div className="flex items-center gap-4 rounded-lg border border-pili-mist bg-pili-white p-6">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-pili-paper">
@@ -75,22 +64,22 @@ export default function PortalDashboardPage() {
                 Equipamentos
               </p>
               <p className="font-display text-2xl font-bold text-pili-graphite">
-                {MOCK_EQUIPMENT.length}
+                {equipment.length}
               </p>
             </div>
           </div>
 
-          {/* Ordens abertas */}
+          {/* Garantias ativas */}
           <div className="flex items-center gap-4 rounded-lg border border-pili-mist bg-pili-white p-6">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-pili-paper">
-              <Wrench className="h-6 w-6 text-pili-concrete" />
+              <Package className="h-6 w-6 text-pili-concrete" />
             </div>
             <div>
               <p className="text-sm font-medium text-pili-cement">
-                Ordens abertas
+                Garantias ativas
               </p>
               <p className="font-display text-2xl font-bold text-pili-graphite">
-                {openOrders.length}
+                {warrantyActive.length}
               </p>
             </div>
           </div>
@@ -105,53 +94,44 @@ export default function PortalDashboardPage() {
                 Documentos
               </p>
               <p className="font-display text-2xl font-bold text-pili-graphite">
-                {MOCK_DOCUMENTS.length}
-              </p>
-            </div>
-          </div>
-
-          {/* Manutencao proxima */}
-          <div className="flex items-center gap-4 rounded-lg border border-pili-mist bg-pili-white p-6">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-pili-paper">
-              <Clock className="h-6 w-6 text-pili-concrete" />
-            </div>
-            <div>
-              <p className="text-sm font-medium text-pili-cement">
-                Manutencao proxima
-              </p>
-              <p className="font-display text-lg font-bold text-pili-graphite">
-                {nextMaintenanceEquipment
-                  ? formatDate(nextMaintenanceEquipment.nextMaintenance)
-                  : "—"}
+                --
               </p>
             </div>
           </div>
         </div>
 
-        {/* Two-column grid */}
-        <div className="mb-10 grid grid-cols-1 gap-6 lg:grid-cols-2">
-          {/* Equipamentos card */}
-          <div className="rounded-lg border border-pili-mist bg-pili-white p-6">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="font-display text-lg font-bold text-pili-graphite">
-                Equipamentos
-              </h2>
-              <Link
-                href="/portal/equipamentos"
-                className="flex items-center gap-1 text-sm font-medium text-pili-safety hover:text-pili-safety-deep"
-              >
-                Ver todos
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
+        {/* Equipment list */}
+        <div className="mb-10 rounded-lg border border-pili-mist bg-pili-white p-6">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="font-display text-lg font-bold text-pili-graphite">
+              Equipamentos
+            </h2>
+            <Link
+              href="/portal/equipamentos"
+              className="flex items-center gap-1 text-sm font-medium text-pili-safety hover:text-pili-safety-deep"
+            >
+              Ver todos
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
 
+          {equipment.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-pili-paper">
+                <HardDrive className="h-8 w-8 text-pili-cement" />
+              </div>
+              <p className="mt-4 text-sm font-medium text-pili-concrete">
+                Nenhum equipamento cadastrado
+              </p>
+              <p className="mt-1 text-sm text-pili-cement">
+                Seus equipamentos PILI aparecerao aqui quando forem registrados.
+              </p>
+            </div>
+          ) : (
             <div className="divide-y divide-pili-mist">
-              {MOCK_EQUIPMENT.map((eq) => {
-                const statusInfo =
-                  equipmentStatusLabel[eq.status] ?? {
-                    label: eq.status,
-                    className: "bg-gray-100 text-gray-500",
-                  };
+              {equipment.slice(0, 5).map((eq) => {
+                const warrantyValid =
+                  eq.warrantyEndsAt && eq.warrantyEndsAt > new Date();
                 return (
                   <Link
                     key={eq.id}
@@ -166,87 +146,24 @@ export default function PortalDashboardPage() {
                         {eq.serialNumber}
                       </p>
                     </div>
-                    <span
-                      className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium ${statusInfo.className}`}
-                    >
-                      {statusInfo.label}
-                    </span>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Ordens de servico recentes */}
-          <div className="rounded-lg border border-pili-mist bg-pili-white p-6">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="font-display text-lg font-bold text-pili-graphite">
-                Ordens de servico recentes
-              </h2>
-              <Link
-                href="/portal/servicos"
-                className="flex items-center gap-1 text-sm font-medium text-pili-safety hover:text-pili-safety-deep"
-              >
-                Ver todas
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-
-            <div className="divide-y divide-pili-mist">
-              {recentOrders.map((order) => {
-                const statusInfo =
-                  orderStatusLabel[order.status] ?? {
-                    label: order.status,
-                    className: "bg-gray-100 text-gray-500",
-                  };
-                return (
-                  <Link
-                    key={order.id}
-                    href="/portal/servicos"
-                    className="block py-4 transition-colors hover:bg-pili-paper first:pt-0 last:pb-0"
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="min-w-0">
-                        <p className="font-medium text-pili-graphite">
-                          {order.number}
-                        </p>
-                        <p className="mt-0.5 truncate text-sm text-pili-cement">
-                          {order.equipmentName}
-                        </p>
-                      </div>
-                      <span
-                        className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium ${statusInfo.className}`}
-                      >
-                        {statusInfo.label}
+                    {warrantyValid ? (
+                      <span className="shrink-0 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">
+                        Garantia ativa
                       </span>
-                    </div>
-                    <p className="mt-1 text-xs text-pili-cement">
-                      {formatDate(order.createdAt)}
-                    </p>
+                    ) : (
+                      <span className="shrink-0 rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-500">
+                        Sem garantia
+                      </span>
+                    )}
                   </Link>
                 );
               })}
             </div>
-          </div>
+          )}
         </div>
 
         {/* Quick actions row */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <Link
-            href="/portal/servicos/novo"
-            className="group flex items-center justify-between rounded-lg border border-pili-mist bg-pili-white p-6 transition-colors hover:border-pili-safety"
-          >
-            <div>
-              <h3 className="font-display font-bold text-pili-graphite">
-                Solicitar servico
-              </h3>
-              <p className="mt-1 text-sm text-pili-cement">
-                Abra uma nova ordem de servico
-              </p>
-            </div>
-            <ArrowRight className="h-5 w-5 shrink-0 text-pili-cement transition-colors group-hover:text-pili-safety" />
-          </Link>
-
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Link
             href="/portal/documentos"
             className="group flex items-center justify-between rounded-lg border border-pili-mist bg-pili-white p-6 transition-colors hover:border-pili-safety"
@@ -262,20 +179,22 @@ export default function PortalDashboardPage() {
             <ArrowRight className="h-5 w-5 shrink-0 text-pili-cement transition-colors group-hover:text-pili-safety" />
           </Link>
 
-          <Link
-            href="/portal/suporte"
+          <a
+            href="https://store.pili.ind.br"
+            target="_blank"
+            rel="noopener noreferrer"
             className="group flex items-center justify-between rounded-lg border border-pili-mist bg-pili-white p-6 transition-colors hover:border-pili-safety"
           >
             <div>
               <h3 className="font-display font-bold text-pili-graphite">
-                Falar com suporte
+                PILI Store
               </h3>
               <p className="mt-1 text-sm text-pili-cement">
-                Chat ou abertura de chamado
+                Pecas de reposicao e acessorios
               </p>
             </div>
-            <ArrowRight className="h-5 w-5 shrink-0 text-pili-cement transition-colors group-hover:text-pili-safety" />
-          </Link>
+            <ShoppingCart className="h-5 w-5 shrink-0 text-pili-cement transition-colors group-hover:text-pili-safety" />
+          </a>
         </div>
       </div>
     </div>
