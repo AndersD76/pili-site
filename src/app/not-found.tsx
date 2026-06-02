@@ -8,18 +8,18 @@ export default function NotFound() {
       </p>
 
       <h1 className="mt-4 font-display text-2xl font-bold tracking-tight text-pili-white sm:text-3xl">
-        Pagina nao encontrada
+        Página não encontrada
       </h1>
 
       <p className="mt-3 max-w-md text-base text-pili-cement">
-        A pagina que voce procura nao existe ou foi movida.
+        A página que você procura não existe ou foi movida.
       </p>
 
       <Link
         href="/"
         className="mt-8 inline-flex items-center justify-center rounded-lg bg-pili-safety px-6 py-3 text-sm font-semibold text-pili-white transition-colors hover:bg-pili-safety-bright"
       >
-        Voltar ao inicio
+        Voltar ao início
       </Link>
 
       <div className="mt-16">
