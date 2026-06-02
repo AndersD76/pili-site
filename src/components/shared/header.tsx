@@ -64,21 +64,21 @@ export function Header() {
           <Image
             src="/images/logo-pili-white.png"
             alt="PILI Industrial"
-            width={160}
-            height={52}
-            className="h-10 w-auto"
+            width={200}
+            height={66}
+            className="h-14 w-auto"
             priority
           />
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-2 lg:flex">
+        <nav className="hidden items-center gap-3 lg:flex">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.key}
               href={item.href}
               className={cn(
-                "px-3 py-2 text-base font-semibold uppercase tracking-wider transition-colors",
+                "px-3 py-2 text-lg font-bold uppercase tracking-wider transition-colors",
                 pathname.startsWith(item.href)
                   ? "text-pili-safety"
                   : "text-pili-mist hover:text-pili-white"
@@ -95,7 +95,7 @@ export function Header() {
             onMouseLeave={() => setEcoOpen(false)}
           >
             <button
-              className="flex items-center gap-1 px-3 py-2 text-base font-semibold uppercase tracking-wider text-pili-mist transition-colors hover:text-pili-white"
+              className="flex items-center gap-1 px-3 py-2 text-lg font-bold uppercase tracking-wider text-pili-mist transition-colors hover:text-pili-white"
               aria-expanded={ecoOpen}
               aria-haspopup="true"
             >
@@ -145,16 +145,16 @@ export function Header() {
 
           <NextLink
             href="/portal"
-            className="hidden items-center gap-1.5 px-3 py-2 text-sm font-semibold text-pili-mist transition-colors hover:text-pili-white lg:inline-flex"
+            className="hidden items-center gap-1.5 px-3 py-2 text-base font-semibold text-pili-mist transition-colors hover:text-pili-white lg:inline-flex"
             title="Portal do Cliente"
           >
-            <UserCircle className="h-4 w-4" />
+            <UserCircle className="h-5 w-5" />
             Portal
           </NextLink>
 
           <NextLink
             href="/admin"
-            className="hidden items-center gap-1.5 px-2 py-2 text-xs font-medium text-pili-iron transition-colors hover:text-pili-mist lg:inline-flex"
+            className="hidden items-center gap-1.5 px-2 py-2 text-sm font-medium text-pili-iron transition-colors hover:text-pili-mist lg:inline-flex"
             title="Painel administrativo"
           >
             <ShieldCheck className="h-3.5 w-3.5" />
