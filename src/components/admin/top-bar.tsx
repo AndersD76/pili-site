@@ -82,7 +82,7 @@ export function TopBar({ user }: TopBarProps) {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="cursor-pointer text-pili-danger"
-            onClick={() => signOut({ callbackUrl: "/admin/login" })}
+            onClick={() => signOut({ callbackUrl: "/portal/login" })}
           >
             <LogOut className="mr-2 size-4" />
             Sair

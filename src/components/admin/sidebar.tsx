@@ -29,7 +29,7 @@ const navItems = [
   { label: "Produtos", href: "/admin/produtos", icon: Package },
   { label: "Obras", href: "/admin/obras", icon: Building2 },
   { label: "Blog", href: "/admin/blog", icon: FileText },
-  { label: "Media", href: "/admin/media", icon: Image },
+  { label: "Midia", href: "/admin/media", icon: Image },
   { label: "Usuários", href: "/admin/usuarios", icon: UserCog },
   { label: "Configurações", href: "/admin/config", icon: Settings },
 ] as const;
