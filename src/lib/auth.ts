@@ -3,7 +3,6 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import Google from "next-auth/providers/google";
 import Resend from "next-auth/providers/resend";
 import Credentials from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
 import { db } from "./db";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -29,7 +28,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         if (!user?.passwordHash) return null;
 
-        const valid = await bcrypt.compare(
+        const { compare } = await import("bcryptjs");
+        const valid = await compare(
           credentials.password as string,
           user.passwordHash,
         );
@@ -47,8 +47,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   pages: {
-    signIn: "/login",
-    verifyRequest: "/verify",
+    signIn: "/portal/login",
+    error: "/portal/login",
   },
   callbacks: {
     jwt({ token, user }) {
