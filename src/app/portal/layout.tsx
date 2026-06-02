@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth";
-import { Role } from "@prisma/client";
+import { requirePortalAuth } from "@/lib/auth-guard";
 import { PortalSidebar } from "@/components/portal/sidebar";
 import { PortalTopBar } from "@/components/portal/top-bar";
-
-const ALLOWED_ROLES: Role[] = ["CLIENTE", "ADMIN", "COMERCIAL", "TECNICO"];
 
 export const metadata: Metadata = {
   title: {
@@ -20,13 +16,7 @@ export default async function PortalLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
-
-  if (!session?.user) redirect("/portal/login");
-
-  const userRole = (session.user as { role: Role }).role;
-  if (!ALLOWED_ROLES.includes(userRole)) redirect("/portal/login");
-
+  const session = await requirePortalAuth();
   const user = session.user;
 
   return (
@@ -38,7 +28,7 @@ export default async function PortalLayout({
             name: user.name,
             email: user.email,
             image: user.image,
-            role: userRole,
+            role: user.role,
           }}
         />
         <main className="p-4 lg:p-6">{children}</main>
