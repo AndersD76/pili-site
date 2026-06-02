@@ -8,7 +8,6 @@ import { Menu, X, ChevronDown, ExternalLink, UserCircle, ShieldCheck } from "luc
 import { cn } from "@/lib/utils";
 import { ECOSYSTEM } from "@/lib/constants";
 import { LanguageSwitcher } from "./language-switcher";
-import Image from "next/image";
 
 const NAV_ITEMS = [
   { key: "products", href: "/produtos" },
@@ -60,14 +59,11 @@ export function Header() {
     >
       <div className="mx-auto flex h-[var(--header-height)] max-w-7xl items-center justify-between px-6 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="flex items-center">
-          <Image
+        <Link href="/" className="flex shrink-0 items-center">
+          <img
             src="/images/logo-pili-white.png"
             alt="PILI Industrial"
-            width={200}
-            height={66}
             className="h-14 w-auto"
-            priority
           />
         </Link>
 
