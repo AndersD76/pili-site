@@ -1,7 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { updateLeadStatus } from "@/app/admin/leads/actions";
+import { updateLeadStatus } from "@/app/admin/(panel)/leads/actions";
 import {
   Select,
   SelectContent,

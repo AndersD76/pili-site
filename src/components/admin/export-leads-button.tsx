@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { Download } from "lucide-react";
-import { exportLeadsCsv } from "@/app/admin/leads/actions";
+import { exportLeadsCsv } from "@/app/admin/(panel)/leads/actions";
 import { Button } from "@/components/ui/button";
 
 interface ExportLeadsButtonProps {

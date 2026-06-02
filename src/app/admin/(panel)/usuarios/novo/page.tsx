@@ -8,7 +8,7 @@ import { z } from "zod";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { useState, useTransition } from "react";
 
-import { createUser } from "@/app/admin/usuarios/actions";
+import { createUser } from "@/app/admin/(panel)/usuarios/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

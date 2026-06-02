@@ -3,7 +3,7 @@
 import { useTransition } from "react";
 import Link from "next/link";
 import { Eye, MoreHorizontal, Trash2 } from "lucide-react";
-import { updateLeadStatus, deleteLead } from "@/app/admin/leads/actions";
+import { updateLeadStatus, deleteLead } from "@/app/admin/(panel)/leads/actions";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

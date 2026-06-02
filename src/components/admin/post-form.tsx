@@ -7,7 +7,7 @@ import { z } from "zod";
 import { Loader2 } from "lucide-react";
 import { useState, useTransition } from "react";
 
-import { createPost, updatePost } from "@/app/admin/blog/actions";
+import { createPost, updatePost } from "@/app/admin/(panel)/blog/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
