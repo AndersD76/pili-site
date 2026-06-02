@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { signIn, getSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function LoginPage() {
@@ -31,8 +30,9 @@ export default function LoginPage() {
         return;
       }
 
-      const session = await getSession();
-      const role = (session?.user as { role?: string })?.role;
+      const res = await fetch("/api/auth/session");
+      const session = await res.json();
+      const role = session?.user?.role;
 
       if (role === "ADMIN" || role === "COMERCIAL" || role === "TECNICO") {
         router.push("/admin");
@@ -48,13 +48,10 @@ export default function LoginPage() {
   return (
     <div className="w-full max-w-sm rounded-lg border border-pili-mist bg-white p-8 shadow-lg">
       <div className="flex flex-col items-center text-center">
-        <Image
+        <img
           src="/images/logo-pili.png"
           alt="PILI Industrial"
-          width={180}
-          height={60}
           className="mb-4 h-16 w-auto"
-          priority
         />
         <h1 className="font-display text-xl font-bold text-pili-black">
           Acesso restrito

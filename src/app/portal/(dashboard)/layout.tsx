@@ -1,4 +1,5 @@
-import { requirePortalAuth } from "@/lib/auth-guard";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import { PortalSidebar } from "@/components/portal/sidebar";
 import { PortalTopBar } from "@/components/portal/top-bar";
 
@@ -7,8 +8,14 @@ export default async function PortalDashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await requirePortalAuth();
-  const user = session.user;
+  const session = await auth();
+  if (!session?.user) redirect("/portal/login");
+
+  const role = session.user.role as string;
+
+  if (role === "ADMIN" || role === "COMERCIAL" || role === "TECNICO") {
+    redirect("/admin");
+  }
 
   return (
     <div className="min-h-screen bg-pili-paper">
@@ -16,10 +23,10 @@ export default async function PortalDashboardLayout({
       <div className="lg:pl-64">
         <PortalTopBar
           user={{
-            name: user.name,
-            email: user.email,
-            image: user.image,
-            role: user.role,
+            name: session.user.name,
+            email: session.user.email,
+            image: session.user.image,
+            role: session.user.role,
           }}
         />
         <main className="p-4 lg:p-6">{children}</main>
