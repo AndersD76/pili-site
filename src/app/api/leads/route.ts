@@ -32,16 +32,6 @@ export async function POST(request: NextRequest) {
     const rate = await checkRateLimit(ip);
 
     if (!rate.success) {
-      if (rate.reason === "unconfigured") {
-        logError(
-          "LEADS_RATE_LIMIT",
-          new Error("Upstash não configurado em produção — requisição recusada"),
-        );
-        return NextResponse.json(
-          { error: "Service unavailable" },
-          { status: 503 },
-        );
-      }
       return NextResponse.json(
         { error: "Rate limit exceeded" },
         { status: 429 },

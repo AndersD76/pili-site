@@ -4,9 +4,9 @@ import { z } from "zod";
  * Validação das variáveis de ambiente no boot.
  *
  * Sem isto, uma variável ausente não impede o deploy — ela degrada o
- * comportamento em produção sem sinal claro: sem Upstash a captação de leads
- * passa a responder 503, sem `RESEND_API_KEY` os e-mails somem silenciosamente.
- * Aqui a falta vira erro de inicialização, que aparece no deploy.
+ * comportamento em produção sem sinal claro — por exemplo, uma `DATABASE_URL`
+ * ausente só apareceria no primeiro acesso a dados. Aqui a falta vira erro de
+ * inicialização, que aparece no log de deploy.
  */
 
 /**
@@ -38,20 +38,14 @@ const schema = z.object({
   AUTH_GOOGLE_ID: z.string().optional(),
   AUTH_GOOGLE_SECRET: z.string().optional(),
 
-  // E-mail transacional.
-  RESEND_API_KEY: isProduction
-    ? z.string().min(1, "RESEND_API_KEY é obrigatória em produção")
-    : z.string().optional(),
+  // E-mail transacional (não utilizado no momento — decisão do proprietário).
+  // Se algum dia for configurado, `sendLeadEmails` volta a enviar sozinho.
+  RESEND_API_KEY: z.string().optional(),
   RESEND_FROM_EMAIL: z.string().email().optional(),
   LEAD_NOTIFY_EMAIL: z.string().email().optional(),
 
-  // Rate limiting — sem isto o endpoint público falha fechado (503).
-  UPSTASH_REDIS_REST_URL: isProduction
-    ? z.string().url("UPSTASH_REDIS_REST_URL é obrigatória em produção")
-    : z.string().url().optional(),
-  UPSTASH_REDIS_REST_TOKEN: isProduction
-    ? z.string().min(1, "UPSTASH_REDIS_REST_TOKEN é obrigatória em produção")
-    : z.string().optional(),
+  // Rate limiting usa o proprio Postgres (tabela `RateLimit`) — nao ha
+  // servico externo a configurar.
 
   // Público.
   NEXT_PUBLIC_SITE_URL: z.string().url().optional(),
@@ -85,3 +79,4 @@ function parseEnv(): Env {
 }
 
 export const env = parseEnv();
+

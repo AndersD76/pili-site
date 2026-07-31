@@ -402,3 +402,20 @@ model ServiceOrder {
 
   @@index([equipmentId])
 }
+
+// ============ RATE LIMITING ============
+
+/// Contador de janela fixa para limitar requisições.
+///
+/// Substitui o Redis externo: o volume do site não justifica outro serviço, e o
+/// Postgres já está aqui. O incremento é feito em um único `INSERT ... ON
+/// CONFLICT`, que é atômico — duas requisições simultâneas não perdem contagem.
+model RateLimit {
+  /// Ex.: `leads:203.0.113.7`, `login:email:joao@exemplo.com`.
+  key       String   @id
+  count     Int      @default(1)
+  /// Fim da janela; passado esse instante o contador reinicia.
+  expiresAt DateTime @db.Timestamptz(3)
+
+  @@index([expiresAt])
+}

@@ -1,11 +1,9 @@
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import Google from "next-auth/providers/google";
-import Resend from "next-auth/providers/resend";
 import Credentials from "next-auth/providers/credentials";
 import { headers } from "next/headers";
 import { db } from "./db";
-import { COMPANY } from "./constants";
 import { getClientIp } from "./rate-limit";
 import { checkLoginAttempt, resetLoginAttempts } from "./login-rate-limit";
 import { logError } from "./prisma-errors";
@@ -29,9 +27,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "jwt", maxAge: SESSION_MAX_AGE },
   providers: [
     Google,
-    Resend({
-      from: process.env.RESEND_FROM_EMAIL ?? COMPANY.emailRemetente,
-    }),
     Credentials({
       name: "credentials",
       credentials: {

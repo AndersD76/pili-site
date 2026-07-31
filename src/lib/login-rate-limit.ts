@@ -1,55 +1,46 @@
-import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis";
+import { consumeRateLimit, resetRateLimit } from "./rate-limit";
 import { logError } from "./prisma-errors";
 
 /**
  * Limitação de tentativas de login.
  *
- * A rota `/api/auth/[...nextauth]` não passa pelo limitador do endpoint público,
- * então o provider de credenciais aceitava tentativas ilimitadas contra contas
- * ADMIN. O limite é aplicado por e-mail — a chave que o atacante precisa
- * adivinhar junto com a senha — e por IP, para conter varredura de contas.
+ * A rota `/api/auth/[...nextauth]` não passa pelo limitador do endpoint
+ * público, então o provider de credenciais aceitava tentativas ilimitadas
+ * contra contas ADMIN. O limite é aplicado por e-mail — a chave que o atacante
+ * precisa adivinhar junto com a senha — e por IP, para conter varredura.
  */
 
 const MAX_ATTEMPTS = 5;
-const WINDOW = "15 m";
+const WINDOW_SECONDS = 15 * 60;
 
-let limiter: Ratelimit | null | undefined;
-
-function getLoginLimiter(): Ratelimit | null {
-  if (limiter === undefined) {
-    limiter =
-      process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
-        ? new Ratelimit({
-            redis: Redis.fromEnv(),
-            limiter: Ratelimit.slidingWindow(MAX_ATTEMPTS, WINDOW),
-            analytics: true,
-            prefix: "pili:login",
-          })
-        : null;
-  }
-  return limiter;
-}
+const emailKey = (email: string) => `login:email:${email.toLowerCase().trim()}`;
 
 /**
  * `true` quando a tentativa pode prosseguir.
  *
- * Falha **aberta** de propósito: se o Redis estiver indisponível, bloquear todo
- * login trancaria a operação inteira para fora do painel. O risco de força bruta
- * durante uma indisponibilidade do Redis é menor que o de negar acesso a todos.
+ * Falha **aberta** de propósito: se a consulta falhar, bloquear todo login
+ * trancaria a operação inteira para fora do painel. Na prática, se o banco está
+ * indisponível o login não funcionaria de qualquer forma — a verificação de
+ * senha também depende dele.
  */
 export async function checkLoginAttempt(
   email: string,
   ip: string | null,
 ): Promise<boolean> {
-  const loginLimiter = getLoginLimiter();
-  if (!loginLimiter) return true;
-
   try {
     const results = await Promise.all([
-      loginLimiter.limit(`email:${email.toLowerCase().trim()}`),
-      loginLimiter.limit(`ip:${ip ?? "unknown"}`),
+      consumeRateLimit({
+        key: emailKey(email),
+        limit: MAX_ATTEMPTS,
+        windowSeconds: WINDOW_SECONDS,
+      }),
+      consumeRateLimit({
+        key: `login:ip:${ip ?? "desconhecido"}`,
+        limit: MAX_ATTEMPTS * 4,
+        windowSeconds: WINDOW_SECONDS,
+      }),
     ]);
+
     return results.every((r) => r.success);
   } catch (err) {
     logError("LOGIN_RATE_LIMIT", err);
@@ -59,12 +50,5 @@ export async function checkLoginAttempt(
 
 /** Zera o contador do e-mail após um login bem-sucedido. */
 export async function resetLoginAttempts(email: string): Promise<void> {
-  const loginLimiter = getLoginLimiter();
-  if (!loginLimiter) return;
-
-  try {
-    await loginLimiter.resetUsedTokens(`email:${email.toLowerCase().trim()}`);
-  } catch (err) {
-    logError("LOGIN_RATE_LIMIT_RESET", err);
-  }
+  await resetRateLimit(emailKey(email));
 }
