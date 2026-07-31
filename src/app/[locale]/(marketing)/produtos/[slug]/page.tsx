@@ -1,4 +1,6 @@
 import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { Link } from "@/i18n/routing";
 import { getProduct, PRODUCTS } from "@/lib/data/products";
 import { CASES } from "@/lib/data/cases";
@@ -6,25 +8,31 @@ import { SpecTable } from "@/components/marketing/spec-table";
 import { FeatureGrid } from "@/components/marketing/feature-grid";
 import { LeadForm } from "@/components/marketing/lead-form";
 import { ProductCard } from "@/components/marketing/product-card";
-import { generatePageMetadata, generateProductJsonLd, generateBreadcrumbJsonLd } from "@/lib/seo";
+import { generatePageMetadata, generateProductJsonLd, generateBreadcrumbJsonLd, jsonLdScript} from "@/lib/seo";
 
 export function generateStaticParams() {
   return PRODUCTS.map((p) => ({ slug: p.slug }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}) {
+  const { locale, slug } = await params;
   const product = getProduct(slug);
   if (!product) return {};
   return generatePageMetadata({
+    locale,
     title: product.name,
     description: product.tagline,
     path: `/produtos/${product.slug}`,
   });
 }
 
-export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function ProductPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
   const product = getProduct(slug);
   if (!product) notFound();
 
@@ -51,13 +59,21 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   return (
     <main className="pt-[var(--header-height)]">
+      <div className="mx-auto max-w-6xl px-6 pt-8 lg:px-8">
+        <Breadcrumbs
+          items={[
+            { name: "Produtos", href: "/produtos" },
+            { name: product.name },
+          ]}
+        />
+      </div>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(productJsonLd) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd) }}
       />
 
       {/* Breadcrumb */}

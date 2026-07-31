@@ -1,4 +1,4 @@
-import { useTranslations } from "next-intl";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { PRODUCTS } from "@/lib/data/products";
 import { ProductCard } from "@/components/marketing/product-card";
 import { Link } from "@/i18n/routing";
@@ -6,8 +6,14 @@ import { generatePageMetadata } from "@/lib/seo";
 import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
 import { ArrowRight } from "lucide-react";
 
-export function generateMetadata() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   return generatePageMetadata({
+    locale,
     title: "Produtos",
     description:
       "Tombadores hidráulicos de 9 a 30 metros, coletores de amostras e unidades de transbordo. Conheça a linha completa PILI Industrial.",
@@ -23,8 +29,15 @@ const CATEGORIES = [
   { key: "ESPECIAL", label: "Produtos especiais", desc: "Soluções customizadas para aplicações industriais específicas." },
 ] as const;
 
-export default function ProdutosPage() {
-  const t = useTranslations();
+export default async function ProdutosPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  const t = await getTranslations();
 
   return (
     <main className="pt-[var(--header-height)]">
@@ -70,7 +83,11 @@ export default function ProdutosPage() {
           {CATEGORIES.filter((cat) =>
             PRODUCTS.some((p) => p.category === cat.key)
           ).map((cat, catIndex) => (
-            <div key={cat.key} className="mb-20 last:mb-0">
+            <div
+              key={cat.key}
+              id={cat.key.toLowerCase().replace(/_/g, "-")}
+              className="mb-20 scroll-mt-[var(--header-height)] last:mb-0"
+            >
               <AnimateOnScroll delay={catIndex * 0.05}>
                 <div className="flex items-end justify-between border-b border-pili-mist pb-4">
                   <div>

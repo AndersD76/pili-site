@@ -9,6 +9,14 @@ import { ArrowLeft, Loader2 } from "lucide-react";
 import { useState, useTransition } from "react";
 
 import { createUser } from "@/app/admin/(panel)/usuarios/actions";
+import {
+  passwordSchema,
+  cpfCnpjSchema,
+  phoneSchema,
+  PASSWORD_HELP,
+  MIN_PASSWORD_LENGTH,
+  ROLES,
+} from "@/lib/validators/user";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,17 +32,17 @@ import {
 
 const userSchema = z
   .object({
-    name: z.string().min(1, "Nome obrigatorio"),
-    email: z.string().email("Email invalido"),
-    password: z.string().min(6, "Minimo 6 caracteres"),
+    name: z.string().trim().min(1, "Nome obrigatório"),
+    email: z.string().trim().email("E-mail inválido"),
+    password: passwordSchema,
     confirmPassword: z.string().min(1, "Confirme a senha"),
-    role: z.enum(["CLIENTE", "TECNICO", "COMERCIAL", "ADMIN"]),
-    company: z.string().optional(),
-    phone: z.string().optional(),
-    cpfCnpj: z.string().optional(),
+    role: z.enum(ROLES),
+    company: z.string().trim().optional(),
+    phone: phoneSchema,
+    cpfCnpj: cpfCnpjSchema,
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "As senhas nao coincidem",
+    message: "As senhas não coincidem",
     path: ["confirmPassword"],
   });
 
@@ -44,7 +52,7 @@ type UserFormValues = z.infer<typeof userSchema>;
 
 const ROLE_OPTIONS = [
   { value: "CLIENTE", label: "Cliente" },
-  { value: "TECNICO", label: "Tecnico" },
+  { value: "TECNICO", label: "Técnico" },
   { value: "COMERCIAL", label: "Comercial" },
   { value: "ADMIN", label: "Admin" },
 ] as const;
@@ -108,10 +116,10 @@ export default function NovoUsuarioPage() {
         </Button>
         <div>
           <h1 className="font-display text-2xl font-bold tracking-tight text-pili-black">
-            Novo usuario
+            Novo usuário
           </h1>
-          <p className="text-sm text-pili-cement">
-            Preencha os dados do novo usuario
+          <p className="text-sm text-pili-concrete">
+            Preencha os dados do novo usuário
           </p>
         </div>
       </div>
@@ -162,10 +170,15 @@ export default function NovoUsuarioPage() {
               id="password"
               type="password"
               {...register("password")}
-              placeholder="Minimo 6 caracteres"
+              placeholder={`Mínimo de ${MIN_PASSWORD_LENGTH} caracteres`}
+              aria-describedby="password-help"
             />
-            {errors.password && (
+            {errors.password ? (
               <p className="text-xs text-red-600">{errors.password.message}</p>
+            ) : (
+              <p id="password-help" className="text-xs text-pili-concrete">
+                {PASSWORD_HELP}
+              </p>
             )}
           </div>
 
@@ -203,6 +216,9 @@ export default function NovoUsuarioPage() {
               {...register("phone")}
               placeholder="+55 54 99999-0000"
             />
+            {errors.phone && (
+              <p className="text-xs text-red-600">{errors.phone.message}</p>
+            )}
           </div>
         </div>
 
@@ -215,6 +231,9 @@ export default function NovoUsuarioPage() {
               {...register("cpfCnpj")}
               placeholder="000.000.000-00"
             />
+            {errors.cpfCnpj && (
+              <p className="text-xs text-red-600">{errors.cpfCnpj.message}</p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -246,7 +265,7 @@ export default function NovoUsuarioPage() {
         <div className="flex items-center gap-3 pt-2">
           <Button type="submit" disabled={isPending}>
             {isPending && <Loader2 className="mr-2 size-4 animate-spin" />}
-            Criar usuario
+            Criar usuário
           </Button>
           <Button variant="outline" type="button" asChild>
             <Link href="/admin/usuarios">Cancelar</Link>

@@ -11,7 +11,7 @@ export default async function ConfigPage() {
         <h1 className="font-display text-2xl font-bold text-pili-black">
           Configurações
         </h1>
-        <p className="mt-1 text-sm text-pili-cement">
+        <p className="mt-1 text-sm text-pili-concrete">
           Configurações gerais do site e da empresa
         </p>
       </div>
@@ -98,25 +98,25 @@ export default async function ConfigPage() {
           </div>
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <span className="text-sm text-pili-cement">Cor primária</span>
+              <span className="text-sm text-pili-concrete">Cor primária</span>
               <div className="flex items-center gap-2">
                 <div className="h-6 w-6 rounded bg-pili-safety" />
                 <span className="font-mono text-xs text-pili-concrete">#E31E24</span>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <span className="text-sm text-pili-cement">Fonte display</span>
+              <span className="text-sm text-pili-concrete">Fonte display</span>
               <span className="font-display text-sm font-bold">Montserrat</span>
             </div>
             <div className="flex items-center gap-3">
-              <span className="text-sm text-pili-cement">Fonte mono</span>
+              <span className="text-sm text-pili-concrete">Fonte mono</span>
               <span className="font-mono text-sm">JetBrains Mono</span>
             </div>
           </div>
         </div>
       </div>
 
-      <p className="mt-8 text-center text-xs text-pili-cement">
+      <p className="mt-8 text-center text-xs text-pili-concrete">
         Para editar estas configurações, altere os valores em constants.ts ou nas variáveis de ambiente.
       </p>
     </div>
@@ -126,7 +126,7 @@ export default async function ConfigPage() {
 function Row({ label, value, link }: { label: string; value: string; link?: boolean }) {
   return (
     <div className="flex items-start justify-between gap-4 border-b border-pili-mist/50 pb-2 last:border-0 last:pb-0">
-      <span className="shrink-0 text-sm text-pili-cement">{label}</span>
+      <span className="shrink-0 text-sm text-pili-concrete">{label}</span>
       {link ? (
         <a
           href={value}

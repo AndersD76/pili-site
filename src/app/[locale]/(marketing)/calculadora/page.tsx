@@ -1,7 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "@/i18n/routing";
+import {
+  calculatorGateSchema,
+  type CalculatorGateInput,
+} from "@/lib/validators/lead";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Calculator, Lock } from "lucide-react";
@@ -93,39 +99,49 @@ export default function CalculadoraPage() {
   const [grainType, setGrainType] = useState<GrainType>("soja");
   const [waitDistance, setWaitDistance] = useState<string>("");
   const [result, setResult] = useState<CalcResult | null>(null);
-  const [email, setEmail] = useState("");
+  const [trucksError, setTrucksError] = useState<string | null>(null);
   const [unlocked, setUnlocked] = useState(false);
   const [gateStatus, setGateStatus] = useState<"idle" | "loading" | "error">(
     "idle"
   );
 
+  const {
+    register: registerGate,
+    handleSubmit: handleGateSubmit,
+    formState: { errors: gateErrors },
+  } = useForm<CalculatorGateInput>({
+    resolver: zodResolver(calculatorGateSchema),
+    defaultValues: { email: "" },
+  });
+
   function handleCalculate(e: React.FormEvent) {
     e.preventDefault();
     const trucks = parseInt(trucksPerDay, 10);
-    if (!trucks || trucks <= 0) return;
+    if (!trucks || trucks <= 0) {
+      setTrucksError("Informe um número de caminhões maior que zero");
+      return;
+    }
 
+    setTrucksError(null);
     const recommendation = calculateRecommendation(trucks, grainType);
     setResult(recommendation);
     setUnlocked(false);
   }
 
-  async function handleUnlock(e: React.FormEvent) {
-    e.preventDefault();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
-
+  async function onUnlock(values: CalculatorGateInput) {
     setGateStatus("loading");
     try {
       const res = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: "Calculadora",
-          email,
-          phone: "N/A",
-          company: "N/A",
-          consent: true,
+          name: "Lead da calculadora",
+          email: values.email,
+          company: "Não informado",
+          consent: values.consent,
           source: "CALCULADORA",
           productInterest: result?.model,
+          grainType: GRAIN_LABELS[grainType],
           pageUrl: window.location.href,
         }),
       });
@@ -179,6 +195,11 @@ export default function CalculadoraPage() {
                     value={trucksPerDay}
                     onChange={(e) => setTrucksPerDay(e.target.value)}
                   />
+                  {trucksError && (
+                    <p className="mt-1 text-xs text-pili-danger">
+                      {trucksError}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -297,25 +318,63 @@ export default function CalculadoraPage() {
                           descrição detalhada do equipamento.
                         </p>
                         <form
-                          onSubmit={handleUnlock}
-                          className="mt-4 flex gap-2"
+                          onSubmit={handleGateSubmit(onUnlock)}
+                          className="mt-4 flex flex-col gap-3"
                         >
-                          <Input
-                            type="email"
-                            placeholder="seu@email.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="flex-1"
-                          />
-                          <button
-                            type="submit"
-                            disabled={gateStatus === "loading"}
-                            className="shrink-0 bg-pili-safety px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep disabled:opacity-50"
-                          >
-                            {gateStatus === "loading"
-                              ? "..."
-                              : "Ver resultado"}
-                          </button>
+                          <div className="flex gap-2">
+                            <div className="flex-1">
+                              <Label htmlFor="calc-email" className="sr-only">
+                                E-mail
+                              </Label>
+                              <Input
+                                id="calc-email"
+                                type="email"
+                                placeholder="seu@email.com"
+                                {...registerGate("email")}
+                              />
+                            </div>
+                            <button
+                              type="submit"
+                              disabled={gateStatus === "loading"}
+                              className="h-10 shrink-0 bg-pili-safety px-6 text-xs font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep disabled:opacity-50"
+                            >
+                              {gateStatus === "loading"
+                                ? "..."
+                                : "Ver resultado"}
+                            </button>
+                          </div>
+                          {gateErrors.email && (
+                            <p className="text-xs text-pili-danger">
+                              {gateErrors.email.message}
+                            </p>
+                          )}
+
+                          <div className="flex items-start gap-2">
+                            <input
+                              type="checkbox"
+                              id="calc-consent"
+                              {...registerGate("consent")}
+                              className="mt-0.5 h-4 w-4 accent-pili-safety"
+                            />
+                            <Label
+                              htmlFor="calc-consent"
+                              className="text-xs font-normal text-pili-concrete"
+                            >
+                              Aceito a{" "}
+                              <Link
+                                href="/politica-privacidade"
+                                className="underline underline-offset-2 hover:text-pili-black"
+                              >
+                                política de privacidade
+                              </Link>{" "}
+                              e o contato da equipe comercial.
+                            </Label>
+                          </div>
+                          {gateErrors.consent && (
+                            <p className="text-xs text-pili-danger">
+                              {gateErrors.consent.message}
+                            </p>
+                          )}
                         </form>
                         {gateStatus === "error" && (
                           <p className="mt-2 text-xs text-pili-danger">

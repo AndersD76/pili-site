@@ -1,9 +1,16 @@
 import { Link } from "@/i18n/routing";
+import { setRequestLocale } from "next-intl/server";
 import { generatePageMetadata } from "@/lib/seo";
 import { ShieldCheck, FileCheck, Award, Clock, CheckCircle2 } from "lucide-react";
 
-export function generateMetadata() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   return generatePageMetadata({
+    locale,
     title: "Certificações e Garantia",
     description:
       "PILI Industrial: ISO 9001, conformidade NR-10 e NR-12, garantia estrutural de 5 anos. Qualidade e segurança em todos os equipamentos.",
@@ -62,7 +69,14 @@ const CERTIFICATIONS = [
   },
 ] as const;
 
-export default function CertificacoesPage() {
+export default async function CertificacoesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <main className="pt-[var(--header-height)]">
       {/* Hero */}

@@ -6,3 +6,14 @@ allowBuilds:
   prisma: true
   sharp: true
   unrs-resolver: true
+
+# Força versões corrigidas em dependências transitivas com CVE conhecido.
+# `brace-expansion` tem duas linhas major ativas na árvore; cada uma é fixada
+# na sua própria versão corrigida para não quebrar quem espera a API antiga.
+overrides:
+  sharp: ^0.35.3
+  postcss: ^8.5.18
+  js-yaml: ^4.3.0
+  '@babel/core': ^7.29.1
+  brace-expansion@1: ^1.1.16
+  brace-expansion@5: ^5.0.8

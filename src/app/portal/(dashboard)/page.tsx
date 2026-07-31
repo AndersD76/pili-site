@@ -10,14 +10,6 @@ import {
   Package,
 } from "lucide-react";
 
-function formatDate(date: Date) {
-  return date.toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
-}
-
 export default async function PortalDashboardPage() {
   const session = await auth();
   if (!session?.user) redirect("/portal/login");
@@ -60,7 +52,7 @@ export default async function PortalDashboardPage() {
               <HardDrive className="h-6 w-6 text-pili-concrete" />
             </div>
             <div>
-              <p className="text-sm font-medium text-pili-cement">
+              <p className="text-sm font-medium text-pili-concrete">
                 Equipamentos
               </p>
               <p className="font-display text-2xl font-bold text-pili-graphite">
@@ -75,7 +67,7 @@ export default async function PortalDashboardPage() {
               <Package className="h-6 w-6 text-pili-concrete" />
             </div>
             <div>
-              <p className="text-sm font-medium text-pili-cement">
+              <p className="text-sm font-medium text-pili-concrete">
                 Garantias ativas
               </p>
               <p className="font-display text-2xl font-bold text-pili-graphite">
@@ -90,7 +82,7 @@ export default async function PortalDashboardPage() {
               <FileText className="h-6 w-6 text-pili-concrete" />
             </div>
             <div>
-              <p className="text-sm font-medium text-pili-cement">
+              <p className="text-sm font-medium text-pili-concrete">
                 Documentos
               </p>
               <p className="font-display text-2xl font-bold text-pili-graphite">
@@ -118,13 +110,13 @@ export default async function PortalDashboardPage() {
           {equipment.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-pili-paper">
-                <HardDrive className="h-8 w-8 text-pili-cement" />
+                <HardDrive className="h-8 w-8 text-pili-concrete" />
               </div>
               <p className="mt-4 text-sm font-medium text-pili-concrete">
                 Nenhum equipamento cadastrado
               </p>
-              <p className="mt-1 text-sm text-pili-cement">
-                Seus equipamentos PILI aparecerao aqui quando forem registrados.
+              <p className="mt-1 text-sm text-pili-concrete">
+                Seus equipamentos PILI aparecerão aqui quando forem registrados.
               </p>
             </div>
           ) : (
@@ -142,7 +134,7 @@ export default async function PortalDashboardPage() {
                       <p className="truncate font-medium text-pili-graphite">
                         {eq.productName}
                       </p>
-                      <p className="mt-0.5 font-mono text-xs text-pili-cement">
+                      <p className="mt-0.5 font-mono text-xs text-pili-concrete">
                         {eq.serialNumber}
                       </p>
                     </div>
@@ -172,11 +164,11 @@ export default async function PortalDashboardPage() {
               <h3 className="font-display font-bold text-pili-graphite">
                 Ver documentos
               </h3>
-              <p className="mt-1 text-sm text-pili-cement">
+              <p className="mt-1 text-sm text-pili-concrete">
                 Manuais, certificados e laudos
               </p>
             </div>
-            <ArrowRight className="h-5 w-5 shrink-0 text-pili-cement transition-colors group-hover:text-pili-safety" />
+            <ArrowRight className="h-5 w-5 shrink-0 text-pili-concrete transition-colors group-hover:text-pili-safety" />
           </Link>
 
           <a
@@ -189,11 +181,11 @@ export default async function PortalDashboardPage() {
               <h3 className="font-display font-bold text-pili-graphite">
                 PILI Store
               </h3>
-              <p className="mt-1 text-sm text-pili-cement">
-                Pecas de reposicao e acessorios
+              <p className="mt-1 text-sm text-pili-concrete">
+                Peças de reposição e acessórios
               </p>
             </div>
-            <ShoppingCart className="h-5 w-5 shrink-0 text-pili-cement transition-colors group-hover:text-pili-safety" />
+            <ShoppingCart className="h-5 w-5 shrink-0 text-pili-concrete transition-colors group-hover:text-pili-safety" />
           </a>
         </div>
       </div>

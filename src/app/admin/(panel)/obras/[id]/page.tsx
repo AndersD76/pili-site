@@ -33,7 +33,7 @@ export default async function EditarObraPage({
           <h1 className="font-display text-2xl font-bold tracking-tight text-pili-black">
             Editar obra
           </h1>
-          <p className="text-sm text-pili-cement">
+          <p className="text-sm text-pili-concrete">
             Atualize os dados da obra
           </p>
         </div>

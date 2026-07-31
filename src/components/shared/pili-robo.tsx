@@ -47,6 +47,7 @@ export function PiliRobo() {
   const [typingIndex, setTypingIndex] = useState(0);
   const [showActions, setShowActions] = useState(false);
   const [visibleActions, setVisibleActions] = useState(0);
+  const replyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [input, setInput] = useState("");
   const [showTooltip, setShowTooltip] = useState(false);
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -93,6 +94,13 @@ export function PiliRobo() {
     return () => clearTimeout(t);
   }, [showActions, visibleActions]);
 
+  /* ---------- Limpa a resposta pendente ao desmontar ---------- */
+  useEffect(() => {
+    return () => {
+      if (replyTimerRef.current) clearTimeout(replyTimerRef.current);
+    };
+  }, []);
+
   /* ---------- Auto-scroll ---------- */
   useEffect(() => {
     bodyRef.current?.scrollTo({
@@ -124,9 +132,10 @@ export function PiliRobo() {
     setMessages((prev) => [...prev, { text, from: "user" }]);
     setInput("");
 
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setMessages((prev) => [...prev, { text: AUTO_REPLY, from: "bot" }]);
     }, 1000);
+    replyTimerRef.current = timer;
   }, [input]);
 
   /* ---------- Typing indicator dots ---------- */

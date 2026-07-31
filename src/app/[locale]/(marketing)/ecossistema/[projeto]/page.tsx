@@ -1,6 +1,12 @@
 import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
-import { generatePageMetadata } from "@/lib/seo";
+import {
+  generatePageMetadata,
+  generateBreadcrumbJsonLd,
+  jsonLdScript,
+} from "@/lib/seo";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
 import {
   ECOSYSTEM_PROJECTS,
@@ -95,12 +101,13 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ projeto: string }>;
+  params: Promise<{ locale: string; projeto: string }>;
 }) {
-  const { projeto } = await params;
+  const { locale, projeto } = await params;
   const project = getEcosystemProject(projeto);
   if (!project) return {};
   return generatePageMetadata({
+    locale,
     title: project.name,
     description: `${project.tagline}. ${project.description.slice(0, 120)}...`,
     path: `/ecossistema/${project.slug}`,
@@ -110,16 +117,55 @@ export async function generateMetadata({
 export default async function EcosystemProjectPage({
   params,
 }: {
-  params: Promise<{ projeto: string }>;
+  params: Promise<{ locale: string; projeto: string }>;
 }) {
-  const { projeto } = await params;
+  const { locale, projeto } = await params;
+  setRequestLocale(locale);
   const project = getEcosystemProject(projeto);
   if (!project) notFound();
 
   const colors = COLOR_MAP[project.color] ?? DEFAULT_COLORS;
 
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+    { name: "Ecossistema", url: "/pt-BR/ecossistema" },
+    { name: project.name, url: `/pt-BR/ecossistema/${project.slug}` },
+  ]);
+
+  // FAQPage habilita rich result de perguntas no SERP e responde cauda longa
+  // ("preciso de internet no patio", etc).
+  const faqJsonLd =
+    project.faq.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: project.faq.map((item) => ({
+            "@type": "Question",
+            name: item.question,
+            acceptedAnswer: { "@type": "Answer", text: item.answer },
+          })),
+        }
+      : null;
+
   return (
     <main className="pt-[var(--header-height)]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd) }}
+      />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLdScript(faqJsonLd) }}
+        />
+      )}
+      <div className="mx-auto max-w-6xl px-6 pt-8 lg:px-8">
+        <Breadcrumbs
+          items={[
+            { name: "Ecossistema", href: "/ecossistema" },
+            { name: project.name },
+          ]}
+        />
+      </div>
       {/* ─── Hero ─── */}
       <section className="relative bg-pili-black py-24 px-6 lg:px-8 lg:py-32">
         <div className="mx-auto max-w-6xl lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">

@@ -42,10 +42,10 @@ export default async function MediaPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-2xl font-bold tracking-tight text-pili-black">
-            Biblioteca de midia
+            Biblioteca de mídia
           </h1>
-          <p className="text-sm text-pili-cement">
-            Gerencie arquivos de midia do site
+          <p className="text-sm text-pili-concrete">
+            Gerencie arquivos de mídia do site
           </p>
         </div>
         <TooltipProvider>
@@ -67,9 +67,9 @@ export default async function MediaPage() {
 
       {mediaItems.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-pili-mist bg-pili-white py-16">
-          <ImageIcon className="size-12 text-pili-cement" />
-          <p className="mt-4 text-sm font-medium text-pili-cement">
-            Nenhuma midia cadastrada
+          <ImageIcon className="size-12 text-pili-concrete" />
+          <p className="mt-4 text-sm font-medium text-pili-concrete">
+            Nenhuma mídia cadastrada
           </p>
         </div>
       ) : (
@@ -97,7 +97,7 @@ export default async function MediaPage() {
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <Icon className="size-12 text-pili-cement" />
+                    <Icon className="size-12 text-pili-concrete" />
                   )}
                 </div>
 
@@ -109,10 +109,10 @@ export default async function MediaPage() {
                     {item.alt ?? extractFilename(item.url)}
                   </p>
 
-                  <p className="text-xs text-pili-cement">{item.type}</p>
+                  <p className="text-xs text-pili-concrete">{item.type}</p>
 
                   {item.width && item.height && (
-                    <p className="text-xs text-pili-cement">
+                    <p className="text-xs text-pili-concrete">
                       {item.width} x {item.height}
                     </p>
                   )}

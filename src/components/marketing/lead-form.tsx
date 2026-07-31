@@ -8,6 +8,16 @@ import { leadSchema, type LeadInput } from "@/lib/validators/lead";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { APPLICATIONS } from "@/lib/constants";
+
+/** Rótulos das aplicações; os valores vêm de `APPLICATIONS` em constants. */
+const APPLICATION_LABELS: Record<(typeof APPLICATIONS)[number], string> = {
+  porto: "Porto",
+  cooperativa: "Cooperativa",
+  industria: "Indústria alimentícia",
+  fertilizante: "Fertilizante",
+  cimento: "Cimento",
+};
 
 interface LeadFormProps {
   productInterest?: string;
@@ -115,11 +125,11 @@ export function LeadForm({
                 className="flex h-10 w-full border border-pili-mist bg-pili-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pili-safety"
               >
                 <option value="">Selecione...</option>
-                <option value="porto">Porto</option>
-                <option value="cooperativa">Cooperativa</option>
-                <option value="industria">Indústria alimentícia</option>
-                <option value="fertilizante">Fertilizante</option>
-                <option value="cimento">Cimento</option>
+                {APPLICATIONS.map((app) => (
+                  <option key={app} value={app}>
+                    {APPLICATION_LABELS[app]}
+                  </option>
+                ))}
                 <option value="outro">Outro</option>
               </select>
             </div>

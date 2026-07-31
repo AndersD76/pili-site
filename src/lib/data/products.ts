@@ -872,6 +872,3 @@ export function getFeaturedProducts() {
   return PRODUCTS.filter((p) => p.featured);
 }
 
-export function getProductsByCategory(category: string) {
-  return PRODUCTS.filter((p) => p.category === category);
-}

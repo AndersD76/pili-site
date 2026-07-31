@@ -45,7 +45,7 @@ export function TopBar({ user }: TopBarProps) {
               <p className="text-sm font-semibold text-pili-black">{user.name}</p>
             )}
             {user.email && (
-              <p className="text-xs text-pili-cement">{user.email}</p>
+              <p className="text-xs text-pili-concrete">{user.email}</p>
             )}
             <span className="mt-1 inline-block rounded bg-pili-paper px-2 py-0.5 font-mono text-[10px] font-bold uppercase text-pili-concrete">
               {user.role}

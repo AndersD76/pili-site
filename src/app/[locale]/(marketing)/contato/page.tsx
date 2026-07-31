@@ -1,10 +1,17 @@
 import { generatePageMetadata } from "@/lib/seo";
+import { setRequestLocale } from "next-intl/server";
 import { COMPANY, SOCIAL } from "@/lib/constants";
 import { LeadForm } from "@/components/marketing/lead-form";
 import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 
-export function generateMetadata() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   return generatePageMetadata({
+    locale,
     title: "Contato",
     description:
       "Entre em contato com a PILI Industrial. Atendimento comercial, suporte técnico e orçamentos para tombadores hidráulicos e equipamentos de descarga.",
@@ -39,7 +46,14 @@ const CONTACT_CHANNELS = [
   },
 ] as const;
 
-export default function ContatoPage() {
+export default async function ContatoPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <main className="pt-[var(--header-height)]">
       {/* Hero */}

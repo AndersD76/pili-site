@@ -1,4 +1,4 @@
-import { useTranslations } from "next-intl";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import Image from "next/image";
 import { STATS, COMPANY } from "@/lib/constants";
@@ -19,6 +19,25 @@ import {
   Play,
   TrendingUp,
 } from "lucide-react";
+
+import type { Metadata } from "next";
+import { generatePageMetadata } from "@/lib/seo";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return generatePageMetadata({
+    locale,
+    title: "Tombadores hidráulicos para descarga de grãos",
+    description:
+      "Fabricante de tombadores hidráulicos desde 1979. Plataformas de 9 a 30 metros, 35 a 100 toneladas, em 18 países. Peça um orçamento.",
+    path: "",
+  });
+}
+
 
 const APPLICATION_IMAGES: Record<
   string,
@@ -51,8 +70,15 @@ const APPLICATION_IMAGES: Record<
   },
 };
 
-export default function HomePage() {
-  const t = useTranslations();
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  const t = await getTranslations();
   const featuredProducts = getFeaturedProducts();
   const featuredCases = getFeaturedCases();
 

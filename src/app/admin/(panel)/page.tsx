@@ -7,6 +7,8 @@ import {
   Target,
 } from "lucide-react";
 import { requireRole } from "@/lib/auth-guard";
+import { startOfCurrentMonth, formatDate } from "@/lib/datetime";
+import { logError } from "@/lib/prisma-errors";
 import { db } from "@/lib/db";
 import { StatsCard } from "@/components/admin/stats-card";
 import { StatusBadge } from "@/components/admin/status-badge";
@@ -26,20 +28,23 @@ export const metadata: Metadata = {
 
 async function getDashboardData() {
   try {
-    const now = new Date();
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    // Leads excluídos (soft delete) não podem contar em métrica nenhuma.
+    const active = { deletedAt: null };
+    const startOfMonth = startOfCurrentMonth();
 
     const [leadsThisMonth, totalLeads, leadsByStatus, recentLeads] =
       await Promise.all([
         db.lead.count({
-          where: { createdAt: { gte: startOfMonth } },
+          where: { ...active, createdAt: { gte: startOfMonth } },
         }),
-        db.lead.count(),
+        db.lead.count({ where: active }),
         db.lead.groupBy({
           by: ["status"],
+          where: active,
           _count: { id: true },
         }),
         db.lead.findMany({
+          where: active,
           orderBy: { createdAt: "desc" },
           take: 10,
         }),
@@ -54,14 +59,17 @@ async function getDashboardData() {
       leadsByStatus.find((s) => s.status === "NOVO")?._count.id ?? 0;
 
     return {
+      failed: false,
       leadsThisMonth,
       totalLeads,
       conversionRate,
       newCount,
       recentLeads,
     };
-  } catch {
+  } catch (err) {
+    logError("ADMIN_DASHBOARD", err);
     return {
+      failed: true,
       leadsThisMonth: 0,
       totalLeads: 0,
       conversionRate: "0",
@@ -81,9 +89,16 @@ export default async function AdminDashboardPage() {
         Dashboard
       </h1>
 
+      {data.failed && (
+        <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+          Não foi possível carregar os indicadores agora. Os números abaixo não
+          refletem a base — tente recarregar em instantes.
+        </div>
+      )}
+
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatsCard
-          title="Leads este mes"
+          title="Leads este mês"
           value={data.leadsThisMonth}
           description="Novos contatos no periodo"
           icon={Users}
@@ -116,7 +131,7 @@ export default async function AdminDashboardPage() {
         </CardHeader>
         <CardContent>
           {data.recentLeads.length === 0 ? (
-            <p className="py-8 text-center text-sm text-pili-cement">
+            <p className="py-8 text-center text-sm text-pili-concrete">
               Nenhum lead encontrado
             </p>
           ) : (
@@ -148,14 +163,14 @@ export default async function AdminDashboardPage() {
                     <TableCell className="hidden text-pili-concrete md:table-cell">
                       {lead.email}
                     </TableCell>
-                    <TableCell className="hidden text-xs uppercase text-pili-cement sm:table-cell">
+                    <TableCell className="hidden text-xs uppercase text-pili-concrete sm:table-cell">
                       {lead.source}
                     </TableCell>
                     <TableCell>
                       <StatusBadge status={lead.status} />
                     </TableCell>
-                    <TableCell className="hidden text-sm text-pili-cement lg:table-cell">
-                      {lead.createdAt.toLocaleDateString("pt-BR")}
+                    <TableCell className="hidden text-sm text-pili-concrete lg:table-cell">
+                      {formatDate(lead.createdAt)}
                     </TableCell>
                   </TableRow>
                 ))}

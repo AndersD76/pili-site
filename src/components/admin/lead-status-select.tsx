@@ -1,6 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
+import { toast } from "sonner";
 import { updateLeadStatus } from "@/app/admin/(panel)/leads/actions";
 import {
   Select,
@@ -10,15 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { LeadStatus } from "@prisma/client";
-
-const STATUS_OPTIONS: { value: LeadStatus; label: string; color: string }[] = [
-  { value: "NOVO", label: "Novo", color: "bg-blue-500" },
-  { value: "QUALIFICADO", label: "Qualificado", color: "bg-amber-500" },
-  { value: "CONTATADO", label: "Contatado", color: "bg-purple-500" },
-  { value: "PROPOSTA", label: "Proposta", color: "bg-cyan-500" },
-  { value: "GANHO", label: "Ganho", color: "bg-green-500" },
-  { value: "PERDIDO", label: "Perdido", color: "bg-red-500" },
-];
+import { STATUS_OPTIONS } from "@/lib/lead-display";
 
 interface LeadStatusSelectProps {
   leadId: string;
@@ -33,7 +26,16 @@ export function LeadStatusSelect({
 
   function handleChange(value: string) {
     startTransition(async () => {
-      await updateLeadStatus(leadId, value as LeadStatus);
+      try {
+        const result = await updateLeadStatus(leadId, value as LeadStatus);
+        if (result.success) {
+          toast.success("Status atualizado.");
+        } else {
+          toast.error(result.error ?? "Erro ao atualizar status.");
+        }
+      } catch {
+        toast.error("Não foi possível atualizar o status.");
+      }
     });
   }
 

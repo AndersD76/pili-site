@@ -6,6 +6,7 @@ import {
   Inbox,
 } from "lucide-react";
 import { requireRole } from "@/lib/auth-guard";
+import { formatDate } from "@/lib/datetime";
 import { getLeads } from "./actions";
 import { LeadActionsDropdown } from "@/components/admin/lead-actions-dropdown";
 import { ExportLeadsButton } from "@/components/admin/export-leads-button";
@@ -26,42 +27,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { LeadStatus, LeadSource } from "@prisma/client";
+import {
+  STATUS_LABELS,
+  STATUS_COLORS,
+  SOURCE_LABELS,
+} from "@/lib/lead-display";
 
 /* ---------- helpers ---------- */
-
-const STATUS_LABELS: Record<LeadStatus, string> = {
-  NOVO: "Novo",
-  QUALIFICADO: "Qualificado",
-  CONTATADO: "Contatado",
-  PROPOSTA: "Proposta",
-  GANHO: "Ganho",
-  PERDIDO: "Perdido",
-};
-
-const STATUS_COLORS: Record<LeadStatus, string> = {
-  NOVO: "bg-blue-100 text-blue-800 border-blue-200",
-  QUALIFICADO: "bg-amber-100 text-amber-800 border-amber-200",
-  CONTATADO: "bg-purple-100 text-purple-800 border-purple-200",
-  PROPOSTA: "bg-cyan-100 text-cyan-800 border-cyan-200",
-  GANHO: "bg-green-100 text-green-800 border-green-200",
-  PERDIDO: "bg-red-100 text-red-800 border-red-200",
-};
-
-const SOURCE_LABELS: Record<LeadSource, string> = {
-  ORGANICO: "Orgânico",
-  PAGO: "Pago",
-  REFERRAL: "Referral",
-  WHATSAPP: "WhatsApp",
-  CATALOGO: "Catálogo",
-  CALCULADORA: "Calculadora",
-  COMPARATIVO: "Comparativo",
-  FORMULARIO: "Formulário",
-};
-
-function formatDate(date: Date) {
-  return new Intl.DateTimeFormat("pt-BR").format(date);
-}
 
 /* ---------- page ---------- */
 
@@ -83,7 +55,8 @@ export default async function LeadsPage({ searchParams }: PageProps) {
   const search = params.search ?? undefined;
   const page = Number(params.page ?? "1");
 
-  const { leads, count, totalPages } = await getLeads({
+
+  const { leads, count, totalPages, currentPage } = await getLeads({
     status,
     source,
     search,
@@ -176,14 +149,14 @@ export default async function LeadsPage({ searchParams }: PageProps) {
       {/* Table */}
       {leads.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-pili-cement py-16 text-center">
-          <Inbox className="mb-3 size-10 text-pili-cement" />
+          <Inbox className="mb-3 size-10 text-pili-concrete" />
           <p className="text-sm font-medium text-pili-graphite">
             Nenhum lead encontrado
           </p>
           <p className="text-xs text-pili-steel">
             {hasFilters
               ? "Tente ajustar os filtros para encontrar resultados."
-              : "Os leads aparecerao aqui quando forem recebidos."}
+              : "Os leads aparecerão aqui quando forem recebidos."}
           </p>
         </div>
       ) : (
@@ -230,7 +203,7 @@ export default async function LeadsPage({ searchParams }: PageProps) {
                     {formatDate(lead.createdAt)}
                   </TableCell>
                   <TableCell>
-                    <LeadActionsDropdown leadId={lead.id} />
+                    <LeadActionsDropdown leadId={lead.id} leadName={lead.name} />
                   </TableCell>
                 </TableRow>
               ))}
@@ -243,12 +216,12 @@ export default async function LeadsPage({ searchParams }: PageProps) {
       {totalPages > 1 && (
         <div className="flex items-center justify-between">
           <p className="text-sm text-pili-steel">
-            Página {page} de {totalPages}
+            Página {currentPage} de {totalPages}
           </p>
           <div className="flex gap-2">
-            {page > 1 ? (
+            {currentPage > 1 ? (
               <Button variant="outline" size="sm" asChild>
-                <Link href={buildUrl({ page: String(page - 1) })}>
+                <Link href={buildUrl({ page: String(currentPage - 1) })}>
                   <ChevronLeft className="mr-1 size-4" />
                   Anterior
                 </Link>
@@ -259,9 +232,9 @@ export default async function LeadsPage({ searchParams }: PageProps) {
                 Anterior
               </Button>
             )}
-            {page < totalPages ? (
+            {currentPage < totalPages ? (
               <Button variant="outline" size="sm" asChild>
-                <Link href={buildUrl({ page: String(page + 1) })}>
+                <Link href={buildUrl({ page: String(currentPage + 1) })}>
                   Próximo
                   <ChevronRight className="ml-1 size-4" />
                 </Link>

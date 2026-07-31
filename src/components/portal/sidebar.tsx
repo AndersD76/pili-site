@@ -66,7 +66,7 @@ function SidebarNav() {
       <div className="my-4 border-t border-pili-mist" />
       <Link
         href="/"
-        className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-pili-cement transition-colors hover:text-pili-black"
+        className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-pili-concrete transition-colors hover:text-pili-black"
       >
         <ExternalLink className="size-4 shrink-0" />
         Ir para o site
@@ -88,7 +88,7 @@ export function PortalSidebar() {
         />
       </div>
       <div className="flex-1 overflow-y-auto py-4">
-        <p className="mb-2 px-6 font-mono text-[10px] font-semibold uppercase tracking-widest text-pili-cement">
+        <p className="mb-2 px-6 font-mono text-[10px] font-semibold uppercase tracking-widest text-pili-concrete">
           Portal do Cliente
         </p>
         <SidebarNav />
@@ -125,7 +125,7 @@ export function PortalMobileSidebar() {
             />
           </SheetTitle>
         </SheetHeader>
-        <p className="mt-4 mb-2 px-6 font-mono text-[10px] font-semibold uppercase tracking-widest text-pili-cement">
+        <p className="mt-4 mb-2 px-6 font-mono text-[10px] font-semibold uppercase tracking-widest text-pili-concrete">
           Portal do Cliente
         </p>
         <nav className="flex flex-col gap-1 px-3 py-2">

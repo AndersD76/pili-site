@@ -1,45 +1,97 @@
 import { NextRequest, NextResponse } from "next/server";
-import { leadSchema } from "@/lib/validators/lead";
-import { checkRateLimit } from "@/lib/rate-limit";
+import {
+  leadRequestSchema,
+  type LeadSourceLiteral,
+} from "@/lib/validators/lead";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { sendLeadEmails } from "@/lib/email/send-lead-emails";
+import { logError } from "@/lib/prisma-errors";
+import { db } from "@/lib/db";
+import type { LeadSource } from "@prisma/client";
+
+// Prisma e bcrypt não rodam no edge runtime.
+export const runtime = "nodejs";
+
+/**
+ * Trava de compilação nas duas direções entre o enum do Prisma e os literais do
+ * validador. Sem a segunda direção, um valor adicionado só ao Prisma passaria
+ * despercebido e jamais poderia ser enviado pelo site — foi exatamente o que
+ * aconteceu com `TRABALHE_CONOSCO`.
+ */
+type AssertSourcesMatch = [LeadSource] extends [LeadSourceLiteral]
+  ? [LeadSourceLiteral] extends [LeadSource]
+    ? true
+    : never
+  : never;
+const _assertSourcesMatch: AssertSourcesMatch = true;
+void _assertSourcesMatch;
 
 export async function POST(request: NextRequest) {
   try {
-    const ip = request.headers.get("x-forwarded-for") ?? "unknown";
-    const rateResult = await checkRateLimit(ip);
-    if (!rateResult.success) {
+    const ip = getClientIp(request) ?? "unknown";
+    const rate = await checkRateLimit(ip);
+
+    if (!rate.success) {
       return NextResponse.json(
         { error: "Rate limit exceeded" },
-        { status: 429 }
+        { status: 429 },
       );
     }
 
-    const body = await request.json();
-    const parsed = leadSchema.safeParse(body);
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+    }
+
+    const parsed = leadRequestSchema.safeParse(body);
 
     if (!parsed.success) {
       return NextResponse.json(
         { error: "Validation failed", issues: parsed.error.issues },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { consent: _, ...leadData } = parsed.data;
+    const { consent, source, pageUrl, utm, ...leadData } = parsed.data;
 
-    // TODO: Save to database when DATABASE_URL is configured
-    // const lead = await db.lead.create({ data: { ...leadData, source: body.source, pageUrl: body.pageUrl, utm: body.utm } });
+    // Falha de compilação se `LeadSource` divergir dos literais do validador.
+    const leadSource: LeadSource = source;
 
-    // TODO: Send emails when RESEND_API_KEY is configured
-    // await resend.emails.send({ ... });
+    const lead = await db.lead.create({
+      data: {
+        ...leadData,
+        source: leadSource,
+        pageUrl,
+        utm,
+        // `consent` é obrigatório no schema; registramos quando foi dado para
+        // ter prova do aceite (LGPD).
+        consentAt: consent ? new Date() : null,
+      },
+      select: { id: true },
+    });
 
-    console.log("[LEAD]", leadData);
+    // O lead já está persistido — email é best-effort e não altera a resposta.
+    await sendLeadEmails({
+      name: leadData.name,
+      email: leadData.email,
+      phone: leadData.phone,
+      company: leadData.company,
+      application: leadData.application,
+      productInterest: leadData.productInterest,
+      message: leadData.message,
+      source: leadSource,
+      pageUrl,
+    });
 
-    return NextResponse.json({ success: true }, { status: 201 });
+    return NextResponse.json({ success: true, id: lead.id }, { status: 201 });
   } catch (error) {
-    console.error("[LEADS_POST]", error);
+    // Sem o corpo da requisição: contém dados pessoais do lead.
+    logError("LEADS_POST", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

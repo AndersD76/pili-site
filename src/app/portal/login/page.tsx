@@ -30,15 +30,10 @@ export default function LoginPage() {
         return;
       }
 
-      const res = await fetch("/api/auth/session");
-      const session = await res.json();
-      const role = session?.user?.role;
-
-      if (role === "ADMIN" || role === "COMERCIAL" || role === "TECNICO") {
-        router.push("/admin");
-      } else {
-        router.push("/portal");
-      }
+      // O layout do portal encaminha administração para /admin — decidir a rota
+      // por role aqui duplicaria essa regra em dois lugares.
+      router.push("/portal");
+      router.refresh();
     } catch {
       setError("Erro ao fazer login. Tente novamente.");
       setLoading(false);
@@ -56,7 +51,7 @@ export default function LoginPage() {
         <h1 className="font-display text-xl font-bold text-pili-black">
           Acesso restrito
         </h1>
-        <p className="mb-6 text-sm text-pili-cement">
+        <p className="mb-6 text-sm text-pili-concrete">
           Administração e Portal do Cliente
         </p>
       </div>
@@ -76,7 +71,7 @@ export default function LoginPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="seu@email.com"
-            className="w-full rounded border border-pili-mist bg-white px-4 py-3 text-sm text-pili-black placeholder:text-pili-cement focus:border-pili-safety focus:outline-none focus:ring-1 focus:ring-pili-safety"
+            className="w-full rounded border border-pili-mist bg-white px-4 py-3 text-sm text-pili-black placeholder:text-pili-concrete focus:border-pili-safety focus:outline-none focus:ring-1 focus:ring-pili-safety"
           />
         </div>
 
@@ -94,7 +89,7 @@ export default function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Sua senha"
-            className="w-full rounded border border-pili-mist bg-white px-4 py-3 text-sm text-pili-black placeholder:text-pili-cement focus:border-pili-safety focus:outline-none focus:ring-1 focus:ring-pili-safety"
+            className="w-full rounded border border-pili-mist bg-white px-4 py-3 text-sm text-pili-black placeholder:text-pili-concrete focus:border-pili-safety focus:outline-none focus:ring-1 focus:ring-pili-safety"
           />
         </div>
 
@@ -114,7 +109,7 @@ export default function LoginPage() {
       <div className="mt-6 flex flex-col items-center gap-3">
         <Link
           href="/"
-          className="text-xs text-pili-cement transition-colors hover:text-pili-black"
+          className="text-xs text-pili-concrete transition-colors hover:text-pili-black"
         >
           Voltar ao site
         </Link>

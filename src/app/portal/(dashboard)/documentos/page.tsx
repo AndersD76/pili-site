@@ -14,21 +14,21 @@ export default function DocumentosPage() {
           Documentos
         </h1>
         <p className="mt-1 text-base text-pili-concrete">
-          Manuais, certificados, laudos e desenhos tecnicos
+          Manuais, certificados, laudos e desenhos técnicos
         </p>
       </div>
 
       {/* Empty state */}
       <div className="flex flex-col items-center justify-center rounded-lg border border-pili-mist bg-pili-white py-16 text-center">
         <div className="flex h-16 w-16 items-center justify-center rounded-full bg-pili-paper">
-          <FileText className="h-8 w-8 text-pili-cement" />
+          <FileText className="h-8 w-8 text-pili-concrete" />
         </div>
         <p className="mt-4 text-base font-medium text-pili-concrete">
-          Seus documentos estarao disponiveis em breve
+          Seus documentos estarão disponíveis em breve
         </p>
-        <p className="mt-1 max-w-sm text-sm text-pili-cement">
-          Manuais, certificados de garantia e laudos tecnicos dos seus
-          equipamentos aparecerao aqui.
+        <p className="mt-1 max-w-sm text-sm text-pili-concrete">
+          Manuais, certificados de garantia e laudos técnicos dos seus
+          equipamentos aparecerão aqui.
         </p>
       </div>
     </div>

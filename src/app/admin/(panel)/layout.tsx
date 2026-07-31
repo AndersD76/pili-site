@@ -1,13 +1,14 @@
-import { requireRole } from "@/lib/auth-guard";
+import { requireRole, STAFF_ROLES } from "@/lib/auth-guard";
 import { Sidebar } from "@/components/admin/sidebar";
 import { TopBar } from "@/components/admin/top-bar";
+import { Toaster } from "sonner";
 
 export default async function AdminPanelLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await requireRole("ADMIN", "COMERCIAL", "TECNICO");
+  const session = await requireRole(...STAFF_ROLES);
   const user = session.user;
 
   return (
@@ -24,6 +25,7 @@ export default async function AdminPanelLayout({
         />
         <main className="p-4 lg:p-6">{children}</main>
       </div>
+      <Toaster position="top-right" richColors closeButton />
     </div>
   );
 }

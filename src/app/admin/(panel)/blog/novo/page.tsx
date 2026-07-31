@@ -20,7 +20,7 @@ export default async function NovoArtigoPage() {
           <h1 className="font-display text-2xl font-bold tracking-tight text-pili-black">
             Novo artigo
           </h1>
-          <p className="text-sm text-pili-cement">
+          <p className="text-sm text-pili-concrete">
             Preencha os dados do novo artigo
           </p>
         </div>

@@ -13,7 +13,7 @@ import {
 interface LeadNotificationProps {
   name: string;
   email: string;
-  phone: string;
+  phone?: string;
   company?: string;
   application?: string;
   productInterest?: string;
@@ -50,8 +50,12 @@ export function LeadNotificationEmail({
             <Text style={label}>Email</Text>
             <Text style={value}>{email}</Text>
 
-            <Text style={label}>Telefone</Text>
-            <Text style={value}>{phone}</Text>
+            {phone && (
+              <>
+                <Text style={label}>Telefone</Text>
+                <Text style={value}>{phone}</Text>
+              </>
+            )}
 
             {company && (
               <>

@@ -29,7 +29,7 @@ const navItems = [
   { label: "Produtos", href: "/admin/produtos", icon: Package },
   { label: "Obras", href: "/admin/obras", icon: Building2 },
   { label: "Blog", href: "/admin/blog", icon: FileText },
-  { label: "Midia", href: "/admin/media", icon: Image },
+  { label: "Mídia", href: "/admin/media", icon: Image },
   { label: "Usuários", href: "/admin/usuarios", icon: UserCog },
   { label: "Configurações", href: "/admin/config", icon: Settings },
 ] as const;
@@ -49,7 +49,7 @@ function NavLink({
         "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
         isActive
           ? "bg-pili-steel text-pili-white"
-          : "text-pili-cement hover:text-pili-white hover:bg-pili-steel/50"
+          : "text-pili-concrete hover:text-pili-white hover:bg-pili-steel/50"
       )}
     >
       <Icon className="size-5 shrink-0" />
@@ -86,7 +86,7 @@ export function Sidebar() {
         <span className="font-display text-xl font-bold tracking-tight text-pili-safety">
           PILI
         </span>
-        <span className="text-sm font-medium text-pili-cement">Admin</span>
+        <span className="text-sm font-medium text-pili-concrete">Admin</span>
       </div>
       <div className="flex-1 overflow-y-auto py-4">
         <SidebarNav />
@@ -117,7 +117,7 @@ export function MobileSidebar() {
             <span className="font-display text-xl font-bold tracking-tight text-pili-safety">
               PILI
             </span>
-            <span className="text-sm font-medium text-pili-cement">Admin</span>
+            <span className="text-sm font-medium text-pili-concrete">Admin</span>
           </SheetTitle>
         </SheetHeader>
         <nav className="flex flex-col gap-1 px-3 py-4">

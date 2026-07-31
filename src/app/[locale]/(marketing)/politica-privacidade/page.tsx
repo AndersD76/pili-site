@@ -1,8 +1,15 @@
 import { generatePageMetadata } from "@/lib/seo";
+import { setRequestLocale } from "next-intl/server";
 import { COMPANY } from "@/lib/constants";
 
-export function generateMetadata() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   return generatePageMetadata({
+    locale,
     title: "Política de Privacidade",
     description:
       "Política de privacidade da PILI Industrial. Saiba como coletamos, armazenamos e utilizamos seus dados pessoais em conformidade com a LGPD.",
@@ -11,7 +18,14 @@ export function generateMetadata() {
   });
 }
 
-export default function PoliticaPrivacidadePage() {
+export default async function PoliticaPrivacidadePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <main className="pt-[var(--header-height)]">
       {/* Hero */}

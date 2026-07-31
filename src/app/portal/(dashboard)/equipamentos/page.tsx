@@ -31,6 +31,7 @@ export default async function EquipamentosPage() {
   const equipment = await db.clientEquipment.findMany({
     where: { userId: session.user.id },
     orderBy: { createdAt: "desc" },
+    take: 200,
   });
 
   return (
@@ -48,13 +49,13 @@ export default async function EquipamentosPage() {
       {equipment.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-lg border border-pili-mist bg-pili-white py-16 text-center">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-pili-paper">
-            <HardDrive className="h-8 w-8 text-pili-cement" />
+            <HardDrive className="h-8 w-8 text-pili-concrete" />
           </div>
           <p className="mt-4 text-base font-medium text-pili-concrete">
             Nenhum equipamento cadastrado
           </p>
-          <p className="mt-1 max-w-sm text-sm text-pili-cement">
-            Seus equipamentos PILI aparecerao aqui quando forem registrados pela
+          <p className="mt-1 max-w-sm text-sm text-pili-concrete">
+            Seus equipamentos PILI aparecerão aqui quando forem registrados pela
             nossa equipe.
           </p>
         </div>
@@ -75,7 +76,7 @@ export default async function EquipamentosPage() {
                     <h3 className="font-display text-lg font-bold text-pili-graphite">
                       {eq.productName}
                     </h3>
-                    <p className="mt-0.5 font-mono text-xs text-pili-cement">
+                    <p className="mt-0.5 font-mono text-xs text-pili-concrete">
                       {eq.serialNumber}
                     </p>
                   </div>
@@ -117,7 +118,7 @@ export default async function EquipamentosPage() {
                       Garantia expirada
                     </span>
                   ) : (
-                    <span className="flex items-center gap-1.5 text-sm font-medium text-pili-cement">
+                    <span className="flex items-center gap-1.5 text-sm font-medium text-pili-concrete">
                       <ShieldX className="h-4 w-4" />
                       Sem garantia
                     </span>

@@ -2,9 +2,11 @@
 
 import { useTransition } from "react";
 import Link from "next/link";
+import { toast } from "sonner";
 import { Eye, MoreHorizontal, Trash2 } from "lucide-react";
 import { updateLeadStatus, deleteLead } from "@/app/admin/(panel)/leads/actions";
 import { Button } from "@/components/ui/button";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,32 +18,46 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { LeadStatus } from "@prisma/client";
-
-const STATUS_OPTIONS: { value: LeadStatus; label: string; color: string }[] = [
-  { value: "NOVO", label: "Novo", color: "bg-blue-500" },
-  { value: "QUALIFICADO", label: "Qualificado", color: "bg-amber-500" },
-  { value: "CONTATADO", label: "Contatado", color: "bg-purple-500" },
-  { value: "PROPOSTA", label: "Proposta", color: "bg-cyan-500" },
-  { value: "GANHO", label: "Ganho", color: "bg-green-500" },
-  { value: "PERDIDO", label: "Perdido", color: "bg-red-500" },
-];
+import { STATUS_OPTIONS } from "@/lib/lead-display";
 
 interface LeadActionsDropdownProps {
   leadId: string;
+  leadName: string;
 }
 
-export function LeadActionsDropdown({ leadId }: LeadActionsDropdownProps) {
+export function LeadActionsDropdown({
+  leadId,
+  leadName,
+}: LeadActionsDropdownProps) {
   const [isPending, startTransition] = useTransition();
 
   function handleStatusChange(status: LeadStatus) {
     startTransition(async () => {
-      await updateLeadStatus(leadId, status);
+      try {
+        const result = await updateLeadStatus(leadId, status);
+        if (result.success) {
+          toast.success("Status atualizado.");
+        } else {
+          toast.error(result.error ?? "Erro ao atualizar status.");
+        }
+      } catch {
+        toast.error("Não foi possível atualizar o status.");
+      }
     });
   }
 
   function handleDelete() {
     startTransition(async () => {
-      await deleteLead(leadId);
+      try {
+        const result = await deleteLead(leadId);
+        if (result.success) {
+          toast.success("Lead excluído.");
+        } else {
+          toast.error(result.error ?? "Erro ao excluir lead.");
+        }
+      } catch {
+        toast.error("Não foi possível excluir o lead.");
+      }
     });
   }
 
@@ -77,10 +93,21 @@ export function LeadActionsDropdown({ leadId }: LeadActionsDropdownProps) {
           </DropdownMenuSubContent>
         </DropdownMenuSub>
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive" onClick={handleDelete}>
-          <Trash2 className="mr-2 size-4" />
-          Excluir
-        </DropdownMenuItem>
+        <ConfirmDialog
+          title="Excluir lead"
+          description={`O lead "${leadName}" sairá da listagem e dos relatórios. O registro é preservado no banco e pode ser recuperado pela equipe técnica.`}
+          confirmLabel="Excluir lead"
+          onConfirm={handleDelete}
+          trigger={
+            <DropdownMenuItem
+              variant="destructive"
+              onSelect={(e) => e.preventDefault()}
+            >
+              <Trash2 className="mr-2 size-4" />
+              Excluir
+            </DropdownMenuItem>
+          }
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -1,5 +1,14 @@
 import type { Metadata } from "next";
-import { SITE_NAME, SITE_URL, SITE_DESCRIPTION, COMPANY } from "./constants";
+import {
+  SITE_NAME,
+  SITE_URL,
+  SITE_DESCRIPTION,
+  COMPANY,
+  SOCIAL,
+} from "./constants";
+
+/** Imagem padrão de compartilhamento. Precisa existir em `public/`. */
+export const DEFAULT_OG_IMAGE = "/images/tombador-pili.jpg";
 
 interface PageSeoParams {
   title: string;
@@ -14,14 +23,17 @@ export function generatePageMetadata({
   title,
   description = SITE_DESCRIPTION,
   path = "",
-  image = "/images/og-default.jpg",
+  image = DEFAULT_OG_IMAGE,
   locale = "pt-BR",
   noIndex = false,
 }: PageSeoParams): Metadata {
   const url = `${SITE_URL}/${locale}${path}`;
+  const fullTitle = `${title} | ${SITE_NAME}`;
 
   return {
-    title: `${title} | ${SITE_NAME}`,
+    // `title.absolute` impede que o `template` do layout raiz concatene a marca
+    // de novo — o resultado era "Produtos | PILI Industrial | PILI Industrial".
+    title: { absolute: fullTitle },
     description,
     metadataBase: new URL(SITE_URL),
     alternates: {
@@ -33,7 +45,7 @@ export function generatePageMetadata({
       },
     },
     openGraph: {
-      title: `${title} | ${SITE_NAME}`,
+      title: fullTitle,
       description,
       url,
       siteName: SITE_NAME,
@@ -43,7 +55,7 @@ export function generatePageMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | ${SITE_NAME}`,
+      title: fullTitle,
       description,
       images: [image],
     },
@@ -58,8 +70,12 @@ export function generateOrganizationJsonLd() {
     name: SITE_NAME,
     legalName: COMPANY.name,
     url: SITE_URL,
-    logo: `${SITE_URL}/images/logo.svg`,
+    logo: `${SITE_URL}/images/logo-pili.png`,
+    image: `${SITE_URL}${DEFAULT_OG_IMAGE}`,
+    description: SITE_DESCRIPTION,
     foundingDate: String(COMPANY.founded),
+    // `sameAs` vincula o site aos perfis oficiais e alimenta o Knowledge Panel.
+    sameAs: Object.values(SOCIAL),
     address: {
       "@type": "PostalAddress",
       addressLocality: "Erechim",
@@ -69,6 +85,7 @@ export function generateOrganizationJsonLd() {
     contactPoint: {
       "@type": "ContactPoint",
       telephone: COMPANY.phone,
+      email: COMPANY.emailComercial,
       contactType: "sales",
       availableLanguage: ["Portuguese", "English", "Spanish"],
     },
@@ -103,6 +120,48 @@ export function generateProductJsonLd(product: {
   };
 }
 
+/**
+ * Schema de artigo. Habilita rich result com data e miniatura no SERP e
+ * elegibilidade ao Google Discover — canal relevante para conteúdo técnico do
+ * agronegócio.
+ */
+export function generateArticleJsonLd(article: {
+  title: string;
+  description: string;
+  image: string;
+  slug: string;
+  publishedAt: string;
+  author: string;
+  tags?: string[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.description,
+    image: article.image.startsWith("http")
+      ? article.image
+      : `${SITE_URL}${article.image}`,
+    url: `${SITE_URL}/pt-BR/blog/${article.slug}`,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${SITE_URL}/pt-BR/blog/${article.slug}`,
+    },
+    datePublished: article.publishedAt,
+    dateModified: article.publishedAt,
+    author: { "@type": "Organization", name: article.author },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/images/logo-pili.png`,
+      },
+    },
+    keywords: article.tags?.join(", "),
+  };
+}
+
 export function generateBreadcrumbJsonLd(
   items: { name: string; url: string }[]
 ) {
@@ -116,4 +175,18 @@ export function generateBreadcrumbJsonLd(
       item: `${SITE_URL}${item.url}`,
     })),
   };
+}
+
+/**
+ * Serializa JSON-LD para injeção em `<script>`.
+ *
+ * `JSON.stringify` não escapa `<`, então um valor contendo `</script>` fecharia
+ * o bloco e permitiria injeção. Hoje os dados são estáticos, mas passam a ser
+ * editáveis pelo painel quando o site ler do banco.
+ */
+export function jsonLdScript(data: unknown): string {
+  return JSON.stringify(data)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026");
 }

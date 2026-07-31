@@ -1,54 +1,40 @@
 "use client";
 
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { COMPANY } from "@/lib/constants";
+import { Link } from "@/i18n/routing";
+import {
+  catalogFormSchema,
+  type CatalogFormInput,
+} from "@/lib/validators/lead";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Download, FileText } from "lucide-react";
 
-interface CatalogFormData {
-  name: string;
-  email: string;
-  company: string;
-  country: string;
-}
-
 export default function CatalogoPage() {
-  const [formData, setFormData] = useState<CatalogFormData>({
-    name: "",
-    email: "",
-    company: "",
-    country: "BR",
-  });
   const [status, setStatus] = useState<
     "idle" | "loading" | "unlocked" | "error"
   >("idle");
-  const [errors, setErrors] = useState<Partial<CatalogFormData>>({});
 
-  function validate(): boolean {
-    const newErrors: Partial<CatalogFormData> = {};
-    if (formData.name.length < 2) newErrors.name = "Informe seu nome";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-      newErrors.email = "E-mail inválido";
-    if (formData.company.length < 2) newErrors.company = "Informe a empresa";
-    if (formData.country.length !== 2) newErrors.country = "País inválido";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CatalogFormInput>({
+    resolver: zodResolver(catalogFormSchema),
+    defaultValues: { name: "", email: "", company: "", country: "BR" },
+  });
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!validate()) return;
-
+  async function onSubmit(values: CatalogFormInput) {
     setStatus("loading");
     try {
       const res = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...formData,
-          phone: "N/A",
-          consent: true,
+          ...values,
           source: "CATALOGO",
           pageUrl: window.location.href,
         }),
@@ -85,17 +71,15 @@ export default function CatalogoPage() {
                 Catálogo liberado
               </h2>
               <p className="mt-3 text-sm text-pili-concrete">
-                Clique no botão abaixo para fazer o download. O catálogo também
-                foi enviado para o seu e-mail.
+                Recebemos seus dados. Nossa equipe comercial enviará o catálogo
+                completo para o e-mail informado em até um dia útil.
               </p>
-              <a
-                href="/documents/catalogo-pili-industrial.pdf"
-                download
+              <Link
+                href="/produtos"
                 className="mt-6 inline-flex items-center gap-2 bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
               >
-                <Download className="h-4 w-4" />
-                Baixar catálogo PDF
-              </a>
+                Ver a linha de produtos
+              </Link>
             </div>
           ) : (
             /* Lead gate form */
@@ -112,53 +96,37 @@ export default function CatalogoPage() {
                 </div>
               </div>
 
-              <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="mt-8 flex flex-col gap-4"
+              >
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <Label htmlFor="cat-name">Nome *</Label>
-                    <Input
-                      id="cat-name"
-                      value={formData.name}
-                      onChange={(e) =>
-                        setFormData({ ...formData, name: e.target.value })
-                      }
-                    />
+                    <Input id="cat-name" {...register("name")} />
                     {errors.name && (
                       <p className="mt-1 text-xs text-pili-danger">
-                        {errors.name}
+                        {errors.name.message}
                       </p>
                     )}
                   </div>
 
                   <div>
                     <Label htmlFor="cat-email">E-mail *</Label>
-                    <Input
-                      id="cat-email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
-                    />
+                    <Input id="cat-email" type="email" {...register("email")} />
                     {errors.email && (
                       <p className="mt-1 text-xs text-pili-danger">
-                        {errors.email}
+                        {errors.email.message}
                       </p>
                     )}
                   </div>
 
                   <div>
                     <Label htmlFor="cat-company">Empresa *</Label>
-                    <Input
-                      id="cat-company"
-                      value={formData.company}
-                      onChange={(e) =>
-                        setFormData({ ...formData, company: e.target.value })
-                      }
-                    />
+                    <Input id="cat-company" {...register("company")} />
                     {errors.company && (
                       <p className="mt-1 text-xs text-pili-danger">
-                        {errors.company}
+                        {errors.company.message}
                       </p>
                     )}
                   </div>
@@ -167,10 +135,7 @@ export default function CatalogoPage() {
                     <Label htmlFor="cat-country">País *</Label>
                     <select
                       id="cat-country"
-                      value={formData.country}
-                      onChange={(e) =>
-                        setFormData({ ...formData, country: e.target.value })
-                      }
+                      {...register("country")}
                       className="flex h-10 w-full border border-pili-mist bg-pili-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pili-safety"
                     >
                       <option value="BR">Brasil</option>
@@ -181,15 +146,42 @@ export default function CatalogoPage() {
                       <option value="CO">Colômbia</option>
                       <option value="PE">Peru</option>
                       <option value="US">Estados Unidos</option>
-                      <option value="XX">Outro</option>
+                      <option value="ZZ">Outro</option>
                     </select>
                     {errors.country && (
                       <p className="mt-1 text-xs text-pili-danger">
-                        {errors.country}
+                        {errors.country.message}
                       </p>
                     )}
                   </div>
                 </div>
+
+                <div className="flex items-start gap-2">
+                  <input
+                    type="checkbox"
+                    id="cat-consent"
+                    {...register("consent")}
+                    className="mt-1 h-4 w-4 accent-pili-safety"
+                  />
+                  <Label
+                    htmlFor="cat-consent"
+                    className="text-sm font-normal text-pili-concrete"
+                  >
+                    Aceito a{" "}
+                    <Link
+                      href="/politica-privacidade"
+                      className="underline underline-offset-2 hover:text-pili-black"
+                    >
+                      política de privacidade
+                    </Link>{" "}
+                    e o contato da equipe comercial.
+                  </Label>
+                </div>
+                {errors.consent && (
+                  <p className="text-xs text-pili-danger">
+                    {errors.consent.message}
+                  </p>
+                )}
 
                 <button
                   type="submit"

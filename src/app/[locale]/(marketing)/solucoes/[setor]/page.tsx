@@ -1,4 +1,6 @@
 import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { Link } from "@/i18n/routing";
 import { PRODUCTS } from "@/lib/data/products";
 import { CASES } from "@/lib/data/cases";
@@ -6,8 +8,7 @@ import { ProductCard } from "@/components/marketing/product-card";
 import { LeadForm } from "@/components/marketing/lead-form";
 import {
   generatePageMetadata,
-  generateBreadcrumbJsonLd,
-} from "@/lib/seo";
+  generateBreadcrumbJsonLd, jsonLdScript} from "@/lib/seo";
 
 /* -------------------------------------------------------------------------- */
 /*  Sector data                                                               */
@@ -88,13 +89,14 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ setor: string }>;
+  params: Promise<{ locale: string; setor: string }>;
 }) {
-  const { setor } = await params;
+  const { locale, setor } = await params;
   const sector = SECTORS[setor];
   if (!sector) return {};
 
   return generatePageMetadata({
+    locale,
     title: `Soluções para ${sector.label}`,
     description: sector.description,
     path: `/solucoes/${setor}`,
@@ -108,9 +110,10 @@ export async function generateMetadata({
 export default async function SectorPage({
   params,
 }: {
-  params: Promise<{ setor: string }>;
+  params: Promise<{ locale: string; setor: string }>;
 }) {
-  const { setor } = await params;
+  const { locale, setor } = await params;
+  setRequestLocale(locale);
   const sector = SECTORS[setor];
   if (!sector) notFound();
 
@@ -127,9 +130,17 @@ export default async function SectorPage({
 
   return (
     <main className="pt-[var(--header-height)]">
+      <div className="mx-auto max-w-6xl px-6 pt-8 lg:px-8">
+        <Breadcrumbs
+          items={[
+            { name: "Soluções", href: "/solucoes" },
+            { name: sector.label },
+          ]}
+        />
+      </div>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd) }}
       />
 
       {/* ------------------------------------------------------------------ */}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { z } from "zod";
 import { notFound } from "next/navigation";
 import {
   ArrowLeft,
@@ -17,11 +18,11 @@ import {
   Tag,
 } from "lucide-react";
 import { requireRole } from "@/lib/auth-guard";
+import { formatDateTime } from "@/lib/datetime";
 import { db } from "@/lib/db";
-import { addNote } from "../actions";
+import { AddNoteForm } from "@/components/admin/add-note-form";
 import { LeadStatusSelect } from "@/components/admin/lead-status-select";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -29,49 +30,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea";
-import type { LeadStatus, LeadSource } from "@prisma/client";
+import { STATUS_LABELS, STATUS_COLORS, SOURCE_LABELS } from "@/lib/lead-display";
 
 /* ---------- helpers ---------- */
-
-const STATUS_LABELS: Record<LeadStatus, string> = {
-  NOVO: "Novo",
-  QUALIFICADO: "Qualificado",
-  CONTATADO: "Contatado",
-  PROPOSTA: "Proposta",
-  GANHO: "Ganho",
-  PERDIDO: "Perdido",
-};
-
-const STATUS_COLORS: Record<LeadStatus, string> = {
-  NOVO: "bg-blue-100 text-blue-800 border-blue-200",
-  QUALIFICADO: "bg-amber-100 text-amber-800 border-amber-200",
-  CONTATADO: "bg-purple-100 text-purple-800 border-purple-200",
-  PROPOSTA: "bg-cyan-100 text-cyan-800 border-cyan-200",
-  GANHO: "bg-green-100 text-green-800 border-green-200",
-  PERDIDO: "bg-red-100 text-red-800 border-red-200",
-};
-
-const SOURCE_LABELS: Record<LeadSource, string> = {
-  ORGANICO: "Orgânico",
-  PAGO: "Pago",
-  REFERRAL: "Referral",
-  WHATSAPP: "WhatsApp",
-  CATALOGO: "Catálogo",
-  CALCULADORA: "Calculadora",
-  COMPARATIVO: "Comparativo",
-  FORMULARIO: "Formulário",
-};
-
-function formatDateTime(date: Date) {
-  return new Intl.DateTimeFormat("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(date);
-}
 
 /* ---------- page ---------- */
 
@@ -84,31 +45,25 @@ export default async function LeadDetailPage({ params }: PageProps) {
 
   const { id } = await params;
 
-  let lead;
-  try {
-    lead = await db.lead.findUnique({
-      where: { id },
-      include: {
-        notes: {
-          orderBy: { createdAt: "desc" },
-        },
+  // Sem try/catch: uma falha de banco deve subir para o error boundary, não
+  // virar "lead não encontrado".
+  const lead = await db.lead.findUnique({
+    where: { id },
+    include: {
+      notes: {
+        orderBy: { createdAt: "desc" },
+        include: { author: { select: { name: true, email: true } } },
       },
-    });
-  } catch {
-    lead = null;
-  }
+    },
+  });
 
   if (!lead) notFound();
 
-  /* --- add note action --- */
-  async function handleAddNote(formData: FormData) {
-    "use server";
-    const content = formData.get("content") as string;
-    if (!content?.trim()) return;
-    await addNote(id, content.trim());
-  }
-
-  const utm = lead.utm as Record<string, string> | null;
+  // `Lead.utm` é `Json?`: pode conter escalar ou array vindo de importação ou
+  // inserção manual. Validar na leitura evita renderizar lixo (uma string "abc"
+  // produziria três cards com letras soltas via Object.entries).
+  const utmParsed = z.record(z.string()).safeParse(lead.utm);
+  const utm = utmParsed.success ? utmParsed.data : null;
 
   return (
     <div className="space-y-6">
@@ -135,7 +90,7 @@ export default async function LeadDetailPage({ params }: PageProps) {
             <CardContent className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <InfoRow icon={Mail} label="Email" value={lead.email} />
-                <InfoRow icon={Phone} label="Telefone" value={lead.phone} />
+                <InfoRow icon={Phone} label="Telefone" value={lead.phone ?? ""} />
                 {lead.company && (
                   <InfoRow
                     icon={Building2}
@@ -212,17 +167,7 @@ export default async function LeadDetailPage({ params }: PageProps) {
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Add note form */}
-              <form action={handleAddNote} className="space-y-3">
-                <Textarea
-                  name="content"
-                  placeholder="Adicionar uma nota..."
-                  required
-                  className="min-h-[80px]"
-                />
-                <Button type="submit" size="sm">
-                  Adicionar nota
-                </Button>
-              </form>
+              <AddNoteForm leadId={lead.id} />
 
               {lead.notes.length > 0 && <Separator />}
 
@@ -240,7 +185,9 @@ export default async function LeadDetailPage({ params }: PageProps) {
                     >
                       <div className="absolute -left-[5px] top-1.5 size-2 rounded-full bg-pili-cement" />
                       <div className="flex items-center gap-2 text-xs text-pili-steel">
-                        <span className="font-mono">{note.authorId}</span>
+                        <span className="font-medium">
+                          {note.author.name ?? note.author.email}
+                        </span>
                         <span>--</span>
                         <time>{formatDateTime(note.createdAt)}</time>
                       </div>

@@ -221,6 +221,3 @@ export function getFeaturedCases() {
   return CASES.filter((c) => c.featured);
 }
 
-export function getCasesByApplication(app: string) {
-  return CASES.filter((c) => c.application === app);
-}

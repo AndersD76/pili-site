@@ -3,6 +3,23 @@ import bcrypt from "bcryptjs";
 
 const db = new PrismaClient();
 
+const BCRYPT_ROUNDS = 12;
+
+/**
+ * Lê uma variável obrigatória. Credenciais nunca são embutidas no código: este
+ * seed faz `upsert`, então uma senha fixa aqui sobrescreveria a senha real do
+ * admin se rodasse contra produção.
+ */
+function requireEnv(name: string): string {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(
+      `Variável de ambiente ${name} é obrigatória para rodar o seed de usuários.`,
+    );
+  }
+  return value;
+}
+
 // ============================================================================
 // 1. USERS
 // ============================================================================
@@ -10,15 +27,24 @@ const db = new PrismaClient();
 async function seedUsers() {
   console.log("\n--- Seeding users ---");
 
-  const adminHash = bcrypt.hashSync("pili2025", 10);
-  const clientHash = bcrypt.hashSync("cliente2025", 10);
+  const adminEmail = requireEnv("SEED_ADMIN_EMAIL").toLowerCase().trim();
+  const clientEmail = requireEnv("SEED_CLIENT_EMAIL").toLowerCase().trim();
+
+  const adminHash = bcrypt.hashSync(
+    requireEnv("SEED_ADMIN_PASSWORD"),
+    BCRYPT_ROUNDS,
+  );
+  const clientHash = bcrypt.hashSync(
+    requireEnv("SEED_CLIENT_PASSWORD"),
+    BCRYPT_ROUNDS,
+  );
 
   const admin = await db.user.upsert({
-    where: { email: "admin@pili.ind.br" },
+    where: { email: adminEmail },
     update: { passwordHash: adminHash, role: "ADMIN" },
     create: {
-      email: "admin@pili.ind.br",
-      name: "Administrador PILI",
+      email: adminEmail,
+      name: process.env.SEED_ADMIN_NAME ?? "Administrador PILI",
       passwordHash: adminHash,
       role: "ADMIN",
       company: "PILI Industrial",
@@ -27,11 +53,11 @@ async function seedUsers() {
   console.log(`  [OK] Admin: ${admin.email}`);
 
   const client = await db.user.upsert({
-    where: { email: "cliente@pili.ind.br" },
+    where: { email: clientEmail },
     update: { passwordHash: clientHash, role: "CLIENTE" },
     create: {
-      email: "cliente@pili.ind.br",
-      name: "Roberto Mendes",
+      email: clientEmail,
+      name: process.env.SEED_CLIENT_NAME ?? "Roberto Mendes",
       passwordHash: clientHash,
       role: "CLIENTE",
       company: "Cooperativa Central Agricola",
@@ -1415,6 +1441,12 @@ async function seedClientEquipment(clientUserId: string) {
 async function main() {
   console.log("=== PILI Industrial — Full Database Seed ===");
   console.log(`Started at ${new Date().toISOString()}\n`);
+
+  if (process.env.NODE_ENV === "production" && !process.env.ALLOW_PROD_SEED) {
+    throw new Error(
+      "Recusando rodar o seed em produção. Defina ALLOW_PROD_SEED=1 se for intencional.",
+    );
+  }
 
   try {
     // 1. Users
