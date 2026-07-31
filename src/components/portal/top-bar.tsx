@@ -67,9 +67,9 @@ export function PortalTopBar({ user }: PortalTopBarProps) {
                 <p className="text-sm font-medium">{user.name}</p>
               )}
               {user.email && (
-                <p className="text-xs text-pili-cement">{user.email}</p>
+                <p className="text-xs text-pili-concrete">{user.email}</p>
               )}
-              <p className="text-xs text-pili-cement uppercase">{user.role}</p>
+              <p className="text-xs text-pili-concrete uppercase">{user.role}</p>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />

@@ -2,9 +2,58 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
-import { ProductCategory } from "@prisma/client";
+import { requireAdmin } from "@/lib/auth-guard";
+
+/** Teto de segurança nas listagens do painel. */
+const MAX_LIST = 200;
+import { isUniqueConstraintError, logError } from "@/lib/prisma-errors";
+import {
+  productInputSchema,
+  firstIssue,
+  formBool,
+  formString,
+  formJsonArray,
+} from "@/lib/validators/admin";
+
+/* ---------- helpers ---------- */
+
+/** Extrai e valida o payload do formulário. */
+function parseProductForm(data: FormData) {
+  const specs = formJsonArray(data, "specs");
+  if (specs === null) {
+    return { ok: false as const, error: "Formato de especificações inválido" };
+  }
+
+  const tagline = formString(data, "tagline").trim();
+
+  const metaTitle = formString(data, "metaTitle").trim();
+  const metaDesc = formString(data, "metaDesc").trim();
+
+  const parsed = productInputSchema.safeParse({
+    metaTitle: metaTitle || null,
+    metaDesc: metaDesc || null,
+    slug: formString(data, "slug"),
+    category: formString(data, "category"),
+    name: formString(data, "name"),
+    tagline: tagline || null,
+    description: formString(data, "description"),
+    active: formBool(data, "active"),
+    featured: formBool(data, "featured"),
+    specs,
+  });
+
+  if (!parsed.success) {
+    return { ok: false as const, error: firstIssue(parsed.error) };
+  }
+
+  return { ok: true as const, data: parsed.data };
+}
+
+/* ---------- leitura ---------- */
 
 export async function getProducts() {
+  await requireAdmin();
+
   try {
     const products = await db.product.findMany({
       include: {
@@ -12,15 +61,19 @@ export async function getProducts() {
           where: { locale: "pt_BR" },
         },
       },
-      orderBy: { order: "asc" },
+      orderBy: [{ order: "asc" }, { createdAt: "asc" }],
+      take: MAX_LIST,
     });
     return { data: products, error: null };
-  } catch {
+  } catch (err) {
+    logError("PRODUTOS_LIST", err);
     return { data: [], error: "Erro ao carregar produtos" };
   }
 }
 
 export async function getProductById(id: string) {
+  await requireAdmin();
+
   try {
     const product = await db.product.findUnique({
       where: { id },
@@ -31,34 +84,42 @@ export async function getProductById(id: string) {
       },
     });
     return { data: product, error: null };
-  } catch {
+  } catch (err) {
+    logError("PRODUTOS_GET", err);
     return { data: null, error: "Erro ao carregar produto" };
   }
 }
 
+/* ---------- escrita ---------- */
+
 export async function createProduct(data: FormData) {
+  await requireAdmin();
+
+  const parsed = parseProductForm(data);
+  if (!parsed.ok) {
+    return { success: false, error: parsed.error };
+  }
+
+  const {
+    slug,
+    category,
+    name,
+    tagline,
+    description,
+    active,
+    featured,
+    specs,
+    metaTitle,
+    metaDesc,
+  } = parsed.data;
+
   try {
-    const slug = data.get("slug") as string;
-    const category = data.get("category") as ProductCategory;
-    const name = data.get("name") as string;
-    const tagline = (data.get("tagline") as string) || null;
-    const description = data.get("description") as string;
-    const featured = data.get("featured") === "true";
-    const active = data.get("active") === "true";
-    const specsRaw = data.get("specs") as string;
-
-    let specs: { key: string; value: string }[] = [];
-    if (specsRaw) {
-      try {
-        specs = JSON.parse(specsRaw);
-      } catch {
-        return { success: false, error: "Formato de especificações inválido" };
-      }
-    }
-
-    if (!slug || !category || !name || !description) {
-      return { success: false, error: "Campos obrigatórios não preenchidos" };
-    }
+    // `order` nunca era definido: todos os produtos ficavam em 0 e o
+    // `orderBy: { order: "asc" }` da listagem devolvia ordem indefinida.
+    const last = await db.product.findFirst({
+      orderBy: { order: "desc" },
+      select: { order: true },
+    });
 
     const product = await db.product.create({
       data: {
@@ -66,12 +127,15 @@ export async function createProduct(data: FormData) {
         category,
         active,
         featured,
+        order: (last?.order ?? 0) + 1,
         translations: {
           create: {
             locale: "pt_BR",
             name,
             tagline,
             description,
+            metaTitle,
+            metaDesc,
           },
         },
         specs: {
@@ -87,38 +151,36 @@ export async function createProduct(data: FormData) {
     revalidatePath("/admin/produtos");
     return { success: true, id: product.id, error: null };
   } catch (err) {
-    const message =
-      err instanceof Error && err.message.includes("Unique")
-        ? "Slug ja existe"
-        : "Erro ao criar produto";
-    return { success: false, error: message };
+    if (isUniqueConstraintError(err)) {
+      return { success: false, error: "Slug já existe" };
+    }
+    logError("PRODUTOS_CREATE", err);
+    return { success: false, error: "Erro ao criar produto" };
   }
 }
 
 export async function updateProduct(id: string, data: FormData) {
+  await requireAdmin();
+
+  const parsed = parseProductForm(data);
+  if (!parsed.ok) {
+    return { success: false, error: parsed.error };
+  }
+
+  const {
+    slug,
+    category,
+    name,
+    tagline,
+    description,
+    active,
+    featured,
+    specs,
+    metaTitle,
+    metaDesc,
+  } = parsed.data;
+
   try {
-    const slug = data.get("slug") as string;
-    const category = data.get("category") as ProductCategory;
-    const name = data.get("name") as string;
-    const tagline = (data.get("tagline") as string) || null;
-    const description = data.get("description") as string;
-    const featured = data.get("featured") === "true";
-    const active = data.get("active") === "true";
-    const specsRaw = data.get("specs") as string;
-
-    let specs: { key: string; value: string }[] = [];
-    if (specsRaw) {
-      try {
-        specs = JSON.parse(specsRaw);
-      } catch {
-        return { success: false, error: "Formato de especificações inválido" };
-      }
-    }
-
-    if (!slug || !category || !name || !description) {
-      return { success: false, error: "Campos obrigatórios não preenchidos" };
-    }
-
     await db.$transaction([
       db.product.update({
         where: { id },
@@ -131,13 +193,15 @@ export async function updateProduct(id: string, data: FormData) {
       }),
       db.productTranslation.upsert({
         where: { productId_locale: { productId: id, locale: "pt_BR" } },
-        update: { name, tagline, description },
+        update: { name, tagline, description, metaTitle, metaDesc },
         create: {
           productId: id,
           locale: "pt_BR",
           name,
           tagline,
           description,
+          metaTitle,
+          metaDesc,
         },
       }),
       db.spec.deleteMany({ where: { productId: id } }),
@@ -149,32 +213,38 @@ export async function updateProduct(id: string, data: FormData) {
             value: s.value,
             order: i,
           },
-        })
+        }),
       ),
     ]);
 
     revalidatePath("/admin/produtos");
+
     return { success: true, error: null };
   } catch (err) {
-    const message =
-      err instanceof Error && err.message.includes("Unique")
-        ? "Slug ja existe"
-        : "Erro ao atualizar produto";
-    return { success: false, error: message };
+    if (isUniqueConstraintError(err)) {
+      return { success: false, error: "Slug já existe" };
+    }
+    logError("PRODUTOS_UPDATE", err);
+    return { success: false, error: "Erro ao atualizar produto" };
   }
 }
 
 export async function deleteProduct(id: string) {
+  await requireAdmin();
+
   try {
     await db.product.delete({ where: { id } });
     revalidatePath("/admin/produtos");
     return { success: true, error: null };
-  } catch {
+  } catch (err) {
+    logError("PRODUTOS_DELETE", err);
     return { success: false, error: "Erro ao excluir produto" };
   }
 }
 
 export async function toggleProductFeatured(id: string) {
+  await requireAdmin();
+
   try {
     const product = await db.product.findUnique({
       where: { id },
@@ -189,7 +259,8 @@ export async function toggleProductFeatured(id: string) {
 
     revalidatePath("/admin/produtos");
     return { success: true, error: null };
-  } catch {
+  } catch (err) {
+    logError("PRODUTOS_TOGGLE_FEATURED", err);
     return { success: false, error: "Erro ao alterar destaque" };
   }
 }

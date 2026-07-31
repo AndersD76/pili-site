@@ -1,9 +1,16 @@
 import { generatePageMetadata } from "@/lib/seo";
+import { setRequestLocale } from "next-intl/server";
 import { LeadForm } from "@/components/marketing/lead-form";
 import { COMPANY } from "@/lib/constants";
 
-export function generateMetadata() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   return generatePageMetadata({
+    locale,
     title: "Solicitar Orçamento",
     description:
       "Solicite um orçamento para tombadores hidráulicos, coletores de amostras e equipamentos de descarga PILI Industrial. Resposta em até 24h.",
@@ -11,7 +18,14 @@ export function generateMetadata() {
   });
 }
 
-export default function OrcamentoPage() {
+export default async function OrcamentoPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <main className="pt-[var(--header-height)]">
       {/* Hero */}

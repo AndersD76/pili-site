@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { generatePageMetadata } from "@/lib/seo";
@@ -7,8 +8,14 @@ import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
 import { BlogCategoryFilter } from "@/components/marketing/blog-category-filter";
 import { ArrowRight, Clock } from "lucide-react";
 
-export function generateMetadata() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   return generatePageMetadata({
+    locale,
     title: "Blog",
     description:
       "Notícias, artigos técnicos e novidades da PILI Industrial. Feiras, lançamentos e conteúdo sobre tombadores hidráulicos e logística industrial.",
@@ -33,10 +40,15 @@ function formatDate(iso: string): string {
 }
 
 export default async function BlogPage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<{ categoria?: string }>;
 }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const { categoria } = await searchParams;
   const activeCategory = categoria ?? "todos";
   const filteredPosts = getPostsByCategory(activeCategory);

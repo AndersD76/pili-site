@@ -2,8 +2,49 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { requireAdmin } from "@/lib/auth-guard";
+
+/** Teto de segurança nas listagens do painel. */
+const MAX_LIST = 200;
+import { isUniqueConstraintError, logError } from "@/lib/prisma-errors";
+import {
+  postInputSchema,
+  firstIssue,
+  formBool,
+  formString,
+} from "@/lib/validators/admin";
+
+/* ---------- helpers ---------- */
+
+/** Extrai e valida o payload do formulário. */
+function parsePostForm(data: FormData) {
+  const tags = formString(data, "tags")
+    .split(",")
+    .map((t) => t.trim())
+    .filter(Boolean);
+
+  const parsed = postInputSchema.safeParse({
+    slug: formString(data, "slug"),
+    author: formString(data, "author").trim() || "PILI Industrial",
+    title: formString(data, "title"),
+    excerpt: formString(data, "excerpt"),
+    content: formString(data, "content"),
+    published: formBool(data, "published"),
+    tags,
+  });
+
+  if (!parsed.success) {
+    return { ok: false as const, error: firstIssue(parsed.error) };
+  }
+
+  return { ok: true as const, data: parsed.data };
+}
+
+/* ---------- leitura ---------- */
 
 export async function getPosts() {
+  await requireAdmin();
+
   try {
     const posts = await db.post.findMany({
       include: {
@@ -12,14 +53,18 @@ export async function getPosts() {
         },
       },
       orderBy: { createdAt: "desc" },
+      take: MAX_LIST,
     });
     return { data: posts, error: null };
-  } catch {
+  } catch (err) {
+    logError("BLOG_LIST", err);
     return { data: [], error: "Erro ao carregar artigos" };
   }
 }
 
 export async function getPostById(id: string) {
+  await requireAdmin();
+
   try {
     const post = await db.post.findUnique({
       where: { id },
@@ -28,32 +73,25 @@ export async function getPostById(id: string) {
       },
     });
     return { data: post, error: null };
-  } catch {
+  } catch (err) {
+    logError("BLOG_GET", err);
     return { data: null, error: "Erro ao carregar artigo" };
   }
 }
 
+/* ---------- escrita ---------- */
+
 export async function createPost(data: FormData) {
+  await requireAdmin();
+
+  const parsed = parsePostForm(data);
+  if (!parsed.ok) {
+    return { success: false, error: parsed.error };
+  }
+
+  const { slug, author, title, excerpt, content, published, tags } = parsed.data;
+
   try {
-    const slug = data.get("slug") as string;
-    const author = (data.get("author") as string) || "PILI Industrial";
-    const title = data.get("title") as string;
-    const excerpt = data.get("excerpt") as string;
-    const content = data.get("content") as string;
-    const published = data.get("published") === "true";
-    const tagsRaw = data.get("tags") as string;
-
-    const tags = tagsRaw
-      ? tagsRaw
-          .split(",")
-          .map((t) => t.trim())
-          .filter(Boolean)
-      : [];
-
-    if (!slug || !title || !excerpt || !content) {
-      return { success: false, error: "Campos obrigatórios não preenchidos" };
-    }
-
     const post = await db.post.create({
       data: {
         slug,
@@ -75,35 +113,25 @@ export async function createPost(data: FormData) {
     revalidatePath("/admin/blog");
     return { success: true, id: post.id, error: null };
   } catch (err) {
-    const message =
-      err instanceof Error && err.message.includes("Unique")
-        ? "Slug ja existe"
-        : "Erro ao criar artigo";
-    return { success: false, error: message };
+    if (isUniqueConstraintError(err)) {
+      return { success: false, error: "Slug já existe" };
+    }
+    logError("BLOG_CREATE", err);
+    return { success: false, error: "Erro ao criar artigo" };
   }
 }
 
 export async function updatePost(id: string, data: FormData) {
+  await requireAdmin();
+
+  const parsed = parsePostForm(data);
+  if (!parsed.ok) {
+    return { success: false, error: parsed.error };
+  }
+
+  const { slug, author, title, excerpt, content, published, tags } = parsed.data;
+
   try {
-    const slug = data.get("slug") as string;
-    const author = (data.get("author") as string) || "PILI Industrial";
-    const title = data.get("title") as string;
-    const excerpt = data.get("excerpt") as string;
-    const content = data.get("content") as string;
-    const published = data.get("published") === "true";
-    const tagsRaw = data.get("tags") as string;
-
-    const tags = tagsRaw
-      ? tagsRaw
-          .split(",")
-          .map((t) => t.trim())
-          .filter(Boolean)
-      : [];
-
-    if (!slug || !title || !excerpt || !content) {
-      return { success: false, error: "Campos obrigatórios não preenchidos" };
-    }
-
     const existing = await db.post.findUnique({
       where: { id },
       select: { published: true, publishedAt: true },
@@ -143,25 +171,30 @@ export async function updatePost(id: string, data: FormData) {
     revalidatePath("/admin/blog");
     return { success: true, error: null };
   } catch (err) {
-    const message =
-      err instanceof Error && err.message.includes("Unique")
-        ? "Slug ja existe"
-        : "Erro ao atualizar artigo";
-    return { success: false, error: message };
+    if (isUniqueConstraintError(err)) {
+      return { success: false, error: "Slug já existe" };
+    }
+    logError("BLOG_UPDATE", err);
+    return { success: false, error: "Erro ao atualizar artigo" };
   }
 }
 
 export async function deletePost(id: string) {
+  await requireAdmin();
+
   try {
     await db.post.delete({ where: { id } });
     revalidatePath("/admin/blog");
     return { success: true, error: null };
-  } catch {
+  } catch (err) {
+    logError("BLOG_DELETE", err);
     return { success: false, error: "Erro ao excluir artigo" };
   }
 }
 
 export async function togglePublish(id: string) {
+  await requireAdmin();
+
   try {
     const post = await db.post.findUnique({
       where: { id },
@@ -180,7 +213,8 @@ export async function togglePublish(id: string) {
 
     revalidatePath("/admin/blog");
     return { success: true, error: null };
-  } catch {
+  } catch (err) {
+    logError("BLOG_TOGGLE_PUBLISH", err);
     return { success: false, error: "Erro ao alterar publicação" };
   }
 }

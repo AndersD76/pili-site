@@ -1,4 +1,6 @@
 import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import {
@@ -8,7 +10,7 @@ import {
 import {
   generatePageMetadata,
   generateBreadcrumbJsonLd,
-} from "@/lib/seo";
+  generateArticleJsonLd, jsonLdScript} from "@/lib/seo";
 import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
 import { ArrowLeft, ArrowRight, Clock, User, Calendar } from "lucide-react";
 
@@ -19,12 +21,13 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const post = getBlogPost(slug);
   if (!post) return {};
   return generatePageMetadata({
+    locale,
     title: post.title,
     description: post.excerpt,
     path: `/blog/${post.slug}`,
@@ -50,9 +53,10 @@ function formatDate(iso: string): string {
 export default async function BlogPostPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
   const post = getBlogPost(slug);
   if (!post) notFound();
 
@@ -62,6 +66,16 @@ export default async function BlogPostPage({
     (p) => p.slug !== post.slug,
   ).slice(0, 3);
 
+  const articleJsonLd = generateArticleJsonLd({
+    title: post.title,
+    description: post.excerpt,
+    image: post.image,
+    slug: post.slug,
+    publishedAt: post.date,
+    author: post.author,
+    tags: post.tags,
+  });
+
   const breadcrumbJsonLd = generateBreadcrumbJsonLd([
     { name: "Home", url: "/" },
     { name: "Blog", url: "/pt-BR/blog" },
@@ -70,9 +84,21 @@ export default async function BlogPostPage({
 
   return (
     <main className="pt-[var(--header-height)]">
+      <div className="mx-auto max-w-6xl px-6 pt-8 lg:px-8">
+        <Breadcrumbs
+          items={[
+            { name: "Blog", href: "/blog" },
+            { name: post.title },
+          ]}
+        />
+      </div>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd) }}
       />
 
       {/* Breadcrumb */}

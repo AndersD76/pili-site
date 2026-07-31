@@ -35,6 +35,7 @@ enum LeadSource {
   CALCULADORA
   COMPARATIVO
   FORMULARIO
+  TRABALHE_CONOSCO
 }
 
 enum ProductCategory {
@@ -54,20 +55,22 @@ enum Locale {
 // ============ AUTH ============
 
 model User {
-  id            String    @id @default(cuid())
+  id            String            @id @default(cuid())
   name          String?
-  email         String    @unique
-  emailVerified DateTime?
+  email         String            @unique
+  emailVerified DateTime? @db.Timestamptz(3)
   image         String?
   passwordHash  String?
-  role          Role      @default(CLIENTE)
+  role          Role              @default(CLIENTE)
   company       String?
   phone         String?
   cpfCnpj       String?
   accounts      Account[]
   sessions      Session[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  notes         Note[]
+  equipment     ClientEquipment[]
+  createdAt     DateTime          @default(now()) @db.Timestamptz(3)
+  updatedAt     DateTime          @updatedAt @db.Timestamptz(3)
 }
 
 model Account {
@@ -92,14 +95,14 @@ model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
   userId       String
-  expires      DateTime
+  expires      DateTime @db.Timestamptz(3)
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
   identifier String
   token      String   @unique
-  expires    DateTime
+  expires    DateTime @db.Timestamptz(3)
 
   @@unique([identifier, token])
 }
@@ -119,8 +122,8 @@ model Product {
   media        Media[]
   faqs         FAQ[]
   applications Application[]        @relation("ProductApplications")
-  createdAt    DateTime             @default(now())
-  updatedAt    DateTime             @updatedAt
+  createdAt    DateTime             @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime             @updatedAt @db.Timestamptz(3)
 }
 
 model ProductTranslation {
@@ -144,6 +147,8 @@ model Spec {
   value     String
   order     Int     @default(0)
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
 }
 
 model Feature {
@@ -155,6 +160,8 @@ model Feature {
   icon        String?
   order       Int     @default(0)
   product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
 }
 
 model FAQ {
@@ -165,6 +172,8 @@ model FAQ {
   answer    String   @db.Text
   order     Int      @default(0)
   product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
 }
 
 model Application {
@@ -200,7 +209,10 @@ model Media {
   order     Int      @default(0)
   product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
   case      Case?    @relation(fields: [caseId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([productId])
+  @@index([caseId])
 }
 
 // ============ CASES / OBRAS ============
@@ -218,8 +230,8 @@ model Case {
   media         Media[]
   metrics       CaseMetric[]
   application   Application?      @relation(fields: [applicationId], references: [id])
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt
+  createdAt     DateTime          @default(now()) @db.Timestamptz(3)
+  updatedAt     DateTime          @updatedAt @db.Timestamptz(3)
 }
 
 model CaseTranslation {
@@ -240,6 +252,8 @@ model CaseMetric {
   label  String
   value  String
   case   Case   @relation(fields: [caseId], references: [id], onDelete: Cascade)
+
+  @@index([caseId])
 }
 
 // ============ BLOG ============
@@ -250,11 +264,11 @@ model Post {
   author       String            @default("PILI Industrial")
   cover        String?
   published    Boolean           @default(false)
-  publishedAt  DateTime?
+  publishedAt  DateTime? @db.Timestamptz(3)
   translations PostTranslation[]
   tags         String[]          @default([])
-  createdAt    DateTime          @default(now())
-  updatedAt    DateTime          @updatedAt
+  createdAt    DateTime          @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime          @updatedAt @db.Timestamptz(3)
 }
 
 model PostTranslation {
@@ -277,7 +291,8 @@ model Lead {
   id              String     @id @default(cuid())
   name            String
   email           String
-  phone           String
+  // Opcional: os gates de catálogo e calculadora convertem só com e-mail.
+  phone           String?
   company         String?
   cnpj            String?
   country         String     @default("BR")
@@ -296,8 +311,15 @@ model Lead {
   status          LeadStatus @default(NOVO)
   assignedTo      String?
   notes           Note[]
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
+  consentAt       DateTime? @db.Timestamptz(3)
+  anonymizedAt    DateTime? @db.Timestamptz(3)
+  deletedAt       DateTime? @db.Timestamptz(3)
+  createdAt       DateTime   @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime   @updatedAt @db.Timestamptz(3)
+
+  @@index([deletedAt, createdAt])
+  @@index([status])
+  @@index([source])
 }
 
 model Note {
@@ -305,8 +327,12 @@ model Note {
   leadId    String
   authorId  String
   content   String   @db.Text
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
   lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  author    User     @relation(fields: [authorId], references: [id])
+
+  @@index([leadId])
+  @@index([authorId])
 }
 
 // ============ JOB POSTINGS ============
@@ -317,7 +343,7 @@ model Job {
   active       Boolean          @default(true)
   translations JobTranslation[]
   applications JobApplication[]
-  createdAt    DateTime         @default(now())
+  createdAt    DateTime         @default(now()) @db.Timestamptz(3)
 }
 
 model JobTranslation {
@@ -340,7 +366,7 @@ model JobApplication {
   phone     String
   cvUrl     String
   message   String?  @db.Text
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
   job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
 }
 
@@ -351,11 +377,14 @@ model ClientEquipment {
   userId           String
   serialNumber     String         @unique
   productName      String
-  installedAt      DateTime
+  installedAt      DateTime @db.Timestamptz(3)
   installedAddress String?
-  warrantyEndsAt   DateTime?
+  warrantyEndsAt   DateTime? @db.Timestamptz(3)
   serviceOrders    ServiceOrder[]
-  createdAt        DateTime       @default(now())
+  user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt        DateTime       @default(now()) @db.Timestamptz(3)
+
+  @@index([userId])
 }
 
 model ServiceOrder {
@@ -365,9 +394,11 @@ model ServiceOrder {
   type        String
   status      String
   description String          @db.Text
-  scheduledAt DateTime?
-  completedAt DateTime?
-  equipment   ClientEquipment @relation(fields: [equipmentId], references: [id])
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  scheduledAt DateTime? @db.Timestamptz(3)
+  completedAt DateTime? @db.Timestamptz(3)
+  equipment   ClientEquipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+  createdAt   DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime        @updatedAt @db.Timestamptz(3)
+
+  @@index([equipmentId])
 }

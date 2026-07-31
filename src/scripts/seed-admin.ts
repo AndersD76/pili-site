@@ -3,42 +3,78 @@ import bcrypt from "bcryptjs";
 
 const db = new PrismaClient();
 
+const BCRYPT_ROUNDS = 12;
+
+/**
+ * Lê uma variável obrigatória. Credenciais nunca são embutidas no código: este
+ * script faz `upsert`, então uma senha fixa aqui sobrescreveria a senha real do
+ * admin se rodasse contra produção.
+ */
+function requireEnv(name: string): string {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(
+      `Variável de ambiente ${name} é obrigatória para rodar o seed de usuários.`,
+    );
+  }
+  return value;
+}
+
 async function main() {
-  const passwordHash = bcrypt.hashSync("pili2025", 10);
+  if (process.env.NODE_ENV === "production" && !process.env.ALLOW_PROD_SEED) {
+    throw new Error(
+      "Recusando rodar o seed em produção. Defina ALLOW_PROD_SEED=1 se for intencional.",
+    );
+  }
+
+  const adminEmail = requireEnv("SEED_ADMIN_EMAIL");
+  const adminPassword = requireEnv("SEED_ADMIN_PASSWORD");
+  const clientEmail = process.env.SEED_CLIENT_EMAIL;
+  const clientPassword = process.env.SEED_CLIENT_PASSWORD;
+
+  const adminHash = bcrypt.hashSync(adminPassword, BCRYPT_ROUNDS);
 
   await db.user.upsert({
-    where: { email: "admin@pili.ind.br" },
-    update: { passwordHash, role: "ADMIN" },
+    where: { email: adminEmail.toLowerCase().trim() },
+    update: { passwordHash: adminHash, role: "ADMIN" },
     create: {
-      email: "admin@pili.ind.br",
-      name: "Administrador PILI",
-      passwordHash,
+      email: adminEmail.toLowerCase().trim(),
+      name: process.env.SEED_ADMIN_NAME ?? "Administrador PILI",
+      passwordHash: adminHash,
       role: "ADMIN",
       company: "PILI Industrial",
     },
   });
 
-  await db.user.upsert({
-    where: { email: "cliente@pili.ind.br" },
-    update: {
-      passwordHash: bcrypt.hashSync("cliente2025", 10),
-      role: "CLIENTE",
-    },
-    create: {
-      email: "cliente@pili.ind.br",
-      name: "Roberto Mendes",
-      passwordHash: bcrypt.hashSync("cliente2025", 10),
-      role: "CLIENTE",
-      company: "Cooperativa Central Agricola",
-      phone: "+55 54 99876-5432",
-    },
-  });
+  console.log(`[OK] Admin: ${adminEmail}`);
 
-  console.log("Admin and demo client users created/updated successfully!");
-  console.log("Admin: admin@pili.ind.br / pili2025");
-  console.log("Client: cliente@pili.ind.br / cliente2025");
+  if (clientEmail && clientPassword) {
+    const clientHash = bcrypt.hashSync(clientPassword, BCRYPT_ROUNDS);
+
+    await db.user.upsert({
+      where: { email: clientEmail.toLowerCase().trim() },
+      update: { passwordHash: clientHash, role: "CLIENTE" },
+      create: {
+        email: clientEmail.toLowerCase().trim(),
+        name: process.env.SEED_CLIENT_NAME ?? "Cliente demonstração",
+        passwordHash: clientHash,
+        role: "CLIENTE",
+        company: "Cooperativa Central Agricola",
+        phone: "+55 54 99876-5432",
+      },
+    });
+
+    console.log(`[OK] Cliente: ${clientEmail}`);
+  } else {
+    console.log(
+      "[--] Cliente de demonstração ignorado (defina SEED_CLIENT_EMAIL e SEED_CLIENT_PASSWORD).",
+    );
+  }
 }
 
 main()
-  .catch(console.error)
+  .catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  })
   .finally(() => db.$disconnect());

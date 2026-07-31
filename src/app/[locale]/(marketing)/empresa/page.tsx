@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/routing";
+import { setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import { generatePageMetadata } from "@/lib/seo";
 import { COMPANY, STATS } from "@/lib/constants";
@@ -6,8 +7,14 @@ import { ShieldCheck, HardHat, Lightbulb, ArrowRight } from "lucide-react";
 import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
 import { StatsBand } from "@/components/marketing/stats-band";
 
-export function generateMetadata() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   return generatePageMetadata({
+    locale,
     title: "A Empresa",
     description: `${COMPANY.name}: fabricante de tombadores hidráulicos desde ${COMPANY.founded}. ${STATS.years}+ anos de experiência, ${STATS.equipment} equipamentos instalados em ${STATS.countries} países.`,
     path: "/empresa",
@@ -65,7 +72,14 @@ const VALUES = [
   },
 ] as const;
 
-export default function EmpresaPage() {
+export default async function EmpresaPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <main className="pt-[var(--header-height)]">
       {/* Hero */}

@@ -66,6 +66,8 @@ const productSchema = z.object({
       value: z.string().min(1, "Campo obrigatório"),
     })
   ),
+  metaTitle: z.string().max(70, "Máximo de 70 caracteres").optional(),
+  metaDesc: z.string().max(160, "Máximo de 160 caracteres").optional(),
 });
 
 type ProductFormValues = z.infer<typeof productSchema>;
@@ -112,6 +114,8 @@ export function ProductForm({
       featured: product?.featured ?? false,
       specs:
         product?.specs.map((s) => ({ key: s.key, value: s.value })) ?? [],
+      metaTitle: ptTranslation?.metaTitle ?? "",
+      metaDesc: ptTranslation?.metaDesc ?? "",
     },
   });
 
@@ -140,6 +144,8 @@ export function ProductForm({
     formData.set("featured", String(values.featured));
     formData.set("active", String(values.active));
     formData.set("specs", JSON.stringify(values.specs));
+    formData.set("metaTitle", values.metaTitle ?? "");
+    formData.set("metaDesc", values.metaDesc ?? "");
 
     startTransition(async () => {
       const result = isEditing
@@ -257,6 +263,45 @@ export function ProductForm({
       <Separator />
 
       <div className="space-y-4">
+        <div>
+          <h2 className="font-display text-lg font-semibold text-pili-black">
+            SEO
+          </h2>
+          <p className="mt-1 text-sm text-pili-concrete">
+            Título e descrição usados nos resultados de busca. Se ficarem
+            vazios, o nome e a tagline do produto são usados.
+          </p>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="metaTitle">Título para busca</Label>
+          <Input
+            id="metaTitle"
+            {...register("metaTitle")}
+            placeholder="Tombador fixo de 30 metros para portos"
+          />
+          {errors.metaTitle && (
+            <p className="text-xs text-red-600">{errors.metaTitle.message}</p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="metaDesc">Descrição para busca</Label>
+          <Textarea
+            id="metaDesc"
+            {...register("metaDesc")}
+            placeholder="Até 160 caracteres. Aparece abaixo do título no Google."
+            className="min-h-20"
+          />
+          {errors.metaDesc && (
+            <p className="text-xs text-red-600">{errors.metaDesc.message}</p>
+          )}
+        </div>
+      </div>
+
+      <Separator />
+
+      <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="font-display text-lg font-semibold text-pili-black">
             Especificações
@@ -273,7 +318,7 @@ export function ProductForm({
         </div>
 
         {fields.length === 0 && (
-          <p className="text-sm text-pili-cement">
+          <p className="text-sm text-pili-concrete">
             Nenhuma especificação adicionada
           </p>
         )}

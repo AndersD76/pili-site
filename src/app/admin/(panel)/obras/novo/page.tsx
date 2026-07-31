@@ -20,7 +20,7 @@ export default async function NovaObraPage() {
           <h1 className="font-display text-2xl font-bold tracking-tight text-pili-black">
             Nova obra
           </h1>
-          <p className="text-sm text-pili-cement">
+          <p className="text-sm text-pili-concrete">
             Preencha os dados da nova obra
           </p>
         </div>

@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { Link } from "@/i18n/routing";
 import { CASES, getCase } from "@/lib/data/cases";
 import { getProduct } from "@/lib/data/products";
 import { LeadForm } from "@/components/marketing/lead-form";
-import { generatePageMetadata, generateBreadcrumbJsonLd } from "@/lib/seo";
+import { generatePageMetadata, generateBreadcrumbJsonLd, jsonLdScript} from "@/lib/seo";
 
 export function generateStaticParams() {
   return CASES.map((c) => ({ slug: c.slug }));
@@ -12,12 +14,13 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const caseData = getCase(slug);
   if (!caseData) return {};
   return generatePageMetadata({
+    locale,
     title: caseData.title,
     description: caseData.summary,
     path: `/obras/${caseData.slug}`,
@@ -27,9 +30,10 @@ export async function generateMetadata({
 export default async function CaseDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
   const caseData = getCase(slug);
   if (!caseData) notFound();
 
@@ -47,9 +51,17 @@ export default async function CaseDetailPage({
 
   return (
     <main className="pt-[var(--header-height)]">
+      <div className="mx-auto max-w-6xl px-6 pt-8 lg:px-8">
+        <Breadcrumbs
+          items={[
+            { name: "Obras", href: "/obras" },
+            { name: caseData.title },
+          ]}
+        />
+      </div>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd) }}
       />
 
       {/* Breadcrumb */}

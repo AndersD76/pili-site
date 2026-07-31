@@ -273,7 +273,7 @@ export function CaseForm({
         </div>
 
         {fields.length === 0 && (
-          <p className="text-sm text-pili-cement">
+          <p className="text-sm text-pili-concrete">
             Nenhuma métrica adicionada
           </p>
         )}

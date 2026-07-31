@@ -1,9 +1,16 @@
 import { generatePageMetadata } from "@/lib/seo";
+import { setRequestLocale } from "next-intl/server";
 import { COMPANY, SITE_URL } from "@/lib/constants";
 import { Link } from "@/i18n/routing";
 
-export function generateMetadata() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   return generatePageMetadata({
+    locale,
     title: "Termos de Uso",
     description:
       "Termos de uso do site PILI Industrial. Condições de acesso, propriedade intelectual, limitação de responsabilidade e legislação aplicável.",
@@ -12,7 +19,14 @@ export function generateMetadata() {
   });
 }
 
-export default function TermosPage() {
+export default async function TermosPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <main className="pt-[var(--header-height)]">
       {/* Hero */}

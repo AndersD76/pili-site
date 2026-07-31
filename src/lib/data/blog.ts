@@ -202,9 +202,6 @@ export function getBlogPost(slug: string): BlogPost | undefined {
   return BLOG_POSTS.find((post) => post.slug === slug);
 }
 
-export function getFeaturedPosts(): BlogPost[] {
-  return BLOG_POSTS.filter((post) => post.featured);
-}
 
 export function getPostsByCategory(category: string): BlogPost[] {
   if (category === "todos") return BLOG_POSTS;

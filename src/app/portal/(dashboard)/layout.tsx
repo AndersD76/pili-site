@@ -1,19 +1,18 @@
-import { auth } from "@/lib/auth";
+import { requirePortalAuth, STAFF_ROLES } from "@/lib/auth-guard";
 import { redirect } from "next/navigation";
 import { PortalSidebar } from "@/components/portal/sidebar";
 import { PortalTopBar } from "@/components/portal/top-bar";
+import { Toaster } from "sonner";
 
 export default async function PortalDashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
-  if (!session?.user) redirect("/portal/login");
+  const session = await requirePortalAuth();
 
-  const role = session.user.role as string;
-
-  if (role === "ADMIN" || role === "COMERCIAL" || role === "TECNICO") {
+  // Equipe interna não usa o portal do cliente.
+  if ((STAFF_ROLES as string[]).includes(session.user.role)) {
     redirect("/admin");
   }
 
@@ -31,6 +30,7 @@ export default async function PortalDashboardLayout({
         />
         <main className="p-4 lg:p-6">{children}</main>
       </div>
+      <Toaster position="top-right" richColors closeButton />
     </div>
   );
 }

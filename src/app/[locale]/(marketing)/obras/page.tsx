@@ -1,10 +1,17 @@
 import { CASES } from "@/lib/data/cases";
+import { setRequestLocale } from "next-intl/server";
 import { CaseCard } from "@/components/marketing/case-card";
 import { Link } from "@/i18n/routing";
 import { generatePageMetadata } from "@/lib/seo";
 
-export function generateMetadata() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   return generatePageMetadata({
+    locale,
     title: "Obras",
     description:
       "Casos e projetos realizados pela PILI Industrial em portos, cooperativas e indústrias no Brasil e no exterior.",
@@ -12,7 +19,14 @@ export function generateMetadata() {
   });
 }
 
-export default function ObrasPage() {
+export default async function ObrasPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <main className="pt-[var(--header-height)]">
       {/* Hero */}

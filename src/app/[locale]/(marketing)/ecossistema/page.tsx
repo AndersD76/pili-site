@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/routing";
+import { setRequestLocale } from "next-intl/server";
 import { generatePageMetadata } from "@/lib/seo";
 import { ECOSYSTEM_PROJECTS } from "@/lib/data/ecosystem";
 import {
@@ -11,8 +12,14 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-export function generateMetadata() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   return generatePageMetadata({
+    locale,
     title: "Ecossistema PILI",
     description:
       "Conheça o ecossistema PILI: Industrial, Store, Tech, Raste e Harbor. Tecnologia, peças, rastreabilidade e gestão de pátio industrial.",
@@ -28,7 +35,14 @@ const BRAND_ICONS: Record<string, React.ComponentType<{ className?: string }>> =
     harbor: Radio,
   };
 
-export default function EcossistemaPage() {
+export default async function EcossistemaPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <main className="pt-[var(--header-height)]">
       {/* Hero */}

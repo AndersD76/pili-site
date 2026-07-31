@@ -21,7 +21,7 @@ export function StatsCard({
     <Card className="border-pili-mist shadow-none">
       <CardContent className="flex items-start justify-between">
         <div className="flex flex-col gap-1">
-          <span className="text-xs font-medium uppercase tracking-wider text-pili-cement">
+          <span className="text-xs font-medium uppercase tracking-wider text-pili-concrete">
             {title}
           </span>
           <span className="font-display text-2xl font-bold text-pili-black">
@@ -33,7 +33,7 @@ export function StatsCard({
                 "text-xs",
                 trend === "up" && "text-pili-success",
                 trend === "down" && "text-pili-danger",
-                (!trend || trend === "flat") && "text-pili-cement"
+                (!trend || trend === "flat") && "text-pili-concrete"
               )}
             >
               {description}

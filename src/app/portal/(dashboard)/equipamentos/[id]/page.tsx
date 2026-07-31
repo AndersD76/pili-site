@@ -24,15 +24,26 @@ function formatDate(date: Date) {
 
 /* ---------- metadata ---------- */
 
+/**
+ * `generateMetadata` roda independente do corpo da página, então precisa da
+ * mesma checagem de dono — caso contrário o nome do equipamento de outro
+ * cliente vazaria pelo título.
+ */
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
+  const session = await auth();
+  if (!session?.user) return { title: "Equipamento" };
+
   const { id } = await params;
-  const eq = await db.clientEquipment.findUnique({ where: { id } });
-  if (!eq) return { title: "Equipamento" };
-  return { title: eq.productName };
+  const eq = await db.clientEquipment.findFirst({
+    where: { id, userId: session.user.id },
+    select: { productName: true },
+  });
+
+  return { title: eq?.productName ?? "Equipamento" };
 }
 
 /* ---------- page ---------- */
@@ -46,19 +57,14 @@ export default async function EquipamentoDetailPage({ params }: PageProps) {
   if (!session?.user) redirect("/portal/login");
 
   const { id } = await params;
-  const equipment = await db.clientEquipment.findUnique({
-    where: { id },
+
+  // Dono filtrado na consulta: um equipamento de outro cliente é indistinguível
+  // de um inexistente.
+  const equipment = await db.clientEquipment.findFirst({
+    where: { id, userId: session.user.id },
   });
 
   if (!equipment) notFound();
-
-  // Verify the equipment belongs to the current user
-  if (equipment.userId !== session.user.id) {
-    // Admin/comercial/tecnico roles can view any equipment
-    if (session.user.role === "CLIENTE") {
-      notFound();
-    }
-  }
 
   const warrantyValid =
     equipment.warrantyEndsAt && equipment.warrantyEndsAt > new Date();
@@ -80,7 +86,7 @@ export default async function EquipamentoDetailPage({ params }: PageProps) {
             <h1 className="font-display text-2xl font-bold tracking-tight text-pili-graphite sm:text-3xl">
               {equipment.productName}
             </h1>
-            <p className="mt-1 font-mono text-sm text-pili-cement">
+            <p className="mt-1 font-mono text-sm text-pili-concrete">
               {equipment.serialNumber}
             </p>
           </div>
@@ -101,15 +107,15 @@ export default async function EquipamentoDetailPage({ params }: PageProps) {
       {/* ---- Section 2: Info card ---- */}
       <div className="mb-8 rounded-lg border border-pili-mist bg-pili-white p-6">
         <h2 className="mb-5 font-display text-lg font-bold text-pili-graphite">
-          Informacoes gerais
+          Informações gerais
         </h2>
 
         <dl className="space-y-4">
           <div className="flex items-start gap-3">
-            <HardDrive className="mt-0.5 h-4 w-4 shrink-0 text-pili-cement" />
+            <HardDrive className="mt-0.5 h-4 w-4 shrink-0 text-pili-concrete" />
             <div>
-              <dt className="text-xs font-medium uppercase tracking-wide text-pili-cement">
-                Numero de serie
+              <dt className="text-xs font-medium uppercase tracking-wide text-pili-concrete">
+                Número de série
               </dt>
               <dd className="mt-0.5 font-mono text-sm text-pili-graphite">
                 {equipment.serialNumber}
@@ -119,10 +125,10 @@ export default async function EquipamentoDetailPage({ params }: PageProps) {
 
           {equipment.installedAddress && (
             <div className="flex items-start gap-3">
-              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-pili-cement" />
+              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-pili-concrete" />
               <div>
-                <dt className="text-xs font-medium uppercase tracking-wide text-pili-cement">
-                  Local de instalacao
+                <dt className="text-xs font-medium uppercase tracking-wide text-pili-concrete">
+                  Local de instalação
                 </dt>
                 <dd className="mt-0.5 text-sm text-pili-graphite">
                   {equipment.installedAddress}
@@ -132,10 +138,10 @@ export default async function EquipamentoDetailPage({ params }: PageProps) {
           )}
 
           <div className="flex items-start gap-3">
-            <Calendar className="mt-0.5 h-4 w-4 shrink-0 text-pili-cement" />
+            <Calendar className="mt-0.5 h-4 w-4 shrink-0 text-pili-concrete" />
             <div>
-              <dt className="text-xs font-medium uppercase tracking-wide text-pili-cement">
-                Data de instalacao
+              <dt className="text-xs font-medium uppercase tracking-wide text-pili-concrete">
+                Data de instalação
               </dt>
               <dd className="mt-0.5 text-sm text-pili-graphite">
                 {formatDate(equipment.installedAt)}
@@ -150,7 +156,7 @@ export default async function EquipamentoDetailPage({ params }: PageProps) {
               <ShieldX className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
             )}
             <div>
-              <dt className="text-xs font-medium uppercase tracking-wide text-pili-cement">
+              <dt className="text-xs font-medium uppercase tracking-wide text-pili-concrete">
                 Garantia
               </dt>
               <dd
@@ -159,10 +165,10 @@ export default async function EquipamentoDetailPage({ params }: PageProps) {
                 }`}
               >
                 {warrantyValid && equipment.warrantyEndsAt
-                  ? `Valida ate ${formatDate(equipment.warrantyEndsAt)}`
+                  ? `Válida até ${formatDate(equipment.warrantyEndsAt)}`
                   : equipment.warrantyEndsAt
                     ? `Expirada em ${formatDate(equipment.warrantyEndsAt)}`
-                    : "Sem informacao de garantia"}
+                    : "Sem informação de garantia"}
               </dd>
             </div>
           </div>

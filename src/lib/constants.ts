@@ -12,6 +12,12 @@ export const COMPANY = {
   whatsapp: "+55 54 99141-2971",
   email: "atendimento@pili.ind.br",
   emailComercial: "comercial@pili.ind.br",
+  /**
+   * Remetente das mensagens automáticas. Precisa estar verificado no Resend —
+   * antes o fallback era "contato@pili.ind.br", endereço que não existia em
+   * lugar nenhum da configuração e que faria o envio ser recusado.
+   */
+  emailRemetente: "atendimento@pili.ind.br",
   founded: 1979,
 } as const;
 

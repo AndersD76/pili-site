@@ -1,9 +1,16 @@
 import { generatePageMetadata } from "@/lib/seo";
+import { setRequestLocale } from "next-intl/server";
 import { COMPANY } from "@/lib/constants";
 import { Leaf, Droplets, Recycle, Zap } from "lucide-react";
 
-export function generateMetadata() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   return generatePageMetadata({
+    locale,
     title: "Política Ambiental",
     description:
       "Compromisso ambiental da PILI Industrial. Gestão de resíduos, eficiência energética e práticas sustentáveis na fabricação de equipamentos industriais.",
@@ -34,7 +41,14 @@ const COMMITMENTS = [
   },
 ] as const;
 
-export default function PoliticaAmbientalPage() {
+export default async function PoliticaAmbientalPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <main className="pt-[var(--header-height)]">
       {/* Hero */}

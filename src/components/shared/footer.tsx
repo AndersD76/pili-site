@@ -4,13 +4,27 @@ import { COMPANY, ECOSYSTEM, SOCIAL } from "@/lib/constants";
 import { Globe, Link2, Video, Camera } from "lucide-react";
 import Image from "next/image";
 
+/**
+ * Âncoras em vez de `?cat=`: a página de produtos nunca leu essa query string,
+ * então os quatro links serviam a mesma listagem completa — quatro URLs com
+ * conteúdo idêntico e nenhum filtro aplicado.
+ */
 const PRODUCT_LINKS = [
-  { label: "Tombador fixo", href: "/produtos?cat=TOMBADOR_FIXO" },
-  { label: "Tombador móvel", href: "/produtos?cat=TOMBADOR_MOVEL" },
-  { label: "Coletor de amostras", href: "/produtos?cat=COLETOR_AMOSTRAS" },
-  { label: "Unidade de transbordo", href: "/produtos?cat=UNIDADE_TRANSBORDO" },
-  { label: "Comparar", href: "/produtos/comparar" },
-  { label: "Catálogo PDF", href: "/catalogo" },
+  { label: "Tombador fixo", href: "/produtos#tombador-fixo" },
+  { label: "Tombador móvel", href: "/produtos#tombador-movel" },
+  { label: "Coletor de amostras", href: "/produtos#coletor-amostras" },
+  { label: "Unidade de transbordo", href: "/produtos#unidade-transbordo" },
+  { label: "Comparar modelos", href: "/produtos/comparar" },
+  { label: "Catálogo", href: "/catalogo" },
+] as const;
+
+/** Páginas institucionais que antes só existiam no sitemap. */
+const COMPANY_LINKS = [
+  { label: "A empresa", href: "/empresa" },
+  { label: "Certificações", href: "/certificacoes" },
+  { label: "Obras realizadas", href: "/obras" },
+  { label: "Trabalhe conosco", href: "/trabalhe-conosco" },
+  { label: "Política ambiental", href: "/politica-ambiental" },
 ] as const;
 
 const SOCIAL_ICONS = [
@@ -26,7 +40,7 @@ export function Footer() {
   return (
     <footer className="bg-pili-black">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
-        <div className="grid gap-12 lg:grid-cols-4">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-5">
           {/* Col 1 — Brand */}
           <div>
             <Image
@@ -64,7 +78,26 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Col 3 — Ecosystem */}
+          {/* Col 3 — Empresa */}
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-pili-cement">
+              Empresa
+            </h3>
+            <ul className="mt-4 flex flex-col gap-2.5">
+              {COMPANY_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-pili-mist transition-colors hover:text-pili-white"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Col 4 — Ecosystem */}
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-widest text-pili-cement">
               {t("ecosystem")}

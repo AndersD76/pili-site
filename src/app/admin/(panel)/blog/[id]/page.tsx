@@ -33,7 +33,7 @@ export default async function EditarArtigoPage({
           <h1 className="font-display text-2xl font-bold tracking-tight text-pili-black">
             Editar artigo
           </h1>
-          <p className="text-sm text-pili-cement">
+          <p className="text-sm text-pili-concrete">
             Atualize os dados do artigo
           </p>
         </div>

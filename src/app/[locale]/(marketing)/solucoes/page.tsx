@@ -1,9 +1,16 @@
 import { Link } from "@/i18n/routing";
+import { setRequestLocale } from "next-intl/server";
 import { generatePageMetadata } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
 
-export function generateMetadata() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   return generatePageMetadata({
+    locale,
     title: "Soluções por setor",
     description:
       "Soluções de descarga para portos, cooperativas, indústria alimentícia, fertilizantes e cimento.",
@@ -44,7 +51,14 @@ const SECTORS = [
   },
 ] as const;
 
-export default function SolucoesPage() {
+export default async function SolucoesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <main className="pt-[var(--header-height)]">
       <section className="bg-pili-black py-20 px-6 lg:px-8">

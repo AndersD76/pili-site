@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { Plus, Pencil, Trash2, Star } from "lucide-react";
+import { DeleteEntityButton } from "@/components/admin/delete-entity-button";
+import { Plus, Pencil, Star } from "lucide-react";
 import { requireRole } from "@/lib/auth-guard";
-import { getCases, deleteCase } from "./actions";
+import { getCases } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -25,7 +26,7 @@ export default async function ObrasPage() {
           <h1 className="font-display text-2xl font-bold tracking-tight text-pili-black">
             Obras / Casos
           </h1>
-          <p className="text-sm text-pili-cement">
+          <p className="text-sm text-pili-concrete">
             Gerencie os casos e obras realizadas
           </p>
         </div>
@@ -61,7 +62,7 @@ export default async function ObrasPage() {
               <TableRow>
                 <TableCell
                   colSpan={7}
-                  className="py-8 text-center text-pili-cement"
+                  className="py-8 text-center text-pili-concrete"
                 >
                   Nenhuma obra cadastrada
                 </TableCell>
@@ -89,7 +90,7 @@ export default async function ObrasPage() {
                       className={
                         caseItem.featured
                           ? "size-4 fill-pili-safety text-pili-safety"
-                          : "size-4 text-pili-cement"
+                          : "size-4 text-pili-concrete"
                       }
                     />
                   </TableCell>
@@ -101,22 +102,12 @@ export default async function ObrasPage() {
                           <span className="sr-only">Editar</span>
                         </Link>
                       </Button>
-                      <form
-                        action={async () => {
-                          "use server";
-                          await deleteCase(caseItem.id);
-                        }}
-                      >
-                        <Button
-                          type="submit"
-                          variant="ghost"
-                          size="icon-xs"
-                          className="text-red-600 hover:text-red-700"
-                        >
-                          <Trash2 className="size-4" />
-                          <span className="sr-only">Excluir</span>
-                        </Button>
-                      </form>
+                      <DeleteEntityButton
+                        id={caseItem.id}
+                        label={caseItem.translations[0]?.title ?? caseItem.slug}
+                        entity="obra"
+                        warning="Translations, métricas e mídias da obra são removidos junto. A ação não pode ser desfeita."
+                      />
                     </div>
                   </TableCell>
                 </TableRow>
