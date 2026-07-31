@@ -20,8 +20,9 @@ migration (`ALTER TABLE "User"` sem tabela `User`), e nenhum ambiente novo
 | `20260731140000_unaccent_search` | Extensões `unaccent`/`pg_trgm`, função `pili_unaccent`, índices trigram |
 | `20260731150000_lead_anonymized_at` | `Lead.anonymizedAt` (LGPD, Art. 18) |
 
-`_archive/` guarda a migration histórica que o baseline tornou redundante. Ela
-não é executada — está preservada apenas como registro.
+`../_migrations-archive/` guarda a migration histórica que o baseline tornou
+redundante. Fica **fora** de `migrations/` de propósito: o Prisma trata qualquer
+subdiretório como migration e tentaria executá-la.
 
 ## Aplicar no banco de produção existente
 
