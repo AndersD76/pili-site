@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { COMPANY } from "@/lib/constants";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import {
   catalogFormSchema,
@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Download, FileText } from "lucide-react";
 
 export default function CatalogoPage() {
+  const t = useTranslations();
   const [status, setStatus] = useState<
     "idle" | "loading" | "unlocked" | "error"
   >("idle");
@@ -52,11 +53,10 @@ export default function CatalogoPage() {
       <section className="bg-pili-black py-20 px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <h1 className="font-display text-[length:var(--text-display-2)] font-black uppercase text-pili-white">
-            Catálogo PILI
+            {t("catalogo.title")}
           </h1>
           <p className="mt-4 max-w-2xl text-pili-cement">
-            Baixe o catálogo completo com especificações técnicas, dimensionais e
-            fotos de todos os equipamentos PILI Industrial.
+            {t("catalogo.intro")}
           </p>
         </div>
       </section>
@@ -68,17 +68,16 @@ export default function CatalogoPage() {
             <div className="border border-pili-success/30 bg-pili-success/5 p-10 text-center">
               <Download className="mx-auto h-12 w-12 text-pili-success" />
               <h2 className="mt-6 font-display text-xl font-bold uppercase text-pili-black">
-                Catálogo liberado
+                {t("catalogo.released")}
               </h2>
               <p className="mt-3 text-sm text-pili-concrete">
-                Recebemos seus dados. Nossa equipe comercial enviará o catálogo
-                completo para o e-mail informado em até um dia útil.
+                {t("catalogo.releasedText")}
               </p>
               <Link
                 href="/produtos"
                 className="mt-6 inline-flex items-center gap-2 bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
               >
-                Ver a linha de produtos
+                {t("catalogo.seeProducts")}
               </Link>
             </div>
           ) : (
@@ -88,10 +87,10 @@ export default function CatalogoPage() {
                 <FileText className="h-10 w-10 text-pili-safety" />
                 <div>
                   <h2 className="font-display text-xl font-bold uppercase text-pili-black">
-                    Download do catálogo
+                    {t("catalogo.download")}
                   </h2>
                   <p className="mt-1 text-sm text-pili-concrete">
-                    Preencha os dados abaixo para liberar o download.
+                    {t("catalogo.formIntro")}
                   </p>
                 </div>
               </div>
@@ -102,7 +101,7 @@ export default function CatalogoPage() {
               >
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
-                    <Label htmlFor="cat-name">Nome *</Label>
+                    <Label htmlFor="cat-name">{t("forms.name")} *</Label>
                     <Input id="cat-name" {...register("name")} />
                     {errors.name && (
                       <p className="mt-1 text-xs text-pili-danger">
@@ -112,7 +111,7 @@ export default function CatalogoPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="cat-email">E-mail *</Label>
+                    <Label htmlFor="cat-email">{t("forms.email")} *</Label>
                     <Input id="cat-email" type="email" {...register("email")} />
                     {errors.email && (
                       <p className="mt-1 text-xs text-pili-danger">
@@ -122,7 +121,7 @@ export default function CatalogoPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="cat-company">Empresa *</Label>
+                    <Label htmlFor="cat-company">{t("forms.company")} *</Label>
                     <Input id="cat-company" {...register("company")} />
                     {errors.company && (
                       <p className="mt-1 text-xs text-pili-danger">
@@ -132,21 +131,21 @@ export default function CatalogoPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="cat-country">País *</Label>
+                    <Label htmlFor="cat-country">{t("catalogo.country")} *</Label>
                     <select
                       id="cat-country"
                       {...register("country")}
                       className="flex h-10 w-full border border-pili-mist bg-pili-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pili-safety"
                     >
-                      <option value="BR">Brasil</option>
-                      <option value="PY">Paraguai</option>
-                      <option value="AR">Argentina</option>
-                      <option value="UY">Uruguai</option>
-                      <option value="CL">Chile</option>
-                      <option value="CO">Colômbia</option>
-                      <option value="PE">Peru</option>
-                      <option value="US">Estados Unidos</option>
-                      <option value="ZZ">Outro</option>
+                      <option value="BR">{t("catalogo.countries.BR")}</option>
+                      <option value="PY">{t("catalogo.countries.PY")}</option>
+                      <option value="AR">{t("catalogo.countries.AR")}</option>
+                      <option value="UY">{t("catalogo.countries.UY")}</option>
+                      <option value="BO">{t("catalogo.countries.BO")}</option>
+                      <option value="CO">{t("catalogo.countries.CO")}</option>
+                      <option value="PE">{t("catalogo.countries.PE")}</option>
+                      <option value="US">{t("catalogo.countries.US")}</option>
+                      <option value="ZZ">{t("catalogo.countries.OUTRO")}</option>
                     </select>
                     {errors.country && (
                       <p className="mt-1 text-xs text-pili-danger">
@@ -167,14 +166,14 @@ export default function CatalogoPage() {
                     htmlFor="cat-consent"
                     className="text-sm font-normal text-pili-concrete"
                   >
-                    Aceito a{" "}
+                    {t("catalogo.consentPrefix")}{" "}
                     <Link
                       href="/politica-privacidade"
                       className="underline underline-offset-2 hover:text-pili-black"
                     >
-                      política de privacidade
+                      {t("catalogo.consentMiddle")}
                     </Link>{" "}
-                    e o contato da equipe comercial.
+                    {t("catalogo.consentSuffix")}
                   </Label>
                 </div>
                 {errors.consent && (
@@ -188,13 +187,12 @@ export default function CatalogoPage() {
                   disabled={status === "loading"}
                   className="self-start bg-pili-safety px-8 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep disabled:opacity-50"
                 >
-                  {status === "loading" ? "Enviando..." : "Liberar download"}
+                  {status === "loading" ? t("forms.sending") : t("catalogo.unlock")}
                 </button>
 
                 {status === "error" && (
                   <p className="text-sm text-pili-danger">
-                    Erro ao enviar. Tente novamente ou entre em contato pelo
-                    e-mail {COMPANY.email}.
+                    {t("catalogo.sendError")}
                   </p>
                 )}
               </form>

@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { generatePageMetadata } from "@/lib/seo";
@@ -14,21 +14,15 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "blog" });
   return generatePageMetadata({
     locale,
     title: "Blog",
-    description:
-      "Notícias, artigos técnicos e novidades da PILI Industrial. Feiras, lançamentos e conteúdo sobre tombadores hidráulicos e logística industrial.",
+    description: t("metaDesc"),
     path: "/blog",
   });
 }
 
-const CATEGORY_LABELS: Record<string, string> = {
-  noticia: "Notícia",
-  artigo: "Artigo",
-  evento: "Evento",
-  lancamento: "Lançamento",
-};
 
 function formatDate(iso: string): string {
   const date = new Date(iso + "T12:00:00");
@@ -48,6 +42,8 @@ export default async function BlogPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+
+  const t = await getTranslations();
 
   const BLOG_POSTS = await getArtigos();
 
@@ -69,7 +65,7 @@ export default async function BlogPage({
         <div className="absolute left-0 top-0 h-full w-1.5 bg-pili-safety" />
         <div className="relative mx-auto max-w-6xl">
           <span className="font-mono text-xs uppercase tracking-widest text-pili-safety">
-            Conteúdo e novidades
+            {t("blog.title")}
           </span>
           <h1 className="mt-3 font-display text-[length:var(--text-display-2)] font-black uppercase text-pili-white">
             Blog
@@ -77,9 +73,7 @@ export default async function BlogPage({
           <div className="mt-4 flex items-center gap-4">
             <div className="h-px w-12 bg-pili-safety" />
             <p className="max-w-2xl text-pili-cement">
-              Notícias, artigos técnicos, cobertura de feiras e lançamentos da
-              PILI Industrial. Tudo sobre tombadores hidráulicos, logística de
-              grãos e o ecossistema digital PILI.
+              {t("blog.intro")}
             </p>
           </div>
         </div>
@@ -106,10 +100,10 @@ export default async function BlogPage({
                 <div className="flex flex-col justify-center">
                   <div className="flex items-center gap-3">
                     <span className="bg-pili-safety px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-pili-white">
-                      {CATEGORY_LABELS[featuredPost.category]}
+                      {t(`blog.singular.${featuredPost.category}`)}
                     </span>
                     <span className="font-mono text-xs text-pili-cement">
-                      Destaque
+                      {t("blog.featured")}
                     </span>
                   </div>
                   <h2 className="mt-4 font-display text-2xl font-bold uppercase text-pili-black lg:text-3xl">
@@ -129,7 +123,7 @@ export default async function BlogPage({
                     </span>
                   </div>
                   <span className="mt-6 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-pili-black transition-colors group-hover:text-pili-safety-deep">
-                    Ler mais
+                    {t("common.readMore")}
                     <ArrowRight className="h-4 w-4" />
                   </span>
                 </div>
@@ -169,7 +163,7 @@ export default async function BlogPage({
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
                       <span className="absolute left-3 top-3 bg-pili-safety px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-pili-white">
-                        {CATEGORY_LABELS[post.category]}
+                        {t(`blog.singular.${post.category}`)}
                       </span>
                     </div>
                     <div className="flex flex-1 flex-col p-6">
@@ -188,7 +182,7 @@ export default async function BlogPage({
                         {post.excerpt}
                       </p>
                       <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-pili-concrete transition-colors group-hover:text-pili-safety-deep">
-                        Ler mais
+                        {t("common.readMore")}
                         <ArrowRight className="h-3.5 w-3.5" />
                       </span>
                     </div>
@@ -204,7 +198,7 @@ export default async function BlogPage({
       <section className="bg-pili-black py-20 px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="font-display text-[length:var(--text-h2)] font-black uppercase text-pili-white">
-            Precisa de uma solução de descarga?
+            {t("blog.ctaTitle")}
           </h2>
           <p className="mt-4 text-pili-cement">
             Fale com a equipe técnica da PILI Industrial e receba uma
@@ -215,7 +209,7 @@ export default async function BlogPage({
               href="/orcamento"
               className="inline-flex items-center gap-2 bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
             >
-              Solicitar orçamento
+              {t("common.requestQuote")}
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link

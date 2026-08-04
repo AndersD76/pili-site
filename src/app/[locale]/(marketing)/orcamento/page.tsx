@@ -1,7 +1,7 @@
 import { generatePageMetadata } from "@/lib/seo";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { LeadForm } from "@/components/marketing/lead-form";
-import { COMPANY } from "@/lib/constants";
+import { getSiteSettings } from "@/lib/site-settings";
 
 export async function generateMetadata({
   params,
@@ -9,11 +9,11 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "orcamento" });
   return generatePageMetadata({
     locale,
-    title: "Solicitar Orçamento",
-    description:
-      "Solicite um orçamento para tombadores hidráulicos, coletores de amostras e equipamentos de descarga PILI Industrial. Resposta em até 24h.",
+    title: t("title"),
+    description: t("metaDesc"),
     path: "/orcamento",
   });
 }
@@ -26,18 +26,19 @@ export default async function OrcamentoPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
+  const t = await getTranslations();
+  const settings = await getSiteSettings();
+
   return (
     <main className="pt-[var(--header-height)]">
       {/* Hero */}
       <section className="bg-pili-black py-20 px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <h1 className="font-display text-[length:var(--text-display-2)] font-black uppercase text-pili-white">
-            Solicitar orçamento
+            {t("orcamento.title")}
           </h1>
           <p className="mt-4 max-w-2xl text-pili-cement">
-            Preencha o formulário abaixo com os dados do seu projeto. Nossa
-            equipe técnica irá dimensionar o equipamento ideal e retornar com uma
-            proposta em até 24 horas úteis.
+            {t("orcamento.intro")}
           </p>
         </div>
       </section>
@@ -47,11 +48,10 @@ export default async function OrcamentoPage({
         <div className="mx-auto max-w-4xl">
           <div className="border border-pili-mist p-8 lg:p-12">
             <h2 className="font-display text-[length:var(--text-h2)] font-black uppercase text-pili-black">
-              Dados do projeto
+              {t("orcamento.projectData")}
             </h2>
             <p className="mt-3 text-sm text-pili-concrete">
-              Campos marcados com * são obrigatórios. Quanto mais detalhes
-              informar, mais precisa será a proposta.
+              {t("orcamento.projectDataText")}
             </p>
             <div className="mt-8">
               <LeadForm compact={false} source="ORCAMENTO" />
@@ -64,11 +64,11 @@ export default async function OrcamentoPage({
       <section className="bg-pili-paper py-16 px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
           <h2 className="font-display text-xl font-bold uppercase text-pili-black">
-            Prefere outro canal?
+            {t("orcamento.otherChannel")}
           </h2>
           <div className="mt-6 grid gap-6 sm:grid-cols-3">
             <a
-              href={`https://wa.me/${COMPANY.whatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Olá, gostaria de solicitar um orçamento.")}`}
+              href={`https://wa.me/${settings.whatsapp.replace(/\D/g, "")}?text=${t("orcamento.whatsappMessage")}`}
               target="_blank"
               rel="noopener noreferrer"
               className="border border-pili-mist bg-pili-white p-6 transition-all hover:border-pili-black"
@@ -77,29 +77,29 @@ export default async function OrcamentoPage({
                 WhatsApp
               </span>
               <p className="mt-2 font-mono text-xs text-pili-concrete">
-                {COMPANY.whatsapp}
+                {settings.whatsapp}
               </p>
             </a>
             <a
-              href={`mailto:${COMPANY.emailComercial}?subject=${encodeURIComponent("Solicitação de orçamento")}`}
+              href={`mailto:${settings.emailComercial}?subject=${t("orcamento.emailSubject")}`}
               className="border border-pili-mist bg-pili-white p-6 transition-all hover:border-pili-black"
             >
               <span className="font-display text-sm font-bold uppercase text-pili-black">
-                E-mail comercial
+                {t("contato.commercialEmail")}
               </span>
               <p className="mt-2 font-mono text-xs text-pili-concrete">
-                {COMPANY.emailComercial}
+                {settings.emailComercial}
               </p>
             </a>
             <a
-              href={`tel:${COMPANY.phone.replace(/\s/g, "")}`}
+              href={`tel:${settings.telefone.replace(/\s/g, "")}`}
               className="border border-pili-mist bg-pili-white p-6 transition-all hover:border-pili-black"
             >
               <span className="font-display text-sm font-bold uppercase text-pili-black">
-                Telefone
+                {t("contato.phone")}
               </span>
               <p className="mt-2 font-mono text-xs text-pili-concrete">
-                {COMPANY.phone}
+                {settings.telefone}
               </p>
             </a>
           </div>

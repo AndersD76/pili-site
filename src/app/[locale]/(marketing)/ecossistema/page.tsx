@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/routing";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { generatePageMetadata } from "@/lib/seo";
 import { ECOSYSTEM_PROJECTS } from "@/lib/data/ecosystem";
 import {
@@ -18,11 +18,11 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "ecossistema" });
   return generatePageMetadata({
     locale,
-    title: "Ecossistema PILI",
-    description:
-      "Conheça o ecossistema PILI: Industrial, Store, Tech, Raste e Harbor. Tecnologia, peças, rastreabilidade e gestão de pátio industrial.",
+    title: t("title"),
+    description: t("metaDesc"),
     path: "/ecossistema",
   });
 }
@@ -43,19 +43,18 @@ export default async function EcossistemaPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
+  const t = await getTranslations();
+
   return (
     <main className="pt-[var(--header-height)]">
       {/* Hero */}
       <section className="bg-pili-black py-20 px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <h1 className="font-display text-[length:var(--text-display-2)] font-black uppercase text-pili-white">
-            Ecossistema PILI
+            {t("ecossistema.title")}
           </h1>
           <p className="mt-4 max-w-3xl text-pili-cement">
-            Além de fabricar equipamentos de alta performance, a PILI desenvolve
-            tecnologia própria para logística, rastreabilidade e gestão
-            industrial. Cinco plataformas integradas que cobrem toda a cadeia de
-            valor do agronegócio e da indústria.
+            {t("ecossistema.intro")}
           </p>
         </div>
       </section>
@@ -74,18 +73,15 @@ export default async function EcossistemaPage({
                   PILI Industrial
                 </h2>
                 <span className="font-mono text-xs uppercase tracking-wider text-pili-cement">
-                  Fabricante de equipamentos desde 1979
+                  {t("ecossistema.manufacturer")}
                 </span>
               </div>
             </div>
             <p className="mt-6 leading-relaxed text-pili-concrete">
-              Fabricante brasileira de tombadores hidráulicos, coletores de
-              amostras e unidades de transbordo. Mais de 850 equipamentos
-              instalados em 18 países, com projetos de 9 a 30 metros e
-              capacidade de 35 a 100 toneladas.
+              {t("ecossistema.industrialDesc")}
             </p>
             <div className="mt-6 flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors group-hover:text-pili-safety-deep">
-              Ver produtos
+              {t("hero.cta_secondary")}
             </div>
           </Link>
         </div>
@@ -137,7 +133,7 @@ export default async function EcossistemaPage({
                       href={`/ecossistema/${project.slug}`}
                       className="inline-flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors hover:text-pili-safety-deep"
                     >
-                      Conhecer
+                      {t("ecossistema.know")}
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                     <a
@@ -146,7 +142,7 @@ export default async function EcossistemaPage({
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wider text-pili-concrete transition-colors hover:text-pili-black"
                     >
-                      Acessar plataforma
+                      {t("header.openPlatform")}
                       <ExternalLink className="h-4 w-4" />
                     </a>
                   </div>
@@ -161,19 +157,16 @@ export default async function EcossistemaPage({
       <section className="bg-pili-paper py-20 px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="font-display text-[length:var(--text-h2)] font-black uppercase text-pili-black">
-            Plataformas integradas
+            {t("ecossistema.integratedTitle")}
           </h2>
           <p className="mt-4 text-pili-concrete">
-            Todas as plataformas do ecossistema PILI compartilham dados e se
-            integram nativamente. Da fabricação do equipamento ao monitoramento
-            em tempo real da operação, passando pela rastreabilidade de grãos e
-            gestão de pátio.
+            {t("ecossistema.integratedText")}
           </p>
           <Link
             href="/contato"
             className="mt-8 inline-flex items-center justify-center bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
           >
-            Fale com a equipe PILI
+            {t("ecossistema.talkToTeam")}
           </Link>
         </div>
       </section>

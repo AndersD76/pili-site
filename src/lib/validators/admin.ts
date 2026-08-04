@@ -44,6 +44,13 @@ export const productInputSchema = z.object({
       }),
     )
     .max(100, "Máximo de 100 especificações"),
+  // Versão em espanhol. Nome vazio significa "sem tradução" — o site cai para
+  // o português em vez de exibir campos pela metade.
+  nameEs: z.string().trim().max(200),
+  taglineEs: z.string().trim().max(300),
+  descriptionEs: z.string().trim().max(20000),
+  metaTitleEs: z.string().trim().max(70, "Máximo de 70 caracteres"),
+  metaDescEs: z.string().trim().max(160, "Máximo de 160 caracteres"),
 });
 
 export type ProductInput = z.infer<typeof productInputSchema>;
@@ -64,6 +71,9 @@ export const caseInputSchema = z.object({
   title: z.string().trim().min(1, "Título obrigatório").max(300),
   summary: z.string().trim().min(1, "Resumo obrigatório").max(2000),
   content: z.string().trim().min(1, "Conteúdo obrigatório").max(50000),
+  titleEs: z.string().trim().max(300),
+  summaryEs: z.string().trim().max(2000),
+  contentEs: z.string().trim().max(50000),
   active: z.boolean(),
   featured: z.boolean(),
   metrics: z
@@ -86,6 +96,9 @@ export const postInputSchema = z.object({
   title: z.string().trim().min(1, "Título obrigatório").max(300),
   excerpt: z.string().trim().min(1, "Resumo obrigatório").max(2000),
   content: z.string().trim().min(1, "Conteúdo obrigatório").max(100000),
+  titleEs: z.string().trim().max(300),
+  excerptEs: z.string().trim().max(2000),
+  contentEs: z.string().trim().max(100000),
   published: z.boolean(),
   tags: z.array(z.string().trim().min(1).max(60)).max(20, "Máximo de 20 tags"),
 });
@@ -103,6 +116,17 @@ export function formBool(data: FormData, key: string): boolean {
 export function formString(data: FormData, key: string): string {
   const value = data.get(key);
   return typeof value === "string" ? value : "";
+}
+
+/**
+ * Campo opcional: string vazia vira `null`.
+ *
+ * Usado nas traduções — deixar o campo em branco no painel significa "não
+ * traduzido", e a linha correspondente é removida em vez de gravada vazia.
+ */
+export function vazioParaNulo(valor: string): string | null {
+  const limpo = valor.trim();
+  return limpo === "" ? null : limpo;
 }
 
 /**

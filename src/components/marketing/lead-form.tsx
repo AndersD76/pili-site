@@ -5,28 +5,28 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { leadSchema, type LeadInput } from "@/lib/validators/lead";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { APPLICATIONS } from "@/lib/constants";
-
-/** Rótulos das aplicações; os valores vêm de `APPLICATIONS` em constants. */
-const APPLICATION_LABELS: Record<(typeof APPLICATIONS)[number], string> = {
-  porto: "Porto",
-  cooperativa: "Cooperativa",
-  industria: "Indústria alimentícia",
-  fertilizante: "Fertilizante",
-  cimento: "Cimento",
-};
 
 interface LeadFormProps {
   productInterest?: string;
   source?: string;
   compact?: boolean;
+  /** Formulário sobre fundo escuro (seções `bg-pili-black`). */
   dark?: boolean;
   className?: string;
 }
 
+/**
+ * Formulário de captação de leads.
+ *
+ * Os campos vinham em duas variantes escritas à mão (`dark ? <input> : <Input>`)
+ * e só as quatro primeiras respeitavam a variante escura: o select, o produto
+ * de interesse e a mensagem ficavam brancos e os rótulos, cinza-escuro sobre
+ * preto. Agora há um único conjunto de classes por variante, aplicado a todos
+ * os controles.
+ */
 export function LeadForm({
   productInterest,
   source = "FORMULARIO",
@@ -34,12 +34,19 @@ export function LeadForm({
   dark = false,
   className,
 }: LeadFormProps) {
-  const inputClass = dark
-    ? "h-10 w-full border border-pili-iron bg-pili-graphite px-3 py-2 text-sm text-pili-white placeholder:text-pili-cement focus:border-pili-safety focus:outline-none focus:ring-1 focus:ring-pili-safety"
-    : undefined;
-  const labelClass = dark ? "text-pili-mist" : undefined;
   const t = useTranslations("forms");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
+    "idle",
+  );
+
+  const controle = cn(
+    "w-full border px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-1 focus:ring-pili-safety",
+    dark
+      ? "border-pili-iron bg-pili-steel text-pili-white placeholder:text-pili-cement focus:border-pili-safety"
+      : "border-pili-mist bg-pili-white text-pili-black placeholder:text-pili-concrete focus:border-pili-safety",
+  );
+  const campo = cn(controle, "h-10");
+  const rotulo = dark ? "text-pili-mist" : "text-pili-graphite";
 
   const {
     register,
@@ -77,7 +84,12 @@ export function LeadForm({
 
   if (status === "success") {
     return (
-      <div className={cn("border border-pili-success/30 bg-pili-success/5 p-8 text-center", className)}>
+      <div
+        className={cn(
+          "border border-pili-success/30 bg-pili-success/5 p-8 text-center",
+          className,
+        )}
+      >
         <p className="font-display text-xl font-bold uppercase text-pili-success">
           {t("success")}
         </p>
@@ -90,56 +102,92 @@ export function LeadForm({
       onSubmit={handleSubmit(onSubmit)}
       className={cn("flex flex-col gap-4", className)}
     >
-      <div className={cn("grid gap-4", compact ? "sm:grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-3")}>
-        <div>
-          <Label htmlFor="name" className={labelClass}>{t("name")} *</Label>
-          {dark ? <input id="name" {...register("name")} className={inputClass} /> : <Input id="name" {...register("name")} />}
-          {errors.name && <p className="mt-1 text-xs text-pili-danger">{errors.name.message}</p>}
+      <div
+        className={cn(
+          "grid gap-4",
+          compact ? "sm:grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-3",
+        )}
+      >
+        <div className="space-y-1.5">
+          <Label htmlFor="name" className={rotulo}>
+            {t("name")} *
+          </Label>
+          <input id="name" {...register("name")} className={campo} />
+          {errors.name && (
+            <p className="text-xs text-pili-danger">{errors.name.message}</p>
+          )}
         </div>
 
-        <div>
-          <Label htmlFor="email" className={labelClass}>{t("email")} *</Label>
-          {dark ? <input id="email" type="email" {...register("email")} className={inputClass} /> : <Input id="email" type="email" {...register("email")} />}
-          {errors.email && <p className="mt-1 text-xs text-pili-danger">{errors.email.message}</p>}
+        <div className="space-y-1.5">
+          <Label htmlFor="email" className={rotulo}>
+            {t("email")} *
+          </Label>
+          <input
+            id="email"
+            type="email"
+            {...register("email")}
+            className={campo}
+          />
+          {errors.email && (
+            <p className="text-xs text-pili-danger">{errors.email.message}</p>
+          )}
         </div>
 
-        <div>
-          <Label htmlFor="phone" className={labelClass}>{t("phone")} *</Label>
-          {dark ? <input id="phone" type="tel" {...register("phone")} className={inputClass} /> : <Input id="phone" type="tel" {...register("phone")} />}
-          {errors.phone && <p className="mt-1 text-xs text-pili-danger">{errors.phone.message}</p>}
+        <div className="space-y-1.5">
+          <Label htmlFor="phone" className={rotulo}>
+            {t("phone")} *
+          </Label>
+          <input
+            id="phone"
+            type="tel"
+            {...register("phone")}
+            className={campo}
+          />
+          {errors.phone && (
+            <p className="text-xs text-pili-danger">{errors.phone.message}</p>
+          )}
         </div>
 
-        <div>
-          <Label htmlFor="company" className={labelClass}>{t("company")} *</Label>
-          {dark ? <input id="company" {...register("company")} className={inputClass} /> : <Input id="company" {...register("company")} />}
-          {errors.company && <p className="mt-1 text-xs text-pili-danger">{errors.company.message}</p>}
+        <div className="space-y-1.5">
+          <Label htmlFor="company" className={rotulo}>
+            {t("company")} *
+          </Label>
+          <input id="company" {...register("company")} className={campo} />
+          {errors.company && (
+            <p className="text-xs text-pili-danger">{errors.company.message}</p>
+          )}
         </div>
 
         {!compact && (
           <>
-            <div>
-              <Label htmlFor="application">Aplicação</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="application" className={rotulo}>
+                {t("application")}
+              </Label>
               <select
                 id="application"
                 {...register("application")}
-                className="flex h-10 w-full border border-pili-mist bg-pili-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pili-safety"
+                className={campo}
               >
-                <option value="">Selecione...</option>
+                <option value="">{t("select")}</option>
                 {APPLICATIONS.map((app) => (
                   <option key={app} value={app}>
-                    {APPLICATION_LABELS[app]}
+                    {t(`applications.${app}`)}
                   </option>
                 ))}
-                <option value="outro">Outro</option>
+                <option value="outro">{t("applications.outro")}</option>
               </select>
             </div>
 
-            <div>
-              <Label htmlFor="productInterest">Produto de interesse</Label>
-              <Input
+            <div className="space-y-1.5">
+              <Label htmlFor="productInterest" className={rotulo}>
+                {t("productInterest")}
+              </Label>
+              <input
                 id="productInterest"
                 {...register("productInterest")}
                 defaultValue={productInterest}
+                className={campo}
               />
             </div>
           </>
@@ -147,13 +195,15 @@ export function LeadForm({
       </div>
 
       {!compact && (
-        <div>
-          <Label htmlFor="message">{t("message")}</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="message" className={rotulo}>
+            {t("message")}
+          </Label>
           <textarea
             id="message"
             rows={4}
             {...register("message")}
-            className="flex w-full border border-pili-mist bg-pili-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pili-safety"
+            className={controle}
           />
         </div>
       )}
@@ -165,18 +215,26 @@ export function LeadForm({
           {...register("consent")}
           className="mt-1 h-4 w-4 accent-pili-safety"
         />
-        <Label htmlFor="consent" className={cn("text-sm font-normal", dark ? "text-pili-cement" : "text-pili-concrete")}>
+        <Label
+          htmlFor="consent"
+          className={cn(
+            "text-sm font-normal",
+            dark ? "text-pili-mist" : "text-pili-concrete",
+          )}
+        >
           {t("consent")}
         </Label>
       </div>
-      {errors.consent && <p className="text-xs text-pili-danger">{errors.consent.message}</p>}
+      {errors.consent && (
+        <p className="text-xs text-pili-danger">{errors.consent.message}</p>
+      )}
 
       <button
         type="submit"
         disabled={status === "loading"}
         className="self-start bg-pili-safety px-8 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep disabled:opacity-50"
       >
-        {status === "loading" ? "Enviando..." : t("submit")}
+        {status === "loading" ? t("sending") : t("submit")}
       </button>
 
       {status === "error" && (

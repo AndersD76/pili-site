@@ -1,4 +1,5 @@
 import { ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 
 export interface Crumb {
@@ -21,8 +22,10 @@ export function Breadcrumbs({
   items: Crumb[];
   className?: string;
 }) {
+  const t = useTranslations("common");
+
   return (
-    <nav aria-label="Trilha de navegação" className={className}>
+    <nav aria-label={t("breadcrumb")} className={className}>
       <ol className="flex flex-wrap items-center gap-1.5 text-sm">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;

@@ -1,6 +1,6 @@
 import { generatePageMetadata } from "@/lib/seo";
-import { setRequestLocale } from "next-intl/server";
-import { COMPANY } from "@/lib/constants";
+import { setRequestLocale, getTranslations } from "next-intl/server";
+import { getSiteSettings } from "@/lib/site-settings";
 
 export async function generateMetadata({
   params,
@@ -8,15 +8,36 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "privacidade" });
   return generatePageMetadata({
     locale,
-    title: "Política de Privacidade",
-    description:
-      "Política de privacidade da PILI Industrial. Saiba como coletamos, armazenamos e utilizamos seus dados pessoais em conformidade com a LGPD.",
-    path: "/política-privacidade",
+    title: t("title"),
+    description: t("metaDesc"),
+    // O caminho canônico levava acento ("/política-privacidade") e apontava
+    // para uma URL que não existe; a rota real é sem acento.
+    path: "/politica-privacidade",
     noIndex: true,
   });
 }
+
+/**
+ * Seções da política, na ordem. `items` é a quantidade de itens da lista da
+ * seção (0 quando ela é só texto) e `outro` indica que existe um parágrafo de
+ * fecho depois da lista.
+ */
+const SECOES = [
+  { key: "controlador", items: 0, outro: false },
+  { key: "dados", items: 9, outro: false },
+  { key: "finalidades", items: 6, outro: false },
+  { key: "baseLegal", items: 4, outro: false },
+  { key: "compartilhamento", items: 3, outro: true },
+  { key: "retencao", items: 0, outro: false },
+  { key: "direitos", items: 8, outro: true },
+  { key: "cookies", items: 0, outro: false },
+  { key: "seguranca", items: 0, outro: false },
+  { key: "alteracoes", items: 0, outro: false },
+  { key: "contato", items: 0, outro: false },
+] as const;
 
 export default async function PoliticaPrivacidadePage({
   params,
@@ -26,263 +47,84 @@ export default async function PoliticaPrivacidadePage({
   const { locale } = await params;
   setRequestLocale(locale);
 
+  const t = await getTranslations("privacidade");
+  const settings = await getSiteSettings();
+
+  const identificacao = (
+    <div className="mt-4 border border-pili-mist bg-pili-paper p-6">
+      <p className="font-mono text-sm text-pili-black">
+        {settings.razaoSocial}
+        <br />
+        CNPJ: {settings.cnpj}
+        <br />
+        {settings.endereco}
+        <br />
+        {t("emailLabel")}: {settings.email}
+        <br />
+        {t("phoneLabel")}: {settings.telefone}
+      </p>
+    </div>
+  );
+
   return (
     <main className="pt-[var(--header-height)]">
       {/* Hero */}
       <section className="bg-pili-black py-16 px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
           <h1 className="font-display text-[length:var(--text-h1)] font-black uppercase text-pili-white">
-            Política de Privacidade
+            {t("title")}
           </h1>
           <p className="mt-3 font-mono text-xs uppercase tracking-wider text-pili-cement">
-            Última atualização: Janeiro 2025
+            {t("lastUpdate")}
           </p>
         </div>
       </section>
 
       <section className="py-16 px-6 lg:px-8">
         <div className="mx-auto max-w-4xl space-y-10">
-          {/* 1. Controlador */}
-          <div>
-            <h2 className="font-display text-lg font-bold uppercase text-pili-black">
-              1. Controlador dos dados
-            </h2>
-            <p className="mt-3 leading-relaxed text-pili-concrete">
-              O controlador responsável pelo tratamento dos seus dados pessoais é:
-            </p>
-            <div className="mt-4 border border-pili-mist bg-pili-paper p-6">
-              <p className="font-mono text-sm text-pili-black">
-                {COMPANY.name}
-                <br />
-                CNPJ: {COMPANY.cnpj}
-                <br />
-                {COMPANY.address} - Brasil
-                <br />
-                E-mail: {COMPANY.email}
-                <br />
-                Telefone: {COMPANY.phone}
+          {SECOES.map((secao, indice) => (
+            <div key={secao.key}>
+              <h2 className="font-display text-lg font-bold uppercase text-pili-black">
+                {indice + 1}. {t(`${secao.key}.title`)}
+              </h2>
+              <p className="mt-3 leading-relaxed text-pili-concrete">
+                {t(`${secao.key}.text`)}
               </p>
+
+              {secao.items > 0 && (
+                <ul className="mt-4 space-y-2 text-sm text-pili-concrete">
+                  {Array.from({ length: secao.items }, (_, i) => (
+                    <li key={i} className="flex gap-3">
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-pili-cement" />
+                      {t(`${secao.key}.i${i + 1}`)}
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {secao.outro && (
+                <p className="mt-4 leading-relaxed text-pili-concrete">
+                  {secao.key === "direitos" ? (
+                    <>
+                      {t("direitos.outro")}{" "}
+                      <a
+                        href={`mailto:${settings.email}`}
+                        className="font-semibold text-pili-black underline transition-colors hover:text-pili-safety-deep"
+                      >
+                        {settings.email}
+                      </a>
+                      .
+                    </>
+                  ) : (
+                    t(`${secao.key}.outro`)
+                  )}
+                </p>
+              )}
+
+              {(secao.key === "controlador" || secao.key === "contato") &&
+                identificacao}
             </div>
-          </div>
-
-          {/* 2. Dados coletados */}
-          <div>
-            <h2 className="font-display text-lg font-bold uppercase text-pili-black">
-              2. Dados pessoais coletados
-            </h2>
-            <p className="mt-3 leading-relaxed text-pili-concrete">
-              Coletamos os seguintes dados pessoais através dos formulários
-              disponíveis neste site:
-            </p>
-            <ul className="mt-4 space-y-2 text-sm text-pili-concrete">
-              {[
-                "Nome completo",
-                "Endereço de e-mail",
-                "Número de telefone",
-                "Nome da empresa e CNPJ",
-                "Cargo ou função",
-                "País e estado",
-                "Tipo de aplicação e produto de interesse",
-                "Mensagens enviadas pelo formulário de contato",
-                "Dados de navegação (cookies, IP, páginas visitadas)",
-              ].map((item, i) => (
-                <li key={i} className="flex gap-3">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-pili-cement" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* 3. Finalidades */}
-          <div>
-            <h2 className="font-display text-lg font-bold uppercase text-pili-black">
-              3. Finalidades do tratamento
-            </h2>
-            <p className="mt-3 leading-relaxed text-pili-concrete">
-              Os dados pessoais coletados são utilizados para as seguintes
-              finalidades:
-            </p>
-            <ul className="mt-4 space-y-2 text-sm text-pili-concrete">
-              {[
-                "Responder solicitações de orçamento e contato comercial",
-                "Enviar catálogos, materiais técnicos e propostas comerciais",
-                "Gerenciar o relacionamento com clientes e prospects",
-                "Enviar comunicações sobre produtos, serviços e novidades (com consentimento)",
-                "Melhorar a experiência de navegação e funcionalidade do site",
-                "Cumprir obrigações legais e regulatorias",
-              ].map((item, i) => (
-                <li key={i} className="flex gap-3">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-pili-cement" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* 4. Base legal */}
-          <div>
-            <h2 className="font-display text-lg font-bold uppercase text-pili-black">
-              4. Base legal para o tratamento
-            </h2>
-            <p className="mt-3 leading-relaxed text-pili-concrete">
-              O tratamento de dados pessoais e realizado com base nas seguintes
-              hipóteses legais previstas na Lei Geral de Proteção de Dados (Lei
-              n. 13.709/2018 - LGPD):
-            </p>
-            <ul className="mt-4 space-y-2 text-sm text-pili-concrete">
-              {[
-                "Consentimento do titular (Art. 7, I)",
-                "Execução de contrato ou procedimentos preliminares (Art. 7, V)",
-                "Interesse legitimo do controlador (Art. 7, IX)",
-                "Cumprimento de obrigação legal ou regulatoria (Art. 7, II)",
-              ].map((item, i) => (
-                <li key={i} className="flex gap-3">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-pili-cement" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* 5. Compartilhamento */}
-          <div>
-            <h2 className="font-display text-lg font-bold uppercase text-pili-black">
-              5. Compartilhamento de dados
-            </h2>
-            <p className="mt-3 leading-relaxed text-pili-concrete">
-              Seus dados pessoais podem ser compartilhados com:
-            </p>
-            <ul className="mt-4 space-y-2 text-sm text-pili-concrete">
-              {[
-                "Prestadores de serviços de tecnologia (hospedagem, e-mail, analytics)",
-                "Representantes comerciais autorizados, para atendimento da sua solicitação",
-                "Autoridades governamentais, quando exigido por lei ou ordem judicial",
-              ].map((item, i) => (
-                <li key={i} className="flex gap-3">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-pili-cement" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <p className="mt-4 leading-relaxed text-pili-concrete">
-              Não vendemos, alugamos ou comercializamos seus dados pessoais a
-              terceiros para fins de marketing.
-            </p>
-          </div>
-
-          {/* 6. Retenção */}
-          <div>
-            <h2 className="font-display text-lg font-bold uppercase text-pili-black">
-              6. Retenção dos dados
-            </h2>
-            <p className="mt-3 leading-relaxed text-pili-concrete">
-              Os dados pessoais serão armazenados pelo período necessário para
-              cumprir as finalidades descritas nesta política, ou enquanto houver
-              base legal para o tratamento. Dados de contato comercial sao
-              mantidos por até 5 anos após a última interação, salvo solicitação
-              de eliminação pelo titular.
-            </p>
-          </div>
-
-          {/* 7. Direitos do titular */}
-          <div>
-            <h2 className="font-display text-lg font-bold uppercase text-pili-black">
-              7. Direitos do titular
-            </h2>
-            <p className="mt-3 leading-relaxed text-pili-concrete">
-              Nos termos da LGPD, você tem direito a:
-            </p>
-            <ul className="mt-4 space-y-2 text-sm text-pili-concrete">
-              {[
-                "Confirmação da existência de tratamento de dados",
-                "Acesso aos seus dados pessoais",
-                "Correção de dados incompletos, inexatos ou desatualizados",
-                "Anonimização, bloqueio ou eliminação de dados desnecessários",
-                "Portabilidade dos dados a outro fornecedor",
-                "Eliminação dos dados tratados com consentimento",
-                "Revogação do consentimento a qualquer momento",
-                "Informação sobre entidades com as quais os dados foram compartilhados",
-              ].map((item, i) => (
-                <li key={i} className="flex gap-3">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-pili-cement" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <p className="mt-4 leading-relaxed text-pili-concrete">
-              Para exercer seus direitos, entre em contato pelo e-mail{" "}
-              <a
-                href={`mailto:${COMPANY.email}`}
-                className="font-semibold text-pili-black underline transition-colors hover:text-pili-safety-deep"
-              >
-                {COMPANY.email}
-              </a>
-              .
-            </p>
-          </div>
-
-          {/* 8. Cookies */}
-          <div>
-            <h2 className="font-display text-lg font-bold uppercase text-pili-black">
-              8. Cookies e tecnologias de rastreamento
-            </h2>
-            <p className="mt-3 leading-relaxed text-pili-concrete">
-              Este site utiliza cookies e tecnologias similares para melhorar a
-              experiência de navegação, analisar o tráfego e personalizar
-              conteúdo. Você pode configurar seu navegador para recusar cookies,
-              embora isso possa afetar algumas funcionalidades do site.
-            </p>
-          </div>
-
-          {/* 9. Segurança */}
-          <div>
-            <h2 className="font-display text-lg font-bold uppercase text-pili-black">
-              9. Segurança dos dados
-            </h2>
-            <p className="mt-3 leading-relaxed text-pili-concrete">
-              Adotamos medidas técnicas e organizacionais adequadas para proteger
-              seus dados pessoais contra acesso não autorizado, perda, alteração
-              ou destruição. Isso inclui criptografia em trânsito (HTTPS),
-              controle de acesso baseado em funções e backups regulares.
-            </p>
-          </div>
-
-          {/* 10. Alterações */}
-          <div>
-            <h2 className="font-display text-lg font-bold uppercase text-pili-black">
-              10. Alterações nesta política
-            </h2>
-            <p className="mt-3 leading-relaxed text-pili-concrete">
-              Esta política de privacidade pode ser atualizada periodicamente. A
-              versão mais recente estará sempre disponível nesta página com a
-              data da última atualização. Recomendamos que você revise esta
-              política regularmente.
-            </p>
-          </div>
-
-          {/* 11. Contato */}
-          <div>
-            <h2 className="font-display text-lg font-bold uppercase text-pili-black">
-              11. Contato
-            </h2>
-            <p className="mt-3 leading-relaxed text-pili-concrete">
-              Para dúvidas, solicitações ou reclamações relacionadas a esta
-              política de privacidade ou ao tratamento de seus dados pessoais,
-              entre em contato:
-            </p>
-            <div className="mt-4 border border-pili-mist bg-pili-paper p-6">
-              <p className="font-mono text-sm text-pili-black">
-                {COMPANY.name}
-                <br />
-                E-mail: {COMPANY.email}
-                <br />
-                Telefone: {COMPANY.phone}
-                <br />
-                {COMPANY.address} - Brasil
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
     </main>

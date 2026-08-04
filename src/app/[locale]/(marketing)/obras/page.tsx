@@ -1,5 +1,5 @@
 import { getObras } from "@/lib/content";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { CaseCard } from "@/components/marketing/case-card";
 import { Link } from "@/i18n/routing";
 import { generatePageMetadata } from "@/lib/seo";
@@ -17,11 +17,11 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "obras" });
   return generatePageMetadata({
     locale,
-    title: "Obras",
-    description:
-      "Casos e projetos realizados pela PILI Industrial em portos, cooperativas e indústrias no Brasil e no exterior.",
+    title: t("metaTitle"),
+    description: t("metaDesc"),
     path: "/obras",
   });
 }
@@ -34,6 +34,8 @@ export default async function ObrasPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
+  const t = await getTranslations();
+
   const CASES = await getObras();
 
   return (
@@ -42,25 +44,23 @@ export default async function ObrasPage({
       <section className="bg-pili-black py-20 px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <h1 className="font-display text-[length:var(--text-display-2)] font-black uppercase text-pili-white">
-            Obras
+            {t("nav.projects")}
           </h1>
           <p className="mt-4 max-w-2xl text-pili-cement">
-            Conheça os projetos realizados pela PILI Industrial. Tombadores
-            instalados em portos, cooperativas, indústrias e terminais
-            graneleiros em mais de 18 países.
+            {t("obras.intro")}
           </p>
           <div className="mt-8 flex gap-4">
             <Link
               href="/orcamento"
               className="bg-pili-safety px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
             >
-              Solicitar orçamento
+              {t("common.requestQuote")}
             </Link>
             <Link
               href="/produtos"
               className="border border-pili-iron px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-pili-mist transition-colors hover:bg-pili-steel"
             >
-              Ver produtos
+              {t("hero.cta_secondary")}
             </Link>
           </div>
         </div>

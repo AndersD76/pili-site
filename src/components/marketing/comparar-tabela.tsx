@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import type { Produto } from "@/lib/content";
 import { Link } from "@/i18n/routing";
 import { X, Plus } from "lucide-react";
@@ -8,6 +9,7 @@ import { X, Plus } from "lucide-react";
 const MAX_COMPARE = 4;
 
 export function CompararTabela({ PRODUCTS }: { PRODUCTS: Produto[] }) {
+  const t = useTranslations();
   const [selected, setSelected] = useState<string[]>([]);
 
   function toggle(slug: string) {
@@ -80,7 +82,7 @@ export function CompararTabela({ PRODUCTS }: { PRODUCTS: Produto[] }) {
                 <thead>
                   <tr className="border-b border-pili-mist">
                     <th className="py-4 pr-6 text-left text-xs font-medium uppercase tracking-wider text-pili-cement">
-                      Especificação
+                      {t("produtos.compare.spec")}
                     </th>
                     {selectedProducts.map((p) => (
                       <th
@@ -127,14 +129,14 @@ export function CompararTabela({ PRODUCTS }: { PRODUCTS: Produto[] }) {
                 href="/orcamento"
                 className="bg-pili-safety px-8 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
               >
-                Solicitar orçamento desta seleção
+                {t("produtos.compare.cta")}
               </Link>
             </div>
           )}
 
           {selectedProducts.length < 2 && (
             <p className="mt-12 text-center text-pili-concrete">
-              Selecione pelo menos 2 produtos para iniciar a comparação.
+              {t("produtos.compare.empty")}
             </p>
           )}
         </div>

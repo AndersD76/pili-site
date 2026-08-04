@@ -1,6 +1,6 @@
 "use client";
 
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/routing";
 import { LOCALES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -19,6 +19,7 @@ const LOCALE_INFO: Record<string, { flag: string; label: string; name: string }>
 };
 
 export function LanguageSwitcher() {
+  const t = useTranslations("header");
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
@@ -40,7 +41,7 @@ export function LanguageSwitcher() {
             key={l}
             type="button"
             onClick={() => switchLocale(l)}
-            aria-label={`Mudar idioma para ${info.name}`}
+            aria-label={t("switchLanguage", { name: info.name })}
             aria-current={ativo ? "true" : undefined}
             className={cn(
               "flex items-center gap-1.5 rounded px-2 py-1 transition-colors",

@@ -12,19 +12,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Users } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const AREAS = [
-  "Engenharia",
-  "Produção",
-  "Comercial",
-  "Administrativo",
-  "Logística",
-  "TI / Tecnologia",
-  "Qualidade",
-  "Outro",
+  "engenharia",
+  "producao",
+  "comercial",
+  "administrativo",
+  "logistica",
+  "ti",
+  "qualidade",
+  "outra",
 ] as const;
 
 export default function TrabalheConoscoPage() {
+  const t = useTranslations();
   const [status, setStatus] = useState<
     "idle" | "loading" | "success" | "error"
   >("idle");
@@ -70,11 +72,10 @@ export default function TrabalheConoscoPage() {
       <section className="bg-pili-black py-20 px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <h1 className="font-display text-[length:var(--text-display-2)] font-black uppercase text-pili-white">
-            Trabalhe conosco
+            {t("trabalhe.hero")}
           </h1>
           <p className="mt-4 max-w-2xl text-pili-cement">
-            A PILI Industrial está sempre em busca de profissionais talentosos
-            que compartilhem nossos valores de qualidade, segurança e inovação.
+            {t("trabalhe.heroIntro")}
           </p>
         </div>
       </section>
@@ -85,39 +86,30 @@ export default function TrabalheConoscoPage() {
           <div>
             <Users className="h-10 w-10 text-pili-safety" />
             <h2 className="mt-6 font-display text-[length:var(--text-h2)] font-black uppercase text-pili-black">
-              Faça parte do time
+              {t("trabalhe.title")}
             </h2>
             <p className="mt-4 leading-relaxed text-pili-concrete">
-              Com mais de {new Date().getFullYear() - COMPANY.founded} anos de
-              história, a PILI é referência na fabricação de equipamentos
-              industriais para o agronegócio. Atuamos em {STATS.countries} países e
-              investimos continuamente em tecnologia e inovação.
+              {t("trabalhe.about1", {
+                years: new Date().getFullYear() - COMPANY.founded,
+                countries: STATS.countries,
+              })}
             </p>
             <p className="mt-4 leading-relaxed text-pili-concrete">
-              Oferecemos um ambiente de trabalho que valoriza o desenvolvimento
-              profissional, a colaboração entre equipes e o compromisso com a
-              excelência. Nosso time reúne engenheiros, técnicos, gestores e
-              especialistas que juntos transformam a logística industrial.
+              {t("trabalhe.about2")}
             </p>
 
             <div className="mt-8 space-y-4">
               <h3 className="font-display text-lg font-bold uppercase text-pili-black">
-                Por que trabalhar na PILI?
+                {t("trabalhe.whyTitle")}
               </h3>
               <ul className="space-y-3">
-                {[
-                  "Empresa sólida com mais de 4 décadas de mercado",
-                  "Projetos de alcance internacional",
-                  "Investimento em inovação e tecnologia própria",
-                  "Ambiente colaborativo e orientado a resultados",
-                  "Oportunidades de crescimento profissional",
-                ].map((item, i) => (
+                {(["r1", "r2", "r3", "r5", "r4"] as const).map((chave) => (
                   <li
-                    key={i}
+                    key={chave}
                     className="flex gap-3 text-sm text-pili-concrete"
                   >
                     <span className="mt-1 h-1.5 w-1.5 shrink-0 bg-pili-safety" />
-                    {item}
+                    {t(`trabalhe.${chave}`)}
                   </li>
                 ))}
               </ul>
@@ -129,23 +121,19 @@ export default function TrabalheConoscoPage() {
             {status === "success" ? (
               <div className="border border-pili-success/30 bg-pili-success/5 p-10 text-center">
                 <h2 className="font-display text-xl font-bold uppercase text-pili-success">
-                  Candidatura enviada
+                  {t("trabalhe.sent")}
                 </h2>
                 <p className="mt-3 text-sm text-pili-concrete">
-                  Obrigado pelo interesse em fazer parte da equipe PILI.
-                  Analisaremos seu perfil e entraremos em contato caso haja uma
-                  vaga compatível.
+                  {t("trabalhe.sentText")}
                 </p>
               </div>
             ) : (
               <div className="border border-pili-mist p-8">
                 <h2 className="font-display text-xl font-bold uppercase text-pili-black">
-                  Envie sua candidatura
+                  {t("trabalhe.applyTitle")}
                 </h2>
                 <p className="mt-2 text-sm text-pili-concrete">
-                  Preencha o formulário abaixo. Não temos vagas abertas no
-                  momento? Sem problema, manteremos seu perfil em nosso banco de
-                  talentos.
+                  {t("trabalhe.applyText")}
                 </p>
 
                 <form
@@ -153,7 +141,7 @@ export default function TrabalheConoscoPage() {
                   className="mt-6 flex flex-col gap-4"
                 >
                   <div>
-                    <Label htmlFor="app-name">Nome completo *</Label>
+                    <Label htmlFor="app-name">{t("trabalhe.fullName")} *</Label>
                     <Input id="app-name" {...register("name")} />
                     {errors.name && (
                       <p className="mt-1 text-xs text-pili-danger">
@@ -164,7 +152,7 @@ export default function TrabalheConoscoPage() {
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <Label htmlFor="app-email">E-mail *</Label>
+                      <Label htmlFor="app-email">{t("forms.email")} *</Label>
                       <Input
                         id="app-email"
                         type="email"
@@ -178,7 +166,7 @@ export default function TrabalheConoscoPage() {
                     </div>
 
                     <div>
-                      <Label htmlFor="app-phone">Telefone *</Label>
+                      <Label htmlFor="app-phone">{t("forms.phone")} *</Label>
                       <Input id="app-phone" type="tel" {...register("phone")} />
                       {errors.phone && (
                         <p className="mt-1 text-xs text-pili-danger">
@@ -189,16 +177,16 @@ export default function TrabalheConoscoPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="app-area">Área de interesse *</Label>
+                    <Label htmlFor="app-area">{t("trabalhe.area")} *</Label>
                     <select
                       id="app-area"
                       {...register("area")}
                       className="flex h-10 w-full border border-pili-mist bg-pili-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pili-safety"
                     >
-                      <option value="">Selecione...</option>
+                      <option value="">{t("forms.select")}</option>
                       {AREAS.map((area) => (
                         <option key={area} value={area}>
-                          {area}
+                          {t(`trabalhe.areas.${area}`)}
                         </option>
                       ))}
                     </select>
@@ -211,7 +199,7 @@ export default function TrabalheConoscoPage() {
 
                   <div>
                     <Label htmlFor="app-message">
-                      Mensagem / experiência relevante
+                      {t("trabalhe.experience")}
                     </Label>
                     <textarea
                       id="app-message"
@@ -232,14 +220,14 @@ export default function TrabalheConoscoPage() {
                       htmlFor="app-consent"
                       className="text-sm font-normal text-pili-concrete"
                     >
-                      Aceito a{" "}
+                      {t("trabalhe.consentPrefix")}{" "}
                       <Link
                         href="/politica-privacidade"
                         className="underline underline-offset-2 hover:text-pili-black"
                       >
-                        política de privacidade
+                        {t("footer.privacy")}
                       </Link>{" "}
-                      e o armazenamento do meu currículo no banco de talentos.
+                      {t("trabalhe.consentSuffix")}
                     </Label>
                   </div>
                   {errors.consent && (
@@ -253,13 +241,12 @@ export default function TrabalheConoscoPage() {
                     disabled={status === "loading"}
                     className="self-start bg-pili-safety px-8 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep disabled:opacity-50"
                   >
-                    {status === "loading" ? "Enviando..." : "Enviar candidatura"}
+                    {status === "loading" ? t("forms.sending") : t("trabalhe.submit")}
                   </button>
 
                   {status === "error" && (
                     <p className="text-sm text-pili-danger">
-                      Erro ao enviar. Tente novamente ou envie para{" "}
-                      {COMPANY.email}.
+                      {t("trabalhe.sendError", { email: COMPANY.email })}
                     </p>
                   )}
                 </form>

@@ -13,9 +13,38 @@ import {
   formBool,
   formString,
   formJsonArray,
+  vazioParaNulo,
 } from "@/lib/validators/admin";
 
 /* ---------- helpers ---------- */
+
+/**
+ * Grava (ou apaga) a tradução em espanhol da obra.
+ *
+ * Título ou resumo em branco significam "ainda não traduzida": a linha `es` é
+ * removida e o site em espanhol volta a exibir o português.
+ */
+async function salvarTraducaoEs(
+  caseId: string,
+  d: { titleEs: string; summaryEs: string; contentEs: string },
+) {
+  if (!d.titleEs.trim() || !d.summaryEs.trim()) {
+    await db.caseTranslation.deleteMany({ where: { caseId, locale: "es" } });
+    return;
+  }
+
+  const dados = {
+    title: d.titleEs.trim(),
+    summary: d.summaryEs.trim(),
+    content: vazioParaNulo(d.contentEs) ?? d.summaryEs.trim(),
+  };
+
+  await db.caseTranslation.upsert({
+    where: { caseId_locale: { caseId, locale: "es" } },
+    update: dados,
+    create: { caseId, locale: "es", ...dados },
+  });
+}
 
 /** Extrai e valida o payload do formulário. */
 function parseCaseForm(data: FormData) {
@@ -38,6 +67,9 @@ function parseCaseForm(data: FormData) {
     active: formBool(data, "active"),
     featured: formBool(data, "featured"),
     metrics,
+    titleEs: formString(data, "titleEs"),
+    summaryEs: formString(data, "summaryEs"),
+    contentEs: formString(data, "contentEs"),
   });
 
   if (!parsed.success) {
@@ -140,6 +172,8 @@ export async function createCase(data: FormData) {
       },
     });
 
+    await salvarTraducaoEs(caseItem.id, parsed.data);
+
     revalidatePath("/admin/obras");
     revalidatePath("/[locale]/(marketing)/obras", "page");
     revalidatePath("/[locale]/(marketing)/obras/[slug]", "page");
@@ -209,6 +243,8 @@ export async function updateCase(id: string, data: FormData) {
         }),
       ),
     ]);
+
+    await salvarTraducaoEs(id, parsed.data);
 
     revalidatePath("/admin/obras");
     revalidatePath("/[locale]/(marketing)/obras", "page");

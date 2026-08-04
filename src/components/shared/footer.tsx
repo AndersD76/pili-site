@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { getSiteSettings, redesSociais } from "@/lib/site-settings";
-import { Globe, Link2, Video, Camera } from "lucide-react";
+import { ICONE_POR_REDE } from "@/components/shared/brand-icons";
 import Image from "next/image";
 
 /**
@@ -10,30 +10,22 @@ import Image from "next/image";
  * conteúdo idêntico e nenhum filtro aplicado.
  */
 const PRODUCT_LINKS = [
-  { label: "Tombador fixo", href: "/produtos#tombador-fixo" },
-  { label: "Tombador móvel", href: "/produtos#tombador-movel" },
-  { label: "Coletor de amostras", href: "/produtos#coletor-amostras" },
-  { label: "Unidade de transbordo", href: "/produtos#unidade-transbordo" },
-  { label: "Comparar modelos", href: "/produtos/comparar" },
-  { label: "Catálogo", href: "/catalogo" },
+  { key: "tombadorFixo", href: "/produtos#tombador-fixo" },
+  { key: "tombadorMovel", href: "/produtos#tombador-movel" },
+  { key: "coletor", href: "/produtos#coletor-amostras" },
+  { key: "transbordo", href: "/produtos#unidade-transbordo" },
+  { key: "comparar", href: "/produtos/comparar" },
+  { key: "catalogo", href: "/catalogo" },
 ] as const;
 
 /** Páginas institucionais que antes só existiam no sitemap. */
 const COMPANY_LINKS = [
-  { label: "A empresa", href: "/empresa" },
-  { label: "Certificações", href: "/certificacoes" },
-  { label: "Obras realizadas", href: "/obras" },
-  { label: "Trabalhe conosco", href: "/trabalhe-conosco" },
-  { label: "Política ambiental", href: "/politica-ambiental" },
+  { key: "empresa", href: "/empresa" },
+  { key: "certificacoes", href: "/certificacoes" },
+  { key: "obras", href: "/obras" },
+  { key: "trabalhe", href: "/trabalhe-conosco" },
+  { key: "ambiental", href: "/politica-ambiental" },
 ] as const;
-
-/** Ícone por rede. As URLs vêm das configurações, não daqui. */
-const ICONE_POR_REDE: Record<string, typeof Camera> = {
-  Instagram: Camera,
-  LinkedIn: Link2,
-  Facebook: Globe,
-  YouTube: Video,
-};
 
 export async function Footer() {
   const t = await getTranslations("footer");
@@ -73,7 +65,7 @@ export async function Footer() {
                     href={link.href}
                     className="text-sm text-pili-mist transition-colors hover:text-pili-white"
                   >
-                    {link.label}
+                    {t(`links.${link.key}`)}
                   </Link>
                 </li>
               ))}
@@ -83,7 +75,7 @@ export async function Footer() {
           {/* Col 3 — Empresa */}
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-widest text-pili-cement">
-              Empresa
+              {t("company")}
             </h3>
             <ul className="mt-4 flex flex-col gap-2.5">
               {COMPANY_LINKS.map((link) => (
@@ -92,7 +84,7 @@ export async function Footer() {
                     href={link.href}
                     className="text-sm text-pili-mist transition-colors hover:text-pili-white"
                   >
-                    {link.label}
+                    {t(`links.${link.key}`)}
                   </Link>
                 </li>
               ))}
@@ -124,13 +116,13 @@ export async function Footer() {
                   href="/ecossistema"
                   className="text-sm text-pili-safety transition-colors hover:text-pili-safety-bright"
                 >
-                  Ver ecossistema completo
+                  {t("fullEcosystem")}
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Col 4 — Contact */}
+          {/* Col 5 — Contact */}
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-widest text-pili-cement">
               {t("contact")}

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
@@ -63,6 +63,8 @@ export default async function BlogPostPage({
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
+  const t = await getTranslations();
+
   const BLOG_POSTS = await getArtigos();
   const post = await getArtigo(slug);
   if (!post) notFound();
@@ -91,14 +93,6 @@ export default async function BlogPostPage({
 
   return (
     <main className="pt-[var(--header-height)]">
-      <div className="mx-auto max-w-6xl px-6 pt-8 lg:px-8">
-        <Breadcrumbs
-          items={[
-            { name: "Blog", href: "/blog" },
-            { name: post.title },
-          ]}
-        />
-      </div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdScript(articleJsonLd) }}
@@ -109,17 +103,15 @@ export default async function BlogPostPage({
       />
 
       {/* Breadcrumb */}
-      <div className="bg-pili-paper px-6 py-3 lg:px-8">
-        <div className="mx-auto max-w-6xl font-mono text-xs text-pili-cement">
-          <Link href="/" className="hover:text-pili-black">
-            Home
-          </Link>{" "}
-          /{" "}
-          <Link href="/blog" className="hover:text-pili-black">
-            Blog
-          </Link>{" "}
-          / <span className="text-pili-black">{post.title}</span>
-        </div>
+      <div className="border-b border-pili-mist bg-pili-paper px-6 py-3 lg:px-8">
+        <Breadcrumbs
+          className="mx-auto max-w-6xl"
+          items={[
+            { name: t("common.home"), href: "/" },
+            { name: t("nav.blog"), href: "/blog" },
+            { name: post.title },
+          ]}
+        />
       </div>
 
       {/* Hero */}
@@ -252,7 +244,7 @@ export default async function BlogPostPage({
                       {related.excerpt}
                     </p>
                     <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-pili-concrete transition-colors group-hover:text-pili-safety-deep">
-                      Ler mais
+                      {t("common.readMore")}
                       <ArrowRight className="h-3.5 w-3.5" />
                     </span>
                   </div>
@@ -267,7 +259,7 @@ export default async function BlogPostPage({
       <section className="bg-pili-graphite py-16 px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="font-display text-[length:var(--text-h2)] font-black uppercase text-pili-white">
-            Precisa de um tombador hidráulico?
+            {t("blog.ctaTitleArticle")}
           </h2>
           <p className="mt-4 text-pili-cement">
             Solicite um orçamento personalizado e receba a recomendação técnica
@@ -278,7 +270,7 @@ export default async function BlogPostPage({
               href="/orcamento"
               className="inline-flex items-center gap-2 bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
             >
-              Solicitar orçamento
+              {t("common.requestQuote")}
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link

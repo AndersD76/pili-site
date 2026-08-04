@@ -12,9 +12,38 @@ import {
   firstIssue,
   formBool,
   formString,
+  vazioParaNulo,
 } from "@/lib/validators/admin";
 
 /* ---------- helpers ---------- */
+
+/**
+ * Grava (ou apaga) a tradução em espanhol do artigo.
+ *
+ * Título ou resumo em branco significam "ainda não traduzido": a linha `es` é
+ * removida e o site em espanhol volta a exibir o português.
+ */
+async function salvarTraducaoEs(
+  postId: string,
+  d: { titleEs: string; excerptEs: string; contentEs: string },
+) {
+  if (!d.titleEs.trim() || !d.excerptEs.trim()) {
+    await db.postTranslation.deleteMany({ where: { postId, locale: "es" } });
+    return;
+  }
+
+  const dados = {
+    title: d.titleEs.trim(),
+    excerpt: d.excerptEs.trim(),
+    content: vazioParaNulo(d.contentEs) ?? d.excerptEs.trim(),
+  };
+
+  await db.postTranslation.upsert({
+    where: { postId_locale: { postId, locale: "es" } },
+    update: dados,
+    create: { postId, locale: "es", ...dados },
+  });
+}
 
 /** Extrai e valida o payload do formulário. */
 function parsePostForm(data: FormData) {
@@ -31,6 +60,9 @@ function parsePostForm(data: FormData) {
     content: formString(data, "content"),
     published: formBool(data, "published"),
     tags,
+    titleEs: formString(data, "titleEs"),
+    excerptEs: formString(data, "excerptEs"),
+    contentEs: formString(data, "contentEs"),
   });
 
   if (!parsed.success) {
@@ -114,6 +146,8 @@ export async function createPost(data: FormData) {
       },
     });
 
+    await salvarTraducaoEs(post.id, parsed.data);
+
     revalidatePath("/admin/blog");
     revalidatePath("/[locale]/(marketing)/blog", "page");
     revalidatePath("/[locale]/(marketing)/blog/[slug]", "page");
@@ -173,6 +207,8 @@ export async function updatePost(id: string, data: FormData) {
         },
       }),
     ]);
+
+    await salvarTraducaoEs(id, parsed.data);
 
     revalidatePath("/admin/blog");
     revalidatePath("/[locale]/(marketing)/blog", "page");

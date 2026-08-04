@@ -13,7 +13,47 @@ import {
   formBool,
   formString,
   formJsonArray,
+  vazioParaNulo,
 } from "@/lib/validators/admin";
+
+/**
+ * Grava (ou apaga) a tradução em espanhol de um produto.
+ *
+ * Nome em branco no painel significa "ainda não traduzido": a linha `es` é
+ * removida e o site volta a exibir o português, em vez de mostrar um card com
+ * título vazio.
+ */
+async function salvarTraducaoEs(
+  productId: string,
+  d: {
+    nameEs: string;
+    taglineEs: string;
+    descriptionEs: string;
+    metaTitleEs: string;
+    metaDescEs: string;
+  },
+) {
+  const chave = { productId_locale: { productId, locale: "es" as const } };
+
+  if (!d.nameEs.trim() || !d.descriptionEs.trim()) {
+    await db.productTranslation.deleteMany({ where: { productId, locale: "es" } });
+    return;
+  }
+
+  const dados = {
+    name: d.nameEs.trim(),
+    tagline: vazioParaNulo(d.taglineEs),
+    description: d.descriptionEs.trim(),
+    metaTitle: vazioParaNulo(d.metaTitleEs),
+    metaDesc: vazioParaNulo(d.metaDescEs),
+  };
+
+  await db.productTranslation.upsert({
+    where: chave,
+    update: dados,
+    create: { productId, locale: "es", ...dados },
+  });
+}
 
 /* ---------- helpers ---------- */
 
@@ -40,6 +80,11 @@ function parseProductForm(data: FormData) {
     active: formBool(data, "active"),
     featured: formBool(data, "featured"),
     specs,
+    nameEs: formString(data, "nameEs"),
+    taglineEs: formString(data, "taglineEs"),
+    descriptionEs: formString(data, "descriptionEs"),
+    metaTitleEs: formString(data, "metaTitleEs"),
+    metaDescEs: formString(data, "metaDescEs"),
   });
 
   if (!parsed.success) {
@@ -152,6 +197,8 @@ export async function createProduct(data: FormData) {
       },
     });
 
+    await salvarTraducaoEs(product.id, parsed.data);
+
     revalidatePath("/admin/produtos");
     revalidatePath("/[locale]/(marketing)/produtos", "page");
     revalidatePath("/[locale]/(marketing)/produtos/[slug]", "page");
@@ -223,6 +270,8 @@ export async function updateProduct(id: string, data: FormData) {
         }),
       ),
     ]);
+
+    await salvarTraducaoEs(id, parsed.data);
 
     revalidatePath("/admin/produtos");
     revalidatePath("/[locale]/(marketing)/produtos", "page");

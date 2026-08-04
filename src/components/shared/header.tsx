@@ -6,7 +6,6 @@ import { Link, usePathname } from "@/i18n/routing";
 import NextLink from "next/link";
 import { Menu, X, ChevronDown, ExternalLink, UserCircle, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ECOSYSTEM } from "@/lib/constants";
 import { LanguageSwitcher } from "./language-switcher";
 
 const NAV_ITEMS = [
@@ -19,11 +18,12 @@ const NAV_ITEMS = [
 ] as const;
 
 const ECOSYSTEM_ITEMS = [
-  { label: "PILI Tech", slug: "tech", extHref: ECOSYSTEM.tech, desc: "Gestão de pátio IoT" },
+  { label: "PILI Tech", slug: "tech" },
 ] as const;
 
-export function Header() {
+export function Header({ piliTechUrl }: { piliTechUrl: string | null }) {
   const t = useTranslations("nav");
+  const th = useTranslations("header");
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -113,18 +113,20 @@ export function Header() {
                         {item.label}
                       </div>
                       <div className="text-xs text-pili-cement">
-                        {item.desc}
+                        {th("ecosystemDesc")}
                       </div>
                     </Link>
-                    <a
-                      href={item.extHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-1.5 inline-flex items-center gap-1 text-[11px] font-medium text-pili-safety transition-colors hover:text-pili-safety-bright"
-                    >
-                      Acessar plataforma
-                      <ExternalLink className="h-3 w-3" />
-                    </a>
+                    {piliTechUrl && (
+                      <a
+                        href={piliTechUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-1.5 inline-flex items-center gap-1 text-[11px] font-medium text-pili-safety transition-colors hover:text-pili-safety-bright"
+                      >
+                        {th("openPlatform")}
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    )}
                   </div>
                 ))}
               </div>
@@ -139,16 +141,16 @@ export function Header() {
           <NextLink
             href="/portal"
             className="hidden items-center gap-1.5 px-3 py-2 text-base font-semibold text-pili-mist transition-colors hover:text-pili-white lg:inline-flex"
-            title="Portal do Cliente"
+            title={th("portalTitle")}
           >
             <UserCircle className="h-5 w-5" />
-            Portal
+            {th("portal")}
           </NextLink>
 
           <NextLink
             href="/admin"
             className="hidden items-center gap-1.5 px-2 py-2 text-sm font-medium text-pili-iron transition-colors hover:text-pili-mist lg:inline-flex"
-            title="Painel administrativo"
+            title={th("adminTitle")}
           >
             <ShieldCheck className="h-3.5 w-3.5" />
           </NextLink>
@@ -164,7 +166,7 @@ export function Header() {
           <button
             className="p-2 text-pili-white lg:hidden"
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"}
+            aria-label={mobileOpen ? th("closeMenu") : th("openMenu")}
           >
             {mobileOpen ? (
               <X className="h-5 w-5" />
@@ -196,7 +198,7 @@ export function Header() {
 
             <div className="border-t border-pili-iron pt-3 mt-2">
               <span className="text-xs font-medium uppercase tracking-widest text-pili-cement">
-                Ecossistema
+                {t("ecosystem")}
               </span>
               {ECOSYSTEM_ITEMS.map((item) => (
                 <div key={item.label} className="py-3">
@@ -206,15 +208,17 @@ export function Header() {
                   >
                     {item.label}
                   </Link>
-                  <a
-                    href={item.extHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="ml-3 inline-flex items-center gap-1 text-[11px] text-pili-safety"
-                  >
-                    Acessar
-                    <ExternalLink className="h-3 w-3" />
-                  </a>
+                  {piliTechUrl && (
+                    <a
+                      href={piliTechUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="ml-3 inline-flex items-center gap-1 text-[11px] text-pili-safety"
+                    >
+                      {th("access")}
+                      <ExternalLink className="h-3 w-3" />
+                    </a>
+                  )}
                 </div>
               ))}
             </div>
@@ -225,14 +229,14 @@ export function Header() {
                 className="flex items-center gap-2 py-3 text-sm font-medium text-pili-mist"
               >
                 <UserCircle className="h-4 w-4" />
-                Portal do Cliente
+                {th("portalTitle")}
               </NextLink>
               <NextLink
                 href="/admin"
                 className="flex items-center gap-2 py-3 text-sm font-medium text-pili-cement"
               >
                 <ShieldCheck className="h-4 w-4" />
-                Painel administrativo
+                {th("adminTitle")}
               </NextLink>
             </div>
 

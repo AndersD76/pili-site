@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import {
   generatePageMetadata,
@@ -121,6 +121,8 @@ export default async function EcosystemProjectPage({
 }) {
   const { locale, projeto } = await params;
   setRequestLocale(locale);
+
+  const t = await getTranslations();
   const project = getEcosystemProject(projeto);
   if (!project) notFound();
 
@@ -196,7 +198,7 @@ export default async function EcosystemProjectPage({
                   href="/orcamento"
                   className="inline-flex items-center gap-2 border border-pili-white/30 px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:border-pili-white hover:bg-pili-white/5"
                 >
-                  Solicitar demonstração
+                  {t("ecossistema.requestDemo")}
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
@@ -259,7 +261,7 @@ export default async function EcosystemProjectPage({
           <AnimateOnScroll delay={0.15}>
             <div className="mt-8 lg:mt-0">
               <h3 className="font-display text-sm font-bold uppercase tracking-wider text-pili-concrete">
-                Principais benefícios
+                {t("ecossistema.benefits")}
               </h3>
               <ul className="mt-6 space-y-4">
                 {project.features.map((feature) => (
@@ -292,7 +294,7 @@ export default async function EcosystemProjectPage({
               Funcionalidades
             </h2>
             <p className="mt-4 max-w-2xl text-pili-concrete">
-              Recursos desenvolvidos para maximizar a eficiência da sua operação.
+              {t("ecossistema.benefitsDesc")}
             </p>
           </AnimateOnScroll>
           <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -330,7 +332,7 @@ export default async function EcosystemProjectPage({
               Como funciona
             </h2>
             <p className="mt-4 max-w-2xl text-pili-concrete">
-              Da configuração aos resultados em poucos passos.
+              {t("ecossistema.stepsDesc")}
             </p>
           </AnimateOnScroll>
           <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -365,7 +367,7 @@ export default async function EcosystemProjectPage({
             <div className="lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
               <div>
                 <h2 className="font-display text-[length:var(--text-h2)] font-black uppercase text-pili-black">
-                  Integrações e compatibilidade
+                  {t("ecossistema.integrations")}
                 </h2>
                 <p className="mt-4 text-pili-concrete">
                   O {project.name} se integra nativamente com os principais
@@ -461,7 +463,7 @@ export default async function EcosystemProjectPage({
               {project.name}
             </span>
             <h2 className="mt-4 font-display text-[length:var(--text-h2)] font-black uppercase text-pili-white">
-              Pronto para começar?
+              {t("ecossistema.readyTitle")}
             </h2>
             <p className="mt-4 max-w-2xl mx-auto text-pili-cement">
               Acesse a plataforma agora ou solicite uma demonstração personalizada
@@ -481,7 +483,7 @@ export default async function EcosystemProjectPage({
                 href="/orcamento"
                 className="inline-flex items-center gap-2 border border-pili-white/30 px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:border-pili-white hover:bg-pili-white/5"
               >
-                Solicitar demonstração
+                {t("ecossistema.requestDemo")}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
