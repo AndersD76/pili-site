@@ -11,7 +11,6 @@ import { ClientsBand } from "@/components/marketing/clients-band";
 import { CertificationsBand } from "@/components/marketing/certifications-band";
 import { LeadForm } from "@/components/marketing/lead-form";
 import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
-import { FinancingSimulator } from "@/components/marketing/financing-simulator";
 import {
   ArrowRight,
   Calculator,
@@ -85,7 +84,7 @@ export default async function HomePage({
   return (
     <main>
       {/* ──── 1. HERO — Full-screen with yellow accent ──── */}
-      <section className="relative flex min-h-screen items-end bg-pili-black pb-20 px-6 lg:px-16">
+      <section className="relative flex min-h-svh items-center bg-pili-black px-6 pb-16 pt-[calc(var(--header-height)+2.5rem)] lg:px-16">
         <Image
           src="/images/tombador-pili.jpg"
           alt="Tombador hidráulico PILI em operação"
@@ -103,7 +102,7 @@ export default async function HomePage({
 
         <div className="relative z-10 max-w-5xl">
           <AnimateOnScroll direction="up" delay={0}>
-            <div className="mb-6 inline-flex items-center gap-3 border border-pili-iron/60 bg-pili-black/60 px-4 py-2 backdrop-blur-sm">
+            <div className="mb-5 inline-flex items-center gap-3 border border-pili-iron/60 bg-pili-black/60 px-4 py-2 backdrop-blur-sm">
               <div className="h-2 w-2 bg-pili-safety" />
               <span className="font-mono text-xs uppercase tracking-widest text-pili-cement">
                 Desde {COMPANY.founded} &middot; {STATS.equipment}{" "}
@@ -113,13 +112,13 @@ export default async function HomePage({
           </AnimateOnScroll>
 
           <AnimateOnScroll direction="up" delay={0.15}>
-            <h1 className="font-display text-[length:var(--text-display-1)] font-black uppercase leading-[0.85] tracking-tight text-pili-white">
+            <h1 className="font-display text-[length:var(--text-display-1)] font-black uppercase leading-[0.95] tracking-tight text-pili-white">
               {t("hero.headline")}
             </h1>
           </AnimateOnScroll>
 
           <AnimateOnScroll direction="up" delay={0.3}>
-            <div className="mt-8 flex items-center gap-4">
+            <div className="mt-6 flex items-center gap-4">
               <div className="h-px w-12 bg-pili-safety" />
               <p className="max-w-xl font-mono text-sm tracking-wide text-pili-cement">
                 {t("hero.sub", {
@@ -131,7 +130,7 @@ export default async function HomePage({
           </AnimateOnScroll>
 
           <AnimateOnScroll direction="up" delay={0.45}>
-            <div className="mt-10 flex flex-wrap gap-4">
+            <div className="mt-8 flex flex-wrap gap-4">
               <Link
                 href="/orcamento"
                 className="group inline-flex items-center justify-center bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-all hover:bg-pili-safety-deep hover:shadow-[0_0_30px_rgba(227,30,36,0.3)]"
@@ -467,13 +466,6 @@ export default async function HomePage({
               </div>
             </AnimateOnScroll>
           </div>
-        </div>
-      </section>
-
-      {/* ──── 9. SIMULADOR DE FINANCIAMENTO ──── */}
-      <section className="py-24 px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <FinancingSimulator />
         </div>
       </section>
 

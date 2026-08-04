@@ -103,12 +103,7 @@ export function Footer() {
               {t("ecosystem")}
             </h3>
             <ul className="mt-4 flex flex-col gap-2.5">
-              {[
-                { label: "PILI Store", href: ECOSYSTEM.store },
-                { label: "PILI Tech", href: ECOSYSTEM.tech },
-                { label: "PILI Raster", href: ECOSYSTEM.raste },
-                { label: "PILI Harbor", href: ECOSYSTEM.harbor },
-              ].map((item) => (
+              {[{ label: "PILI Tech", href: ECOSYSTEM.tech }].map((item) => (
                 <li key={item.label}>
                   <a
                     href={item.href}

@@ -78,6 +78,10 @@ export async function getProductById(id: string) {
     const product = await db.product.findUnique({
       where: { id },
       include: {
+        media: {
+          select: { id: true, filename: true, alt: true },
+          orderBy: { order: "asc" },
+        },
         translations: true,
         specs: { orderBy: { order: "asc" } },
         features: { orderBy: { order: "asc" } },

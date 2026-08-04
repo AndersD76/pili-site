@@ -2,18 +2,10 @@
 
 import { Link } from "@/i18n/routing";
 import { ECOSYSTEM } from "@/lib/constants";
-import { ExternalLink, Store, Cpu, BarChart3, Radio, ArrowRight } from "lucide-react";
+import { ExternalLink, Cpu, ArrowRight } from "lucide-react";
 import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
 
 const BRANDS = [
-  {
-    name: "PILI Store",
-    desc: "Loja online de peças de reposição e acessórios para tombadores e equipamentos PILI.",
-    href: ECOSYSTEM.store,
-    icon: Store,
-    accent: "border-t-amber-500",
-    slug: "store",
-  },
   {
     name: "PILI Tech",
     desc: "SaaS de gestão de pátio industrial com IoT, MQTT e monitoramento em tempo real.",
@@ -21,22 +13,6 @@ const BRANDS = [
     icon: Cpu,
     accent: "border-t-cyan-500",
     slug: "tech",
-  },
-  {
-    name: "PILI Raster",
-    desc: "Plataforma de rastreabilidade, compliance EUDR e inteligência de preço de commodities.",
-    href: ECOSYSTEM.raste,
-    icon: BarChart3,
-    accent: "border-t-emerald-500",
-    slug: "raste",
-  },
-  {
-    name: "PILI Harbor",
-    desc: "IoT mesh de yard management com ESP32, Kalman filter e posicionamento de precisão.",
-    href: ECOSYSTEM.harbor,
-    icon: Radio,
-    accent: "border-t-violet-500",
-    slug: "harbor",
   },
 ] as const;
 

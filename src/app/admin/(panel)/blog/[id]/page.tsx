@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MediaUploader } from "@/components/admin/media-uploader";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { requireRole } from "@/lib/auth-guard";
@@ -40,6 +41,15 @@ export default async function EditarArtigoPage({
       </div>
 
       <PostForm post={post} />
+
+      <div className="max-w-2xl rounded-lg border border-pili-mist bg-pili-white p-6">
+        <MediaUploader
+          postId={post.id}
+          initialItems={post.media ?? []}
+          label="Imagens do artigo"
+          help="A primeira imagem é usada como capa do artigo e no compartilhamento."
+        />
+      </div>
     </div>
   );
 }

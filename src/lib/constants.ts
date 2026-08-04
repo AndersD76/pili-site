@@ -21,11 +21,14 @@ export const COMPANY = {
   founded: 1979,
 } as const;
 
+/**
+ * Plataformas do ecossistema divulgadas no site.
+ *
+ * Store, Raster e Harbor foram retirados: só o Tech está no ar. Anunciar
+ * plataforma que não existe custa credibilidade e gera link quebrado.
+ */
 export const ECOSYSTEM = {
-  store: process.env.PILI_STORE_URL ?? "https://store.pili.ind.br",
   tech: process.env.PILI_TECH_URL ?? "https://tech.pili.ind.br",
-  raste: process.env.PILI_RASTE_URL ?? "https://raste.pili.ind.br",
-  harbor: process.env.PILI_HARBOR_URL ?? "https://harbor.pili.ind.br",
 } as const;
 
 export const SOCIAL = {
@@ -35,7 +38,7 @@ export const SOCIAL = {
   youtube: "https://www.youtube.com/channel/UCkjB-kHuDaB9tKHtFcp-S8g",
 } as const;
 
-export const LOCALES = ["pt-BR", "en", "es"] as const;
+export const LOCALES = ["pt-BR", "es"] as const;
 export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = "pt-BR";
 

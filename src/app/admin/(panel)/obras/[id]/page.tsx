@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MediaUploader } from "@/components/admin/media-uploader";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { requireRole } from "@/lib/auth-guard";
@@ -40,6 +41,15 @@ export default async function EditarObraPage({
       </div>
 
       <CaseForm caseData={caseItem} />
+
+      <div className="max-w-2xl rounded-lg border border-pili-mist bg-pili-white p-6">
+        <MediaUploader
+          caseId={caseItem.id}
+          initialItems={caseItem.media ?? []}
+          label="Fotos da obra"
+          help="Aparecem na página da obra e no card da listagem."
+        />
+      </div>
     </div>
   );
 }

@@ -76,6 +76,10 @@ export async function getCaseById(id: string) {
     const caseItem = await db.case.findUnique({
       where: { id },
       include: {
+        media: {
+          select: { id: true, filename: true, alt: true },
+          orderBy: { order: "asc" },
+        },
         translations: true,
         metrics: true,
       },

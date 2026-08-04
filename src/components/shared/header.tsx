@@ -19,10 +19,7 @@ const NAV_ITEMS = [
 ] as const;
 
 const ECOSYSTEM_ITEMS = [
-  { label: "PILI Store", slug: "store", extHref: ECOSYSTEM.store, desc: "Peças e acessórios" },
   { label: "PILI Tech", slug: "tech", extHref: ECOSYSTEM.tech, desc: "Gestão de pátio IoT" },
-  { label: "PILI Raster", slug: "raste", extHref: ECOSYSTEM.raste, desc: "Rastreabilidade + EUDR" },
-  { label: "PILI Harbor", slug: "harbor", extHref: ECOSYSTEM.harbor, desc: "Yard management IoT" },
 ] as const;
 
 export function Header() {
@@ -57,7 +54,7 @@ export function Header() {
           : "bg-transparent"
       )}
     >
-      <div className="mx-auto flex h-[var(--header-height)] max-w-7xl items-center justify-between px-6 lg:px-8">
+      <div className="flex h-[var(--header-height)] w-full items-center justify-between gap-10 px-6 lg:gap-16 lg:px-16">
         {/* Logo */}
         <Link href="/" className="flex shrink-0 items-center">
           <img

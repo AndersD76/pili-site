@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MediaUploader } from "@/components/admin/media-uploader";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { requireRole } from "@/lib/auth-guard";
@@ -40,6 +41,15 @@ export default async function EditarProdutoPage({
       </div>
 
       <ProductForm product={product} />
+
+      <div className="max-w-2xl rounded-lg border border-pili-mist bg-pili-white p-6">
+        <MediaUploader
+          productId={product.id}
+          initialItems={product.media ?? []}
+          label="Fotos do produto"
+          help="Aparecem na página do produto e na listagem do catálogo."
+        />
+      </div>
     </div>
   );
 }

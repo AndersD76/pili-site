@@ -24,7 +24,7 @@
   --pili-info: #1E40AF;
 
   /* Typography scale */
-  --text-display-1: clamp(3.5rem, 8vw, 8rem);
+  --text-display-1: clamp(2.25rem, 5vw, 4.5rem);
   --text-display-2: clamp(2.5rem, 5vw, 5rem);
   --text-h1: clamp(2rem, 4vw, 3.5rem);
   --text-h2: clamp(1.5rem, 3vw, 2.5rem);

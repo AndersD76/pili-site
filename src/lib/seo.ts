@@ -40,7 +40,6 @@ export function generatePageMetadata({
       canonical: url,
       languages: {
         "pt-BR": `${SITE_URL}/pt-BR${path}`,
-        en: `${SITE_URL}/en${path}`,
         es: `${SITE_URL}/es${path}`,
       },
     },
@@ -87,7 +86,7 @@ export function generateOrganizationJsonLd() {
       telephone: COMPANY.phone,
       email: COMPANY.emailComercial,
       contactType: "sales",
-      availableLanguage: ["Portuguese", "English", "Spanish"],
+      availableLanguage: ["Portuguese", "Spanish"],
     },
     taxID: COMPANY.cnpj,
   };

@@ -29,7 +29,6 @@ const QUICK_ACTIONS: QuickAction[] = [
   { label: "Solicitar orçamento", type: "route", target: "/orcamento" },
   { label: "Falar com consultor", type: "external", target: "whatsapp" },
   { label: "Sobre a empresa", type: "route", target: "/empresa" },
-  { label: "Peças de reposição", type: "external", target: "store" },
   { label: "Suporte técnico", type: "route", target: "/contato" },
 ];
 
@@ -117,8 +116,6 @@ export function PiliRobo() {
         router.push(action.target);
       } else if (action.target === "whatsapp") {
         window.open(getWhatsAppUrl(), "_blank", "noopener,noreferrer");
-      } else if (action.target === "store") {
-        window.open(ECOSYSTEM.store, "_blank", "noopener,noreferrer");
       }
     },
     [router]

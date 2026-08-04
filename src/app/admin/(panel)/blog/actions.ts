@@ -69,6 +69,10 @@ export async function getPostById(id: string) {
     const post = await db.post.findUnique({
       where: { id },
       include: {
+        media: {
+          select: { id: true, filename: true, alt: true },
+          orderBy: { order: "asc" },
+        },
         translations: true,
       },
     });

@@ -197,22 +197,36 @@ model ApplicationTranslation {
 
 // ============ MEDIA ============
 
+/// Arquivo de midia com os bytes no proprio banco.
+///
+/// O volume do site e pequeno (dezenas de fotos) e nao justifica contratar
+/// armazenamento externo. A entrega passa por `GET /api/media/[id]`, que envia
+/// `Cache-Control: immutable` — o id nunca muda para o mesmo arquivo, entao o
+/// CDN e o navegador guardam indefinidamente e o banco e lido uma vez so.
 model Media {
   id        String   @id @default(cuid())
   productId String?
   caseId    String?
-  url       String
+  postId    String?
+  /// Conteudo binario do arquivo.
+  data      Bytes
+  filename  String
+  mimeType  String
+  /// Tamanho em bytes, para exibir na biblioteca sem carregar o binario.
+  size      Int
   alt       String?
-  type      String
+  type      String   @default("image")
   width     Int?
   height    Int?
   order     Int      @default(0)
   product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
   case      Case?    @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now()) @db.Timestamptz(3)
 
   @@index([productId])
   @@index([caseId])
+  @@index([postId])
 }
 
 // ============ CASES / OBRAS ============
@@ -266,6 +280,7 @@ model Post {
   published    Boolean           @default(false)
   publishedAt  DateTime? @db.Timestamptz(3)
   translations PostTranslation[]
+  media        Media[]
   tags         String[]          @default([])
   createdAt    DateTime          @default(now()) @db.Timestamptz(3)
   updatedAt    DateTime          @updatedAt @db.Timestamptz(3)
@@ -418,4 +433,28 @@ model RateLimit {
   expiresAt DateTime @db.Timestamptz(3)
 
   @@index([expiresAt])
+}
+
+// ============ CONFIGURACOES DO SITE ============
+
+/// Dados institucionais editaveis pelo painel.
+///
+/// Antes viviam em `src/lib/constants.ts` — mudar telefone ou e-mail exigia
+/// deploy. Linha unica, fixada em `id = "default"`.
+model SiteSettings {
+  id             String   @id @default("default")
+  razaoSocial    String
+  cnpj           String
+  endereco       String
+  telefone       String
+  whatsapp       String
+  email          String
+  emailComercial String
+  fundacao       Int
+  instagram      String?
+  linkedin       String?
+  facebook       String?
+  youtube        String?
+  piliTechUrl    String?
+  updatedAt      DateTime @updatedAt @db.Timestamptz(3)
 }
