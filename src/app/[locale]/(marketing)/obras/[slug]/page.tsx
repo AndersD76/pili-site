@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { Link } from "@/i18n/routing";
 import { getObra, getObras, getProduto } from "@/lib/content";
@@ -43,6 +43,8 @@ export default async function CaseDetailPage({
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
+
+  const t = await getTranslations();
   const caseData = await getObra(slug);
   if (!caseData) notFound();
 
@@ -62,31 +64,21 @@ export default async function CaseDetailPage({
 
   return (
     <main className="pt-[var(--header-height)]">
-      <div className="mx-auto max-w-6xl px-6 pt-8 lg:px-8">
-        <Breadcrumbs
-          items={[
-            { name: "Obras", href: "/obras" },
-            { name: caseData.title },
-          ]}
-        />
-      </div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd) }}
       />
 
       {/* Breadcrumb */}
-      <div className="bg-pili-paper px-6 py-3 lg:px-8">
-        <div className="mx-auto max-w-6xl font-mono text-xs text-pili-cement">
-          <Link href="/" className="hover:text-pili-black">
-            Home
-          </Link>{" "}
-          /{" "}
-          <Link href="/obras" className="hover:text-pili-black">
-            Obras
-          </Link>{" "}
-          / <span className="text-pili-black">{caseData.title}</span>
-        </div>
+      <div className="border-b border-pili-mist bg-pili-paper px-6 py-3 lg:px-8">
+        <Breadcrumbs
+          className="mx-auto max-w-6xl"
+          items={[
+            { name: t("common.home"), href: "/" },
+            { name: t("nav.projects"), href: "/obras" },
+            { name: caseData.title },
+          ]}
+        />
       </div>
 
       {/* Hero */}
@@ -240,6 +232,7 @@ export default async function CaseDetailPage({
           </p>
           <div className="mt-8">
             <LeadForm
+              dark
               productInterest={
                 relatedProducts[0]?.name ?? caseData.application
               }

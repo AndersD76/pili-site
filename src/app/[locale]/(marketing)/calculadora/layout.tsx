@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 import { generatePageMetadata } from "@/lib/seo";
 
@@ -7,10 +8,11 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "calculadora" });
   return generatePageMetadata({
     locale,
-    title: "Calculadora de capacidade de tombador",
-    description: "Descubra qual tombador PILI atende sua operação. Cálculo por volume diário, tipo de grão e densidade — resultado imediato e estimativa de ROI.",
+    title: t("metaTitle"),
+    description: t("metaDesc"),
     path: "/calculadora",
   });
 }

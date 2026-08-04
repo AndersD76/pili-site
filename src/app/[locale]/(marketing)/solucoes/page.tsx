@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/routing";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { generatePageMetadata } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
 
@@ -9,46 +9,22 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "solucoes" });
   return generatePageMetadata({
     locale,
-    title: "Soluções por setor",
-    description:
-      "Soluções de descarga para portos, cooperativas, indústria alimentícia, fertilizantes e cimento.",
+    title: t("title"),
+    description: t("metaDesc"),
     path: "/solucoes",
   });
 }
 
+/** Rótulo, manchete e descrição de cada setor vêm das traduções. */
 const SECTORS = [
-  {
-    slug: "porto",
-    title: "Porto",
-    headline: "Operações portuárias de alto fluxo",
-    desc: "Tombadores de 26 a 30 metros para terminais marítimos com fluxo de até 700 caminhões por dia em operação 24/7.",
-  },
-  {
-    slug: "cooperativa",
-    title: "Cooperativa",
-    headline: "Recepção ágil de grãos de associados",
-    desc: "Modelos de 10 a 26 metros para cooperativas de todos os portes, com ciclos rápidos e filas reduzidas na safra.",
-  },
-  {
-    slug: "industria",
-    title: "Indústria alimentícia",
-    headline: "Abastecimento contínuo de plantas industriais",
-    desc: "Tombadores integrados a linhas de processamento com automação e rastreabilidade de lote.",
-  },
-  {
-    slug: "fertilizante",
-    title: "Fertilizante",
-    headline: "Materiais corrosivos e abrasivos",
-    desc: "Versões especiais com revestimento inox, vedação reforçada e sistema de lavagem para operação com fertilizantes.",
-  },
-  {
-    slug: "cimento",
-    title: "Cimento",
-    headline: "Descarga de minerais e clínquer",
-    desc: "Tombadores compactos e robustos para operação com materiais densos e abrasivos na indústria cimenteira.",
-  },
+  "porto",
+  "cooperativa",
+  "industria",
+  "fertilizante",
+  "cimento",
 ] as const;
 
 export default async function SolucoesPage({
@@ -59,16 +35,17 @@ export default async function SolucoesPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
+  const t = await getTranslations();
+
   return (
     <main className="pt-[var(--header-height)]">
       <section className="bg-pili-black py-20 px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <h1 className="font-display text-[length:var(--text-display-2)] font-black uppercase text-pili-white">
-            Soluções por setor
+            {t("solucoes.title")}
           </h1>
           <p className="mt-4 max-w-2xl text-pili-cement">
-            Cada setor tem desafios únicos de descarga. A PILI desenvolve
-            soluções específicas para cada aplicação.
+            {t("solucoes.intro")}
           </p>
         </div>
       </section>
@@ -76,26 +53,26 @@ export default async function SolucoesPage({
       <section className="py-16 px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {SECTORS.map((sector) => (
+            {SECTORS.map((slug) => (
               <Link
-                key={sector.slug}
-                href={`/solucoes/${sector.slug}`}
+                key={slug}
+                href={`/solucoes/${slug}`}
                 className="group flex flex-col border border-pili-mist p-8 transition-all hover:border-pili-black"
               >
                 <span className="font-mono text-xs uppercase tracking-wider text-pili-cement">
-                  {sector.slug}
+                  {slug}
                 </span>
                 <h2 className="mt-2 font-display text-2xl font-bold uppercase text-pili-black">
-                  {sector.title}
+                  {t(`forms.applications.${slug}`)}
                 </h2>
                 <p className="mt-1 text-sm font-medium text-pili-iron">
-                  {sector.headline}
+                  {t(`solucoes.cards.${slug}.headline`)}
                 </p>
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-pili-concrete">
-                  {sector.desc}
+                  {t(`solucoes.cards.${slug}.desc`)}
                 </p>
                 <span className="mt-6 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-pili-black transition-colors group-hover:text-pili-safety-deep">
-                  Ver solução
+                  {t("common.seeSolution")}
                   <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                 </span>
               </Link>

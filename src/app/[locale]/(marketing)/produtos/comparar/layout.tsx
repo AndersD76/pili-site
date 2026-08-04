@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 import { generatePageMetadata } from "@/lib/seo";
 
@@ -7,10 +8,11 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "produtos.compare" });
   return generatePageMetadata({
     locale,
-    title: "Comparar tombadores",
-    description: "Compare lado a lado capacidade, comprimento e especificações técnicas dos tombadores hidráulicos PILI Industrial.",
+    title: t("metaTitle"),
+    description: t("metaDesc"),
     path: "/produtos/comparar",
   });
 }

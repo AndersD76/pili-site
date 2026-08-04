@@ -1,4 +1,5 @@
 import { MapPin } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 /**
  * Mapa da localização, via OpenStreetMap.
@@ -26,7 +27,7 @@ function bbox(lat: number, lng: number, zoom: number): string {
   return [lng - raio, lat - raio / 2, lng + raio, lat + raio / 2].join(",");
 }
 
-export function MapaLocalizacao({
+export async function MapaLocalizacao({
   lat,
   lng,
   zoom,
@@ -34,6 +35,8 @@ export function MapaLocalizacao({
   className = "",
 }: MapaLocalizacaoProps) {
   if (lat === null || lng === null) return null;
+
+  const t = await getTranslations("contato");
 
   const embed =
     `https://www.openstreetmap.org/export/embed.html` +
@@ -46,7 +49,7 @@ export function MapaLocalizacao({
       <div className="overflow-hidden border border-pili-mist">
         <iframe
           src={embed}
-          title={`Mapa da localização — ${endereco}`}
+          title={t("mapTitle", { address: endereco })}
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
           className="aspect-16/10 w-full border-0"
@@ -60,7 +63,7 @@ export function MapaLocalizacao({
         className="mt-3 inline-flex items-center gap-2 text-sm text-pili-concrete transition-colors hover:text-pili-black"
       >
         <MapPin className="h-4 w-4" />
-        Abrir {endereco} no mapa
+        {t("mapLink", { address: endereco })}
       </a>
     </div>
   );

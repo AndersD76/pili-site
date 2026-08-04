@@ -11,25 +11,26 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Calculator, Lock } from "lucide-react";
+import { useTranslations } from "next-intl";
 
-type GrainType = "soja" | "milho" | "trigo" | "fertilizante" | "cimento";
+type GrainType = (typeof GRAIN_TYPES)[number];
 
 interface CalcResult {
   model: string;
   capacity: string;
-  length: string;
-  throughput: string;
-  estimatedROI: string;
-  description: string;
+  lengthMeters: number;
+  tonnage: number;
+  /** Chave em `calculadora.roi` e `calculadora.recommendations`. */
+  porte: "compacto" | "medio" | "grande" | "maximo";
 }
 
-const GRAIN_LABELS: Record<GrainType, string> = {
-  soja: "Soja",
-  milho: "Milho",
-  trigo: "Trigo",
-  fertilizante: "Fertilizante",
-  cimento: "Cimento",
-};
+const GRAIN_TYPES = [
+  "soja",
+  "milho",
+  "trigo",
+  "fertilizante",
+  "cimento",
+] as const;
 
 const GRAIN_DENSITY: Record<GrainType, number> = {
   soja: 0.75,
@@ -39,62 +40,56 @@ const GRAIN_DENSITY: Record<GrainType, number> = {
   cimento: 1.5,
 };
 
+/**
+ * O resultado devolve chaves, não frases: as descrições e as faixas de ROI
+ * estavam escritas em português dentro da função e apareciam em português
+ * mesmo com o site em espanhol.
+ */
 function calculateRecommendation(
   trucksPerDay: number,
-  grainType: GrainType
+  grainType: GrainType,
 ): CalcResult {
   const density = GRAIN_DENSITY[grainType];
-  const avgLoadTons = 30 * density;
-  const dailyTonnage = trucksPerDay * avgLoadTons;
+  const dailyTonnage = trucksPerDay * 30 * density;
 
   if (dailyTonnage <= 500) {
     return {
       model: "PILI T-9000",
       capacity: "35t",
-      length: "9 metros",
-      throughput: `${Math.round(dailyTonnage)} t/dia`,
-      estimatedROI: "18 a 24 meses",
-      description:
-        "Tombador compacto ideal para cooperativas e unidades de menor volume. Alta confiabilidade e manutenção simplificada.",
+      lengthMeters: 9,
+      tonnage: dailyTonnage,
+      porte: "compacto",
     };
   }
-
   if (dailyTonnage <= 1200) {
     return {
       model: "PILI T-15000",
       capacity: "60t",
-      length: "15 metros",
-      throughput: `${Math.round(dailyTonnage)} t/dia`,
-      estimatedROI: "14 a 18 meses",
-      description:
-        "Tombador de porte médio para operações de fluxo moderado. Compatível com carretas graneleiras padrão e bitrens.",
+      lengthMeters: 15,
+      tonnage: dailyTonnage,
+      porte: "medio",
     };
   }
-
   if (dailyTonnage <= 2500) {
     return {
       model: "PILI T-22000",
       capacity: "80t",
-      length: "22 metros",
-      throughput: `${Math.round(dailyTonnage)} t/dia`,
-      estimatedROI: "10 a 14 meses",
-      description:
-        "Tombador de grande porte para terminais portuários e cooperativas de alto volume. Aceita rodotrens e treminhões.",
+      lengthMeters: 22,
+      tonnage: dailyTonnage,
+      porte: "grande",
     };
   }
-
   return {
     model: "PILI T-30000",
     capacity: "100t",
-    length: "30 metros",
-    throughput: `${Math.round(dailyTonnage)} t/dia`,
-    estimatedROI: "8 a 12 meses",
-    description:
-      "Tombador de capacidade máxima para portos de grande escala. Projetado para operação contínua 24/7 com os maiores rodotrens do mercado.",
+    lengthMeters: 30,
+    tonnage: dailyTonnage,
+    porte: "maximo",
   };
 }
 
 export default function CalculadoraPage() {
+  const t = useTranslations();
   const [trucksPerDay, setTrucksPerDay] = useState<string>("");
   const [grainType, setGrainType] = useState<GrainType>("soja");
   const [waitDistance, setWaitDistance] = useState<string>("");
@@ -118,7 +113,7 @@ export default function CalculadoraPage() {
     e.preventDefault();
     const trucks = parseInt(trucksPerDay, 10);
     if (!trucks || trucks <= 0) {
-      setTrucksError("Informe um número de caminhões maior que zero");
+      setTrucksError(t("calculadora.trucksError"));
       return;
     }
 
@@ -137,11 +132,11 @@ export default function CalculadoraPage() {
         body: JSON.stringify({
           name: "Lead da calculadora",
           email: values.email,
-          company: "Não informado",
+          company: t("calculadora.notInformed"),
           consent: values.consent,
           source: "CALCULADORA",
           productInterest: result?.model,
-          grainType: GRAIN_LABELS[grainType],
+          grainType,
           pageUrl: window.location.href,
         }),
       });
@@ -158,12 +153,10 @@ export default function CalculadoraPage() {
       <section className="bg-pili-black py-20 px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <h1 className="font-display text-[length:var(--text-display-2)] font-black uppercase text-pili-white">
-            Calculadora de capacidade
+            {t("calculadora.title")}
           </h1>
           <p className="mt-4 max-w-2xl text-pili-cement">
-            Informe os dados da sua operação e descubra qual tombador PILI é o
-            mais adequado para o seu projeto. Cálculo baseado em volume diário,
-            tipo de produto e distância de espera.
+            {t("calculadora.intro")}
           </p>
         </div>
       </section>
@@ -176,7 +169,7 @@ export default function CalculadoraPage() {
               <div className="flex items-center gap-3">
                 <Calculator className="h-8 w-8 text-pili-safety" />
                 <h2 className="font-display text-xl font-bold uppercase text-pili-black">
-                  Dados da operação
+                  {t("calculadora.operationData")}
                 </h2>
               </div>
 
@@ -185,13 +178,13 @@ export default function CalculadoraPage() {
                 className="mt-8 flex flex-col gap-6"
               >
                 <div>
-                  <Label htmlFor="trucks">Caminhões por dia *</Label>
+                  <Label htmlFor="trucks">{t("calculadora.trucksPerDay")} *</Label>
                   <Input
                     id="trucks"
                     type="number"
                     min="1"
                     max="1000"
-                    placeholder="Ex: 80"
+                    placeholder={t("calculadora.trucksPlaceholder")}
                     value={trucksPerDay}
                     onChange={(e) => setTrucksPerDay(e.target.value)}
                   />
@@ -203,16 +196,16 @@ export default function CalculadoraPage() {
                 </div>
 
                 <div>
-                  <Label htmlFor="grain">Tipo de produto *</Label>
+                  <Label htmlFor="grain">{t("calculadora.productType")} *</Label>
                   <select
                     id="grain"
                     value={grainType}
                     onChange={(e) => setGrainType(e.target.value as GrainType)}
                     className="flex h-10 w-full border border-pili-mist bg-pili-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pili-safety"
                   >
-                    {Object.entries(GRAIN_LABELS).map(([key, label]) => (
+                    {GRAIN_TYPES.map((key) => (
                       <option key={key} value={key}>
-                        {label}
+                        {t(`calculadora.grains.${key}`)}
                       </option>
                     ))}
                   </select>
@@ -220,19 +213,19 @@ export default function CalculadoraPage() {
 
                 <div>
                   <Label htmlFor="distance">
-                    Distância média de espera (km)
+                    {t("calculadora.waitDistance")}
                   </Label>
                   <Input
                     id="distance"
                     type="number"
                     min="0"
                     step="0.1"
-                    placeholder="Ex: 5"
+                    placeholder={t("calculadora.distancePlaceholder")}
                     value={waitDistance}
                     onChange={(e) => setWaitDistance(e.target.value)}
                   />
                   <p className="mt-1 text-xs text-pili-cement">
-                    Distância entre o ponto de espera e o tombador.
+                    {t("calculadora.waitDistanceHelp")}
                   </p>
                 </div>
 
@@ -240,7 +233,7 @@ export default function CalculadoraPage() {
                   type="submit"
                   className="self-start bg-pili-safety px-8 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
                 >
-                  Calcular
+                  {t("calculadora.calculate")}
                 </button>
               </form>
             </div>
@@ -250,7 +243,7 @@ export default function CalculadoraPage() {
               {result ? (
                 <div className="border border-pili-mist p-8">
                   <h2 className="font-display text-xl font-bold uppercase text-pili-black">
-                    Modelo recomendado
+                    {t("calculadora.recommended")}
                   </h2>
 
                   <div className="mt-6 space-y-4">
@@ -261,7 +254,7 @@ export default function CalculadoraPage() {
                       <div className="mt-3 grid grid-cols-2 gap-4">
                         <div>
                           <span className="font-mono text-[10px] uppercase tracking-wider text-pili-cement">
-                            Capacidade
+                            {t("calculadora.capacity")}
                           </span>
                           <p className="font-mono text-sm font-bold text-pili-black">
                             {result.capacity}
@@ -269,18 +262,20 @@ export default function CalculadoraPage() {
                         </div>
                         <div>
                           <span className="font-mono text-[10px] uppercase tracking-wider text-pili-cement">
-                            Comprimento
+                            {t("calculadora.length")}
                           </span>
                           <p className="font-mono text-sm font-bold text-pili-black">
-                            {result.length}
+                            {t("calculadora.meters", { n: result.lengthMeters })}
                           </p>
                         </div>
                         <div>
                           <span className="font-mono text-[10px] uppercase tracking-wider text-pili-cement">
-                            Vazão estimada
+                            {t("calculadora.estimatedFlow")}
                           </span>
                           <p className="font-mono text-sm font-bold text-pili-black">
-                            {result.throughput}
+                            {t("calculadora.perDay", {
+                              tons: Math.round(result.tonnage),
+                            })}
                           </p>
                         </div>
                       </div>
@@ -290,19 +285,19 @@ export default function CalculadoraPage() {
                     {unlocked ? (
                       <div className="border border-pili-success/30 bg-pili-success/5 p-6">
                         <h3 className="font-display text-sm font-bold uppercase text-pili-black">
-                          Estimativa de ROI
+                          {t("calculadora.roiEstimate")}
                         </h3>
                         <p className="mt-2 font-display text-2xl font-black text-pili-success">
-                          {result.estimatedROI}
+                          {t(`calculadora.roi.${result.porte}`)}
                         </p>
                         <p className="mt-3 text-sm leading-relaxed text-pili-concrete">
-                          {result.description}
+                          {t(`calculadora.recommendations.${result.porte}`)}
                         </p>
                         <Link
                           href="/orcamento"
                           className="mt-4 inline-block bg-pili-safety px-6 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
                         >
-                          Solicitar orçamento
+                          {t("common.requestQuote")}
                         </Link>
                       </div>
                     ) : (
@@ -310,12 +305,11 @@ export default function CalculadoraPage() {
                         <div className="flex items-center gap-2">
                           <Lock className="h-4 w-4 text-pili-concrete" />
                           <h3 className="font-display text-sm font-bold uppercase text-pili-black">
-                            ROI e detalhes completos
+                            {t("calculadora.locked")}
                           </h3>
                         </div>
                         <p className="mt-2 text-sm text-pili-concrete">
-                          Informe seu e-mail para ver a estimativa de retorno e
-                          descrição detalhada do equipamento.
+                          {t("calculadora.lockedText")}
                         </p>
                         <form
                           onSubmit={handleGateSubmit(onUnlock)}
@@ -324,12 +318,12 @@ export default function CalculadoraPage() {
                           <div className="flex gap-2">
                             <div className="flex-1">
                               <Label htmlFor="calc-email" className="sr-only">
-                                E-mail
+                                {t("forms.email")}
                               </Label>
                               <Input
                                 id="calc-email"
                                 type="email"
-                                placeholder="seu@email.com"
+                                placeholder={t("calculadora.emailPlaceholder")}
                                 {...registerGate("email")}
                               />
                             </div>
@@ -340,7 +334,7 @@ export default function CalculadoraPage() {
                             >
                               {gateStatus === "loading"
                                 ? "..."
-                                : "Ver resultado"}
+                                : t("calculadora.seeResult")}
                             </button>
                           </div>
                           {gateErrors.email && (
@@ -360,14 +354,14 @@ export default function CalculadoraPage() {
                               htmlFor="calc-consent"
                               className="text-xs font-normal text-pili-concrete"
                             >
-                              Aceito a{" "}
+                              {t("calculadora.consentPrefix")}{" "}
                               <Link
                                 href="/politica-privacidade"
                                 className="underline underline-offset-2 hover:text-pili-black"
                               >
-                                política de privacidade
+                                {t("footer.privacy")}
                               </Link>{" "}
-                              e o contato da equipe comercial.
+                              {t("calculadora.consentSuffix")}
                             </Label>
                           </div>
                           {gateErrors.consent && (
@@ -378,7 +372,7 @@ export default function CalculadoraPage() {
                         </form>
                         {gateStatus === "error" && (
                           <p className="mt-2 text-xs text-pili-danger">
-                            Erro ao enviar. Tente novamente.
+                            {t("calculadora.sendError")}
                           </p>
                         )}
                       </div>
@@ -390,8 +384,7 @@ export default function CalculadoraPage() {
                   <div className="text-center">
                     <Calculator className="mx-auto h-12 w-12 text-pili-mist" />
                     <p className="mt-4 text-sm text-pili-cement">
-                      Preencha os dados da operação e clique em &quot;Calcular&quot;
-                      para ver o modelo recomendado.
+                      {t("calculadora.emptyState")}
                     </p>
                   </div>
                 </div>
@@ -405,11 +398,7 @@ export default function CalculadoraPage() {
       <section className="bg-pili-paper py-10 px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
           <p className="font-mono text-xs leading-relaxed text-pili-cement">
-            * Os valores apresentados são estimativas baseadas em parâmetros
-            médios de operação. O dimensionamento definitivo deve ser realizado
-            pela equipe de engenharia da PILI considerando as condições
-            específicas do projeto, tipo de solo, infraestrutura existente e
-            normas locais. Entre em contato para um estudo técnico completo.
+            {t("calculadora.disclaimer")}
           </p>
         </div>
       </section>

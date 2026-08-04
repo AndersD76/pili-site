@@ -1,11 +1,12 @@
 import { setRequestLocale } from "next-intl/server";
 import { Header } from "@/components/shared/header";
 import { Footer } from "@/components/shared/footer";
-import { WhatsAppFab } from "@/components/shared/whatsapp-fab";
-import { PiliRobo } from "@/components/shared/pili-robo";
+import { FloatingWidgets } from "@/components/shared/floating-widgets";
 import { CookieBanner } from "@/components/shared/cookie-banner";
 import { Analytics } from "@/components/shared/analytics";
 import { generateOrganizationJsonLd, jsonLdScript } from "@/lib/seo";
+import { getSiteSettings } from "@/lib/site-settings";
+import { getTranslations } from "next-intl/server";
 
 export default async function MarketingLayout({
   children,
@@ -19,6 +20,9 @@ export default async function MarketingLayout({
   const { locale } = await params;
   setRequestLocale(locale);
 
+  const settings = await getSiteSettings();
+  const t = await getTranslations("common");
+
   return (
     <>
       {/* Identidade da marca para o Knowledge Panel — emitida uma vez por página. */}
@@ -29,13 +33,12 @@ export default async function MarketingLayout({
         }}
       />
       <a href="#main-content" className="skip-to-content">
-        Pular para conteúdo
+        {t("skipToContent")}
       </a>
-      <Header />
+      <Header piliTechUrl={settings.piliTechUrl} />
       <div id="main-content">{children}</div>
       <Footer />
-      <WhatsAppFab />
-      <PiliRobo />
+      <FloatingWidgets whatsapp={settings.whatsapp} />
       <CookieBanner />
       <Analytics />
     </>

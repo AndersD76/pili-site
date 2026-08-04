@@ -36,6 +36,10 @@ const caseSchema = z.object({
   title: z.string().min(1, "Título obrigatório"),
   summary: z.string().min(1, "Resumo obrigatório"),
   content: z.string().min(1, "Conteúdo obrigatório"),
+  // Versão em espanhol; em branco, o site em /es usa o português.
+  titleEs: z.string().optional(),
+  summaryEs: z.string().optional(),
+  contentEs: z.string().optional(),
   active: z.boolean(),
   featured: z.boolean(),
   metrics: z.array(
@@ -67,6 +71,7 @@ export function CaseForm({
   const [serverError, setServerError] = useState<string | null>(null);
   const isEditing = !!caseData;
 
+  const esTranslation = caseData?.translations.find((t) => t.locale === "es");
   const ptTranslation = caseData?.translations.find(
     (t) => t.locale === "pt_BR"
   );
@@ -88,6 +93,9 @@ export function CaseForm({
       title: ptTranslation?.title ?? "",
       summary: ptTranslation?.summary ?? "",
       content: ptTranslation?.content ?? "",
+      titleEs: esTranslation?.title ?? "",
+      summaryEs: esTranslation?.summary ?? "",
+      contentEs: esTranslation?.content ?? "",
       active: caseData?.active ?? true,
       featured: caseData?.featured ?? false,
       metrics:
@@ -123,6 +131,9 @@ export function CaseForm({
     formData.set("active", String(values.active));
     formData.set("featured", String(values.featured));
     formData.set("metrics", JSON.stringify(values.metrics));
+    formData.set("titleEs", values.titleEs ?? "");
+    formData.set("summaryEs", values.summaryEs ?? "");
+    formData.set("contentEs", values.contentEs ?? "");
 
     startTransition(async () => {
       const result = isEditing
@@ -314,6 +325,44 @@ export function CaseForm({
             </Button>
           </div>
         ))}
+      </div>
+
+      <Separator />
+
+      <div className="space-y-4">
+        <div>
+          <h2 className="font-display text-lg font-semibold text-pili-black">
+            Espanhol
+          </h2>
+          <p className="mt-1 text-sm text-pili-concrete">
+            Conteúdo exibido em /es. Deixe em branco para o site em espanhol
+            usar o texto em português. Cliente, local, ano, métricas e fotos são
+            os mesmos nos dois idiomas.
+          </p>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="titleEs">Título</Label>
+          <Input id="titleEs" {...register("titleEs")} />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="summaryEs">Resumen</Label>
+          <Textarea
+            id="summaryEs"
+            {...register("summaryEs")}
+            className="min-h-24"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="contentEs">Contenido</Label>
+          <Textarea
+            id="contentEs"
+            {...register("contentEs")}
+            className="min-h-48"
+          />
+        </div>
       </div>
 
       <Separator />

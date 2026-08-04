@@ -5,7 +5,7 @@ import {
   redesSociais,
   type SiteSettingsData,
 } from "@/lib/site-settings";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { LeadForm } from "@/components/marketing/lead-form";
 import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 
@@ -15,39 +15,42 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "contato" });
   return generatePageMetadata({
     locale,
-    title: "Contato",
-    description:
-      "Entre em contato com a PILI Industrial. Atendimento comercial, suporte técnico e orçamentos para tombadores hidráulicos e equipamentos de descarga.",
+    title: t("metaTitle"),
+    description: t("metaDesc"),
     path: "/contato",
   });
 }
 
 /** Canais de contato montados a partir das configurações do painel. */
-function contactChannels(s: SiteSettingsData) {
+function contactChannels(
+  s: SiteSettingsData,
+  rotulo: (chave: string) => string,
+) {
   return [
     {
       icon: Phone,
-      label: "Telefone",
+      label: rotulo("phone"),
       value: s.telefone,
       href: `tel:${s.telefone.replace(/\s/g, "")}`,
     },
     {
       icon: MessageCircle,
-      label: "WhatsApp",
+      label: rotulo("whatsapp"),
       value: s.whatsapp,
       href: `https://wa.me/${s.whatsapp.replace(/[^0-9]/g, "")}`,
     },
     {
       icon: Mail,
-      label: "E-mail comercial",
+      label: rotulo("commercialEmail"),
       value: s.emailComercial,
       href: `mailto:${s.emailComercial}`,
     },
     {
       icon: Mail,
-      label: "Atendimento geral",
+      label: rotulo("generalEmail"),
       value: s.email,
       href: `mailto:${s.email}`,
     },
@@ -62,6 +65,7 @@ export default async function ContatoPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
+  const t = await getTranslations();
   const settings = await getSiteSettings();
 
   return (
@@ -70,11 +74,10 @@ export default async function ContatoPage({
       <section className="bg-pili-black py-20 px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <h1 className="font-display text-[length:var(--text-display-2)] font-black uppercase text-pili-white">
-            Contato
+            {t("nav.contact")}
           </h1>
           <p className="mt-4 max-w-2xl text-pili-cement">
-            Fale com a equipe PILI Industrial. Atendimento comercial,
-            dimensionamento técnico e suporte pós-venda.
+            {t("contato.intro")}
           </p>
         </div>
       </section>
@@ -84,7 +87,7 @@ export default async function ContatoPage({
           {/* Contact info */}
           <div>
             <h2 className="font-display text-[length:var(--text-h2)] font-black uppercase text-pili-black">
-              Fale conosco
+              {t("contato.talkToUs")}
             </h2>
 
             {/* Address */}
@@ -92,7 +95,7 @@ export default async function ContatoPage({
               <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-pili-safety" />
               <div>
                 <span className="font-display text-sm font-bold uppercase text-pili-black">
-                  Endereço
+                  {t("contato.address")}
                 </span>
                 <p className="mt-1 text-sm leading-relaxed text-pili-concrete">
                   {settings.razaoSocial}
@@ -106,7 +109,7 @@ export default async function ContatoPage({
 
             {/* Channels */}
             <div className="mt-8 space-y-6">
-              {contactChannels(settings).map((channel) => (
+              {contactChannels(settings, (chave) => t(`contato.${chave}`)).map((channel) => (
                 <a
                   key={channel.label}
                   href={channel.href}
@@ -128,7 +131,7 @@ export default async function ContatoPage({
             {/* Social */}
             <div className="mt-10">
               <span className="font-display text-sm font-bold uppercase text-pili-black">
-                Redes sociais
+                {t("contato.socialNetworks")}
               </span>
               <div className="mt-3 flex gap-4">
                 {redesSociais(settings).map(({ name, url }) => (
@@ -157,11 +160,10 @@ export default async function ContatoPage({
           {/* Form */}
           <div>
             <h2 className="font-display text-[length:var(--text-h2)] font-black uppercase text-pili-black">
-              Envie uma mensagem
+              {t("contato.sendMessage")}
             </h2>
             <p className="mt-4 text-sm text-pili-concrete">
-              Preencha o formulário abaixo e nossa equipe retornará em até 24
-              horas úteis.
+              {t("contato.formIntro")}
             </p>
             <div className="mt-8">
               <LeadForm source="CONTATO" />

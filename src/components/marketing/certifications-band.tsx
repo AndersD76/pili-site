@@ -1,13 +1,16 @@
 import { ShieldCheck, Award, Clock, FileCheck } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const CERTS = [
-  { icon: ShieldCheck, label: "ISO 9001", desc: "Sistema de gestão da qualidade" },
-  { icon: FileCheck, label: "NR-12", desc: "Segurança em máquinas e equipamentos" },
-  { icon: Award, label: "NR-10", desc: "Segurança em instalações elétricas" },
-  { icon: Clock, label: "5 anos", desc: "Garantia estrutural" },
+  { icon: ShieldCheck, label: "ISO 9001", key: "iso" },
+  { icon: FileCheck, label: "NR-12", key: "nr12" },
+  { icon: Award, label: "NR-10", key: "nr10" },
+  { icon: Clock, label: "5 anos", key: "garantia" },
 ] as const;
 
 export function CertificationsBand() {
+  const t = useTranslations();
+
   return (
     <section className="bg-pili-white py-16 px-6 lg:px-8">
       <div className="mx-auto max-w-6xl">
@@ -19,7 +22,9 @@ export function CertificationsBand() {
                 {cert.label}
               </span>
               <span className="mt-1 text-sm text-pili-concrete">
-                {cert.desc}
+                {cert.key === "garantia"
+                  ? t("certificacoes.garantia.subtitle")
+                  : t(`certBand.${cert.key}`)}
               </span>
             </div>
           ))}

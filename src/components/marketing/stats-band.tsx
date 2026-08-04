@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { STATS } from "@/lib/constants";
 import { AnimatedCounter } from "@/components/shared/animated-counter";
 import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
@@ -7,27 +8,28 @@ import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
 interface Stat {
   value: string | number;
   label: string;
-  suffix?: string;
 }
 
 interface StatsBandProps {
   stats?: Stat[];
 }
 
-const DEFAULT_STATS: Stat[] = [
-  { value: `${STATS.years}`, label: "anos de mercado", suffix: "+" },
-  { value: STATS.equipment, label: "equipamentos instalados" },
-  { value: `${STATS.countries}`, label: "países atendidos" },
-  { value: STATS.maxCapacity, label: "capacidade máxima" },
-];
+export function StatsBand({ stats }: StatsBandProps) {
+  const t = useTranslations("stats");
 
-export function StatsBand({ stats = DEFAULT_STATS }: StatsBandProps) {
+  const dados: Stat[] = stats ?? [
+    { value: `${STATS.years}`, label: t("yearsLabel") },
+    { value: STATS.equipment, label: t("equipmentLabel") },
+    { value: `${STATS.countries}`, label: t("countriesLabel") },
+    { value: STATS.maxCapacity, label: t("capacityLabel") },
+  ];
+
   return (
     <section className="relative bg-pili-black py-20 border-b-[3px] border-b-pili-safety">
       {/* Grid pattern background */}
       <div className="absolute inset-0 grid-pattern opacity-30" />
       <div className="relative mx-auto grid max-w-6xl grid-cols-2 gap-8 px-6 lg:grid-cols-4 lg:px-8">
-        {stats.map((stat, index) => (
+        {dados.map((stat, index) => (
           <AnimateOnScroll key={stat.label} delay={index * 0.15}>
             <div className="text-center">
               <AnimatedCounter

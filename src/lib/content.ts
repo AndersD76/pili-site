@@ -1,8 +1,9 @@
 import { cache } from "react";
+import { getLocale } from "next-intl/server";
 import { db } from "./db";
 import { mediaUrl } from "./media";
 import { logError } from "./prisma-errors";
-import type { ProductCategory, PostCategory } from "@prisma/client";
+import type { ProductCategory, PostCategory, Locale } from "@prisma/client";
 
 /**
  * Leitura do conteúdo público a partir do banco.
@@ -15,7 +16,45 @@ import type { ProductCategory, PostCategory } from "@prisma/client";
  * ser interna e não exigir reescrever cada componente.
  */
 
-const LOCALE_PADRAO = "pt_BR" as const;
+const LOCALE_PADRAO: Locale = "pt_BR";
+
+/**
+ * O enum do Prisma usa `pt_BR`; a rota usa `pt-BR`. A conversão fica aqui para
+ * as páginas continuarem passando o locale do next-intl sem saber disso.
+ */
+function localeDoBanco(locale: string): Locale {
+  return locale === "es" ? "es" : LOCALE_PADRAO;
+}
+
+/**
+ * Escolhe a tradução do idioma pedido e cai para português quando ela ainda
+ * não foi preenchida no painel — um produto sem versão em espanhol aparece em
+ * português em vez de sumir da listagem.
+ */
+function traduzir<T extends { locale: Locale }>(
+  traducoes: T[],
+  alvo: Locale,
+): T | undefined {
+  return (
+    traducoes.find((t) => t.locale === alvo) ??
+    traducoes.find((t) => t.locale === LOCALE_PADRAO)
+  );
+}
+
+/**
+ * Idioma da requisição atual, já no formato do banco.
+ *
+ * O `generateStaticParams` roda fora de uma requisição e `getLocale()` lança
+ * ali; como só precisamos dos slugs nesse momento, cair para português é o
+ * comportamento certo em vez de quebrar o build.
+ */
+const localeAtual = cache(async (): Promise<Locale> => {
+  try {
+    return localeDoBanco(await getLocale());
+  } catch {
+    return LOCALE_PADRAO;
+  }
+});
 
 /**
  * Usada quando o item ainda não tem foto própria. Mantém o layout intacto e
@@ -51,38 +90,53 @@ function specValor(
   return specs.find((s) => s.key.toLowerCase() === rotulo)?.value ?? "";
 }
 
-const selecaoProduto = {
-  slug: true,
-  category: true,
-  featured: true,
-  translations: {
-    where: { locale: LOCALE_PADRAO },
-    select: {
-      name: true,
-      tagline: true,
-      description: true,
-      metaTitle: true,
-      metaDesc: true,
+/**
+ * Traz as duas traduções possíveis numa consulta só e resolve em memória — um
+ * `where` fixo no idioma pedido devolveria lista vazia para o conteúdo que
+ * ainda não foi traduzido.
+ */
+function selecaoProduto(locale: Locale) {
+  const idiomas = { locale: { in: [locale, LOCALE_PADRAO] } };
+  return {
+    slug: true,
+    category: true,
+    featured: true,
+    translations: {
+      where: idiomas,
+      select: {
+        locale: true,
+        name: true,
+        tagline: true,
+        description: true,
+        metaTitle: true,
+        metaDesc: true,
+      },
     },
-  },
-  specs: { orderBy: { order: "asc" }, select: { key: true, value: true } },
-  features: {
-    where: { locale: LOCALE_PADRAO },
-    orderBy: { order: "asc" },
-    select: { title: true, description: true, icon: true },
-  },
-  applications: { select: { slug: true } },
-  media: {
-    orderBy: { order: "asc" },
-    select: { id: true, alt: true },
-  },
-} as const;
+    specs: { orderBy: { order: "asc" }, select: { key: true, value: true } },
+    features: {
+      where: idiomas,
+      orderBy: { order: "asc" },
+      select: {
+        locale: true,
+        title: true,
+        description: true,
+        icon: true,
+      },
+    },
+    applications: { select: { slug: true } },
+    media: {
+      orderBy: { order: "asc" },
+      select: { id: true, alt: true },
+    },
+  } as const;
+}
 
 type LinhaProduto = {
   slug: string;
   category: ProductCategory;
   featured: boolean;
   translations: {
+    locale: Locale;
     name: string;
     tagline: string | null;
     description: string;
@@ -90,14 +144,27 @@ type LinhaProduto = {
     metaDesc: string | null;
   }[];
   specs: { key: string; value: string }[];
-  features: { title: string; description: string; icon: string | null }[];
+  features: {
+    locale: Locale;
+    title: string;
+    description: string;
+    icon: string | null;
+  }[];
   applications: { slug: string }[];
   media: { id: string; alt: string | null }[];
 };
 
-function mapearProduto(p: LinhaProduto): Produto {
-  const t = p.translations[0];
+function mapearProduto(p: LinhaProduto, locale: Locale): Produto {
+  const t = traduzir(p.translations, locale);
   const imagens = p.media.map((m) => ({ url: mediaUrl(m.id), alt: m.alt }));
+
+  // Os diferenciais também são traduzidos um a um; se nenhum existir no idioma
+  // pedido, cai para a lista em português.
+  const noIdioma = p.features.filter((f) => f.locale === locale);
+  const features =
+    noIdioma.length > 0
+      ? noIdioma
+      : p.features.filter((f) => f.locale === LOCALE_PADRAO);
 
   return {
     slug: p.slug,
@@ -108,7 +175,7 @@ function mapearProduto(p: LinhaProduto): Produto {
     capacity: specValor(p.specs, "capacidade"),
     length: specValor(p.specs, "comprimento"),
     specs: p.specs.map((s) => ({ label: s.key, value: s.value })),
-    features: p.features.map((f) => ({
+    features: features.map((f) => ({
       title: f.title,
       description: f.description,
       icon: f.icon ?? undefined,
@@ -124,13 +191,14 @@ function mapearProduto(p: LinhaProduto): Produto {
 }
 
 export const getProdutos = cache(async (): Promise<Produto[]> => {
+  const locale = await localeAtual();
   try {
     const linhas = await db.product.findMany({
       where: { active: true },
-      select: selecaoProduto,
+      select: selecaoProduto(locale),
       orderBy: [{ order: "asc" }, { createdAt: "asc" }],
     });
-    return linhas.map(mapearProduto);
+    return linhas.map((l) => mapearProduto(l, locale));
   } catch (err) {
     logError("CONTENT_PRODUTOS", err);
     return [];
@@ -138,12 +206,13 @@ export const getProdutos = cache(async (): Promise<Produto[]> => {
 });
 
 export const getProduto = cache(async (slug: string): Promise<Produto | null> => {
+  const locale = await localeAtual();
   try {
     const linha = await db.product.findFirst({
       where: { slug, active: true },
-      select: selecaoProduto,
+      select: selecaoProduto(locale),
     });
-    return linha ? mapearProduto(linha) : null;
+    return linha ? mapearProduto(linha, locale) : null;
   } catch (err) {
     logError("CONTENT_PRODUTO", err);
     return null;
@@ -181,20 +250,23 @@ export interface Obra {
   images: { url: string; alt: string | null }[];
 }
 
-const selecaoObra = {
-  slug: true,
-  client: true,
-  location: true,
-  year: true,
-  featured: true,
-  application: { select: { slug: true } },
-  translations: {
-    where: { locale: LOCALE_PADRAO },
-    select: { title: true, summary: true, content: true },
-  },
-  metrics: { select: { label: true, value: true } },
-  media: { orderBy: { order: "asc" }, select: { id: true, alt: true } },
-} as const;
+function selecaoObra(locale: Locale) {
+  const idiomas = { locale: { in: [locale, LOCALE_PADRAO] } };
+  return {
+    slug: true,
+    client: true,
+    location: true,
+    year: true,
+    featured: true,
+    application: { select: { slug: true } },
+    translations: {
+      where: idiomas,
+      select: { locale: true, title: true, summary: true, content: true },
+    },
+    metrics: { select: { label: true, value: true } },
+    media: { orderBy: { order: "asc" }, select: { id: true, alt: true } },
+  } as const;
+}
 
 type LinhaObra = {
   slug: string;
@@ -203,13 +275,18 @@ type LinhaObra = {
   year: number;
   featured: boolean;
   application: { slug: string } | null;
-  translations: { title: string; summary: string; content: string }[];
+  translations: {
+    locale: Locale;
+    title: string;
+    summary: string;
+    content: string;
+  }[];
   metrics: { label: string; value: string }[];
   media: { id: string; alt: string | null }[];
 };
 
-function mapearObra(c: LinhaObra): Obra {
-  const t = c.translations[0];
+function mapearObra(c: LinhaObra, locale: Locale): Obra {
+  const t = traduzir(c.translations, locale);
   const imagens = c.media.map((m) => ({ url: mediaUrl(m.id), alt: m.alt }));
 
   return {
@@ -230,13 +307,14 @@ function mapearObra(c: LinhaObra): Obra {
 }
 
 export const getObras = cache(async (): Promise<Obra[]> => {
+  const locale = await localeAtual();
   try {
     const linhas = await db.case.findMany({
       where: { active: true },
-      select: selecaoObra,
+      select: selecaoObra(locale),
       orderBy: [{ year: "desc" }, { createdAt: "desc" }],
     });
-    return linhas.map(mapearObra);
+    return linhas.map((l) => mapearObra(l, locale));
   } catch (err) {
     logError("CONTENT_OBRAS", err);
     return [];
@@ -244,12 +322,13 @@ export const getObras = cache(async (): Promise<Obra[]> => {
 });
 
 export const getObra = cache(async (slug: string): Promise<Obra | null> => {
+  const locale = await localeAtual();
   try {
     const linha = await db.case.findFirst({
       where: { slug, active: true },
-      select: selecaoObra,
+      select: selecaoObra(locale),
     });
-    return linha ? mapearObra(linha) : null;
+    return linha ? mapearObra(linha, locale) : null;
   } catch (err) {
     logError("CONTENT_OBRA", err);
     return null;
@@ -279,26 +358,30 @@ export interface Artigo {
   metaDesc: string | null;
 }
 
-const selecaoArtigo = {
-  slug: true,
-  author: true,
-  category: true,
-  readTime: true,
-  publishedAt: true,
-  createdAt: true,
-  tags: true,
-  translations: {
-    where: { locale: LOCALE_PADRAO },
-    select: {
-      title: true,
-      excerpt: true,
-      content: true,
-      metaTitle: true,
-      metaDesc: true,
+function selecaoArtigo(locale: Locale) {
+  const idiomas = { locale: { in: [locale, LOCALE_PADRAO] } };
+  return {
+    slug: true,
+    author: true,
+    category: true,
+    readTime: true,
+    publishedAt: true,
+    createdAt: true,
+    tags: true,
+    translations: {
+      where: idiomas,
+      select: {
+        locale: true,
+        title: true,
+        excerpt: true,
+        content: true,
+        metaTitle: true,
+        metaDesc: true,
+      },
     },
-  },
-  media: { orderBy: { order: "asc" }, take: 1, select: { id: true } },
-} as const;
+    media: { orderBy: { order: "asc" }, take: 1, select: { id: true } },
+  } as const;
+}
 
 type LinhaArtigo = {
   slug: string;
@@ -309,6 +392,7 @@ type LinhaArtigo = {
   createdAt: Date;
   tags: string[];
   translations: {
+    locale: Locale;
     title: string;
     excerpt: string;
     content: string;
@@ -318,8 +402,8 @@ type LinhaArtigo = {
   media: { id: string }[];
 };
 
-function mapearArtigo(p: LinhaArtigo): Artigo {
-  const t = p.translations[0];
+function mapearArtigo(p: LinhaArtigo, locale: Locale): Artigo {
+  const t = traduzir(p.translations, locale);
   const data = p.publishedAt ?? p.createdAt;
 
   return {
@@ -341,14 +425,15 @@ function mapearArtigo(p: LinhaArtigo): Artigo {
 }
 
 export const getArtigos = cache(async (): Promise<Artigo[]> => {
+  const locale = await localeAtual();
   try {
     const linhas = await db.post.findMany({
       where: { published: true },
-      select: selecaoArtigo,
+      select: selecaoArtigo(locale),
       orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
     });
 
-    const artigos = linhas.map(mapearArtigo);
+    const artigos = linhas.map((l) => mapearArtigo(l, locale));
     // O mais recente ocupa o espaço de destaque da listagem.
     if (artigos[0]) artigos[0].featured = true;
     return artigos;
@@ -359,12 +444,13 @@ export const getArtigos = cache(async (): Promise<Artigo[]> => {
 });
 
 export const getArtigo = cache(async (slug: string): Promise<Artigo | null> => {
+  const locale = await localeAtual();
   try {
     const linha = await db.post.findFirst({
       where: { slug, published: true },
-      select: selecaoArtigo,
+      select: selecaoArtigo(locale),
     });
-    return linha ? mapearArtigo(linha) : null;
+    return linha ? mapearArtigo(linha, locale) : null;
   } catch (err) {
     logError("CONTENT_ARTIGO", err);
     return null;

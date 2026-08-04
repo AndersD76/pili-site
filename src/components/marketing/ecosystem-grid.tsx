@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { Link } from "@/i18n/routing";
 import { ECOSYSTEM } from "@/lib/constants";
 import { ExternalLink, Cpu, ArrowRight } from "lucide-react";
@@ -8,7 +10,6 @@ import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
 const BRANDS = [
   {
     name: "PILI Tech",
-    desc: "SaaS de gestão de pátio industrial com IoT, MQTT e monitoramento em tempo real.",
     href: ECOSYSTEM.tech,
     icon: Cpu,
     accent: "border-t-cyan-500",
@@ -17,22 +18,22 @@ const BRANDS = [
 ] as const;
 
 export function EcosystemGrid() {
+  const t = useTranslations();
   return (
     <section className="bg-pili-black py-24 px-6 lg:px-8">
       <div className="absolute inset-0 grid-pattern opacity-20" />
       <div className="mx-auto max-w-6xl">
         <AnimateOnScroll>
           <span className="font-mono text-xs uppercase tracking-widest text-pili-safety">
-            Tecnologia própria
+            {t("ecossistema.ownTech")}
           </span>
           <h2 className="mt-2 font-display text-[length:var(--text-h1)] font-black uppercase text-pili-white">
-            Ecossistema PILI
+            {t("sections.ecosystem")}
           </h2>
           <div className="mt-2 flex items-center gap-4">
             <div className="h-px w-12 bg-pili-safety" />
             <p className="max-w-2xl text-pili-cement">
-              Além de fabricar equipamentos, a PILI desenvolve tecnologia própria
-              para logística, rastreabilidade e gestão industrial.
+              {t("ecossistema.intro")}
             </p>
           </div>
         </AnimateOnScroll>
@@ -48,14 +49,14 @@ export function EcosystemGrid() {
                   {brand.name}
                 </h3>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-pili-cement">
-                  {brand.desc}
+                  {t("ecossistema.techDesc")}
                 </p>
                 <div className="mt-6 flex flex-col gap-2">
                   <Link
                     href={`/ecossistema/${brand.slug}`}
                     className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-pili-white transition-colors hover:text-pili-safety"
                   >
-                    Conhecer
+                    {t("ecossistema.know")}
                     <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                   <a
@@ -64,7 +65,7 @@ export function EcosystemGrid() {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-pili-cement transition-colors hover:text-pili-white"
                   >
-                    Acessar plataforma
+                    {t("header.openPlatform")}
                     <ExternalLink className="h-3.5 w-3.5" />
                   </a>
                 </div>

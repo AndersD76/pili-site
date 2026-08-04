@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { Link } from "@/i18n/routing";
 import { getProduto, getProdutos, getObras } from "@/lib/content";
@@ -43,6 +43,8 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
+  const t = await getTranslations();
+
   const CASES = await getObras();
   const PRODUCTS = await getProdutos();
   const product = await getProduto(slug);
@@ -71,14 +73,6 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
 
   return (
     <main className="pt-[var(--header-height)]">
-      <div className="mx-auto max-w-6xl px-6 pt-8 lg:px-8">
-        <Breadcrumbs
-          items={[
-            { name: "Produtos", href: "/produtos" },
-            { name: product.name },
-          ]}
-        />
-      </div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdScript(productJsonLd) }}
@@ -89,17 +83,15 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
       />
 
       {/* Breadcrumb */}
-      <div className="bg-pili-paper px-6 py-3 lg:px-8">
-        <div className="mx-auto max-w-6xl font-mono text-xs text-pili-cement">
-          <Link href="/" className="hover:text-pili-black">
-            Home
-          </Link>{" "}
-          /{" "}
-          <Link href="/produtos" className="hover:text-pili-black">
-            Produtos
-          </Link>{" "}
-          / <span className="text-pili-black">{product.name}</span>
-        </div>
+      <div className="border-b border-pili-mist bg-pili-paper px-6 py-3 lg:px-8">
+        <Breadcrumbs
+          className="mx-auto max-w-6xl"
+          items={[
+            { name: t("common.home"), href: "/" },
+            { name: t("nav.products"), href: "/produtos" },
+            { name: product.name },
+          ]}
+        />
       </div>
 
       {/* Hero */}
@@ -160,7 +152,7 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
                 href="/orcamento"
                 className="bg-pili-safety px-6 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
               >
-                Solicitar orçamento
+                {t("common.requestQuote")}
               </Link>
               <Link
                 href="/produtos/comparar"
@@ -192,7 +184,7 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
         <section className="bg-pili-paper py-16 px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <h2 className="font-display text-[length:var(--text-h2)] font-black uppercase text-pili-black">
-              Aplicações
+              {t("produtos.applications")}
             </h2>
             <div className="mt-6 flex flex-wrap gap-3">
               {product.applications.map((app) => (
@@ -214,7 +206,7 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
         <section className="py-16 px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <h2 className="font-display text-[length:var(--text-h2)] font-black uppercase text-pili-black">
-              Casos de uso
+              {t("produtos.useCases")}
             </h2>
             <div className="mt-8 grid gap-6 sm:grid-cols-2">
               {relatedCases.map((c) => (
@@ -243,13 +235,13 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
       <section className="bg-pili-graphite py-16 px-6 lg:px-8">
         <div className="mx-auto max-w-3xl">
           <h2 className="text-center font-display text-[length:var(--text-h2)] font-black uppercase text-pili-white">
-            Solicitar orçamento
+            {t("common.requestQuote")}
           </h2>
           <p className="mt-2 text-center text-sm text-pili-cement">
-            {product.name} — preencha o formulário e nossa equipe entra em contato
+            {t("orcamento.subtitle", { product: product.name })}
           </p>
           <div className="mt-8">
-            <LeadForm productInterest={product.name} source="FORMULARIO" />
+            <LeadForm dark productInterest={product.name} source="FORMULARIO" />
           </div>
         </div>
       </section>

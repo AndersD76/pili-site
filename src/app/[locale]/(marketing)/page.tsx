@@ -34,45 +34,23 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "home" });
   return generatePageMetadata({
     locale,
-    title: "Tombadores hidráulicos para descarga de grãos",
-    description:
-      "Fabricante de tombadores hidráulicos desde 1979. Plataformas de 9 a 30 metros, 35 a 100 toneladas, em 18 países. Peça um orçamento.",
+    title: t("metaTitle"),
+    description: t("metaDesc"),
     path: "",
   });
 }
 
 
-const APPLICATION_IMAGES: Record<
-  string,
-  { src: string; label: string; desc: string }
-> = {
-  porto: {
-    src: "/images/tombador-pili.jpg",
-    label: "Porto",
-    desc: "Terminais marítimos de alta vazão",
-  },
-  cooperativa: {
-    src: "/images/tombador-pili.jpg",
-    label: "Cooperativa",
-    desc: "Recepção de grãos de associados",
-  },
-  industria: {
-    src: "/images/tombador-pili.jpg",
-    label: "Indústria alimentícia",
-    desc: "Abastecimento de plantas industriais",
-  },
-  fertilizante: {
-    src: "/images/tombador-pili.jpg",
-    label: "Fertilizante",
-    desc: "Materiais corrosivos e abrasivos",
-  },
-  cimento: {
-    src: "/images/tombador-pili.jpg",
-    label: "Cimento",
-    desc: "Descarga de minerais e clínquer",
-  },
+/** Foto por setor. Rótulo e descrição vêm das traduções. */
+const APPLICATION_IMAGES: Record<string, string> = {
+  porto: "/images/tombador-pili.jpg",
+  cooperativa: "/images/tombador-pili.jpg",
+  industria: "/images/tombador-pili.jpg",
+  fertilizante: "/images/tombador-pili.jpg",
+  cimento: "/images/tombador-pili.jpg",
 };
 
 export default async function HomePage({
@@ -93,7 +71,7 @@ export default async function HomePage({
       <section className="relative flex min-h-svh items-center bg-pili-black px-6 pb-16 pt-[calc(var(--header-height)+2.5rem)] lg:px-16">
         <Image
           src="/images/tombador-pili.jpg"
-          alt="Tombador hidráulico PILI em operação"
+          alt={t("home.heroAlt")}
           fill
           priority
           className="object-cover"
@@ -175,7 +153,7 @@ export default async function HomePage({
             <div className="flex items-end justify-between">
               <div>
                 <span className="font-mono text-xs uppercase tracking-widest text-pili-safety">
-                  Linha de produtos
+                  {t("home.productsTitle")}
                 </span>
                 <h2 className="mt-2 font-display text-[length:var(--text-h1)] font-black uppercase text-pili-black accent-line">
                   {t("sections.featured_products")}
@@ -209,7 +187,7 @@ export default async function HomePage({
               href="/produtos"
               className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-pili-black"
             >
-              Ver todos os produtos
+              {t("home.productsAll")}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -221,7 +199,7 @@ export default async function HomePage({
         <div className="mx-auto max-w-6xl">
           <AnimateOnScroll>
             <span className="font-mono text-xs uppercase tracking-widest text-pili-safety">
-              Setores de atuação
+              {t("home.sectorsTitle")}
             </span>
             <h2 className="mt-2 font-display text-[length:var(--text-h1)] font-black uppercase text-pili-white">
               {t("sections.applications")}
@@ -229,15 +207,15 @@ export default async function HomePage({
           </AnimateOnScroll>
           <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
             {Object.entries(APPLICATION_IMAGES).map(
-              ([key, app], index) => (
+              ([key, src], index) => (
                 <AnimateOnScroll key={key} delay={index * 0.08}>
                   <Link
                     href={`/solucoes/${key}`}
                     className="group relative block aspect-[3/4] overflow-hidden sm:aspect-auto sm:h-72"
                   >
                     <Image
-                      src={app.src}
-                      alt={app.label}
+                      src={src}
+                      alt={t(`forms.applications.${key}`)}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                       sizes="(max-width: 640px) 100vw, 20vw"
@@ -249,13 +227,13 @@ export default async function HomePage({
 
                     <div className="absolute inset-x-0 bottom-0 p-4">
                       <h3 className="font-display text-lg font-bold uppercase text-pili-white">
-                        {app.label}
+                        {t(`forms.applications.${key}`)}
                       </h3>
                       <p className="mt-1 text-xs text-pili-cement transition-colors group-hover:text-pili-mist">
-                        {app.desc}
+                        {t(`home.sectors.${key}`)}
                       </p>
                       <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-pili-safety opacity-0 transition-all group-hover:opacity-100">
-                        Ver solução
+                        {t("common.seeSolution")}
                         <ArrowRight className="h-3 w-3" />
                       </span>
                     </div>
@@ -273,7 +251,7 @@ export default async function HomePage({
           <div className="mx-auto max-w-6xl">
             <AnimateOnScroll>
               <span className="font-mono text-xs uppercase tracking-widest text-pili-safety">
-                Referência comprovada
+                {t("home.caseTitle")}
               </span>
               <h2 className="mt-2 font-display text-[length:var(--text-h1)] font-black uppercase text-pili-black accent-line">
                 {t("sections.featured_case")}
@@ -342,7 +320,7 @@ export default async function HomePage({
               <Play className="h-8 w-8 text-pili-safety" />
             </div>
             <h2 className="mt-8 font-display text-[length:var(--text-h2)] font-black uppercase text-pili-white">
-              Veja nossos equipamentos em ação
+              {t("home.videoTitle")}
             </h2>
             <p className="mt-4 text-pili-cement">
               Mais de {STATS.equipment} tombadores instalados em {STATS.countries}{" "}
@@ -368,7 +346,7 @@ export default async function HomePage({
           <AnimateOnScroll>
             <Calculator className="mx-auto h-12 w-12 text-pili-safety" />
             <h2 className="mt-6 font-display text-[length:var(--text-h2)] font-black uppercase text-pili-black">
-              Dimensione seu tombador
+              {t("home.calcTitle")}
             </h2>
             <p className="mt-4 text-pili-concrete">
               Use nossa calculadora de capacidade para descobrir qual modelo PILI
@@ -399,7 +377,7 @@ export default async function HomePage({
                   </span>
                 </div>
                 <h2 className="mt-6 font-display text-[length:var(--text-h2)] font-black uppercase leading-tight text-pili-white">
-                  Calcule o payback do seu tombador
+                  {t("home.paybackTitle")}
                 </h2>
                 <p className="mt-4 leading-relaxed text-pili-cement">
                   Descubra em quanto tempo o investimento em um tombador PILI se
@@ -407,19 +385,21 @@ export default async function HomePage({
                   filas e aumentam a produtividade da sua operação.
                 </p>
                 <ul className="mt-6 space-y-3">
-                  {[
-                    "Redução de até 60% no tempo de espera",
-                    "Economia com demurrage e estadias",
-                    "Aumento de 30-50% na produtividade",
-                    "Menor custo de manutenção por tonelada",
-                    "Payback médio entre 18 e 36 meses",
-                  ].map((item) => (
+                  {(
+                    [
+                      "espera",
+                      "demurrage",
+                      "produtividade",
+                      "manutencao",
+                      "payback",
+                    ] as const
+                  ).map((chave) => (
                     <li
-                      key={item}
+                      key={chave}
                       className="flex items-start gap-3 text-sm text-pili-mist"
                     >
                       <div className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-pili-safety" />
-                      {item}
+                      {t(`home.benefits.${chave}`)}
                     </li>
                   ))}
                 </ul>
@@ -427,7 +407,7 @@ export default async function HomePage({
                   href="/orcamento"
                   className="mt-8 inline-flex self-start items-center gap-2 bg-pili-safety px-6 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-all hover:bg-pili-safety-deep"
                 >
-                  Solicitar análise de payback
+                  {t("home.paybackCta")}
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>

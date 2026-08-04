@@ -13,6 +13,17 @@
     "contact": "Contacto",
     "quote": "Presupuesto"
   },
+  "header": {
+    "ecosystemDesc": "Gestión de patio IoT",
+    "openPlatform": "Acceder a la plataforma",
+    "access": "Acceder",
+    "portal": "Portal",
+    "portalTitle": "Portal del cliente",
+    "adminTitle": "Panel administrativo",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "switchLanguage": "Cambiar idioma a {name}"
+  },
   "hero": {
     "headline": "Descarga que sostiene el agro brasileño",
     "sub": "Plataformas hidráulicas de 9 a 30 metros · 35 a 100 toneladas · {years} años · {countries} países",
@@ -23,14 +34,18 @@
     "years": "{count} años",
     "equipment": "{count} equipos",
     "countries": "{count} países",
-    "capacity": "{count} máxima"
+    "capacity": "{count} máxima",
+    "yearsLabel": "años en el mercado",
+    "equipmentLabel": "equipos instalados",
+    "countriesLabel": "países atendidos",
+    "capacityLabel": "capacidad máxima"
   },
   "sections": {
     "featured_products": "Productos destacados",
     "applications": "Soluciones por sector",
     "featured_case": "Caso destacado",
     "ecosystem": "Ecosistema PILI",
-    "clients": "Quién confía en PILI",
+    "clients": "Quiénes confían en PILI",
     "certifications": "Certificaciones",
     "latest_news": "Últimas noticias",
     "cta_title": "¿Listo para modernizar su descarga?",
@@ -38,22 +53,49 @@
   },
   "footer": {
     "products": "Productos",
+    "company": "Empresa",
     "ecosystem": "Ecosistema",
     "contact": "Contacto",
-    "privacy": "Política de Privacidad",
-    "terms": "Términos de Uso",
-    "rights": "Todos los derechos reservados"
+    "privacy": "Política de privacidad",
+    "terms": "Términos de uso",
+    "rights": "Todos los derechos reservados",
+    "fullEcosystem": "Ver ecosistema completo",
+    "links": {
+      "tombadorFixo": "Volcador fijo",
+      "tombadorMovel": "Volcador móvil",
+      "coletor": "Colector de muestras",
+      "transbordo": "Unidad de trasbordo",
+      "comparar": "Comparar modelos",
+      "catalogo": "Catálogo",
+      "empresa": "La empresa",
+      "certificacoes": "Certificaciones",
+      "obras": "Obras realizadas",
+      "trabalhe": "Trabaje con nosotros",
+      "ambiental": "Política ambiental"
+    }
   },
   "forms": {
     "name": "Nombre",
-    "email": "Email",
+    "email": "Correo electrónico",
     "phone": "Teléfono",
     "company": "Empresa",
     "message": "Mensaje",
     "submit": "Enviar",
+    "sending": "Enviando...",
+    "select": "Seleccione...",
+    "application": "Aplicación",
+    "productInterest": "Producto de interés",
     "consent": "Acepto la política de privacidad",
     "success": "¡Enviado con éxito! Nos pondremos en contacto pronto.",
-    "error": "Ocurrió un error. Inténtelo de nuevo."
+    "error": "Ocurrió un error. Inténtelo de nuevo.",
+    "applications": {
+      "porto": "Puerto",
+      "cooperativa": "Cooperativa",
+      "industria": "Industria alimentaria",
+      "fertilizante": "Fertilizante",
+      "cimento": "Cemento",
+      "outro": "Otro"
+    }
   },
   "common": {
     "learn_more": "Más información",
@@ -61,6 +103,665 @@
     "download_catalog": "Descargar catálogo",
     "talk_specialist": "Hablar con un especialista",
     "back": "Volver",
-    "loading": "Cargando..."
+    "loading": "Cargando...",
+    "skipToContent": "Saltar al contenido",
+    "breadcrumb": "Ruta de navegación",
+    "home": "Inicio",
+    "requestQuote": "Solicitar presupuesto",
+    "readMore": "Leer más",
+    "seeSolution": "Ver solución"
+  },
+  "giorgia": {
+    "role": "Asistente virtual",
+    "open": "Abrir GiorgIA, asistente virtual de PILI",
+    "close": "Cerrar GiorgIA",
+    "dialogLabel": "GiorgIA — asistente virtual de PILI",
+    "tooltip": "¿Necesita ayuda?",
+    "welcome1": "¡Hola! Soy GiorgIA, la asistente virtual de PILI Industrial.",
+    "welcome2": "¿En qué puedo ayudarle hoy?",
+    "autoReply": "¡Gracias por su mensaje! Para una atención más rápida, escríbanos por WhatsApp o solicite un presupuesto.",
+    "placeholder": "Escriba su mensaje...",
+    "send": "Enviar mensaje",
+    "whatsappMessage": "Hola, quisiera información sobre los volcadores PILI.",
+    "actions": {
+      "produtos": "Ver productos",
+      "orcamento": "Solicitar presupuesto",
+      "consultor": "Hablar con un asesor",
+      "empresa": "Sobre la empresa",
+      "suporte": "Soporte técnico"
+    }
+  },
+  "floating": {
+    "whatsappLabel": "Escribir por WhatsApp",
+    "whatsappMessage": "Hola, quisiera información sobre los volcadores PILI."
+  },
+  "cookies": {
+    "text": "Usamos cookies esenciales para el funcionamiento del sitio. Con su autorización, usamos también cookies de análisis para entender cómo se utiliza el sitio. Puede rechazarlas sin perder ninguna funcionalidad — consulte la",
+    "policyLink": "política de privacidad",
+    "reject": "Rechazar",
+    "accept": "Aceptar"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "text": "La página que busca no existe o fue movida.",
+    "cta": "Volver al inicio"
+  },
+  "home": {
+    "productsTitle": "Línea de productos",
+    "productsAll": "Ver todos los productos",
+    "sectorsTitle": "Sectores de actuación",
+    "caseTitle": "Referencia comprobada",
+    "videoTitle": "Vea nuestros equipos en operación",
+    "calcTitle": "Dimensione su volcador",
+    "paybackTitle": "Calcule el retorno de su volcador",
+    "paybackCta": "Solicitar análisis de retorno",
+    "metaTitle": "Volcadores hidráulicos para descarga de granos",
+    "metaDesc": "Fabricante de volcadores hidráulicos desde 1979. Plataformas de 9 a 30 metros, 35 a 100 toneladas, en 18 países. Pida un presupuesto.",
+    "heroAlt": "Volcador hidráulico PILI en operación",
+    "sectors": {
+      "porto": "Terminales marítimas de alto caudal",
+      "cooperativa": "Recepción de granos de asociados",
+      "industria": "Abastecimiento de plantas industriales",
+      "fertilizante": "Materiales corrosivos y abrasivos",
+      "cimento": "Descarga de minerales y clínker"
+    },
+    "benefits": {
+      "espera": "Reducción de hasta 60% en el tiempo de espera",
+      "demurrage": "Ahorro en demoras y estadías",
+      "produtividade": "Aumento de 30-50% en la productividad",
+      "manutencao": "Menor costo de mantenimiento por tonelada",
+      "payback": "Retorno promedio entre 18 y 36 meses"
+    }
+  },
+  "produtos": {
+    "metaTitle": "Volcadores hidráulicos y equipos de descarga",
+    "metaDesc": "Volcadores hidráulicos de 9 a 30 metros, colectores de muestras y unidades de trasbordo. Conozca la línea completa PILI Industrial.",
+    "helpTitle": "¿Necesita ayuda para elegir?",
+    "applications": "Aplicaciones",
+    "useCases": "Casos de uso",
+    "categories": {
+      "tombadorFixo": "Volcadores fijos",
+      "tombadorMovel": "Volcadores móviles",
+      "coletor": "Colectores de muestras",
+      "transbordo": "Unidades de trasbordo",
+      "especial": "Proyectos especiales"
+    },
+    "categoryDesc": {
+      "tombadorFixo": "Plataformas de descarga fijas de 10 a 30 metros, con capacidad de 45 a 100 toneladas.",
+      "tombadorMovel": "Plataformas de descarga sobre ruedas para operaciones que exigen movilidad y flexibilidad.",
+      "coletor": "Sistemas automatizados para la toma de muestras de granos durante la descarga.",
+      "transbordo": "Equipos para la transferencia de carga entre distintos modos de transporte.",
+      "especial": "Soluciones a medida para aplicaciones industriales específicas."
+    },
+    "compare": {
+      "spec": "Especificación",
+      "cta": "Solicitar presupuesto de esta selección",
+      "empty": "Seleccione al menos 2 productos para iniciar la comparación.",
+      "metaDesc": "Compare lado a lado capacidad, longitud y especificaciones técnicas de los volcadores hidráulicos PILI Industrial.",
+      "metaTitle": "Comparar volcadores"
+    },
+    "eyebrow": "Línea completa",
+    "intro": "Plataformas de descarga de 9 a 30 metros, colectores de muestras y equipos especiales. Todos fabricados en Erechim/RS con acero de alta resistencia.",
+    "models": "modelos",
+    "helpText": "Use nuestra calculadora de capacidad o hable directamente con el equipo técnico de PILI para recibir una recomendación personalizada.",
+    "calculator": "Calculadora"
+  },
+  "solucoes": {
+    "title": "Soluciones por sector",
+    "metaDesc": "Soluciones de descarga para puertos, cooperativas, industria alimentaria, fertilizantes y cemento.",
+    "solution": "La solución",
+    "successCases": "Casos de éxito",
+    "otherSolutions": "Otras soluciones",
+    "cards": {
+      "porto": {
+        "headline": "Operaciones portuarias de alto caudal",
+        "desc": "Volcadores de 26 a 30 metros para terminales marítimas con un flujo de hasta 700 camiones por día en operación 24/7."
+      },
+      "cooperativa": {
+        "headline": "Recepción ágil de granos de asociados",
+        "desc": "Modelos de 10 a 26 metros para cooperativas de todos los tamaños, con ciclos rápidos y filas reducidas en la cosecha."
+      },
+      "industria": {
+        "headline": "Abastecimiento continuo de plantas industriales",
+        "desc": "Volcadores integrados a líneas de procesamiento con automatización y trazabilidad de lote."
+      },
+      "fertilizante": {
+        "headline": "Descarga de materiales corrosivos y abrasivos",
+        "desc": "Versiones especiales con revestimiento inoxidable, sellado reforzado y sistema de lavado para operar con fertilizantes."
+      },
+      "cimento": {
+        "headline": "Descarga de minerales y clínker",
+        "desc": "Volcadores compactos y robustos para operar con materiales densos y abrasivos en la industria cementera."
+      }
+    },
+    "setores": {
+      "porto": {
+        "tagline": "Volcadores hidráulicos diseñados para la máxima exigencia de las terminales marítimas: operación 24/7, ambiente corrosivo y un flujo superior a 700 camiones por día.",
+        "headline": "Descarga de alto caudal en terminales portuarias",
+        "problema": "Las terminales portuarias operan bajo la presión constante de buques que esperan carga. Cualquier parada no programada genera multas por sobreestadía (demurrage) que pueden superar los USD 50.000 por día. Los equipos convencionales no soportan el ritmo de operación continua en ambiente salino.",
+        "solucao": "PILI desarrolla volcadores de 26 y 30 metros con sistema hidráulico redundante, tratamiento anticorrosivo de grado marino (arenado SA 2.5 + epoxi de alto espesor) y automatización integrada al sistema de gestión portuaria. El resultado es una operación ininterrumpida con un ciclo inferior a 2,5 minutos y mantenimiento previsible."
+      },
+      "cooperativa": {
+        "tagline": "Soluciones de descarga dimensionadas para el pico de cosecha, cuando cientos de camiones llegan al mismo tiempo y cada minuto de espera le cuesta productividad al asociado.",
+        "headline": "Recepción ágil de granos en cosecha y entrecosecha",
+        "problema": "Durante el pico de cosecha, las cooperativas enfrentan filas de camiones que pueden superar las 12 horas de espera. Los equipos subdimensionados o con ciclos largos generan congestión, insatisfacción de los asociados y riesgo de pérdida de calidad de los granos expuestos al sol.",
+        "solucao": "La línea PILI ofrece volcadores de 9 a 30 metros con ciclos de 1 a 2,5 minutos, cubriendo desde unidades receptoras pequeñas hasta terminales regionales de gran porte. La instalación modular permite el montaje en hasta 30 días, garantizando la operación antes del inicio de la cosecha."
+      },
+      "industria": {
+        "tagline": "Volcadores especificados para alimentar líneas de producción que no pueden detenerse: molienda, extrusión, alimento balanceado y procesamiento de granos a escala industrial.",
+        "headline": "Abastecimiento continuo de plantas industriales",
+        "problema": "Las paradas de línea en plantas industriales cuestan miles de dólares por hora. El abastecimiento depende de una descarga rápida y confiable de materia prima, muchas veces con una flota diversificada de camiones, bitrenes y semirremolques de distintas longitudes.",
+        "solucao": "Los volcadores PILI de 10 a 26 metros aceptan toda la flota carretera, con automatización PLC que permite la integración directa al sistema MES/ERP de la planta. Los sensores de posición y la seguridad conforme a NR-12 garantizan una operación segura sin supervisión constante."
+      },
+      "fertilizante": {
+        "tagline": "Volcadores con ingeniería anticorrosiva especial para granulados, polvo y mezclas de fertilizantes — materiales que destruyen los equipos convencionales en meses.",
+        "headline": "Descarga de materiales corrosivos y abrasivos",
+        "problema": "Los fertilizantes son altamente corrosivos y abrasivos. Los equipos sin la protección adecuada sufren una degradación acelerada, lo que resulta en paradas frecuentes, altos costos de mantenimiento y riesgo de contaminación cruzada entre lotes.",
+        "solucao": "PILI desarrolla versiones especiales con revestimiento interno en acero inoxidable 316L, sellado reforzado en todos los puntos de contacto y sistema de lavado automático entre lotes. El diseño elimina los puntos de acumulación de material y facilita la limpieza completa."
+      },
+      "cimento": {
+        "tagline": "Volcadores robustos para la industria cementera, diseñados para soportar cargas densas, polvo abrasivo y operación continua en ambiente severo.",
+        "headline": "Descarga de minerales, clínker y materia prima",
+        "problema": "La industria cementera trabaja con materiales de alta densidad y abrasividad — caliza, clínker, yeso y escoria. El polvo generado en la descarga acelera el desgaste mecánico y compromete los sistemas eléctricos e hidráulicos convencionales.",
+        "solucao": "Los volcadores PILI para cemento cuentan con sellado IP65 en los tableros eléctricos, filtros reforzados en el sistema hidráulico y una estructura sobredimensionada para cargas densas. El sistema de automatización incluye monitoreo de desgaste y alertas preventivas de mantenimiento."
+      }
+    },
+    "intro": "Cada sector tiene desafíos únicos de descarga. PILI desarrolla soluciones específicas para cada aplicación.",
+    "forSector": "Soluciones para {sector}",
+    "challenge": "El desafío",
+    "problem": "El problema",
+    "answer": "La respuesta PILI",
+    "equipment": "Equipos",
+    "recommendedFor": "Productos recomendados para {sector}",
+    "recommendedText": "Volcadores dimensionados para las exigencias específicas del sector de {sector}, con capacidades de {min} a {max}.",
+    "provenResults": "Resultados comprobados",
+    "seeCase": "Ver caso completo",
+    "quoteSubtitle": "Soluciones para {sector} — complete el formulario y nuestro equipo de ingeniería se pondrá en contacto con la especificación ideal para su operación."
+  },
+  "obras": {
+    "metaTitle": "Obras realizadas",
+    "metaDesc": "Casos y proyectos realizados por PILI Industrial en puertos, cooperativas e industrias en Brasil y en el exterior.",
+    "intro": "Conozca los proyectos realizados por PILI Industrial. Volcadores instalados en puertos, cooperativas, industrias y terminales graneleras en más de 18 países."
+  },
+  "blog": {
+    "title": "Contenido y novedades",
+    "metaDesc": "Noticias, artículos técnicos y novedades de PILI Industrial. Ferias, lanzamientos y contenido sobre volcadores hidráulicos y logística industrial.",
+    "ctaTitle": "¿Necesita una solución de descarga?",
+    "ctaTitleArticle": "¿Necesita un volcador hidráulico?",
+    "categories": {
+      "todos": "Todos",
+      "noticia": "Noticias",
+      "artigo": "Artículos",
+      "evento": "Eventos",
+      "lancamento": "Lanzamientos"
+    },
+    "intro": "Noticias, artículos técnicos, cobertura de ferias y lanzamientos de PILI Industrial. Todo sobre volcadores hidráulicos, logística de granos y el ecosistema digital PILI.",
+    "featured": "Destacado",
+    "singular": {
+      "noticia": "Noticia",
+      "artigo": "Artículo",
+      "evento": "Evento",
+      "lancamento": "Lanzamiento"
+    }
+  },
+  "contato": {
+    "metaTitle": "Contacto",
+    "metaDesc": "Póngase en contacto con PILI Industrial. Atención comercial, soporte técnico y presupuestos para volcadores hidráulicos y equipos de descarga.",
+    "address": "Dirección",
+    "sendMessage": "Envíe un mensaje",
+    "phone": "Teléfono",
+    "whatsapp": "WhatsApp",
+    "commercialEmail": "Correo comercial",
+    "generalEmail": "Atención general",
+    "mapLink": "Abrir {address} en el mapa",
+    "mapTitle": "Mapa de ubicación — {address}",
+    "intro": "Hable con el equipo de PILI Industrial. Atención comercial, dimensionamiento técnico y soporte posventa.",
+    "talkToUs": "Hable con nosotros",
+    "socialNetworks": "Redes sociales",
+    "formIntro": "Complete el formulario y nuestro equipo le responderá en hasta 24 horas hábiles."
+  },
+  "orcamento": {
+    "title": "Solicitar presupuesto",
+    "metaDesc": "Solicite un presupuesto para volcadores hidráulicos, colectores de muestras y equipos de descarga PILI Industrial. Respuesta en hasta 24 h.",
+    "subtitle": "{product} — complete el formulario y nuestro equipo se pondrá en contacto",
+    "subtitleGeneric": "Complete el formulario y nuestro equipo se pondrá en contacto",
+    "intro": "Complete el formulario con los datos de su proyecto. Nuestro equipo técnico dimensionará el equipo ideal y le enviará una propuesta en hasta 24 horas hábiles.",
+    "projectData": "Datos del proyecto",
+    "projectDataText": "Los campos marcados con * son obligatorios. Cuantos más detalles informe, más precisa será la propuesta.",
+    "otherChannel": "¿Prefiere otro canal?",
+    "whatsappMessage": "Hola, quisiera solicitar un presupuesto.",
+    "emailSubject": "Solicitud de presupuesto"
+  },
+  "catalogo": {
+    "title": "Catálogo PILI",
+    "metaTitle": "Catálogo de volcadores hidráulicos",
+    "metaDesc": "Catálogo completo PILI Industrial: especificaciones técnicas, dimensionales y fotos de volcadores de 9 a 30 metros, colectores y unidades de trasbordo.",
+    "released": "Catálogo liberado",
+    "seeProducts": "Ver la línea de productos",
+    "download": "Descarga del catálogo",
+    "formIntro": "Complete los datos a continuación para liberar la descarga.",
+    "country": "País",
+    "intro": "Descargue el catálogo completo con especificaciones técnicas, dimensionales y fotos de todos los equipos PILI Industrial.",
+    "releasedText": "Recibimos sus datos. Nuestro equipo comercial enviará el catálogo completo al correo informado en hasta un día hábil.",
+    "consentPrefix": "Acepto recibir el catálogo y estoy de acuerdo con la",
+    "consentSuffix": "y el contacto del equipo comercial.",
+    "sendError": "Error al enviar. Inténtelo de nuevo o escríbanos por WhatsApp.",
+    "countries": {
+      "BR": "Brasil",
+      "PY": "Paraguay",
+      "AR": "Argentina",
+      "UY": "Uruguay",
+      "BO": "Bolivia",
+      "CO": "Colombia",
+      "PE": "Perú",
+      "US": "Estados Unidos",
+      "OUTRO": "Otro"
+    },
+    "unlock": "Liberar descarga",
+    "consentMiddle": "política de privacidad"
+  },
+  "calculadora": {
+    "title": "Calculadora de capacidad",
+    "metaTitle": "Calculadora de capacidad de volcador",
+    "metaDesc": "Descubra qué volcador PILI se adapta a su operación. Cálculo por volumen diario, tipo de grano y densidad — resultado inmediato y estimación de retorno.",
+    "operationData": "Datos de la operación",
+    "trucksPerDay": "Camiones por día",
+    "productType": "Tipo de producto",
+    "waitDistance": "Distancia media de espera (km)",
+    "waitDistanceHelp": "Distancia entre el punto de espera y el volcador.",
+    "estimatedFlow": "Caudal estimado",
+    "roiEstimate": "Estimación de retorno",
+    "notInformed": "No informado",
+    "emailPlaceholder": "su@correo.com",
+    "recommendations": {
+      "compacto": "Volcador compacto ideal para cooperativas y unidades de menor volumen. Alta confiabilidad y mantenimiento simplificado.",
+      "medio": "Volcador de porte medio para operaciones de flujo moderado. Compatible con semirremolques graneleros estándar y bitrenes.",
+      "grande": "Volcador de gran porte para terminales portuarias y cooperativas de alto volumen. Admite bitrenes y trenes de carretera.",
+      "maximo": "Volcador de capacidad máxima para puertos de gran escala. Diseñado para operación continua 24/7 con los mayores trenes de carretera del mercado."
+    },
+    "intro": "Informe los datos de su operación y descubra qué volcador PILI es el más adecuado para su proyecto. Cálculo basado en volumen diario, tipo de producto y distancia de espera.",
+    "calculate": "Calcular",
+    "recommended": "Modelo recomendado",
+    "capacity": "Capacidad",
+    "length": "Longitud",
+    "locked": "Retorno y detalles completos",
+    "lockedText": "Informe su correo electrónico para ver la estimación de retorno y la descripción detallada del equipo.",
+    "seeResult": "Ver resultado",
+    "consentPrefix": "Acepto la",
+    "consentSuffix": "y el contacto del equipo comercial.",
+    "sendError": "Error al enviar. Inténtelo de nuevo.",
+    "emptyState": "Complete los datos de la operación y haga clic en “Calcular” para ver el modelo recomendado.",
+    "disclaimer": "* Los valores presentados son estimaciones basadas en parámetros medios de operación. El dimensionamiento definitivo debe ser realizado por el equipo de ingeniería de PILI considerando las condiciones específicas del proyecto, tipo de suelo, infraestructura existente y normas locales. Póngase en contacto para un estudio técnico completo.",
+    "trucksPlaceholder": "Ej: 80",
+    "distancePlaceholder": "Ej: 5",
+    "grains": {
+      "soja": "Soja",
+      "milho": "Maíz",
+      "trigo": "Trigo",
+      "fertilizante": "Fertilizante",
+      "cimento": "Cemento"
+    },
+    "perDay": "{tons} t/día",
+    "roi": {
+      "compacto": "18 a 24 meses",
+      "medio": "14 a 18 meses",
+      "grande": "12 a 16 meses",
+      "maximo": "10 a 14 meses"
+    },
+    "meters": "{n} metros",
+    "trucksError": "Informe un número de camiones mayor que cero"
+  },
+  "empresa": {
+    "metaTitle": "La empresa",
+    "trajectory": "Nuestra trayectoria",
+    "history": "Historia",
+    "values": "Lo que nos guía",
+    "seeProducts": "Conozca nuestros productos",
+    "imageAlt": "Volcador hidráulico PILI",
+    "timeline": {
+      "fundacao": {
+        "title": "Fundación",
+        "text": "PILI se funda en Erechim/RS, inicialmente orientada a la metalurgia industrial y a equipos a medida para el sector agroindustrial."
+      },
+      "primeiroTombador": {
+        "title": "Primer volcador",
+        "text": "Desarrollo del primer volcador hidráulico PILI, que marca el inicio de la especialización en plataformas de descarga de granos."
+      },
+      "expansao": {
+        "title": "Expansión nacional",
+        "text": "PILI supera los 300 equipos instalados en Brasil y se consolida como líder en volcadores hidráulicos del mercado nacional."
+      },
+      "paranagua": {
+        "title": "Unidad Paranaguá",
+        "text": "Inauguración de la base operativa en Paranaguá/PR, junto al mayor complejo portuario de exportación de granos de América Latina."
+      },
+      "ecossistema": {
+        "title": "Ecosistema digital",
+        "text": "Lanzamiento de las plataformas PILI Tech, Store y Raste, que integran IoT, comercio electrónico y trazabilidad al portafolio de soluciones."
+      },
+      "global": {
+        "title": "Referencia global",
+        "text": "Equipos PILI en operación en 18 países, con atención técnica y repuestos en toda América Latina."
+      }
+    },
+    "pillars": {
+      "qualidade": {
+        "title": "Calidad",
+        "text": "Certificación ISO 9001, materia prima trazada y control dimensional riguroso en cada etapa de la fabricación."
+      },
+      "seguranca": {
+        "title": "Seguridad",
+        "text": "Proyectos conforme a NR-10, NR-12 y normas internacionales. Garantía estructural de 5 años en todos los equipos."
+      },
+      "inovacao": {
+        "title": "Innovación",
+        "text": "Inversión continua en I+D, IoT industrial y automatización. Ecosistema digital propio para gestión de patio y trazabilidad."
+      },
+      "engenharia": {
+        "title": "Ingeniería",
+        "text": "Equipo de ingenieros especializados en estructuras metálicas, hidráulica y automatización industrial. Proyectos en CAD 3D con simulación estructural."
+      },
+      "producao": {
+        "title": "Producción",
+        "text": "Planta fabril en Erechim/RS con capacidad para producir y montar equipos de hasta 30 metros. Corte láser, soldadura robotizada y arenado."
+      },
+      "posVenda": {
+        "title": "Posventa",
+        "text": "Atención técnica dedicada, repuestos vía PILI Store, monitoreo remoto vía PILI Tech y asistencia en campo en todo Brasil."
+      }
+    },
+    "title": "La empresa",
+    "since": "Desde {year}",
+    "intro": "Fundada en {year} en Erechim/RS, PILI Industrial es referencia en la fabricación de volcadores hidráulicos y plataformas de descarga de granos. Son {years}+ años de experiencia y más de {equipment} equipos instalados en {countries} países.",
+    "ourValues": "Nuestros valores",
+    "capacity": "Capacidad productiva",
+    "infrastructure": "Infraestructura",
+    "today": "Hoy",
+    "globalText": "Más de {equipment} equipos en {countries} países. Ecosistema completo de hardware + software para la cadena del agronegocio.",
+    "metaDesc": "{name}: fabricante de volcadores hidráulicos desde {founded}. {years}+ años de experiencia, {equipment} equipos instalados en {countries} países.",
+    "engineering": "Ingeniería y proyectos"
+  },
+  "certificacoes": {
+    "title": "Certificaciones y garantía",
+    "metaDesc": "PILI Industrial: ISO 9001, conformidad NR-10 y NR-12, garantía estructural de 5 años. Calidad y seguridad en todos los equipos.",
+    "docsTitle": "Documentación técnica",
+    "requestDocs": "Solicitar documentación",
+    "iso": {
+      "subtitle": "Sistema de gestión de la calidad",
+      "i1": "Procesos estandarizados de diseño, fabricación y montaje",
+      "i2": "Auditorías internas periódicas y mejora continua",
+      "i3": "Trazabilidad completa de materiales y componentes",
+      "i4": "Control dimensional riguroso en todas las etapas",
+      "i5": "Calificación y certificación de soldadores"
+    },
+    "nr10": {
+      "subtitle": "Seguridad en instalaciones eléctricas",
+      "i1": "Proyectos eléctricos conforme a la norma reglamentaria NR-10",
+      "i2": "Tableros de comando con protección contra sobrecarga",
+      "i3": "Puesta a tierra y equipotencialización de toda la estructura",
+      "i4": "Señalización de seguridad y procedimientos de bloqueo",
+      "i5": "Documentación técnica completa para fiscalización"
+    },
+    "nr12": {
+      "subtitle": "Seguridad en máquinas y equipos",
+      "i1": "Protecciones mecánicas fijas y móviles en puntos de riesgo",
+      "i2": "Sistemas de parada de emergencia accesibles",
+      "i3": "Enclavamientos y dispositivos de seguridad categoría 3",
+      "i4": "Manual de operación y mantenimiento completo",
+      "i5": "Informe técnico de conformidad NR-12 incluido"
+    },
+    "garantia": {
+      "title": "Garantía de 5 años",
+      "subtitle": "Garantía estructural",
+      "i1": "5 años de garantía sobre la estructura metálica principal",
+      "i2": "Cobertura contra defectos de fabricación y materiales",
+      "i3": "Soporte técnico remoto y presencial durante el período",
+      "i4": "Disponibilidad de repuestos originales",
+      "i5": "Posibilidad de extensión de la garantía mediante contrato"
+    },
+    "intro": "Todos los equipos PILI son diseñados y fabricados conforme a las normas brasileñas e internacionales de calidad y seguridad. Garantía estructural de 5 años en toda la línea.",
+    "docsText": "¿Necesita informes, certificados o documentación técnica para una licitación? Nuestro equipo puede proporcionar todos los documentos necesarios."
+  },
+  "ecossistema": {
+    "metaTitle": "Ecosistema PILI",
+    "metaDesc": "Conozca el ecosistema PILI: Industrial, Store, Tech, Raste y Harbor. Tecnología, repuestos, trazabilidad y gestión de patio industrial.",
+    "manufacturer": "Fabricante de equipos desde 1979",
+    "talkToTeam": "Hable con el equipo PILI",
+    "ownTech": "Tecnología propia",
+    "techDesc": "SaaS de gestión de patio industrial con IoT, MQTT y monitoreo en tiempo real.",
+    "requestDemo": "Solicitar demostración",
+    "benefits": "Principales beneficios",
+    "benefitsDesc": "Recursos desarrollados para maximizar la eficiencia de su operación.",
+    "stepsDesc": "De la configuración a los resultados en pocos pasos.",
+    "integrations": "Integraciones y compatibilidad",
+    "readyTitle": "¿Listo para empezar?",
+    "title": "Ecosistema PILI",
+    "intro": "Además de fabricar equipos de alto rendimiento, PILI desarrolla tecnología propia para logística, trazabilidad y gestión industrial. Plataformas integradas que cubren toda la cadena de valor del agronegocio y de la industria.",
+    "industrialDesc": "Fabricante brasileña de volcadores hidráulicos, colectores de muestras y unidades de trasbordo. Más de 850 equipos instalados en 18 países, con proyectos de 9 a 30 metros y capacidad de 35 a 100 toneladas.",
+    "know": "Conocer",
+    "integratedTitle": "Plataformas integradas",
+    "integratedText": "Todas las plataformas del ecosistema PILI comparten datos y se integran de forma nativa. Desde la fabricación del equipo hasta el monitoreo en tiempo real de la operación, pasando por la trazabilidad de granos y la gestión de patio."
+  },
+  "trabalhe": {
+    "title": "Forme parte del equipo",
+    "metaDesc": "Vacantes y banco de talentos de PILI Industrial en Erechim/RS. Ingeniería, producción, comercial y tecnología en una fábrica con más de 45 años.",
+    "whyTitle": "¿Por qué trabajar en PILI?",
+    "applyTitle": "Envíe su candidatura",
+    "area": "Área de interés",
+    "experience": "Mensaje / experiencia relevante",
+    "areas": {
+      "engenharia": "Ingeniería",
+      "producao": "Producción",
+      "comercial": "Comercial",
+      "administrativo": "Administrativo",
+      "tecnologia": "Tecnología",
+      "logistica": "Logística",
+      "outra": "Otra",
+      "qualidade": "Calidad",
+      "ti": "TI / Tecnología"
+    },
+    "r1": "Empresa sólida con más de 4 décadas en el mercado",
+    "r2": "Proyectos de alcance internacional",
+    "r3": "Inversión en innovación y tecnología propia",
+    "r4": "Oportunidades de crecimiento profesional",
+    "hero": "Trabaje con nosotros",
+    "heroIntro": "PILI Industrial está siempre en busca de profesionales talentosos que compartan nuestros valores de calidad, seguridad e innovación.",
+    "about1": "Con más de {years} años de historia, PILI es referencia en la fabricación de equipos industriales para el agronegocio. Operamos en {countries} países e invertimos continuamente en tecnología e innovación.",
+    "about2": "Ofrecemos un ambiente de trabajo que valora el desarrollo profesional, la colaboración entre equipos y el compromiso con la excelencia. Nuestro equipo reúne ingenieros, técnicos, gestores y especialistas que juntos transforman la logística industrial.",
+    "r5": "Ambiente colaborativo y orientado a resultados",
+    "sent": "Candidatura enviada",
+    "sentText": "Gracias por su interés en formar parte del equipo PILI. Analizaremos su perfil y nos pondremos en contacto si surge una vacante compatible.",
+    "applyText": "Complete el formulario. ¿No hay vacantes abiertas en este momento? No hay problema, mantendremos su perfil en nuestro banco de talentos.",
+    "fullName": "Nombre completo",
+    "consentPrefix": "Acepto la",
+    "consentSuffix": "y el almacenamiento de mi currículum en el banco de talentos.",
+    "submit": "Enviar candidatura",
+    "sendError": "Error al enviar. Inténtelo de nuevo o escriba a {email}.",
+    "metaTitle": "Trabaje con nosotros"
+  },
+  "certBand": {
+    "iso": "Sistema de gestión de la calidad",
+    "nr12": "Seguridad en máquinas y equipos",
+    "nr10": "Seguridad en instalaciones eléctricas"
+  },
+  "ambiental": {
+    "title": "Política ambiental",
+    "subtitle": "Compromiso con la responsabilidad ambiental",
+    "metaDesc": "Compromiso ambiental de PILI Industrial. Gestión de residuos, eficiencia energética y prácticas sostenibles en la fabricación de equipos industriales.",
+    "commitment": "Nuestro compromiso",
+    "p1": "{name} reconoce su responsabilidad con el medio ambiente y se compromete a conducir sus actividades de fabricación, comercialización y prestación de servicios de forma ambientalmente responsable. Buscamos continuamente reducir el impacto ambiental de nuestras operaciones y productos, respetando la legislación vigente y promoviendo buenas prácticas entre colaboradores, proveedores y socios.",
+    "p2": "Entendemos que nuestros equipos contribuyen directamente a la eficiencia logística del agronegocio, reduciendo los tiempos de espera de los camiones y, en consecuencia, las emisiones de gases de efecto invernadero asociadas a la logística de granos e insumos.",
+    "guidelines": "Directrices ambientales",
+    "principles": "Principios orientadores",
+    "items": {
+      "residuos": {
+        "title": "Gestión de residuos",
+        "text": "Programa de gestión de residuos industriales con segregación en origen, disposición certificada y reciclaje de acero y materiales metálicos. Informes de disposición conforme a la legislación ambiental vigente."
+      },
+      "agua": {
+        "title": "Recursos hídricos",
+        "text": "Control del consumo de agua en el proceso fabril, tratamiento de efluentes industriales y reutilización de agua en procesos no críticos. Monitoreo periódico de la calidad de los efluentes descartados."
+      },
+      "energia": {
+        "title": "Eficiencia energética",
+        "text": "Optimización del consumo energético en la producción, uso de equipos de alta eficiencia e iluminación LED en la planta fabril. Estudio continuo de fuentes de energía renovable."
+      },
+      "projetos": {
+        "title": "Proyectos sostenibles",
+        "text": "Desarrollo de equipos con mayor vida útil, menor consumo energético operacional y componentes reciclables. Diseños que reducen el tiempo de descarga y, en consecuencia, las emisiones de los vehículos en espera."
+      }
+    },
+    "pr1": "Cumplir íntegramente la legislación ambiental brasileña y las normas aplicables al sector metalúrgico e industrial.",
+    "pr2": "Promover la concienciación ambiental entre colaboradores, proveedores y socios comerciales.",
+    "pr3": "Buscar continuamente la reducción en la generación de residuos, emisiones y consumo de recursos naturales.",
+    "pr4": "Priorizar materiales reciclables y proveedores comprometidos con prácticas ambientales responsables.",
+    "pr5": "Invertir en investigación y desarrollo de productos con menor impacto ambiental a lo largo de su ciclo de vida.",
+    "pr6": "Mantener transparencia en la información ambiental y en los resultados de las acciones de sostenibilidad.",
+    "contactPrefix": "¿Dudas sobre nuestra política ambiental? Escríbanos al correo",
+    "contactSuffix": "o llame al teléfono {phone}."
+  },
+  "privacidade": {
+    "title": "Política de privacidad",
+    "metaDesc": "Política de privacidad de PILI Industrial. Conozca cómo recopilamos, almacenamos y utilizamos sus datos personales conforme a la LGPD.",
+    "lastUpdate": "Última actualización: enero de 2025",
+    "emailLabel": "Correo electrónico",
+    "phoneLabel": "Teléfono",
+    "controlador": {
+      "title": "Responsable de los datos",
+      "text": "El responsable del tratamiento de sus datos personales es:"
+    },
+    "dados": {
+      "title": "Datos personales recopilados",
+      "text": "Recopilamos los siguientes datos personales a través de los formularios disponibles en este sitio:",
+      "i1": "Nombre completo",
+      "i2": "Dirección de correo electrónico",
+      "i3": "Número de teléfono",
+      "i4": "Nombre de la empresa e identificación fiscal",
+      "i5": "Cargo o función",
+      "i6": "País y provincia o estado",
+      "i7": "Tipo de aplicación y producto de interés",
+      "i8": "Mensajes enviados mediante el formulario de contacto",
+      "i9": "Datos de navegación (cookies, IP, páginas visitadas)"
+    },
+    "finalidades": {
+      "title": "Finalidades del tratamiento",
+      "text": "Los datos personales recopilados se utilizan para las siguientes finalidades:",
+      "i1": "Responder solicitudes de presupuesto y contacto comercial",
+      "i2": "Enviar catálogos, materiales técnicos y propuestas comerciales",
+      "i3": "Gestionar la relación con clientes y prospectos",
+      "i4": "Enviar comunicaciones sobre productos, servicios y novedades (con consentimiento)",
+      "i5": "Mejorar la experiencia de navegación y la funcionalidad del sitio",
+      "i6": "Cumplir obligaciones legales y regulatorias"
+    },
+    "baseLegal": {
+      "title": "Base legal para el tratamiento",
+      "text": "El tratamiento de datos personales se realiza con base en las siguientes hipótesis legales previstas en la Ley General de Protección de Datos de Brasil (Ley n.º 13.709/2018 — LGPD):",
+      "i1": "Consentimiento del titular (art. 7.º, I)",
+      "i2": "Ejecución de contrato o de procedimientos preliminares (art. 7.º, V)",
+      "i3": "Interés legítimo del responsable (art. 7.º, IX)",
+      "i4": "Cumplimiento de obligación legal o regulatoria (art. 7.º, II)"
+    },
+    "compartilhamento": {
+      "title": "Compartición de datos",
+      "text": "Sus datos personales pueden ser compartidos con:",
+      "i1": "Proveedores de servicios de tecnología (alojamiento, correo electrónico, analítica)",
+      "i2": "Representantes comerciales autorizados, para atender su solicitud",
+      "i3": "Autoridades gubernamentales, cuando lo exija la ley o una orden judicial",
+      "outro": "No vendemos, alquilamos ni comercializamos sus datos personales a terceros con fines de marketing."
+    },
+    "retencao": {
+      "title": "Conservación de los datos",
+      "text": "Los datos personales se almacenarán durante el período necesario para cumplir las finalidades descritas en esta política, o mientras exista base legal para el tratamiento. Los datos de contacto comercial se conservan hasta 5 años después de la última interacción, salvo solicitud de eliminación por parte del titular."
+    },
+    "direitos": {
+      "title": "Derechos del titular",
+      "text": "Conforme a la LGPD, usted tiene derecho a:",
+      "i1": "Confirmación de la existencia del tratamiento de datos",
+      "i2": "Acceso a sus datos personales",
+      "i3": "Corrección de datos incompletos, inexactos o desactualizados",
+      "i4": "Anonimización, bloqueo o eliminación de datos innecesarios",
+      "i5": "Portabilidad de los datos a otro proveedor",
+      "i6": "Eliminación de los datos tratados con consentimiento",
+      "i7": "Revocación del consentimiento en cualquier momento",
+      "i8": "Información sobre las entidades con las que se compartieron los datos",
+      "outro": "Para ejercer sus derechos, escríbanos al correo"
+    },
+    "cookies": {
+      "title": "Cookies y tecnologías de rastreo",
+      "text": "Este sitio utiliza cookies y tecnologías similares para mejorar la experiencia de navegación, analizar el tráfico y personalizar contenido. Puede configurar su navegador para rechazar cookies, aunque esto puede afectar algunas funcionalidades del sitio."
+    },
+    "seguranca": {
+      "title": "Seguridad de los datos",
+      "text": "Adoptamos medidas técnicas y organizativas adecuadas para proteger sus datos personales contra acceso no autorizado, pérdida, alteración o destrucción. Esto incluye cifrado en tránsito (HTTPS), control de acceso basado en roles y copias de seguridad periódicas."
+    },
+    "alteracoes": {
+      "title": "Cambios en esta política",
+      "text": "Esta política de privacidad puede actualizarse periódicamente. La versión más reciente estará siempre disponible en esta página, con la fecha de la última actualización. Recomendamos revisar esta política con regularidad."
+    },
+    "contato": {
+      "title": "Contacto",
+      "text": "Para dudas, solicitudes o reclamos relacionados con esta política de privacidad o con el tratamiento de sus datos personales, póngase en contacto:"
+    }
+  },
+  "termos": {
+    "title": "Términos de uso",
+    "metaDesc": "Términos de uso del sitio de PILI Industrial. Condiciones de acceso, propiedad intelectual, limitación de responsabilidad y legislación aplicable.",
+    "lastUpdate": "Última actualización: enero de 2025",
+    "emailLabel": "Correo electrónico",
+    "phoneLabel": "Teléfono",
+    "aceitacao": {
+      "title": "Aceptación de los términos",
+      "text": "Al acceder y utilizar el sitio {site} (“el Sitio”), usted acepta íntegramente estos Términos de Uso. Si no está de acuerdo con alguna disposición, le recomendamos no utilizar el Sitio. El Sitio es operado por {name}, inscrita con el CNPJ {cnpj}, con sede en {address}."
+    },
+    "objeto": {
+      "title": "Objeto",
+      "text": "Este Sitio tiene como finalidad presentar los productos, servicios y soluciones de PILI Industrial, permitir el contacto comercial, la solicitud de presupuestos y la descarga de materiales técnicos. La información disponible tiene carácter informativo y no constituye una oferta comercial vinculante."
+    },
+    "propriedade": {
+      "title": "Propiedad intelectual",
+      "text": "Todo el contenido de este Sitio, incluidos textos, imágenes, fotografías, logotipos, marcas, diseño, maquetación, especificaciones técnicas, catálogos y demás materiales, es de propiedad exclusiva de {name} o de sus licenciantes, y está protegido por la legislación brasileña de propiedad intelectual.",
+      "text2": "Queda prohibida la reproducción, distribución, modificación o uso comercial de cualquier contenido de este Sitio sin autorización previa y expresa por escrito de PILI Industrial."
+    },
+    "usoPermitido": {
+      "title": "Uso permitido",
+      "text": "El usuario se compromete a utilizar el Sitio de forma lícita y conforme a estos Términos. Queda prohibido:",
+      "i1": "Utilizar el Sitio con fines ilegales o no autorizados",
+      "i2": "Intentar acceder a áreas restringidas o sistemas internos sin autorización",
+      "i3": "Transmitir contenido malicioso, virus o códigos que puedan dañar el Sitio",
+      "i4": "Recopilar datos personales de otros usuarios sin consentimiento",
+      "i5": "Utilizar mecanismos automatizados de recopilación de datos (scraping, crawling) sin autorización",
+      "i6": "Reproducir especificaciones técnicas con fines de ingeniería inversa de productos"
+    },
+    "especificacoes": {
+      "title": "Especificaciones técnicas y precios",
+      "text": "Las especificaciones técnicas, dimensiones, capacidades y demás información sobre los productos presentados en este Sitio se proporcionan a título informativo y pueden modificarse sin aviso previo. Los valores y precios no se muestran en el Sitio; los presupuestos se elaboran bajo consulta, según las necesidades específicas de cada proyecto."
+    },
+    "responsabilidade": {
+      "title": "Limitación de responsabilidad",
+      "text": "PILI Industrial se esfuerza por mantener la información del Sitio actualizada y precisa, pero no garantiza la ausencia de errores, interrupciones o indisponibilidad. El Sitio se ofrece “tal cual”, sin garantías expresas o implícitas de ninguna naturaleza.",
+      "text2": "PILI Industrial no se responsabiliza por daños directos o indirectos derivados del uso o de la imposibilidad de uso del Sitio, incluidos pérdida de datos, lucro cesante o daños a equipos."
+    },
+    "terceiros": {
+      "title": "Enlaces a terceros",
+      "text": "Este Sitio puede contener enlaces a sitios de terceros, incluidas las plataformas del ecosistema PILI. PILI Industrial no se responsabiliza por el contenido, las políticas de privacidad ni las prácticas de sitios de terceros. El acceso a esos enlaces es responsabilidad exclusiva del usuario."
+    },
+    "formularios": {
+      "title": "Formularios y datos personales",
+      "text": "El tratamiento de los datos personales recopilados mediante los formularios de este Sitio se rige por nuestra",
+      "link": "política de privacidad",
+      "after": ", que forma parte integrante de estos Términos de Uso."
+    },
+    "alteracoes": {
+      "title": "Cambios en los términos",
+      "text": "PILI Industrial se reserva el derecho de modificar estos Términos de Uso en cualquier momento, sin aviso previo. La versión más reciente estará siempre disponible en esta página, con la fecha de la última actualización. El uso continuado del Sitio tras las modificaciones constituye la aceptación de los nuevos términos."
+    },
+    "legislacao": {
+      "title": "Legislación aplicable y jurisdicción",
+      "text": "Estos Términos de Uso se rigen por la legislación de la República Federativa de Brasil. Se elige el fuero de la Comarca de Erechim/RS para dirimir cualquier controversia derivada de estos Términos, con renuncia a cualquier otro, por privilegiado que sea."
+    },
+    "contato": {
+      "title": "Contacto",
+      "text": "Para dudas sobre estos Términos de Uso, póngase en contacto:"
+    }
   }
 }

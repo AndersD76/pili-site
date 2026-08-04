@@ -68,6 +68,13 @@ const productSchema = z.object({
   ),
   metaTitle: z.string().max(70, "Máximo de 70 caracteres").optional(),
   metaDesc: z.string().max(160, "Máximo de 160 caracteres").optional(),
+  // Versão em espanhol. Opcional: em branco, o site em espanhol usa a
+  // versão em português.
+  nameEs: z.string().optional(),
+  taglineEs: z.string().optional(),
+  descriptionEs: z.string().optional(),
+  metaTitleEs: z.string().max(70, "Máximo de 70 caracteres").optional(),
+  metaDescEs: z.string().max(160, "Máximo de 160 caracteres").optional(),
 });
 
 type ProductFormValues = z.infer<typeof productSchema>;
@@ -91,9 +98,8 @@ export function ProductForm({
   const [serverError, setServerError] = useState<string | null>(null);
   const isEditing = !!product;
 
-  const ptTranslation = product?.translations.find(
-    (t) => t.locale === "pt_BR"
-  );
+  const ptTranslation = product?.translations.find((t) => t.locale === "pt_BR");
+  const esTranslation = product?.translations.find((t) => t.locale === "es");
 
   const {
     register,
@@ -116,6 +122,11 @@ export function ProductForm({
         product?.specs.map((s) => ({ key: s.key, value: s.value })) ?? [],
       metaTitle: ptTranslation?.metaTitle ?? "",
       metaDesc: ptTranslation?.metaDesc ?? "",
+      nameEs: esTranslation?.name ?? "",
+      taglineEs: esTranslation?.tagline ?? "",
+      descriptionEs: esTranslation?.description ?? "",
+      metaTitleEs: esTranslation?.metaTitle ?? "",
+      metaDescEs: esTranslation?.metaDesc ?? "",
     },
   });
 
@@ -146,6 +157,11 @@ export function ProductForm({
     formData.set("specs", JSON.stringify(values.specs));
     formData.set("metaTitle", values.metaTitle ?? "");
     formData.set("metaDesc", values.metaDesc ?? "");
+    formData.set("nameEs", values.nameEs ?? "");
+    formData.set("taglineEs", values.taglineEs ?? "");
+    formData.set("descriptionEs", values.descriptionEs ?? "");
+    formData.set("metaTitleEs", values.metaTitleEs ?? "");
+    formData.set("metaDescEs", values.metaDescEs ?? "");
 
     startTransition(async () => {
       const result = isEditing
@@ -295,6 +311,70 @@ export function ProductForm({
           />
           {errors.metaDesc && (
             <p className="text-xs text-red-600">{errors.metaDesc.message}</p>
+          )}
+        </div>
+      </div>
+
+      <Separator />
+
+      <div className="space-y-4">
+        <div>
+          <h2 className="font-display text-lg font-semibold text-pili-black">
+            Espanhol
+          </h2>
+          <p className="mt-1 text-sm text-pili-concrete">
+            Conteúdo exibido em /es. Deixe em branco para o site em espanhol
+            usar o texto em português. As especificações e as fotos são as
+            mesmas nos dois idiomas.
+          </p>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="space-y-2">
+            <Label htmlFor="nameEs">Nombre</Label>
+            <Input
+              id="nameEs"
+              {...register("nameEs")}
+              placeholder="Volcador 30 metros fijo"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="taglineEs">Tagline</Label>
+            <Input
+              id="taglineEs"
+              {...register("taglineEs")}
+              placeholder="El mayor volcador hidráulico del mercado"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="descriptionEs">Descripción</Label>
+          <Textarea
+            id="descriptionEs"
+            {...register("descriptionEs")}
+            className="min-h-32"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="metaTitleEs">Título para búsqueda</Label>
+          <Input id="metaTitleEs" {...register("metaTitleEs")} />
+          {errors.metaTitleEs && (
+            <p className="text-xs text-red-600">{errors.metaTitleEs.message}</p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="metaDescEs">Descripción para búsqueda</Label>
+          <Textarea
+            id="metaDescEs"
+            {...register("metaDescEs")}
+            className="min-h-20"
+          />
+          {errors.metaDescEs && (
+            <p className="text-xs text-red-600">{errors.metaDescEs.message}</p>
           )}
         </div>
       </div>

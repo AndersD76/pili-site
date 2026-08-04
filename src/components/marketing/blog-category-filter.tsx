@@ -2,16 +2,12 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
+import { useTranslations } from "next-intl";
 
-const CATEGORIES = [
-  { key: "todos", label: "Todos" },
-  { key: "noticia", label: "Notícias" },
-  { key: "artigo", label: "Artigos" },
-  { key: "evento", label: "Eventos" },
-  { key: "lancamento", label: "Lançamentos" },
-] as const;
+const CATEGORIES = ["todos", "noticia", "artigo", "evento", "lancamento"] as const;
 
 export function BlogCategoryFilter() {
+  const t = useTranslations("blog.categories");
   const router = useRouter();
   const searchParams = useSearchParams();
   const active = searchParams.get("categoria") ?? "todos";
@@ -34,15 +30,15 @@ export function BlogCategoryFilter() {
     <div className="flex flex-wrap gap-2">
       {CATEGORIES.map((cat) => (
         <button
-          key={cat.key}
-          onClick={() => handleFilter(cat.key)}
+          key={cat}
+          onClick={() => handleFilter(cat)}
           className={`px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-colors ${
-            active === cat.key
+            active === cat
               ? "bg-pili-safety text-pili-white"
               : "border border-pili-mist text-pili-concrete hover:border-pili-black hover:text-pili-black"
           }`}
         >
-          {cat.label}
+          {t(cat)}
         </button>
       ))}
     </div>

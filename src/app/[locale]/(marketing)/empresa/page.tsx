@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/routing";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { generatePageMetadata } from "@/lib/seo";
 import { COMPANY, STATS } from "@/lib/constants";
@@ -13,64 +13,38 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "empresa" });
   return generatePageMetadata({
     locale,
-    title: "A Empresa",
-    description: `${COMPANY.name}: fabricante de tombadores hidráulicos desde ${COMPANY.founded}. ${STATS.years}+ anos de experiência, ${STATS.equipment} equipamentos instalados em ${STATS.countries} países.`,
+    title: t("title"),
+    description: t("metaDesc", {
+      name: COMPANY.name,
+      founded: COMPANY.founded,
+      years: STATS.years,
+      equipment: STATS.equipment,
+      countries: STATS.countries,
+    }),
     path: "/empresa",
   });
 }
 
+/** Ano na linha do tempo; título e texto vêm de `empresa.timeline`. */
 const TIMELINE = [
-  {
-    year: "1979",
-    title: "Fundação",
-    desc: "A PILI é fundada em Erechim/RS, inicialmente voltada para metalurgia industrial e equipamentos sob medida para o setor agroindustrial.",
-  },
-  {
-    year: "1990",
-    title: "Primeiro tombador",
-    desc: "Desenvolvimento do primeiro tombador hidráulico PILI, marcando o início da especialização em plataformas de descarga de grãos.",
-  },
-  {
-    year: "2010",
-    title: "Expansão nacional",
-    desc: "A PILI ultrapassa 300 equipamentos instalados no Brasil, consolidando-se como líder em tombadores hidráulicos no mercado nacional.",
-  },
-  {
-    year: "2017",
-    title: "Unidade Paranaguá",
-    desc: "Inauguração da base operacional em Paranaguá/PR, junto ao maior complexo portuário de exportação de grãos da América Latina.",
-  },
-  {
-    year: "2020",
-    title: "Ecossistema digital",
-    desc: "Lançamento das plataformas PILI Tech, Store e Raste, integrando IoT, e-commerce e rastreabilidade ao portfólio de soluções.",
-  },
-  {
-    year: "Hoje",
-    title: "Referência global",
-    desc: `Mais de ${STATS.equipment} equipamentos em ${STATS.countries} países. Ecossistema completo de hardware + software para a cadeia do agronegócio.`,
-  },
+  { year: "1979", key: "fundacao" },
+  { year: "1990", key: "primeiroTombador" },
+  { year: "2010", key: "expansao" },
+  { year: "2017", key: "paranagua" },
+  { year: "2020", key: "ecossistema" },
+  { year: null, key: "global" },
 ] as const;
 
 const VALUES = [
-  {
-    icon: ShieldCheck,
-    title: "Qualidade",
-    desc: "Certificação ISO 9001, matéria-prima rastreada e controle dimensional rigoroso em cada etapa da fabricação.",
-  },
-  {
-    icon: HardHat,
-    title: "Segurança",
-    desc: "Projetos conforme NR-10, NR-12 e normas internacionais. Garantia estrutural de 5 anos em todos os equipamentos.",
-  },
-  {
-    icon: Lightbulb,
-    title: "Inovação",
-    desc: "Investimento contínuo em P&D, IoT industrial e automação. Ecossistema digital próprio para gestão de pátio e rastreabilidade.",
-  },
+  { icon: ShieldCheck, key: "qualidade" },
+  { icon: HardHat, key: "seguranca" },
+  { icon: Lightbulb, key: "inovacao" },
 ] as const;
+
+const AREAS = ["engenharia", "producao", "posVenda"] as const;
 
 export default async function EmpresaPage({
   params,
@@ -80,13 +54,15 @@ export default async function EmpresaPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
+  const t = await getTranslations();
+
   return (
     <main className="pt-[var(--header-height)]">
       {/* Hero */}
       <section className="relative bg-pili-black py-32 px-6 lg:px-8">
         <Image
           src="/images/tombador-pili.jpg"
-          alt="Tombador hidráulico PILI"
+          alt={t("empresa.imageAlt")}
           fill
           priority
           className="object-cover opacity-30"
@@ -96,19 +72,20 @@ export default async function EmpresaPage({
         <div className="relative mx-auto max-w-6xl">
           <AnimateOnScroll>
             <span className="font-mono text-xs uppercase tracking-widest text-pili-safety">
-              Desde {COMPANY.founded}
+              {t("empresa.since", { year: COMPANY.founded })}
             </span>
             <h1 className="mt-3 font-display text-[length:var(--text-display-2)] font-black uppercase text-pili-white">
-              A Empresa
+              {t("empresa.title")}
             </h1>
             <div className="mt-4 flex items-center gap-4">
               <div className="h-px w-12 bg-pili-safety" />
               <p className="max-w-2xl text-pili-cement">
-                Fundada em {COMPANY.founded} em Erechim/RS, a PILI Industrial é
-                referência na fabricação de tombadores hidráulicos e plataformas
-                de descarga de grãos. São {STATS.years}+ anos de experiência,
-                mais de {STATS.equipment} equipamentos instalados em{" "}
-                {STATS.countries} países.
+                {t("empresa.intro", {
+                  year: COMPANY.founded,
+                  years: STATS.years,
+                  equipment: STATS.equipment,
+                  countries: STATS.countries,
+                })}
               </p>
             </div>
           </AnimateOnScroll>
@@ -123,10 +100,10 @@ export default async function EmpresaPage({
         <div className="mx-auto max-w-6xl">
           <AnimateOnScroll>
             <span className="font-mono text-xs uppercase tracking-widest text-pili-safety">
-              Nossa trajetória
+              {t("empresa.trajectory")}
             </span>
             <h2 className="mt-2 font-display text-[length:var(--text-h1)] font-black uppercase text-pili-black accent-line">
-              História
+              {t("empresa.history")}
             </h2>
           </AnimateOnScroll>
           <div className="mt-16 space-y-0">
@@ -136,7 +113,7 @@ export default async function EmpresaPage({
                   <div className="flex flex-col items-center">
                     <div className="flex h-14 w-14 items-center justify-center border-2 border-pili-black bg-pili-white">
                       <span className="font-mono text-xs font-bold text-pili-black">
-                        {event.year}
+                        {event.year ?? t("empresa.today")}
                       </span>
                     </div>
                     {i < TIMELINE.length - 1 && (
@@ -145,10 +122,15 @@ export default async function EmpresaPage({
                   </div>
                   <div className="pb-4 pt-3">
                     <h3 className="font-display text-lg font-bold uppercase text-pili-black">
-                      {event.title}
+                      {t(`empresa.timeline.${event.key}.title`)}
                     </h3>
                     <p className="mt-2 max-w-lg leading-relaxed text-pili-concrete">
-                      {event.desc}
+                      {event.key === "global"
+                        ? t("empresa.globalText", {
+                            equipment: STATS.equipment,
+                            countries: STATS.countries,
+                          })
+                        : t(`empresa.timeline.${event.key}.text`)}
                     </p>
                   </div>
                 </div>
@@ -163,22 +145,22 @@ export default async function EmpresaPage({
         <div className="mx-auto max-w-6xl">
           <AnimateOnScroll>
             <span className="font-mono text-xs uppercase tracking-widest text-pili-safety">
-              O que nos guia
+              {t("empresa.values")}
             </span>
             <h2 className="mt-2 font-display text-[length:var(--text-h1)] font-black uppercase text-pili-black accent-line">
-              Nossos valores
+              {t("empresa.ourValues")}
             </h2>
           </AnimateOnScroll>
           <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {VALUES.map((value, i) => (
-              <AnimateOnScroll key={value.title} delay={i * 0.1}>
+              <AnimateOnScroll key={value.key} delay={i * 0.1}>
                 <div className="border-t-2 border-t-pili-safety bg-pili-white p-8">
                   <value.icon className="h-10 w-10 text-pili-safety" />
                   <h3 className="mt-4 font-display text-xl font-bold uppercase text-pili-black">
-                    {value.title}
+                    {t(`empresa.pillars.${value.key}.title`)}
                   </h3>
                   <p className="mt-3 leading-relaxed text-pili-concrete">
-                    {value.desc}
+                    {t(`empresa.pillars.${value.key}.text`)}
                   </p>
                 </div>
               </AnimateOnScroll>
@@ -192,34 +174,23 @@ export default async function EmpresaPage({
         <div className="mx-auto max-w-6xl">
           <AnimateOnScroll>
             <span className="font-mono text-xs uppercase tracking-widest text-pili-safety">
-              Capacidade produtiva
+              {t("empresa.capacity")}
             </span>
             <h2 className="mt-2 font-display text-[length:var(--text-h1)] font-black uppercase text-pili-black accent-line">
-              Infraestrutura
+              {t("empresa.infrastructure")}
             </h2>
           </AnimateOnScroll>
           <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              {
-                title: "Engenharia e Projetos",
-                desc: "Equipe de engenheiros especializados em estruturas metálicas, hidráulica e automação industrial. Projetos em CAD 3D com simulação estrutural.",
-              },
-              {
-                title: "Produção",
-                desc: "Parque fabril em Erechim/RS com capacidade para produzir e montar equipamentos de até 30 metros. Corte laser, solda robotizada e jateamento.",
-              },
-              {
-                title: "Pós-venda",
-                desc: "Atendimento técnico dedicado, peças de reposição via PILI Store, monitoramento remoto via PILI Tech e assistência em campo em todo o Brasil.",
-              },
-            ].map((area, i) => (
-              <AnimateOnScroll key={area.title} delay={i * 0.1}>
+            {AREAS.map((area, i) => (
+              <AnimateOnScroll key={area} delay={i * 0.1}>
                 <div className="border border-pili-mist p-8 transition-all hover:border-pili-black">
                   <h3 className="font-display text-lg font-bold uppercase text-pili-black">
-                    {area.title}
+                    {area === "engenharia"
+                      ? t("empresa.engineering")
+                      : t(`empresa.pillars.${area}.title`)}
                   </h3>
                   <p className="mt-3 text-sm leading-relaxed text-pili-concrete">
-                    {area.desc}
+                    {t(`empresa.pillars.${area}.text`)}
                   </p>
                 </div>
               </AnimateOnScroll>
@@ -233,26 +204,24 @@ export default async function EmpresaPage({
         <div className="relative mx-auto max-w-4xl text-center">
           <AnimateOnScroll>
             <h2 className="font-display text-[length:var(--text-h2)] font-black uppercase text-pili-white">
-              Conheça nossos produtos
+              {t("empresa.seeProducts")}
             </h2>
             <p className="mt-4 text-pili-cement">
-              Tombadores hidráulicos de 9 a 30 metros, coletores de amostras e
-              equipamentos especiais. Fabricados em Erechim/RS com aço de alta
-              resistência.
+              {t("produtos.intro")}
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <Link
                 href="/produtos"
                 className="inline-flex items-center gap-2 bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
               >
-                Ver produtos
+                {t("hero.cta_secondary")}
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/contato"
                 className="border border-pili-white px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-white hover:text-pili-black"
               >
-                Fale conosco
+                {t("contato.talkToUs")}
               </Link>
             </div>
           </AnimateOnScroll>

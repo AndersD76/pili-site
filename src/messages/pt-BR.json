@@ -13,6 +13,17 @@
     "contact": "Contato",
     "quote": "Orçamento"
   },
+  "header": {
+    "ecosystemDesc": "Gestão de pátio IoT",
+    "openPlatform": "Acessar plataforma",
+    "access": "Acessar",
+    "portal": "Portal",
+    "portalTitle": "Portal do cliente",
+    "adminTitle": "Painel administrativo",
+    "openMenu": "Abrir menu",
+    "closeMenu": "Fechar menu",
+    "switchLanguage": "Mudar idioma para {name}"
+  },
   "hero": {
     "headline": "Descarga que sustenta o agro brasileiro",
     "sub": "Plataformas hidráulicas de 9 a 30 metros · 35 a 100 toneladas · {years} anos · {countries} países",
@@ -23,7 +34,11 @@
     "years": "{count} anos",
     "equipment": "{count} equipamentos",
     "countries": "{count} países",
-    "capacity": "{count} máxima"
+    "capacity": "{count} máxima",
+    "yearsLabel": "anos de mercado",
+    "equipmentLabel": "equipamentos instalados",
+    "countriesLabel": "países atendidos",
+    "capacityLabel": "capacidade máxima"
   },
   "sections": {
     "featured_products": "Produtos em destaque",
@@ -38,22 +53,49 @@
   },
   "footer": {
     "products": "Produtos",
+    "company": "Empresa",
     "ecosystem": "Ecossistema",
     "contact": "Contato",
-    "privacy": "Política de Privacidade",
-    "terms": "Termos de Uso",
-    "rights": "Todos os direitos reservados"
+    "privacy": "Política de privacidade",
+    "terms": "Termos de uso",
+    "rights": "Todos os direitos reservados",
+    "fullEcosystem": "Ver ecossistema completo",
+    "links": {
+      "tombadorFixo": "Tombador fixo",
+      "tombadorMovel": "Tombador móvel",
+      "coletor": "Coletor de amostras",
+      "transbordo": "Unidade de transbordo",
+      "comparar": "Comparar modelos",
+      "catalogo": "Catálogo",
+      "empresa": "A empresa",
+      "certificacoes": "Certificações",
+      "obras": "Obras realizadas",
+      "trabalhe": "Trabalhe conosco",
+      "ambiental": "Política ambiental"
+    }
   },
   "forms": {
     "name": "Nome",
-    "email": "Email",
+    "email": "E-mail",
     "phone": "Telefone",
     "company": "Empresa",
     "message": "Mensagem",
     "submit": "Enviar",
+    "sending": "Enviando...",
+    "select": "Selecione...",
+    "application": "Aplicação",
+    "productInterest": "Produto de interesse",
     "consent": "Aceito a política de privacidade",
     "success": "Enviado com sucesso! Entraremos em contato em breve.",
-    "error": "Ocorreu um erro. Tente novamente."
+    "error": "Ocorreu um erro. Tente novamente.",
+    "applications": {
+      "porto": "Porto",
+      "cooperativa": "Cooperativa",
+      "industria": "Indústria alimentícia",
+      "fertilizante": "Fertilizante",
+      "cimento": "Cimento",
+      "outro": "Outro"
+    }
   },
   "common": {
     "learn_more": "Saiba mais",
@@ -61,6 +103,665 @@
     "download_catalog": "Baixar catálogo",
     "talk_specialist": "Falar com especialista",
     "back": "Voltar",
-    "loading": "Carregando..."
+    "loading": "Carregando...",
+    "skipToContent": "Pular para conteúdo",
+    "breadcrumb": "Trilha de navegação",
+    "home": "Home",
+    "requestQuote": "Solicitar orçamento",
+    "readMore": "Ler mais",
+    "seeSolution": "Ver solução"
+  },
+  "giorgia": {
+    "role": "Assistente virtual",
+    "open": "Abrir a GiorgIA, assistente virtual da PILI",
+    "close": "Fechar a GiorgIA",
+    "dialogLabel": "GiorgIA — assistente virtual da PILI",
+    "tooltip": "Precisa de ajuda?",
+    "welcome1": "Olá! Sou a GiorgIA, assistente virtual da PILI Industrial.",
+    "welcome2": "Como posso ajudar você hoje?",
+    "autoReply": "Obrigada pela sua mensagem! Para um atendimento mais rápido, fale pelo WhatsApp ou solicite um orçamento.",
+    "placeholder": "Digite sua mensagem...",
+    "send": "Enviar mensagem",
+    "whatsappMessage": "Olá, gostaria de informações sobre os tombadores PILI.",
+    "actions": {
+      "produtos": "Conhecer produtos",
+      "orcamento": "Solicitar orçamento",
+      "consultor": "Falar com consultor",
+      "empresa": "Sobre a empresa",
+      "suporte": "Suporte técnico"
+    }
+  },
+  "floating": {
+    "whatsappLabel": "Falar no WhatsApp",
+    "whatsappMessage": "Olá, gostaria de informações sobre os tombadores PILI."
+  },
+  "cookies": {
+    "text": "Usamos cookies essenciais para o funcionamento do site. Com sua autorização, usamos também cookies de análise para entender como o site é usado. Você pode recusar sem perder nenhuma funcionalidade — veja a",
+    "policyLink": "política de privacidade",
+    "reject": "Recusar",
+    "accept": "Aceitar"
+  },
+  "notFound": {
+    "title": "Página não encontrada",
+    "text": "A página que você procura não existe ou foi movida.",
+    "cta": "Voltar ao início"
+  },
+  "home": {
+    "productsTitle": "Linha de produtos",
+    "productsAll": "Ver todos os produtos",
+    "sectorsTitle": "Setores de atuação",
+    "caseTitle": "Referência comprovada",
+    "videoTitle": "Veja nossos equipamentos em ação",
+    "calcTitle": "Dimensione seu tombador",
+    "paybackTitle": "Calcule o payback do seu tombador",
+    "paybackCta": "Solicitar análise de payback",
+    "metaTitle": "Tombadores hidráulicos para descarga de grãos",
+    "metaDesc": "Fabricante de tombadores hidráulicos desde 1979. Plataformas de 9 a 30 metros, 35 a 100 toneladas, em 18 países. Peça um orçamento.",
+    "heroAlt": "Tombador hidráulico PILI em operação",
+    "sectors": {
+      "porto": "Terminais marítimos de alta vazão",
+      "cooperativa": "Recepção de grãos de associados",
+      "industria": "Abastecimento de plantas industriais",
+      "fertilizante": "Materiais corrosivos e abrasivos",
+      "cimento": "Descarga de minerais e clínquer"
+    },
+    "benefits": {
+      "espera": "Redução de até 60% no tempo de espera",
+      "demurrage": "Economia com demurrage e estadias",
+      "produtividade": "Aumento de 30-50% na produtividade",
+      "manutencao": "Menor custo de manutenção por tonelada",
+      "payback": "Payback médio entre 18 e 36 meses"
+    }
+  },
+  "produtos": {
+    "metaTitle": "Tombadores hidráulicos e equipamentos de descarga",
+    "metaDesc": "Tombadores hidráulicos de 9 a 30 metros, coletores de amostras e unidades de transbordo. Conheça a linha completa PILI Industrial.",
+    "helpTitle": "Precisa de ajuda para escolher?",
+    "applications": "Aplicações",
+    "useCases": "Casos de uso",
+    "categories": {
+      "tombadorFixo": "Tombadores fixos",
+      "tombadorMovel": "Tombadores móveis",
+      "coletor": "Coletores de amostras",
+      "transbordo": "Unidades de transbordo",
+      "especial": "Projetos especiais"
+    },
+    "categoryDesc": {
+      "tombadorFixo": "Plataformas de descarga fixas de 10 a 30 metros, com capacidade de 45 a 100 toneladas.",
+      "tombadorMovel": "Plataformas de descarga sobre rodas para operações que exigem mobilidade e flexibilidade.",
+      "coletor": "Sistemas automatizados para coleta de amostras de grãos durante a descarga.",
+      "transbordo": "Equipamentos para transferência de carga entre diferentes modais de transporte.",
+      "especial": "Soluções customizadas para aplicações industriais específicas."
+    },
+    "compare": {
+      "spec": "Especificação",
+      "cta": "Solicitar orçamento desta seleção",
+      "empty": "Selecione pelo menos 2 produtos para iniciar a comparação.",
+      "metaDesc": "Compare lado a lado capacidade, comprimento e especificações técnicas dos tombadores hidráulicos PILI Industrial.",
+      "metaTitle": "Comparar tombadores"
+    },
+    "eyebrow": "Linha completa",
+    "intro": "Plataformas de descarga de 9 a 30 metros, coletores de amostras e equipamentos especiais. Todos fabricados em Erechim/RS com aço de alta resistência.",
+    "models": "modelos",
+    "helpText": "Use nossa calculadora de capacidade ou fale diretamente com a equipe técnica da PILI para receber uma recomendação personalizada.",
+    "calculator": "Calculadora"
+  },
+  "solucoes": {
+    "title": "Soluções por setor",
+    "metaDesc": "Soluções de descarga para portos, cooperativas, indústria alimentícia, fertilizantes e cimento.",
+    "solution": "A solução",
+    "successCases": "Casos de sucesso",
+    "otherSolutions": "Outras soluções",
+    "cards": {
+      "porto": {
+        "headline": "Operações portuárias de alto fluxo",
+        "desc": "Tombadores de 26 a 30 metros para terminais marítimos com fluxo de até 700 caminhões por dia em operação 24/7."
+      },
+      "cooperativa": {
+        "headline": "Recepção ágil de grãos de associados",
+        "desc": "Modelos de 10 a 26 metros para cooperativas de todos os portes, com ciclos rápidos e filas reduzidas na safra."
+      },
+      "industria": {
+        "headline": "Abastecimento contínuo de plantas industriais",
+        "desc": "Tombadores integrados a linhas de processamento com automação e rastreabilidade de lote."
+      },
+      "fertilizante": {
+        "headline": "Descarga de materiais corrosivos e abrasivos",
+        "desc": "Versões especiais com revestimento inox, vedação reforçada e sistema de lavagem para operação com fertilizantes."
+      },
+      "cimento": {
+        "headline": "Descarga de minerais e clínquer",
+        "desc": "Tombadores compactos e robustos para operação com materiais densos e abrasivos na indústria cimenteira."
+      }
+    },
+    "setores": {
+      "porto": {
+        "tagline": "Tombadores hidráulicos projetados para a exigência máxima de terminais marítimos: operação 24/7, ambiente corrosivo e fluxo acima de 700 caminhões por dia.",
+        "headline": "Descarga de alto fluxo em terminais portuários",
+        "problema": "Terminais portuários operam sob pressão constante de navios aguardando carga. Qualquer parada não programada gera multas de sobre-estadia (demurrage) que podem ultrapassar USD 50.000 por dia. Equipamentos convencionais não suportam o ritmo de operação contínua em ambiente salino.",
+        "solucao": "A PILI desenvolve tombadores de 26 e 30 metros com sistema hidráulico redundante, tratamento anticorrosivo de grau marítimo (jateamento SA 2.5 + epóxi de alta espessura) e automação integrada ao sistema de gestão portuária. O resultado é operação ininterrupta com ciclo inferior a 2,5 minutos e manutenção previsível."
+      },
+      "cooperativa": {
+        "tagline": "Soluções de descarga dimensionadas para o pico de safra, quando centenas de caminhões chegam simultaneamente e cada minuto de espera custa produtividade ao associado.",
+        "headline": "Recepção ágil de grãos na safra e entressafra",
+        "problema": "Durante o pico de safra, cooperativas enfrentam filas de caminhões que podem ultrapassar 12 horas de espera. Equipamentos subdimensionados ou com ciclos longos geram congestionamento, insatisfação dos associados e risco de perda de qualidade dos grãos expostos ao sol.",
+        "solucao": "A linha PILI oferece tombadores de 9 a 30 metros com ciclo de 1 a 2,5 minutos, cobrindo desde unidades receptoras menores até terminais regionais de grande porte. A instalação modular permite montagem em até 30 dias, garantindo operação antes do início da safra."
+      },
+      "industria": {
+        "tagline": "Tombadores especificados para alimentar linhas de produção que não podem parar: moagem, extrusão, ração e processamento de grãos em escala industrial.",
+        "headline": "Abastecimento contínuo de plantas industriais",
+        "problema": "Paradas de linha em plantas industriais custam milhares de reais por hora. O abastecimento depende de descarga rápida e confiável de matéria-prima, muitas vezes com frota diversificada de trucks, bi-trucks e carretas de diferentes comprimentos.",
+        "solucao": "Tombadores PILI de 10 a 26 metros aceitam toda a frota rodoviária brasileira, com automação PLC que permite integração direta ao sistema MES/ERP da planta. Sensores de posição e segurança NR-12 garantem operação segura sem supervisão constante."
+      },
+      "fertilizante": {
+        "tagline": "Tombadores com engenharia anticorrosiva especial para granulados, pó e mistura de fertilizantes — materiais que destroem equipamentos convencionais em meses.",
+        "headline": "Descarga de materiais corrosivos e abrasivos",
+        "problema": "Fertilizantes são altamente corrosivos e abrasivos. Equipamentos sem proteção adequada sofrem degradação acelerada, resultando em paradas frequentes, custos de manutenção elevados e risco de contaminação cruzada entre lotes.",
+        "solucao": "A PILI desenvolve versões especiais com revestimento interno em aço inox 316L, vedação reforçada em todos os pontos de contato e sistema de lavagem automática entre lotes. O projeto elimina pontos de acúmulo de material e facilita limpeza completa."
+      },
+      "cimento": {
+        "tagline": "Tombadores robustos para a indústria cimenteira, projetados para suportar cargas densas, pó abrasivo e operação contínua em ambiente severo.",
+        "headline": "Descarga de minerais, clínquer e matéria-prima",
+        "problema": "A indústria cimenteira trabalha com materiais de alta densidade e abrasividade — calcário, clínquer, gesso e escória. O pó gerado na descarga acelera o desgaste mecânico e compromete sistemas elétricos e hidráulicos convencionais.",
+        "solucao": "Tombadores PILI para cimento contam com vedação IP65 nos painéis elétricos, filtros reforçados no sistema hidráulico e estrutura superdimensionada para cargas densas. O sistema de automação inclui monitoramento de desgaste e alertas preventivos de manutenção."
+      }
+    },
+    "intro": "Cada setor tem desafios únicos de descarga. A PILI desenvolve soluções específicas para cada aplicação.",
+    "forSector": "Soluções para {sector}",
+    "challenge": "O desafio",
+    "problem": "O problema",
+    "answer": "A resposta PILI",
+    "equipment": "Equipamentos",
+    "recommendedFor": "Produtos recomendados para {sector}",
+    "recommendedText": "Tombadores dimensionados para as exigências específicas do setor de {sector}, com capacidades de {min} a {max}.",
+    "provenResults": "Resultados comprovados",
+    "seeCase": "Ver caso completo",
+    "quoteSubtitle": "Soluções para {sector} — preencha o formulário e nossa equipe de engenharia entra em contato com a especificação ideal para sua operação."
+  },
+  "obras": {
+    "metaTitle": "Obras realizadas",
+    "metaDesc": "Casos e projetos realizados pela PILI Industrial em portos, cooperativas e indústrias no Brasil e no exterior.",
+    "intro": "Conheça os projetos realizados pela PILI Industrial. Tombadores instalados em portos, cooperativas, indústrias e terminais graneleiros em mais de 18 países."
+  },
+  "blog": {
+    "title": "Conteúdo e novidades",
+    "metaDesc": "Notícias, artigos técnicos e novidades da PILI Industrial. Feiras, lançamentos e conteúdo sobre tombadores hidráulicos e logística industrial.",
+    "ctaTitle": "Precisa de uma solução de descarga?",
+    "ctaTitleArticle": "Precisa de um tombador hidráulico?",
+    "categories": {
+      "todos": "Todos",
+      "noticia": "Notícias",
+      "artigo": "Artigos",
+      "evento": "Eventos",
+      "lancamento": "Lançamentos"
+    },
+    "intro": "Notícias, artigos técnicos, cobertura de feiras e lançamentos da PILI Industrial. Tudo sobre tombadores hidráulicos, logística de grãos e o ecossistema digital PILI.",
+    "featured": "Destaque",
+    "singular": {
+      "noticia": "Notícia",
+      "artigo": "Artigo",
+      "evento": "Evento",
+      "lancamento": "Lançamento"
+    }
+  },
+  "contato": {
+    "metaTitle": "Contato",
+    "metaDesc": "Entre em contato com a PILI Industrial. Atendimento comercial, suporte técnico e orçamentos para tombadores hidráulicos e equipamentos de descarga.",
+    "address": "Endereço",
+    "sendMessage": "Envie uma mensagem",
+    "phone": "Telefone",
+    "whatsapp": "WhatsApp",
+    "commercialEmail": "E-mail comercial",
+    "generalEmail": "Atendimento geral",
+    "mapLink": "Abrir {address} no mapa",
+    "mapTitle": "Mapa da localização — {address}",
+    "intro": "Fale com a equipe PILI Industrial. Atendimento comercial, dimensionamento técnico e suporte pós-venda.",
+    "talkToUs": "Fale conosco",
+    "socialNetworks": "Redes sociais",
+    "formIntro": "Preencha o formulário abaixo e nossa equipe retornará em até 24 horas úteis."
+  },
+  "orcamento": {
+    "title": "Solicitar orçamento",
+    "metaDesc": "Solicite um orçamento para tombadores hidráulicos, coletores de amostras e equipamentos de descarga PILI Industrial. Resposta em até 24h.",
+    "subtitle": "{product} — preencha o formulário e nossa equipe entra em contato",
+    "subtitleGeneric": "Preencha o formulário e nossa equipe entra em contato",
+    "intro": "Preencha o formulário abaixo com os dados do seu projeto. Nossa equipe técnica irá dimensionar o equipamento ideal e retornar com uma proposta em até 24 horas úteis.",
+    "projectData": "Dados do projeto",
+    "projectDataText": "Campos marcados com * são obrigatórios. Quanto mais detalhes informar, mais precisa será a proposta.",
+    "otherChannel": "Prefere outro canal?",
+    "whatsappMessage": "Olá, gostaria de solicitar um orçamento.",
+    "emailSubject": "Solicitação de orçamento"
+  },
+  "catalogo": {
+    "title": "Catálogo PILI",
+    "metaTitle": "Catálogo de tombadores hidráulicos",
+    "metaDesc": "Catálogo completo PILI Industrial: especificações técnicas, dimensionais e fotos de tombadores de 9 a 30 metros, coletores e unidades de transbordo.",
+    "released": "Catálogo liberado",
+    "seeProducts": "Ver a linha de produtos",
+    "download": "Download do catálogo",
+    "formIntro": "Preencha os dados abaixo para liberar o download.",
+    "country": "País",
+    "intro": "Baixe o catálogo completo com especificações técnicas, dimensionais e fotos de todos os equipamentos PILI Industrial.",
+    "releasedText": "Recebemos seus dados. Nossa equipe comercial enviará o catálogo completo para o e-mail informado em até um dia útil.",
+    "consentPrefix": "Aceito receber o catálogo e concordo com a",
+    "consentSuffix": "e o contato da equipe comercial.",
+    "sendError": "Erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.",
+    "countries": {
+      "BR": "Brasil",
+      "PY": "Paraguai",
+      "AR": "Argentina",
+      "UY": "Uruguai",
+      "BO": "Bolívia",
+      "CO": "Colômbia",
+      "PE": "Peru",
+      "US": "Estados Unidos",
+      "OUTRO": "Outro"
+    },
+    "unlock": "Liberar download",
+    "consentMiddle": "política de privacidade"
+  },
+  "calculadora": {
+    "title": "Calculadora de capacidade",
+    "metaTitle": "Calculadora de capacidade de tombador",
+    "metaDesc": "Descubra qual tombador PILI atende sua operação. Cálculo por volume diário, tipo de grão e densidade — resultado imediato e estimativa de ROI.",
+    "operationData": "Dados da operação",
+    "trucksPerDay": "Caminhões por dia",
+    "productType": "Tipo de produto",
+    "waitDistance": "Distância média de espera (km)",
+    "waitDistanceHelp": "Distância entre o ponto de espera e o tombador.",
+    "estimatedFlow": "Vazão estimada",
+    "roiEstimate": "Estimativa de ROI",
+    "notInformed": "Não informado",
+    "emailPlaceholder": "seu@email.com",
+    "recommendations": {
+      "compacto": "Tombador compacto ideal para cooperativas e unidades de menor volume. Alta confiabilidade e manutenção simplificada.",
+      "medio": "Tombador de porte médio para operações de fluxo moderado. Compatível com carretas graneleiras padrão e bitrens.",
+      "grande": "Tombador de grande porte para terminais portuários e cooperativas de alto volume. Aceita rodotrens e treminhões.",
+      "maximo": "Tombador de capacidade máxima para portos de grande escala. Projetado para operação contínua 24/7 com os maiores rodotrens do mercado."
+    },
+    "intro": "Informe os dados da sua operação e descubra qual tombador PILI é o mais adequado para o seu projeto. Cálculo baseado em volume diário, tipo de produto e distância de espera.",
+    "calculate": "Calcular",
+    "recommended": "Modelo recomendado",
+    "capacity": "Capacidade",
+    "length": "Comprimento",
+    "locked": "ROI e detalhes completos",
+    "lockedText": "Informe seu e-mail para ver a estimativa de retorno e descrição detalhada do equipamento.",
+    "seeResult": "Ver resultado",
+    "consentPrefix": "Aceito a",
+    "consentSuffix": "e o contato da equipe comercial.",
+    "sendError": "Erro ao enviar. Tente novamente.",
+    "emptyState": "Preencha os dados da operação e clique em “Calcular” para ver o modelo recomendado.",
+    "disclaimer": "* Os valores apresentados são estimativas baseadas em parâmetros médios de operação. O dimensionamento definitivo deve ser realizado pela equipe de engenharia da PILI considerando as condições específicas do projeto, tipo de solo, infraestrutura existente e normas locais. Entre em contato para um estudo técnico completo.",
+    "trucksPlaceholder": "Ex: 80",
+    "distancePlaceholder": "Ex: 5",
+    "grains": {
+      "soja": "Soja",
+      "milho": "Milho",
+      "trigo": "Trigo",
+      "fertilizante": "Fertilizante",
+      "cimento": "Cimento"
+    },
+    "perDay": "{tons} t/dia",
+    "roi": {
+      "compacto": "18 a 24 meses",
+      "medio": "14 a 18 meses",
+      "grande": "12 a 16 meses",
+      "maximo": "10 a 14 meses"
+    },
+    "meters": "{n} metros",
+    "trucksError": "Informe um número de caminhões maior que zero"
+  },
+  "empresa": {
+    "metaTitle": "A empresa",
+    "trajectory": "Nossa trajetória",
+    "history": "História",
+    "values": "O que nos guia",
+    "seeProducts": "Conheça nossos produtos",
+    "imageAlt": "Tombador hidráulico PILI",
+    "timeline": {
+      "fundacao": {
+        "title": "Fundação",
+        "text": "A PILI é fundada em Erechim/RS, inicialmente voltada para metalurgia industrial e equipamentos sob medida para o setor agroindustrial."
+      },
+      "primeiroTombador": {
+        "title": "Primeiro tombador",
+        "text": "Desenvolvimento do primeiro tombador hidráulico PILI, marcando o início da especialização em plataformas de descarga de grãos."
+      },
+      "expansao": {
+        "title": "Expansão nacional",
+        "text": "A PILI ultrapassa 300 equipamentos instalados no Brasil, consolidando-se como líder em tombadores hidráulicos no mercado nacional."
+      },
+      "paranagua": {
+        "title": "Unidade Paranaguá",
+        "text": "Inauguração da base operacional em Paranaguá/PR, junto ao maior complexo portuário de exportação de grãos da América Latina."
+      },
+      "ecossistema": {
+        "title": "Ecossistema digital",
+        "text": "Lançamento das plataformas PILI Tech, Store e Raste, integrando IoT, e-commerce e rastreabilidade ao portfólio de soluções."
+      },
+      "global": {
+        "title": "Referência global",
+        "text": "Equipamentos PILI em operação em 18 países, com atendimento técnico e peças de reposição em toda a América Latina."
+      }
+    },
+    "pillars": {
+      "qualidade": {
+        "title": "Qualidade",
+        "text": "Certificação ISO 9001, matéria-prima rastreada e controle dimensional rigoroso em cada etapa da fabricação."
+      },
+      "seguranca": {
+        "title": "Segurança",
+        "text": "Projetos conforme NR-10, NR-12 e normas internacionais. Garantia estrutural de 5 anos em todos os equipamentos."
+      },
+      "inovacao": {
+        "title": "Inovação",
+        "text": "Investimento contínuo em P&D, IoT industrial e automação. Ecossistema digital próprio para gestão de pátio e rastreabilidade."
+      },
+      "engenharia": {
+        "title": "Engenharia",
+        "text": "Equipe de engenheiros especializados em estruturas metálicas, hidráulica e automação industrial. Projetos em CAD 3D com simulação estrutural."
+      },
+      "producao": {
+        "title": "Produção",
+        "text": "Parque fabril em Erechim/RS com capacidade para produzir e montar equipamentos de até 30 metros. Corte laser, solda robotizada e jateamento."
+      },
+      "posVenda": {
+        "title": "Pós-venda",
+        "text": "Atendimento técnico dedicado, peças de reposição via PILI Store, monitoramento remoto via PILI Tech e assistência em campo em todo o Brasil."
+      }
+    },
+    "title": "A empresa",
+    "since": "Desde {year}",
+    "intro": "Fundada em {year} em Erechim/RS, a PILI Industrial é referência na fabricação de tombadores hidráulicos e plataformas de descarga de grãos. São {years}+ anos de experiência, mais de {equipment} equipamentos instalados em {countries} países.",
+    "ourValues": "Nossos valores",
+    "capacity": "Capacidade produtiva",
+    "infrastructure": "Infraestrutura",
+    "today": "Hoje",
+    "globalText": "Mais de {equipment} equipamentos em {countries} países. Ecossistema completo de hardware + software para a cadeia do agronegócio.",
+    "metaDesc": "{name}: fabricante de tombadores hidráulicos desde {founded}. {years}+ anos de experiência, {equipment} equipamentos instalados em {countries} países.",
+    "engineering": "Engenharia e projetos"
+  },
+  "certificacoes": {
+    "title": "Certificações e garantia",
+    "metaDesc": "PILI Industrial: ISO 9001, conformidade NR-10 e NR-12, garantia estrutural de 5 anos. Qualidade e segurança em todos os equipamentos.",
+    "docsTitle": "Documentação técnica",
+    "requestDocs": "Solicitar documentação",
+    "iso": {
+      "subtitle": "Sistema de gestão da qualidade",
+      "i1": "Processos padronizados de projeto, fabricação e montagem",
+      "i2": "Auditorias internas periódicas e melhoria contínua",
+      "i3": "Rastreabilidade completa de materiais e componentes",
+      "i4": "Controle dimensional rigoroso em todas as etapas",
+      "i5": "Qualificação e certificação de soldadores"
+    },
+    "nr10": {
+      "subtitle": "Segurança em instalações elétricas",
+      "i1": "Projetos elétricos conforme norma regulamentadora NR-10",
+      "i2": "Painéis de comando com proteção contra sobrecarga",
+      "i3": "Aterramento e equipotencialização de toda a estrutura",
+      "i4": "Sinalização de segurança e procedimentos de bloqueio",
+      "i5": "Documentação técnica completa para fiscalização"
+    },
+    "nr12": {
+      "subtitle": "Segurança em máquinas e equipamentos",
+      "i1": "Proteções mecânicas fixas e móveis em pontos de risco",
+      "i2": "Sistemas de parada de emergência acessíveis",
+      "i3": "Intertravamentos e dispositivos de segurança categoria 3",
+      "i4": "Manual de operação e manutenção completo",
+      "i5": "Laudo técnico de conformidade NR-12 incluso"
+    },
+    "garantia": {
+      "title": "Garantia de 5 anos",
+      "subtitle": "Garantia estrutural",
+      "i1": "5 anos de garantia sobre a estrutura metálica principal",
+      "i2": "Cobertura contra defeitos de fabricação e materiais",
+      "i3": "Suporte técnico remoto e presencial durante o período",
+      "i4": "Disponibilidade de peças de reposição originais",
+      "i5": "Possibilidade de extensão da garantia mediante contrato"
+    },
+    "intro": "Todos os equipamentos PILI são projetados e fabricados em conformidade com as normas brasileiras e internacionais de qualidade e segurança. Garantia estrutural de 5 anos em toda a linha.",
+    "docsText": "Precisa de laudos, certificados ou documentação técnica para licitação? Nossa equipe pode fornecer todos os documentos necessários."
+  },
+  "ecossistema": {
+    "metaTitle": "Ecossistema PILI",
+    "metaDesc": "Conheça o ecossistema PILI: Industrial, Store, Tech, Raste e Harbor. Tecnologia, peças, rastreabilidade e gestão de pátio industrial.",
+    "manufacturer": "Fabricante de equipamentos desde 1979",
+    "talkToTeam": "Fale com a equipe PILI",
+    "ownTech": "Tecnologia própria",
+    "techDesc": "SaaS de gestão de pátio industrial com IoT, MQTT e monitoramento em tempo real.",
+    "requestDemo": "Solicitar demonstração",
+    "benefits": "Principais benefícios",
+    "benefitsDesc": "Recursos desenvolvidos para maximizar a eficiência da sua operação.",
+    "stepsDesc": "Da configuração aos resultados em poucos passos.",
+    "integrations": "Integrações e compatibilidade",
+    "readyTitle": "Pronto para começar?",
+    "title": "Ecossistema PILI",
+    "intro": "Além de fabricar equipamentos de alta performance, a PILI desenvolve tecnologia própria para logística, rastreabilidade e gestão industrial. Plataformas integradas que cobrem toda a cadeia de valor do agronegócio e da indústria.",
+    "industrialDesc": "Fabricante brasileira de tombadores hidráulicos, coletores de amostras e unidades de transbordo. Mais de 850 equipamentos instalados em 18 países, com projetos de 9 a 30 metros e capacidade de 35 a 100 toneladas.",
+    "know": "Conhecer",
+    "integratedTitle": "Plataformas integradas",
+    "integratedText": "Todas as plataformas do ecossistema PILI compartilham dados e se integram nativamente. Da fabricação do equipamento ao monitoramento em tempo real da operação, passando pela rastreabilidade de grãos e gestão de pátio."
+  },
+  "trabalhe": {
+    "title": "Faça parte do time",
+    "metaDesc": "Vagas e banco de talentos da PILI Industrial em Erechim/RS. Engenharia, produção, comercial e tecnologia numa fábrica com mais de 45 anos.",
+    "whyTitle": "Por que trabalhar na PILI?",
+    "applyTitle": "Envie sua candidatura",
+    "area": "Área de interesse",
+    "experience": "Mensagem / experiência relevante",
+    "areas": {
+      "engenharia": "Engenharia",
+      "producao": "Produção",
+      "comercial": "Comercial",
+      "administrativo": "Administrativo",
+      "tecnologia": "Tecnologia",
+      "logistica": "Logística",
+      "outra": "Outra",
+      "qualidade": "Qualidade",
+      "ti": "TI / Tecnologia"
+    },
+    "r1": "Empresa sólida com mais de 4 décadas de mercado",
+    "r2": "Projetos de alcance internacional",
+    "r3": "Investimento em inovação e tecnologia própria",
+    "r4": "Oportunidades de crescimento profissional",
+    "hero": "Trabalhe conosco",
+    "heroIntro": "A PILI Industrial está sempre em busca de profissionais talentosos que compartilhem nossos valores de qualidade, segurança e inovação.",
+    "about1": "Com mais de {years} anos de história, a PILI é referência na fabricação de equipamentos industriais para o agronegócio. Atuamos em {countries} países e investimos continuamente em tecnologia e inovação.",
+    "about2": "Oferecemos um ambiente de trabalho que valoriza o desenvolvimento profissional, a colaboração entre equipes e o compromisso com a excelência. Nosso time reúne engenheiros, técnicos, gestores e especialistas que juntos transformam a logística industrial.",
+    "r5": "Ambiente colaborativo e orientado a resultados",
+    "sent": "Candidatura enviada",
+    "sentText": "Obrigado pelo interesse em fazer parte da equipe PILI. Analisaremos seu perfil e entraremos em contato caso haja uma vaga compatível.",
+    "applyText": "Preencha o formulário abaixo. Não temos vagas abertas no momento? Sem problema, manteremos seu perfil em nosso banco de talentos.",
+    "fullName": "Nome completo",
+    "consentPrefix": "Aceito a",
+    "consentSuffix": "e o armazenamento do meu currículo no banco de talentos.",
+    "submit": "Enviar candidatura",
+    "sendError": "Erro ao enviar. Tente novamente ou envie para {email}.",
+    "metaTitle": "Trabalhe conosco"
+  },
+  "certBand": {
+    "iso": "Sistema de gestão da qualidade",
+    "nr12": "Segurança em máquinas e equipamentos",
+    "nr10": "Segurança em instalações elétricas"
+  },
+  "ambiental": {
+    "title": "Política ambiental",
+    "subtitle": "Compromisso com a responsabilidade ambiental",
+    "metaDesc": "Compromisso ambiental da PILI Industrial. Gestão de resíduos, eficiência energética e práticas sustentáveis na fabricação de equipamentos industriais.",
+    "commitment": "Nosso compromisso",
+    "p1": "A {name} reconhece sua responsabilidade com o meio ambiente e se compromete a conduzir suas atividades de fabricação, comercialização e prestação de serviços de forma ambientalmente responsável. Buscamos continuamente a redução do impacto ambiental de nossas operações e produtos, respeitando a legislação vigente e promovendo boas práticas entre colaboradores, fornecedores e parceiros.",
+    "p2": "Entendemos que nossos equipamentos contribuem diretamente para a eficiência logística do agronegócio, reduzindo tempos de espera de caminhões e, por consequência, as emissões de gases de efeito estufa associadas à logística de grãos e insumos.",
+    "guidelines": "Diretrizes ambientais",
+    "principles": "Princípios orientadores",
+    "items": {
+      "residuos": {
+        "title": "Gestão de resíduos",
+        "text": "Programa de gestão de resíduos industriais com segregação na origem, destinação certificada e reciclagem de aço e materiais metálicos. Laudos de destinação conforme legislação ambiental vigente."
+      },
+      "agua": {
+        "title": "Recursos hídricos",
+        "text": "Controle do consumo de água no processo fabril, tratamento de efluentes industriais e reuso de água em processos não críticos. Monitoramento periódico da qualidade dos efluentes descartados."
+      },
+      "energia": {
+        "title": "Eficiência energética",
+        "text": "Otimização do consumo energético na produção, utilização de equipamentos de alta eficiência e iluminação LED no parque fabril. Estudo contínuo de fontes de energia renovável."
+      },
+      "projetos": {
+        "title": "Projetos sustentáveis",
+        "text": "Desenvolvimento de equipamentos com maior vida útil, menor consumo energético operacional e componentes recicláveis. Projetos que reduzem o tempo de descarga e, consequentemente, as emissões de veículos em espera."
+      }
+    },
+    "pr1": "Cumprir integralmente a legislação ambiental brasileira e as normas aplicáveis ao setor metalúrgico e industrial.",
+    "pr2": "Promover a conscientização ambiental entre colaboradores, fornecedores e parceiros comerciais.",
+    "pr3": "Buscar continuamente a redução na geração de resíduos, emissões e consumo de recursos naturais.",
+    "pr4": "Priorizar materiais recicláveis e fornecedores comprometidos com práticas ambientais responsáveis.",
+    "pr5": "Investir em pesquisa e desenvolvimento de produtos com menor impacto ambiental ao longo de seu ciclo de vida.",
+    "pr6": "Manter transparência nas informações ambientais e nos resultados das ações de sustentabilidade.",
+    "contactPrefix": "Dúvidas sobre nossa política ambiental? Entre em contato pelo e-mail",
+    "contactSuffix": "ou pelo telefone {phone}."
+  },
+  "privacidade": {
+    "title": "Política de privacidade",
+    "metaDesc": "Política de privacidade da PILI Industrial. Saiba como coletamos, armazenamos e utilizamos seus dados pessoais em conformidade com a LGPD.",
+    "lastUpdate": "Última atualização: janeiro de 2025",
+    "emailLabel": "E-mail",
+    "phoneLabel": "Telefone",
+    "controlador": {
+      "title": "Controlador dos dados",
+      "text": "O controlador responsável pelo tratamento dos seus dados pessoais é:"
+    },
+    "dados": {
+      "title": "Dados pessoais coletados",
+      "text": "Coletamos os seguintes dados pessoais através dos formulários disponíveis neste site:",
+      "i1": "Nome completo",
+      "i2": "Endereço de e-mail",
+      "i3": "Número de telefone",
+      "i4": "Nome da empresa e CNPJ",
+      "i5": "Cargo ou função",
+      "i6": "País e estado",
+      "i7": "Tipo de aplicação e produto de interesse",
+      "i8": "Mensagens enviadas pelo formulário de contato",
+      "i9": "Dados de navegação (cookies, IP, páginas visitadas)"
+    },
+    "finalidades": {
+      "title": "Finalidades do tratamento",
+      "text": "Os dados pessoais coletados são utilizados para as seguintes finalidades:",
+      "i1": "Responder solicitações de orçamento e contato comercial",
+      "i2": "Enviar catálogos, materiais técnicos e propostas comerciais",
+      "i3": "Gerenciar o relacionamento com clientes e prospects",
+      "i4": "Enviar comunicações sobre produtos, serviços e novidades (com consentimento)",
+      "i5": "Melhorar a experiência de navegação e a funcionalidade do site",
+      "i6": "Cumprir obrigações legais e regulatórias"
+    },
+    "baseLegal": {
+      "title": "Base legal para o tratamento",
+      "text": "O tratamento de dados pessoais é realizado com base nas seguintes hipóteses legais previstas na Lei Geral de Proteção de Dados (Lei nº 13.709/2018 — LGPD):",
+      "i1": "Consentimento do titular (art. 7º, I)",
+      "i2": "Execução de contrato ou de procedimentos preliminares (art. 7º, V)",
+      "i3": "Legítimo interesse do controlador (art. 7º, IX)",
+      "i4": "Cumprimento de obrigação legal ou regulatória (art. 7º, II)"
+    },
+    "compartilhamento": {
+      "title": "Compartilhamento de dados",
+      "text": "Seus dados pessoais podem ser compartilhados com:",
+      "i1": "Prestadores de serviços de tecnologia (hospedagem, e-mail, analytics)",
+      "i2": "Representantes comerciais autorizados, para atendimento da sua solicitação",
+      "i3": "Autoridades governamentais, quando exigido por lei ou ordem judicial",
+      "outro": "Não vendemos, alugamos ou comercializamos seus dados pessoais a terceiros para fins de marketing."
+    },
+    "retencao": {
+      "title": "Retenção dos dados",
+      "text": "Os dados pessoais serão armazenados pelo período necessário para cumprir as finalidades descritas nesta política, ou enquanto houver base legal para o tratamento. Dados de contato comercial são mantidos por até 5 anos após a última interação, salvo solicitação de eliminação pelo titular."
+    },
+    "direitos": {
+      "title": "Direitos do titular",
+      "text": "Nos termos da LGPD, você tem direito a:",
+      "i1": "Confirmação da existência de tratamento de dados",
+      "i2": "Acesso aos seus dados pessoais",
+      "i3": "Correção de dados incompletos, inexatos ou desatualizados",
+      "i4": "Anonimização, bloqueio ou eliminação de dados desnecessários",
+      "i5": "Portabilidade dos dados a outro fornecedor",
+      "i6": "Eliminação dos dados tratados com consentimento",
+      "i7": "Revogação do consentimento a qualquer momento",
+      "i8": "Informação sobre as entidades com as quais os dados foram compartilhados",
+      "outro": "Para exercer seus direitos, entre em contato pelo e-mail"
+    },
+    "cookies": {
+      "title": "Cookies e tecnologias de rastreamento",
+      "text": "Este site utiliza cookies e tecnologias similares para melhorar a experiência de navegação, analisar o tráfego e personalizar conteúdo. Você pode configurar seu navegador para recusar cookies, embora isso possa afetar algumas funcionalidades do site."
+    },
+    "seguranca": {
+      "title": "Segurança dos dados",
+      "text": "Adotamos medidas técnicas e organizacionais adequadas para proteger seus dados pessoais contra acesso não autorizado, perda, alteração ou destruição. Isso inclui criptografia em trânsito (HTTPS), controle de acesso baseado em funções e backups regulares."
+    },
+    "alteracoes": {
+      "title": "Alterações nesta política",
+      "text": "Esta política de privacidade pode ser atualizada periodicamente. A versão mais recente estará sempre disponível nesta página, com a data da última atualização. Recomendamos que você revise esta política regularmente."
+    },
+    "contato": {
+      "title": "Contato",
+      "text": "Para dúvidas, solicitações ou reclamações relacionadas a esta política de privacidade ou ao tratamento dos seus dados pessoais, entre em contato:"
+    }
+  },
+  "termos": {
+    "title": "Termos de uso",
+    "metaDesc": "Termos de uso do site PILI Industrial. Condições de acesso, propriedade intelectual, limitação de responsabilidade e legislação aplicável.",
+    "lastUpdate": "Última atualização: janeiro de 2025",
+    "emailLabel": "E-mail",
+    "phoneLabel": "Telefone",
+    "aceitacao": {
+      "title": "Aceitação dos termos",
+      "text": "Ao acessar e utilizar o site {site} (“Site”), você concorda integralmente com estes Termos de Uso. Caso não concorde com qualquer disposição, recomendamos que não utilize o Site. O Site é operado pela {name}, inscrita no CNPJ {cnpj}, com sede em {address}."
+    },
+    "objeto": {
+      "title": "Objeto",
+      "text": "Este Site tem como finalidade apresentar os produtos, serviços e soluções da PILI Industrial, permitir o contato comercial, a solicitação de orçamentos e o download de materiais técnicos. As informações disponibilizadas possuem caráter informativo e não constituem oferta comercial vinculante."
+    },
+    "propriedade": {
+      "title": "Propriedade intelectual",
+      "text": "Todo o conteúdo deste Site, incluindo textos, imagens, fotografias, logotipos, marcas, design, layout, especificações técnicas, catálogos e demais materiais, é de propriedade exclusiva da {name} ou de seus licenciadores, sendo protegido pela legislação brasileira de propriedade intelectual.",
+      "text2": "É vedada a reprodução, distribuição, modificação ou utilização comercial de qualquer conteúdo deste Site sem autorização prévia e expressa por escrito da PILI Industrial."
+    },
+    "usoPermitido": {
+      "title": "Uso permitido",
+      "text": "O usuário se compromete a utilizar o Site de forma lícita e em conformidade com estes Termos. É proibido:",
+      "i1": "Utilizar o Site para fins ilegais ou não autorizados",
+      "i2": "Tentar acessar áreas restritas ou sistemas internos sem autorização",
+      "i3": "Transmitir conteúdo malicioso, vírus ou códigos que possam danificar o Site",
+      "i4": "Coletar dados pessoais de outros usuários sem consentimento",
+      "i5": "Utilizar mecanismos automatizados de coleta de dados (scraping, crawling) sem autorização",
+      "i6": "Reproduzir especificações técnicas para fins de engenharia reversa de produtos"
+    },
+    "especificacoes": {
+      "title": "Especificações técnicas e preços",
+      "text": "As especificações técnicas, dimensões, capacidades e demais informações sobre os produtos apresentados neste Site são fornecidas a título informativo e podem ser alteradas sem aviso prévio. Os valores e preços não são exibidos no Site; orçamentos são elaborados sob consulta, conforme as necessidades específicas de cada projeto."
+    },
+    "responsabilidade": {
+      "title": "Limitação de responsabilidade",
+      "text": "A PILI Industrial se empenha em manter as informações do Site atualizadas e precisas, porém não garante a ausência de erros, interrupções ou indisponibilidade. O Site é disponibilizado “como está”, sem garantias expressas ou implícitas de qualquer natureza.",
+      "text2": "A PILI Industrial não se responsabiliza por danos diretos ou indiretos resultantes do uso ou da impossibilidade de uso do Site, incluindo perda de dados, lucros cessantes ou danos a equipamentos."
+    },
+    "terceiros": {
+      "title": "Links para terceiros",
+      "text": "Este Site pode conter links para sites de terceiros, incluindo plataformas do ecossistema PILI. A PILI Industrial não se responsabiliza pelo conteúdo, pelas políticas de privacidade ou pelas práticas de sites de terceiros. O acesso a esses links é de inteira responsabilidade do usuário."
+    },
+    "formularios": {
+      "title": "Formulários e dados pessoais",
+      "text": "O tratamento de dados pessoais coletados através dos formulários deste Site é regido pela nossa",
+      "link": "política de privacidade",
+      "after": ", que é parte integrante destes Termos de Uso."
+    },
+    "alteracoes": {
+      "title": "Alterações nos termos",
+      "text": "A PILI Industrial reserva-se o direito de alterar estes Termos de Uso a qualquer momento, sem aviso prévio. A versão mais recente estará sempre disponível nesta página, com a data da última atualização. O uso continuado do Site após alterações constitui aceitação dos novos termos."
+    },
+    "legislacao": {
+      "title": "Legislação aplicável e foro",
+      "text": "Estes Termos de Uso são regidos pela legislação da República Federativa do Brasil. Fica eleito o foro da Comarca de Erechim/RS para dirimir quaisquer controvérsias decorrentes destes Termos, com renúncia a qualquer outro, por mais privilegiado que seja."
+    },
+    "contato": {
+      "title": "Contato",
+      "text": "Para dúvidas sobre estes Termos de Uso, entre em contato:"
+    }
   }
 }

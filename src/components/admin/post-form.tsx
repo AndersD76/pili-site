@@ -29,6 +29,10 @@ const postSchema = z.object({
   title: z.string().min(1, "Título obrigatório"),
   excerpt: z.string().min(1, "Resumo obrigatório"),
   content: z.string().min(1, "Conteúdo obrigatório"),
+  // Versão em espanhol; em branco, o site em /es usa o português.
+  titleEs: z.string().optional(),
+  excerptEs: z.string().optional(),
+  contentEs: z.string().optional(),
   tags: z.string().optional(),
   published: z.boolean(),
 });
@@ -55,6 +59,7 @@ export function PostForm({
   const isEditing = !!post;
 
   const ptTranslation = post?.translations.find((t) => t.locale === "pt_BR");
+  const esTranslation = post?.translations.find((t) => t.locale === "es");
 
   const {
     register,
@@ -70,6 +75,9 @@ export function PostForm({
       title: ptTranslation?.title ?? "",
       excerpt: ptTranslation?.excerpt ?? "",
       content: ptTranslation?.content ?? "",
+      titleEs: esTranslation?.title ?? "",
+      excerptEs: esTranslation?.excerpt ?? "",
+      contentEs: esTranslation?.content ?? "",
       tags: post?.tags.join(", ") ?? "",
       published: post?.published ?? false,
     },
@@ -94,6 +102,9 @@ export function PostForm({
     formData.set("content", values.content);
     formData.set("tags", values.tags ?? "");
     formData.set("published", String(values.published));
+    formData.set("titleEs", values.titleEs ?? "");
+    formData.set("excerptEs", values.excerptEs ?? "");
+    formData.set("contentEs", values.contentEs ?? "");
 
     startTransition(async () => {
       const result = isEditing
@@ -203,6 +214,44 @@ export function PostForm({
           />
           Publicado
         </label>
+      </div>
+
+      <Separator />
+
+      <div className="space-y-4">
+        <div>
+          <h2 className="font-display text-lg font-semibold text-pili-black">
+            Espanhol
+          </h2>
+          <p className="mt-1 text-sm text-pili-concrete">
+            Conteúdo exibido em /es. Deixe em branco para o site em espanhol
+            usar o texto em português. Autor, tags e capa são os mesmos nos dois
+            idiomas.
+          </p>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="titleEs">Título</Label>
+          <Input id="titleEs" {...register("titleEs")} />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="excerptEs">Resumen</Label>
+          <Textarea
+            id="excerptEs"
+            {...register("excerptEs")}
+            className="min-h-24"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="contentEs">Contenido</Label>
+          <Textarea
+            id="contentEs"
+            {...register("contentEs")}
+            className="min-h-64"
+          />
+        </div>
       </div>
 
       <Separator />
