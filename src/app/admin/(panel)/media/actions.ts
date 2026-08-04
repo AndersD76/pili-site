@@ -14,7 +14,7 @@ import {
 export interface UploadResult {
   success: boolean;
   error?: string;
-  media?: { id: string; filename: string; alt: string | null };
+  media?: { id: string; filename: string; alt: string | null; order: number };
 }
 
 /** Vínculo opcional do arquivo com uma entidade do CMS. */
@@ -75,6 +75,17 @@ export async function uploadMedia(
   const alt = (formData.get("alt") as string | null)?.trim() || null;
 
   try {
+    // Nova foto entra no fim da fila da entidade a que pertence.
+    const ultima = await db.media.findFirst({
+      where: {
+        productId: target.productId ?? null,
+        caseId: target.caseId ?? null,
+        postId: target.postId ?? null,
+      },
+      orderBy: { order: "desc" },
+      select: { order: true },
+    });
+
     const media = await db.media.create({
       data: {
         data: Buffer.from(bytes),
@@ -83,11 +94,12 @@ export async function uploadMedia(
         size: file.size,
         alt,
         type: "image",
+        order: (ultima?.order ?? -1) + 1,
         productId: target.productId ?? null,
         caseId: target.caseId ?? null,
         postId: target.postId ?? null,
       },
-      select: { id: true, filename: true, alt: true },
+      select: { id: true, filename: true, alt: true, order: true },
     });
 
     revalidatePath("/admin/media");
@@ -161,5 +173,36 @@ export async function listMedia() {
   } catch (err) {
     logError("MEDIA_LIST", err);
     return { items: [], error: "Erro ao carregar a biblioteca." };
+  }
+}
+
+/* ---------- ordenação ---------- */
+
+/**
+ * Grava a nova ordem das fotos de uma entidade.
+ *
+ * A primeira posição (`order = 0`) é a imagem principal: é ela que aparece no
+ * card da listagem e no cartão de compartilhamento. Uma única transação evita
+ * estado intermediário com duas fotos disputando a mesma posição.
+ */
+export async function reorderMedia(
+  ids: string[],
+): Promise<{ success: boolean; error?: string }> {
+  await requireRoleOrThrow("ADMIN", "COMERCIAL");
+
+  if (ids.length === 0) return { success: true };
+
+  try {
+    await db.$transaction(
+      ids.map((id, index) =>
+        db.media.update({ where: { id }, data: { order: index } }),
+      ),
+    );
+
+    revalidatePath("/admin/media");
+    return { success: true };
+  } catch (err) {
+    logError("MEDIA_REORDER", err);
+    return { success: false, error: "Erro ao reordenar as fotos." };
   }
 }
