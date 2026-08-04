@@ -36,6 +36,9 @@ export default async function ConfigPage() {
           facebook: settings.facebook ?? "",
           youtube: settings.youtube ?? "",
           piliTechUrl: settings.piliTechUrl ?? "",
+          mapaLat: settings.mapaLat === null ? "" : String(settings.mapaLat),
+          mapaLng: settings.mapaLng === null ? "" : String(settings.mapaLng),
+          mapaZoom: settings.mapaZoom,
         }}
       />
     </div>

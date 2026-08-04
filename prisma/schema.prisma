@@ -467,5 +467,9 @@ model SiteSettings {
   facebook       String?
   youtube        String?
   piliTechUrl    String?
+  /// Coordenadas do mapa na pagina de contato. Sem elas o bloco nao e exibido.
+  mapaLat        Float?
+  mapaLng        Float?
+  mapaZoom       Int      @default(15)
   updatedAt      DateTime @updatedAt @db.Timestamptz(3)
 }

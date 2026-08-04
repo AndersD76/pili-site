@@ -4,7 +4,7 @@ import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { Building2, Globe, Loader2, Share2 } from "lucide-react";
+import { Building2, Globe, Loader2, MapPin, Share2 } from "lucide-react";
 import {
   updateSiteSettings,
   siteSettingsSchema,
@@ -97,6 +97,35 @@ export function SiteSettingsForm({ initial }: { initial: SiteSettingsInput }) {
               </h2>
             </div>
             <Campo id="piliTechUrl" label="PILI Tech" register={register} error={errors.piliTechUrl?.message} />
+          </section>
+
+          {/* ---- Mapa ---- */}
+          <section className="rounded-lg border border-pili-mist bg-white p-6">
+            <div className="mb-2 flex items-center gap-3">
+              <MapPin className="h-5 w-5 text-pili-safety" />
+              <h2 className="font-display text-lg font-bold text-pili-black">
+                Mapa da página de contato
+              </h2>
+            </div>
+            <p className="mb-5 text-sm text-pili-concrete">
+              Use OpenStreetMap (gratuito, sem chave). Para achar as
+              coordenadas, clique com o botão direito no ponto em{" "}
+              <a
+                href="https://www.openstreetmap.org"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-2 hover:text-pili-black"
+              >
+                openstreetmap.org
+              </a>{" "}
+              e escolha &ldquo;Mostrar endereço&rdquo;. Deixe em branco para
+              esconder o mapa.
+            </p>
+            <div className="grid gap-4 sm:grid-cols-3">
+              <Campo id="mapaLat" label="Latitude" register={register} error={errors.mapaLat?.message} />
+              <Campo id="mapaLng" label="Longitude" register={register} error={errors.mapaLng?.message} />
+              <Campo id="mapaZoom" label="Zoom (1-19)" type="number" register={register} error={errors.mapaZoom?.message} />
+            </div>
           </section>
         </div>
       </div>
