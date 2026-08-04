@@ -1,6 +1,6 @@
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/routing";
-import { COMPANY, ECOSYSTEM, SOCIAL } from "@/lib/constants";
+import { getSiteSettings, redesSociais } from "@/lib/site-settings";
 import { Globe, Link2, Video, Camera } from "lucide-react";
 import Image from "next/image";
 
@@ -27,15 +27,17 @@ const COMPANY_LINKS = [
   { label: "Política ambiental", href: "/politica-ambiental" },
 ] as const;
 
-const SOCIAL_ICONS = [
-  { href: SOCIAL.instagram, icon: Camera, label: "Instagram" },
-  { href: SOCIAL.linkedin, icon: Link2, label: "LinkedIn" },
-  { href: SOCIAL.facebook, icon: Globe, label: "Facebook" },
-  { href: SOCIAL.youtube, icon: Video, label: "YouTube" },
-] as const;
+/** Ícone por rede. As URLs vêm das configurações, não daqui. */
+const ICONE_POR_REDE: Record<string, typeof Camera> = {
+  Instagram: Camera,
+  LinkedIn: Link2,
+  Facebook: Globe,
+  YouTube: Video,
+};
 
-export function Footer() {
-  const t = useTranslations("footer");
+export async function Footer() {
+  const t = await getTranslations("footer");
+  const settings = await getSiteSettings();
 
   return (
     <footer className="bg-pili-black">
@@ -51,11 +53,11 @@ export function Footer() {
               className="h-14 w-auto"
             />
             <p className="mt-4 font-mono text-xs leading-relaxed text-pili-concrete">
-              {COMPANY.name}
+              {settings.razaoSocial}
               <br />
-              CNPJ {COMPANY.cnpj}
+              CNPJ {settings.cnpj}
               <br />
-              {COMPANY.address}
+              {settings.endereco}
             </p>
           </div>
 
@@ -103,7 +105,9 @@ export function Footer() {
               {t("ecosystem")}
             </h3>
             <ul className="mt-4 flex flex-col gap-2.5">
-              {[{ label: "PILI Tech", href: ECOSYSTEM.tech }].map((item) => (
+              {[{ label: "PILI Tech", href: settings.piliTechUrl }]
+                .filter((i): i is { label: string; href: string } => Boolean(i.href))
+                .map((item) => (
                 <li key={item.label}>
                   <a
                     href={item.href}
@@ -134,45 +138,49 @@ export function Footer() {
             <ul className="mt-4 flex flex-col gap-2.5">
               <li>
                 <a
-                  href={`mailto:${COMPANY.email}`}
+                  href={`mailto:${settings.email}`}
                   className="text-sm text-pili-mist transition-colors hover:text-pili-white"
                 >
-                  {COMPANY.email}
+                  {settings.email}
                 </a>
               </li>
               <li>
                 <a
-                  href={`tel:${COMPANY.phone.replace(/\s/g, "")}`}
+                  href={`tel:${settings.telefone.replace(/\s/g, "")}`}
                   className="font-mono text-sm text-pili-mist transition-colors hover:text-pili-white"
                 >
-                  {COMPANY.phone}
+                  {settings.telefone}
                 </a>
               </li>
               <li>
                 <a
-                  href={`https://wa.me/${COMPANY.whatsapp.replace(/\D/g, "")}`}
+                  href={`https://wa.me/${settings.whatsapp.replace(/\D/g, "")}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-mono text-sm text-pili-mist transition-colors hover:text-pili-white"
                 >
-                  {COMPANY.whatsapp}
+                  {settings.whatsapp}
                 </a>
               </li>
             </ul>
 
             <div className="mt-6 flex gap-3">
-              {SOCIAL_ICONS.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-pili-concrete transition-colors hover:text-pili-white"
-                  aria-label={s.label}
-                >
-                  <s.icon className="h-5 w-5" />
-                </a>
-              ))}
+              {redesSociais(settings).map((rede) => {
+                const Icone = ICONE_POR_REDE[rede.name];
+                if (!Icone) return null;
+                return (
+                  <a
+                    key={rede.name}
+                    href={rede.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-pili-concrete transition-colors hover:text-pili-white"
+                    aria-label={rede.name}
+                  >
+                    <Icone className="h-5 w-5" />
+                  </a>
+                );
+              })}
             </div>
           </div>
         </div>

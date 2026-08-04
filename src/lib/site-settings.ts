@@ -26,6 +26,9 @@ export interface SiteSettingsData {
   facebook: string | null;
   youtube: string | null;
   piliTechUrl: string | null;
+  mapaLat: number | null;
+  mapaLng: number | null;
+  mapaZoom: number;
 }
 
 const FALLBACK: SiteSettingsData = {
@@ -42,6 +45,10 @@ const FALLBACK: SiteSettingsData = {
   facebook: SOCIAL.facebook,
   youtube: SOCIAL.youtube,
   piliTechUrl: ECOSYSTEM.tech,
+  // Erechim/RS, onde fica a fábrica.
+  mapaLat: -27.6339,
+  mapaLng: -52.2739,
+  mapaZoom: 14,
 };
 
 /**
@@ -67,6 +74,9 @@ export const getSiteSettings = cache(async (): Promise<SiteSettingsData> => {
       facebook: row.facebook,
       youtube: row.youtube,
       piliTechUrl: row.piliTechUrl,
+      mapaLat: row.mapaLat,
+      mapaLng: row.mapaLng,
+      mapaZoom: row.mapaZoom,
     };
   } catch (err) {
     logError("SITE_SETTINGS", err);
@@ -77,4 +87,19 @@ export const getSiteSettings = cache(async (): Promise<SiteSettingsData> => {
 /** Só os dígitos, para montar links `wa.me` e `tel:`. */
 export function onlyDigits(value: string): string {
   return value.replace(/\D/g, "");
+}
+
+/**
+ * Redes sociais preenchidas, na ordem de exibição.
+ *
+ * Campo vazio no painel significa "não temos essa rede" — o link some do site
+ * em vez de apontar para lugar nenhum.
+ */
+export function redesSociais(s: SiteSettingsData) {
+  return [
+    { name: "Instagram", url: s.instagram },
+    { name: "LinkedIn", url: s.linkedin },
+    { name: "Facebook", url: s.facebook },
+    { name: "YouTube", url: s.youtube },
+  ].filter((r): r is { name: string; url: string } => Boolean(r.url));
 }

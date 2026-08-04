@@ -72,6 +72,23 @@
 
 html {
   scroll-behavior: smooth;
+  /*
+   * O header é `fixed`: sem esta reserva, qualquer navegação por âncora ou
+   * `scrollIntoView` posiciona o alvo debaixo dele e o título fica cortado.
+   * O extra de 1rem dá respiro entre o header e o conteúdo.
+   */
+  scroll-padding-top: calc(var(--header-height) + 1rem);
+}
+
+/*
+ * Vale também para o scroll que o navegador faz ao focar um elemento por
+ * teclado — sem isto, tabular por um formulário longo esconde o campo focado
+ * atrás do header.
+ */
+section,
+[id],
+:target {
+  scroll-margin-top: calc(var(--header-height) + 1rem);
 }
 
 body {

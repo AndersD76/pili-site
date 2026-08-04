@@ -1,6 +1,11 @@
 import { generatePageMetadata } from "@/lib/seo";
+import { MapaLocalizacao } from "@/components/marketing/mapa-localizacao";
+import {
+  getSiteSettings,
+  redesSociais,
+  type SiteSettingsData,
+} from "@/lib/site-settings";
 import { setRequestLocale } from "next-intl/server";
-import { COMPANY, SOCIAL } from "@/lib/constants";
 import { LeadForm } from "@/components/marketing/lead-form";
 import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 
@@ -19,32 +24,35 @@ export async function generateMetadata({
   });
 }
 
-const CONTACT_CHANNELS = [
-  {
-    icon: Phone,
-    label: "Telefone",
-    value: COMPANY.phone,
-    href: `tel:${COMPANY.phone.replace(/\s/g, "")}`,
-  },
-  {
-    icon: MessageCircle,
-    label: "WhatsApp",
-    value: COMPANY.whatsapp,
-    href: `https://wa.me/${COMPANY.whatsapp.replace(/[^0-9]/g, "")}`,
-  },
-  {
-    icon: Mail,
-    label: "E-mail comercial",
-    value: COMPANY.emailComercial,
-    href: `mailto:${COMPANY.emailComercial}`,
-  },
-  {
-    icon: Mail,
-    label: "Atendimento geral",
-    value: COMPANY.email,
-    href: `mailto:${COMPANY.email}`,
-  },
-] as const;
+/** Canais de contato montados a partir das configurações do painel. */
+function contactChannels(s: SiteSettingsData) {
+  return [
+    {
+      icon: Phone,
+      label: "Telefone",
+      value: s.telefone,
+      href: `tel:${s.telefone.replace(/\s/g, "")}`,
+    },
+    {
+      icon: MessageCircle,
+      label: "WhatsApp",
+      value: s.whatsapp,
+      href: `https://wa.me/${s.whatsapp.replace(/[^0-9]/g, "")}`,
+    },
+    {
+      icon: Mail,
+      label: "E-mail comercial",
+      value: s.emailComercial,
+      href: `mailto:${s.emailComercial}`,
+    },
+    {
+      icon: Mail,
+      label: "Atendimento geral",
+      value: s.email,
+      href: `mailto:${s.email}`,
+    },
+  ];
+}
 
 export default async function ContatoPage({
   params,
@@ -53,6 +61,8 @@ export default async function ContatoPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+
+  const settings = await getSiteSettings();
 
   return (
     <main className="pt-[var(--header-height)]">
@@ -85,18 +95,18 @@ export default async function ContatoPage({
                   Endereço
                 </span>
                 <p className="mt-1 text-sm leading-relaxed text-pili-concrete">
-                  {COMPANY.name}
+                  {settings.razaoSocial}
                   <br />
-                  {COMPANY.address} - Brasil
+                  {settings.endereco} - Brasil
                   <br />
-                  CNPJ: {COMPANY.cnpj}
+                  CNPJ: {settings.cnpj}
                 </p>
               </div>
             </div>
 
             {/* Channels */}
             <div className="mt-8 space-y-6">
-              {CONTACT_CHANNELS.map((channel) => (
+              {contactChannels(settings).map((channel) => (
                 <a
                   key={channel.label}
                   href={channel.href}
@@ -121,7 +131,7 @@ export default async function ContatoPage({
                 Redes sociais
               </span>
               <div className="mt-3 flex gap-4">
-                {Object.entries(SOCIAL).map(([name, url]) => (
+                {redesSociais(settings).map(({ name, url }) => (
                   <a
                     key={name}
                     href={url}
@@ -135,12 +145,13 @@ export default async function ContatoPage({
               </div>
             </div>
 
-            {/* Map placeholder */}
-            <div className="mt-10 flex aspect-[16/10] items-center justify-center border border-pili-mist bg-pili-paper">
-              <span className="font-mono text-sm text-pili-cement">
-                Mapa -- {COMPANY.address}
-              </span>
-            </div>
+            <MapaLocalizacao
+              className="mt-10"
+              lat={settings.mapaLat}
+              lng={settings.mapaLng}
+              zoom={settings.mapaZoom}
+              endereco={settings.endereco}
+            />
           </div>
 
           {/* Form */}

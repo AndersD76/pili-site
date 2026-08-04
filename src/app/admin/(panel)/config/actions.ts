@@ -38,6 +38,20 @@ export const siteSettingsSchema = z.object({
   facebook: urlOpcional,
   youtube: urlOpcional,
   piliTechUrl: urlOpcional,
+  // Coordenadas do mapa. Vazio significa "não exibir o mapa".
+  mapaLat: z
+    .string()
+    .trim()
+    .refine((v) => v === "" || (!isNaN(Number(v)) && Math.abs(Number(v)) <= 90), {
+      message: "Latitude inválida (entre -90 e 90)",
+    }),
+  mapaLng: z
+    .string()
+    .trim()
+    .refine((v) => v === "" || (!isNaN(Number(v)) && Math.abs(Number(v)) <= 180), {
+      message: "Longitude inválida (entre -180 e 180)",
+    }),
+  mapaZoom: z.coerce.number().int().min(1, "Zoom entre 1 e 19").max(19, "Zoom entre 1 e 19"),
 });
 
 export type SiteSettingsInput = z.infer<typeof siteSettingsSchema>;
@@ -72,6 +86,9 @@ export async function updateSiteSettings(
     facebook: vazioParaNulo(d.facebook),
     youtube: vazioParaNulo(d.youtube),
     piliTechUrl: vazioParaNulo(d.piliTechUrl),
+    mapaLat: d.mapaLat === "" ? null : Number(d.mapaLat),
+    mapaLng: d.mapaLng === "" ? null : Number(d.mapaLng),
+    mapaZoom: d.mapaZoom,
   };
 
   try {

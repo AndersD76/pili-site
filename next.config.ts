@@ -18,6 +18,8 @@ const csp = [
   "font-src 'self' data:",
   `connect-src 'self' https://*.upstash.io https://vitals.vercel-insights.com https://www.google-analytics.com https://connect.facebook.net${isDev ? " ws: http://localhost:*" : ""}`,
   "frame-ancestors 'none'",
+  // Mapa da pagina de contato (OpenStreetMap, sem chave de API).
+  "frame-src https://www.openstreetmap.org",
   "base-uri 'self'",
   "form-action 'self'",
   "object-src 'none'",
