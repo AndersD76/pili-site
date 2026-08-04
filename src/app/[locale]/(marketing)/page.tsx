@@ -1,9 +1,8 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import { getProdutosDestaque, getObrasDestaque } from "@/lib/content";
 import { Link } from "@/i18n/routing";
 import Image from "next/image";
 import { STATS, COMPANY } from "@/lib/constants";
-import { getFeaturedProducts } from "@/lib/data/products";
-import { getFeaturedCases } from "@/lib/data/cases";
 import { StatsBand } from "@/components/marketing/stats-band";
 import { ProductCard } from "@/components/marketing/product-card";
 import { EcosystemGrid } from "@/components/marketing/ecosystem-grid";
@@ -21,6 +20,13 @@ import {
 
 import type { Metadata } from "next";
 import { generatePageMetadata } from "@/lib/seo";
+
+/**
+ * O conteúdo vem do banco e muda pelo painel. Com ISR a página é servida do
+ * cache e revalidada em segundo plano — as edições aparecem sem redeploy, e a
+ * primeira visita não paga a consulta.
+ */
+export const revalidate = 300;
 
 export async function generateMetadata({
   params,
@@ -78,8 +84,8 @@ export default async function HomePage({
   setRequestLocale(locale);
 
   const t = await getTranslations();
-  const featuredProducts = getFeaturedProducts();
-  const featuredCases = getFeaturedCases();
+  const featuredProducts = await getProdutosDestaque();
+  const featuredCases = await getObrasDestaque();
 
   return (
     <main>
@@ -193,6 +199,7 @@ export default async function HomePage({
                   category={product.category}
                   capacity={product.capacity}
                   length={product.length}
+                        image={product.image}
                 />
               </AnimateOnScroll>
             ))}

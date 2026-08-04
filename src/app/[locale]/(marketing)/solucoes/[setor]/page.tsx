@@ -2,13 +2,19 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { Link } from "@/i18n/routing";
-import { PRODUCTS } from "@/lib/data/products";
-import { CASES } from "@/lib/data/cases";
+import { getProdutos, getObras } from "@/lib/content";
 import { ProductCard } from "@/components/marketing/product-card";
 import { LeadForm } from "@/components/marketing/lead-form";
 import {
   generatePageMetadata,
   generateBreadcrumbJsonLd, jsonLdScript} from "@/lib/seo";
+
+/**
+ * O conteúdo vem do banco e muda pelo painel. Com ISR a página é servida do
+ * cache e revalidada em segundo plano — as edições aparecem sem redeploy, e a
+ * primeira visita não paga a consulta.
+ */
+export const revalidate = 300;
 
 /* -------------------------------------------------------------------------- */
 /*  Sector data                                                               */
@@ -114,6 +120,9 @@ export default async function SectorPage({
 }) {
   const { locale, setor } = await params;
   setRequestLocale(locale);
+
+  const PRODUCTS = await getProdutos();
+  const CASES = await getObras();
   const sector = SECTORS[setor];
   if (!sector) notFound();
 
@@ -252,6 +261,7 @@ export default async function SectorPage({
                   category={product.category}
                   capacity={product.capacity}
                   length={product.length}
+                        image={product.image}
                 />
               ))}
             </div>

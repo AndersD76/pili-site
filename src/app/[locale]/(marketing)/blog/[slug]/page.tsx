@@ -3,10 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
-import {
-  BLOG_POSTS,
-  getBlogPost,
-} from "@/lib/data/blog";
+import { getArtigo, getArtigos } from "@/lib/content";
 import {
   generatePageMetadata,
   generateBreadcrumbJsonLd,
@@ -14,8 +11,16 @@ import {
 import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
 import { ArrowLeft, ArrowRight, Clock, User, Calendar } from "lucide-react";
 
-export function generateStaticParams() {
-  return BLOG_POSTS.map((post) => ({ slug: post.slug }));
+/**
+ * O conteúdo vem do banco e muda pelo painel. Com ISR a página é servida do
+ * cache e revalidada em segundo plano — as edições aparecem sem redeploy, e a
+ * primeira visita não paga a consulta.
+ */
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const artigos = await getArtigos();
+  return artigos.map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({
@@ -24,7 +29,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params;
-  const post = getBlogPost(slug);
+  const post = await getArtigo(slug);
   if (!post) return {};
   return generatePageMetadata({
     locale,
@@ -57,7 +62,9 @@ export default async function BlogPostPage({
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  const post = getBlogPost(slug);
+
+  const BLOG_POSTS = await getArtigos();
+  const post = await getArtigo(slug);
   if (!post) notFound();
 
   const contentParagraphs = post.content.split("\n\n");

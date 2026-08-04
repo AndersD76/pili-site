@@ -141,6 +141,8 @@ export async function createCase(data: FormData) {
     });
 
     revalidatePath("/admin/obras");
+    revalidatePath("/[locale]/(marketing)/obras", "page");
+    revalidatePath("/[locale]/(marketing)/obras/[slug]", "page");
     return { success: true, id: caseItem.id, error: null };
   } catch (err) {
     if (isUniqueConstraintError(err)) {
@@ -209,6 +211,8 @@ export async function updateCase(id: string, data: FormData) {
     ]);
 
     revalidatePath("/admin/obras");
+    revalidatePath("/[locale]/(marketing)/obras", "page");
+    revalidatePath("/[locale]/(marketing)/obras/[slug]", "page");
     return { success: true, error: null };
   } catch (err) {
     if (isUniqueConstraintError(err)) {
@@ -225,6 +229,8 @@ export async function deleteCase(id: string) {
   try {
     await db.case.delete({ where: { id } });
     revalidatePath("/admin/obras");
+    revalidatePath("/[locale]/(marketing)/obras", "page");
+    revalidatePath("/[locale]/(marketing)/obras/[slug]", "page");
     return { success: true, error: null };
   } catch (err) {
     logError("OBRAS_DELETE", err);

@@ -1,14 +1,22 @@
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { Link } from "@/i18n/routing";
-import { CASES, getCase } from "@/lib/data/cases";
-import { getProduct } from "@/lib/data/products";
+import { getObra, getObras, getProduto } from "@/lib/content";
 import { LeadForm } from "@/components/marketing/lead-form";
 import { generatePageMetadata, generateBreadcrumbJsonLd, jsonLdScript} from "@/lib/seo";
 
-export function generateStaticParams() {
-  return CASES.map((c) => ({ slug: c.slug }));
+/**
+ * O conteúdo vem do banco e muda pelo painel. Com ISR a página é servida do
+ * cache e revalidada em segundo plano — as edições aparecem sem redeploy, e a
+ * primeira visita não paga a consulta.
+ */
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const obras = await getObras();
+  return obras.map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({
@@ -17,13 +25,14 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params;
-  const caseData = getCase(slug);
+  const caseData = await getObra(slug);
   if (!caseData) return {};
   return generatePageMetadata({
     locale,
     title: caseData.title,
     description: caseData.summary,
     path: `/obras/${caseData.slug}`,
+    image: caseData.image,
   });
 }
 
@@ -34,12 +43,14 @@ export default async function CaseDetailPage({
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  const caseData = getCase(slug);
+  const caseData = await getObra(slug);
   if (!caseData) notFound();
 
-  const relatedProducts = caseData.products
-    .map((pSlug) => getProduct(pSlug))
-    .filter(Boolean);
+  // `caseData.products` fica vazio enquanto o schema não modelar a relação
+  // obra→produto; o `Promise.all` já deixa o caminho pronto para quando existir.
+  const relatedProducts = (
+    await Promise.all(caseData.products.map((pSlug) => getProduto(pSlug)))
+  ).filter((p) => p !== null);
 
   const breadcrumbJsonLd = generateBreadcrumbJsonLd([
     { name: "Home", url: "/" },
@@ -80,6 +91,35 @@ export default async function CaseDetailPage({
 
       {/* Hero */}
       <section className="bg-pili-paper pb-16 pt-8 px-6 lg:px-8">
+      {/* Galeria — a primeira foto é a principal, definida no painel */}
+      <div className="mx-auto mb-12 max-w-6xl px-6 lg:px-8">
+        <div className="relative aspect-16/9 overflow-hidden bg-pili-steel">
+          <Image
+            src={caseData.image}
+            alt={caseData.images[0]?.alt ?? caseData.title}
+            fill
+            priority
+            sizes="(max-width: 1024px) 100vw, 1152px"
+            className="object-cover"
+          />
+        </div>
+        {caseData.images.length > 1 && (
+          <ul className="mt-3 grid grid-cols-4 gap-3">
+            {caseData.images.slice(1, 5).map((img) => (
+              <li key={img.url} className="relative aspect-4/3 overflow-hidden bg-pili-steel">
+                <Image
+                  src={img.url}
+                  alt={img.alt ?? caseData.title}
+                  fill
+                  sizes="25vw"
+                  className="object-cover"
+                />
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-xs uppercase tracking-wider text-pili-cement">
             <span>{caseData.client}</span>

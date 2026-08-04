@@ -1,17 +1,25 @@
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { Link } from "@/i18n/routing";
-import { getProduct, PRODUCTS } from "@/lib/data/products";
-import { CASES } from "@/lib/data/cases";
+import { getProduto, getProdutos, getObras } from "@/lib/content";
 import { SpecTable } from "@/components/marketing/spec-table";
 import { FeatureGrid } from "@/components/marketing/feature-grid";
 import { LeadForm } from "@/components/marketing/lead-form";
 import { ProductCard } from "@/components/marketing/product-card";
 import { generatePageMetadata, generateProductJsonLd, generateBreadcrumbJsonLd, jsonLdScript} from "@/lib/seo";
 
-export function generateStaticParams() {
-  return PRODUCTS.map((p) => ({ slug: p.slug }));
+/**
+ * O conteúdo vem do banco e muda pelo painel. Com ISR a página é servida do
+ * cache e revalidada em segundo plano — as edições aparecem sem redeploy, e a
+ * primeira visita não paga a consulta.
+ */
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const produtos = await getProdutos();
+  return produtos.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
@@ -20,20 +28,24 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params;
-  const product = getProduct(slug);
+  const product = await getProduto(slug);
   if (!product) return {};
   return generatePageMetadata({
     locale,
-    title: product.name,
-    description: product.tagline,
+    title: product.metaTitle ?? product.name,
+    description: product.metaDesc ?? product.tagline,
     path: `/produtos/${product.slug}`,
+    image: product.image,
   });
 }
 
 export default async function ProductPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  const product = getProduct(slug);
+
+  const CASES = await getObras();
+  const PRODUCTS = await getProdutos();
+  const product = await getProduto(slug);
   if (!product) notFound();
 
   const relatedCases = CASES.filter((c) =>
@@ -46,7 +58,7 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
   const productJsonLd = generateProductJsonLd({
     name: product.name,
     description: product.description,
-    image: "/images/og-default.jpg",
+    image: product.image,
     slug: product.slug,
     category: product.category,
   });
@@ -93,8 +105,38 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
       {/* Hero */}
       <section className="bg-pili-paper pb-16 pt-8 px-6 lg:px-8">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2">
-          {/* Image placeholder */}
-          <div className="aspect-[4/3] bg-pili-steel" />
+          {/* Galeria — a primeira foto é a principal, definida no painel */}
+          <div className="space-y-3">
+            <div className="relative aspect-4/3 overflow-hidden bg-pili-steel">
+              <Image
+                src={product.image}
+                alt={product.images[0]?.alt ?? product.name}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
+            </div>
+
+            {product.images.length > 1 && (
+              <ul className="grid grid-cols-4 gap-3">
+                {product.images.slice(1, 5).map((img) => (
+                  <li
+                    key={img.url}
+                    className="relative aspect-4/3 overflow-hidden bg-pili-steel"
+                  >
+                    <Image
+                      src={img.url}
+                      alt={img.alt ?? product.name}
+                      fill
+                      sizes="25vw"
+                      className="object-cover"
+                    />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
 
           {/* Info */}
           <div className="flex flex-col">
@@ -228,6 +270,7 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
                   category={p.category}
                   capacity={p.capacity}
                   length={p.length}
+                        image={p.image}
                 />
               ))}
             </div>

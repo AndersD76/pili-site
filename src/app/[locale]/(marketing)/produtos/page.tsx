@@ -1,10 +1,17 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
-import { PRODUCTS } from "@/lib/data/products";
+import { getProdutos } from "@/lib/content";
 import { ProductCard } from "@/components/marketing/product-card";
 import { Link } from "@/i18n/routing";
 import { generatePageMetadata } from "@/lib/seo";
 import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
 import { ArrowRight } from "lucide-react";
+
+/**
+ * O conteúdo vem do banco e muda pelo painel. Com ISR a página é servida do
+ * cache e revalidada em segundo plano — as edições aparecem sem redeploy, e a
+ * primeira visita não paga a consulta.
+ */
+export const revalidate = 300;
 
 export async function generateMetadata({
   params,
@@ -36,6 +43,8 @@ export default async function ProdutosPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+
+  const PRODUCTS = await getProdutos();
 
   const t = await getTranslations();
 
@@ -114,6 +123,7 @@ export default async function ProdutosPage({
                         category={product.category}
                         capacity={product.capacity}
                         length={product.length}
+                        image={product.image}
                       />
                     </AnimateOnScroll>
                   )

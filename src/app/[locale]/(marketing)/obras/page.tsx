@@ -1,8 +1,15 @@
-import { CASES } from "@/lib/data/cases";
+import { getObras } from "@/lib/content";
 import { setRequestLocale } from "next-intl/server";
 import { CaseCard } from "@/components/marketing/case-card";
 import { Link } from "@/i18n/routing";
 import { generatePageMetadata } from "@/lib/seo";
+
+/**
+ * O conteúdo vem do banco e muda pelo painel. Com ISR a página é servida do
+ * cache e revalidada em segundo plano — as edições aparecem sem redeploy, e a
+ * primeira visita não paga a consulta.
+ */
+export const revalidate = 300;
 
 export async function generateMetadata({
   params,
@@ -26,6 +33,8 @@ export default async function ObrasPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+
+  const CASES = await getObras();
 
   return (
     <main className="pt-[var(--header-height)]">
@@ -71,6 +80,7 @@ export default async function ObrasPage({
                 year={c.year}
                 application={c.application}
                 metrics={c.metrics}
+                image={c.image}
               />
             ))}
           </div>

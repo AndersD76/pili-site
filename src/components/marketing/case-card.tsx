@@ -2,14 +2,6 @@ import { Link } from "@/i18n/routing";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 
-const APPLICATION_IMAGES: Record<string, string> = {
-  porto: "/images/tombador-pili.jpg",
-  cooperativa: "/images/tombador-pili.jpg",
-  industria: "/images/tombador-pili.jpg",
-  fertilizante: "/images/tombador-pili.jpg",
-  cimento: "/images/tombador-pili.jpg",
-};
-
 interface CaseCardProps {
   title: string;
   slug: string;
@@ -17,7 +9,7 @@ interface CaseCardProps {
   location: string;
   year: number;
   application?: string;
-  image?: string;
+  image: string;
   metrics?: { label: string; value: string }[];
 }
 
@@ -31,8 +23,8 @@ export function CaseCard({
   image,
   metrics,
 }: CaseCardProps) {
-  const fallbackImage = application ? APPLICATION_IMAGES[application] : undefined;
-  const displayImage = image || fallbackImage;
+  // A imagem vem do banco; `lib/content.ts` aplica o padrão quando falta.
+  const displayImage = image;
 
   return (
     <Link

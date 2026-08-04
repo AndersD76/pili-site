@@ -115,6 +115,8 @@ export async function createPost(data: FormData) {
     });
 
     revalidatePath("/admin/blog");
+    revalidatePath("/[locale]/(marketing)/blog", "page");
+    revalidatePath("/[locale]/(marketing)/blog/[slug]", "page");
     return { success: true, id: post.id, error: null };
   } catch (err) {
     if (isUniqueConstraintError(err)) {
@@ -173,6 +175,8 @@ export async function updatePost(id: string, data: FormData) {
     ]);
 
     revalidatePath("/admin/blog");
+    revalidatePath("/[locale]/(marketing)/blog", "page");
+    revalidatePath("/[locale]/(marketing)/blog/[slug]", "page");
     return { success: true, error: null };
   } catch (err) {
     if (isUniqueConstraintError(err)) {
@@ -189,6 +193,8 @@ export async function deletePost(id: string) {
   try {
     await db.post.delete({ where: { id } });
     revalidatePath("/admin/blog");
+    revalidatePath("/[locale]/(marketing)/blog", "page");
+    revalidatePath("/[locale]/(marketing)/blog/[slug]", "page");
     return { success: true, error: null };
   } catch (err) {
     logError("BLOG_DELETE", err);
@@ -216,6 +222,8 @@ export async function togglePublish(id: string) {
     });
 
     revalidatePath("/admin/blog");
+    revalidatePath("/[locale]/(marketing)/blog", "page");
+    revalidatePath("/[locale]/(marketing)/blog/[slug]", "page");
     return { success: true, error: null };
   } catch (err) {
     logError("BLOG_TOGGLE_PUBLISH", err);

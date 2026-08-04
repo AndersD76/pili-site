@@ -38,6 +38,14 @@ enum LeadSource {
   TRABALHE_CONOSCO
 }
 
+/// Categoria editorial do artigo, usada no filtro do blog.
+enum PostCategory {
+  noticia
+  artigo
+  evento
+  lancamento
+}
+
 enum ProductCategory {
   TOMBADOR_FIXO
   TOMBADOR_MOVEL
@@ -276,6 +284,9 @@ model Post {
   id           String            @id @default(cuid())
   slug         String            @unique
   author       String            @default("PILI Industrial")
+  category     PostCategory      @default(artigo)
+  /// Tempo estimado de leitura em minutos.
+  readTime     Int               @default(5)
   cover        String?
   published    Boolean           @default(false)
   publishedAt  DateTime? @db.Timestamptz(3)

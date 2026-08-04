@@ -1,8 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL, LOCALES } from "@/lib/constants";
-import { PRODUCTS } from "@/lib/data/products";
-import { CASES } from "@/lib/data/cases";
-import { BLOG_POSTS } from "@/lib/data/blog";
+import { getProdutos, getObras, getArtigos } from "@/lib/content";
 import { ECOSYSTEM_PROJECTS } from "@/lib/data/ecosystem";
 import { APPLICATIONS } from "@/lib/constants";
 
@@ -53,7 +51,11 @@ function staticRoutes(): RouteEntry[] {
   }));
 }
 
-function contentRoutes(): RouteEntry[] {
+async function contentRoutes(): Promise<RouteEntry[]> {
+  const PRODUCTS = await getProdutos();
+  const CASES = await getObras();
+  const BLOG_POSTS = await getArtigos();
+
   const entries: RouteEntry[] = [];
 
   for (const product of PRODUCTS) {
@@ -106,8 +108,8 @@ function contentRoutes(): RouteEntry[] {
   return entries;
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const all = [...staticRoutes(), ...contentRoutes()];
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const all = [...staticRoutes(), ...(await contentRoutes())];
   const entries: MetadataRoute.Sitemap = [];
 
   for (const route of all) {

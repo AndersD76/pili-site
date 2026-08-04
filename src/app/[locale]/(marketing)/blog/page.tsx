@@ -3,7 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { generatePageMetadata } from "@/lib/seo";
-import { BLOG_POSTS, getPostsByCategory } from "@/lib/data/blog";
+import { getArtigos, getArtigosPorCategoria } from "@/lib/content";
 import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
 import { BlogCategoryFilter } from "@/components/marketing/blog-category-filter";
 import { ArrowRight, Clock } from "lucide-react";
@@ -49,9 +49,11 @@ export default async function BlogPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
+  const BLOG_POSTS = await getArtigos();
+
   const { categoria } = await searchParams;
   const activeCategory = categoria ?? "todos";
-  const filteredPosts = getPostsByCategory(activeCategory);
+  const filteredPosts = await getArtigosPorCategoria(activeCategory);
 
   const featuredPost = BLOG_POSTS.find((p) => p.featured);
   const showFeatured = activeCategory === "todos" && featuredPost;

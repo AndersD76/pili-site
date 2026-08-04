@@ -9,7 +9,6 @@ import {
   Wrench,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { getProductImage } from "@/lib/product-images";
 
 const CATEGORY_ICONS: Record<string, typeof Truck> = {
   TOMBADOR_FIXO: Truck,
@@ -25,7 +24,7 @@ interface ProductCardProps {
   category: string;
   capacity?: string;
   length?: string;
-  image?: string;
+  image: string;
 }
 
 export function ProductCard({
@@ -36,7 +35,8 @@ export function ProductCard({
   length,
   image,
 }: ProductCardProps) {
-  const resolvedImage = image ?? getProductImage(slug, category);
+  // A imagem vem do banco; `lib/content.ts` já aplica o padrão quando falta.
+  const resolvedImage = image;
   const IconComponent = CATEGORY_ICONS[category] ?? Wrench;
 
   return (

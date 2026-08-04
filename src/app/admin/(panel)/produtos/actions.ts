@@ -153,6 +153,9 @@ export async function createProduct(data: FormData) {
     });
 
     revalidatePath("/admin/produtos");
+    revalidatePath("/[locale]/(marketing)/produtos", "page");
+    revalidatePath("/[locale]/(marketing)/produtos/[slug]", "page");
+    revalidatePath("/[locale]/(marketing)", "page");
     return { success: true, id: product.id, error: null };
   } catch (err) {
     if (isUniqueConstraintError(err)) {
@@ -222,6 +225,9 @@ export async function updateProduct(id: string, data: FormData) {
     ]);
 
     revalidatePath("/admin/produtos");
+    revalidatePath("/[locale]/(marketing)/produtos", "page");
+    revalidatePath("/[locale]/(marketing)/produtos/[slug]", "page");
+    revalidatePath("/[locale]/(marketing)", "page");
 
     return { success: true, error: null };
   } catch (err) {
@@ -239,6 +245,9 @@ export async function deleteProduct(id: string) {
   try {
     await db.product.delete({ where: { id } });
     revalidatePath("/admin/produtos");
+    revalidatePath("/[locale]/(marketing)/produtos", "page");
+    revalidatePath("/[locale]/(marketing)/produtos/[slug]", "page");
+    revalidatePath("/[locale]/(marketing)", "page");
     return { success: true, error: null };
   } catch (err) {
     logError("PRODUTOS_DELETE", err);
@@ -262,6 +271,9 @@ export async function toggleProductFeatured(id: string) {
     });
 
     revalidatePath("/admin/produtos");
+    revalidatePath("/[locale]/(marketing)/produtos", "page");
+    revalidatePath("/[locale]/(marketing)/produtos/[slug]", "page");
+    revalidatePath("/[locale]/(marketing)", "page");
     return { success: true, error: null };
   } catch (err) {
     logError("PRODUTOS_TOGGLE_FEATURED", err);
