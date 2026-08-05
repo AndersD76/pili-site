@@ -77,6 +77,7 @@ model User {
   sessions      Session[]
   notes         Note[]
   equipment     ClientEquipment[]
+  maintenance   MaintenanceRequest[]
   createdAt     DateTime          @default(now()) @db.Timestamptz(3)
   updatedAt     DateTime          @updatedAt @db.Timestamptz(3)
 }
@@ -426,27 +427,70 @@ model ClientEquipment {
   installedAt      DateTime @db.Timestamptz(3)
   installedAddress String?
   warrantyEndsAt   DateTime? @db.Timestamptz(3)
-  serviceOrders    ServiceOrder[]
+  /// Solicitações de manutenção abertas pelo cliente no portal.
+  maintenance      MaintenanceRequest[]
   user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt        DateTime       @default(now()) @db.Timestamptz(3)
 
   @@index([userId])
 }
 
-model ServiceOrder {
-  id          String          @id @default(cuid())
-  equipmentId String
-  number      String          @unique
-  type        String
-  status      String
-  description String          @db.Text
-  scheduledAt DateTime? @db.Timestamptz(3)
-  completedAt DateTime? @db.Timestamptz(3)
-  equipment   ClientEquipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
-  createdAt   DateTime        @default(now()) @db.Timestamptz(3)
-  updatedAt   DateTime        @updatedAt @db.Timestamptz(3)
+/// Motivo do chamado.
+enum MaintenanceType {
+  CORRETIVA
+  PREVENTIVA
+  INSTALACAO
+  DUVIDA_TECNICA
+  OUTRO
+}
 
+/// Urgência declarada pelo cliente. `PARADA` significa equipamento fora de
+/// operação — é o caso que a equipe precisa ver primeiro.
+enum MaintenanceUrgency {
+  BAIXA
+  MEDIA
+  ALTA
+  PARADA
+}
+
+enum MaintenanceStatus {
+  ABERTA
+  EM_ANDAMENTO
+  CONCLUIDA
+  CANCELADA
+}
+
+/// Solicitação de manutenção aberta pelo cliente no portal.
+///
+/// Não é a ordem de serviço: a OS vive no ERP da PILI. Aqui fica apenas o
+/// chamado — o pedido que o cliente registra e que o comercial transforma em
+/// OS do lado de lá.
+model MaintenanceRequest {
+  id          String             @id @default(cuid())
+  /// Número sequencial legível, para o cliente citar por telefone.
+  number      Int                @unique @default(autoincrement())
+  equipmentId String
+  userId      String
+  type        MaintenanceType
+  urgency     MaintenanceUrgency
+  status      MaintenanceStatus  @default(ABERTA)
+  description String             @db.Text
+  contactName  String
+  contactPhone String
+  /// Anotação interna da equipe; não aparece para o cliente.
+  internalNote String?           @db.Text
+  /// Quando o aviso ao comercial saiu. Nulo enquanto não houver transporte de
+  /// e-mail configurado — assim os chamados pendentes podem ser notificados
+  /// em lote depois, sem perder nenhum.
+  notifiedAt  DateTime?          @db.Timestamptz(3)
+  createdAt   DateTime           @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime           @updatedAt @db.Timestamptz(3)
+  equipment   ClientEquipment    @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([status, createdAt])
   @@index([equipmentId])
+  @@index([notifiedAt])
 }
 
 // ============ RATE LIMITING ============

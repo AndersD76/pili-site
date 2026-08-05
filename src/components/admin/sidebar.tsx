@@ -13,6 +13,7 @@ import {
   Settings,
   Menu,
   BriefcaseBusiness,
+  Wrench,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -27,6 +28,7 @@ import {
 const navItems = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Leads", href: "/admin/leads", icon: Users },
+  { label: "Manutenção", href: "/admin/manutencao", icon: Wrench },
   {
     label: "Candidaturas",
     href: "/admin/candidaturas",
