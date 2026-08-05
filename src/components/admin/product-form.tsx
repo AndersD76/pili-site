@@ -26,6 +26,7 @@ import type {
   ProductTranslation,
   Spec,
   Feature,
+  FAQ,
   ProductCategory,
 } from "@prisma/client";
 
@@ -33,6 +34,7 @@ type ProductWithRelations = Product & {
   translations: ProductTranslation[];
   specs: Spec[];
   features: Feature[];
+  faqs: FAQ[];
 };
 
 const CATEGORY_OPTIONS: { value: ProductCategory; label: string }[] = [
@@ -75,6 +77,12 @@ const productSchema = z.object({
   descriptionEs: z.string().optional(),
   metaTitleEs: z.string().max(70, "Máximo de 70 caracteres").optional(),
   metaDescEs: z.string().max(160, "Máximo de 160 caracteres").optional(),
+  faqs: z.array(
+    z.object({
+      question: z.string().min(1, "Campo obrigatório"),
+      answer: z.string().min(1, "Campo obrigatório"),
+    }),
+  ),
 });
 
 type ProductFormValues = z.infer<typeof productSchema>;
@@ -120,6 +128,11 @@ export function ProductForm({
       featured: product?.featured ?? false,
       specs:
         product?.specs.map((s) => ({ key: s.key, value: s.value })) ?? [],
+      faqs:
+        product?.faqs.map((f) => ({
+          question: f.question,
+          answer: f.answer,
+        })) ?? [],
       metaTitle: ptTranslation?.metaTitle ?? "",
       metaDesc: ptTranslation?.metaDesc ?? "",
       nameEs: esTranslation?.name ?? "",
@@ -134,6 +147,12 @@ export function ProductForm({
     control,
     name: "specs",
   });
+
+  const {
+    fields: faqFields,
+    append: appendFaq,
+    remove: removeFaq,
+  } = useFieldArray({ control, name: "faqs" });
 
   function handleNameBlur() {
     if (!isEditing) {
@@ -155,6 +174,7 @@ export function ProductForm({
     formData.set("featured", String(values.featured));
     formData.set("active", String(values.active));
     formData.set("specs", JSON.stringify(values.specs));
+    formData.set("faqs", JSON.stringify(values.faqs));
     formData.set("metaTitle", values.metaTitle ?? "");
     formData.set("metaDesc", values.metaDesc ?? "");
     formData.set("nameEs", values.nameEs ?? "");
@@ -436,6 +456,77 @@ export function ProductForm({
             >
               <Trash2 className="size-4" />
               <span className="sr-only">Remover especificação</span>
+            </Button>
+          </div>
+        ))}
+      </div>
+
+      <Separator />
+
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="font-display text-lg font-semibold text-pili-black">
+              Perguntas frequentes
+            </h2>
+            <p className="mt-1 text-sm text-pili-concrete">
+              Aparecem na página do produto e viram rich result de FAQ no
+              Google. Perguntas sem resposta visível na página não valem — por
+              isso elas são exibidas de fato.
+            </p>
+          </div>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => appendFaq({ question: "", answer: "" })}
+          >
+            <Plus className="size-4" />
+            Adicionar
+          </Button>
+        </div>
+
+        {faqFields.length === 0 && (
+          <p className="text-sm text-pili-concrete">
+            Nenhuma pergunta adicionada
+          </p>
+        )}
+
+        {faqFields.map((field, index) => (
+          <div
+            key={field.id}
+            className="flex items-start gap-3 rounded-lg border border-pili-mist p-4"
+          >
+            <div className="flex-1 space-y-2">
+              <Input
+                {...register(`faqs.${index}.question`)}
+                placeholder="Qual o prazo de entrega?"
+              />
+              {errors.faqs?.[index]?.question && (
+                <p className="text-xs text-red-600">
+                  {errors.faqs[index]?.question?.message}
+                </p>
+              )}
+              <Textarea
+                {...register(`faqs.${index}.answer`)}
+                placeholder="Resposta objetiva, em uma ou duas frases."
+                className="min-h-20"
+              />
+              {errors.faqs?.[index]?.answer && (
+                <p className="text-xs text-red-600">
+                  {errors.faqs[index]?.answer?.message}
+                </p>
+              )}
+            </div>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="shrink-0 text-red-600 hover:text-red-700"
+              onClick={() => removeFaq(index)}
+            >
+              <Trash2 className="size-4" />
+              <span className="sr-only">Remover pergunta</span>
             </Button>
           </div>
         ))}

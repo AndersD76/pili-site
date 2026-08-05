@@ -81,3 +81,53 @@ export function formatFileSize(bytes: number): string {
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
+
+/* ------------------------------------------------------------ currículos */
+
+/**
+ * Tipos aceitos para currículo. PDF e os dois formatos do Word cobrem o que
+ * chega na prática; imagem não entra, para o arquivo continuar legível por
+ * quem for ler.
+ */
+export const ALLOWED_CV_TYPES = [
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+] as const;
+
+export type AllowedCvType = (typeof ALLOWED_CV_TYPES)[number];
+
+/** 5 MB. Um currículo acima disso é quase sempre scan sem compressão. */
+export const MAX_CV_SIZE = 5 * 1024 * 1024;
+export const MAX_CV_SIZE_LABEL = "5 MB";
+export const ACCEPT_CV_ATTRIBUTE = ".pdf,.doc,.docx";
+
+/**
+ * Confere a assinatura binária do currículo.
+ *
+ * Mesma razão do `detectImageType`: o `type` informado pelo navegador é
+ * forjável, e aqui o arquivo será baixado depois por uma pessoa.
+ */
+export function detectCvType(bytes: Uint8Array): AllowedCvType | null {
+  if (bytes.length < 8) return null;
+
+  // PDF: %PDF-
+  const pdf = [0x25, 0x50, 0x44, 0x46, 0x2d];
+  if (pdf.every((b, i) => bytes[i] === b)) return "application/pdf";
+
+  // DOCX é um zip: PK
+  if (
+    bytes[0] === 0x50 &&
+    bytes[1] === 0x4b &&
+    bytes[2] === 0x03 &&
+    bytes[3] === 0x04
+  ) {
+    return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+  }
+
+  // .doc legado (OLE2): D0 CF 11 E0 A1 B1 1A E1
+  const ole = [0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1];
+  if (ole.every((b, i) => bytes[i] === b)) return "application/msword";
+
+  return null;
+}

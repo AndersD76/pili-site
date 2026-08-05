@@ -46,6 +46,14 @@ export const productInputSchema = z.object({
     .max(100, "Máximo de 100 especificações"),
   // Versão em espanhol. Nome vazio significa "sem tradução" — o site cai para
   // o português em vez de exibir campos pela metade.
+  faqs: z
+    .array(
+      z.object({
+        question: z.string().trim().min(1, "Pergunta obrigatória").max(300),
+        answer: z.string().trim().min(1, "Resposta obrigatória").max(2000),
+      }),
+    )
+    .max(30, "Máximo de 30 perguntas"),
   nameEs: z.string().trim().max(200),
   taglineEs: z.string().trim().max(300),
   descriptionEs: z.string().trim().max(20000),

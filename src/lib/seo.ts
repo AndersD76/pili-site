@@ -189,3 +189,24 @@ export function jsonLdScript(data: unknown): string {
     .replace(/>/g, "\\u003e")
     .replace(/&/g, "\\u0026");
 }
+
+/**
+ * Rich result de FAQ.
+ *
+ * O `FAQPage` só é válido quando as perguntas estão visíveis na página — o
+ * Google penaliza marcação sem contrapartida. Por isso este helper é chamado
+ * apenas quando a seção de perguntas é de fato renderizada.
+ */
+export function generateFaqJsonLd(
+  faqs: { question: string; answer: string }[],
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  };
+}

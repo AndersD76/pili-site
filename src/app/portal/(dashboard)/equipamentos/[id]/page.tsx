@@ -8,11 +8,26 @@ import {
   ShieldCheck,
   ShieldX,
   HardDrive,
+  Wrench,
+  CircleDot,
 } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 
 /* ---------- helpers ---------- */
+
+/**
+ * Cor por status. `status` é texto livre no schema, então há um padrão para
+ * valores que não conhecemos, em vez de a etiqueta sumir.
+ */
+const STATUS_CORES: Record<string, string> = {
+  ABERTA: "bg-amber-50 text-amber-700",
+  AGENDADA: "bg-blue-50 text-blue-700",
+  EM_ANDAMENTO: "bg-blue-50 text-blue-700",
+  CONCLUIDA: "bg-emerald-50 text-emerald-700",
+  CANCELADA: "bg-gray-100 text-gray-500",
+  default: "bg-gray-100 text-gray-600",
+};
 
 function formatDate(date: Date) {
   return date.toLocaleDateString("pt-BR", {
@@ -62,6 +77,14 @@ export default async function EquipamentoDetailPage({ params }: PageProps) {
   // de um inexistente.
   const equipment = await db.clientEquipment.findFirst({
     where: { id, userId: session.user.id },
+    include: {
+      // As ordens de serviço são o motivo de existir um portal de pós-venda:
+      // o model e a relação já estavam no schema, mas nenhuma tela os lia.
+      serviceOrders: {
+        orderBy: [{ scheduledAt: "desc" }, { createdAt: "desc" }],
+        take: 50,
+      },
+    },
   });
 
   if (!equipment) notFound();
@@ -175,7 +198,61 @@ export default async function EquipamentoDetailPage({ params }: PageProps) {
         </dl>
       </div>
 
-      {/* ---- Section 3: Back button ---- */}
+      {/* ---- Section 3: Ordens de serviço ---- */}
+      <div className="mb-8 rounded-lg border border-pili-mist bg-pili-white p-6">
+        <h2 className="mb-5 flex items-center gap-2 font-display text-lg font-bold text-pili-graphite">
+          <Wrench className="h-5 w-5 text-pili-concrete" />
+          Ordens de serviço
+        </h2>
+
+        {equipment.serviceOrders.length === 0 ? (
+          <p className="text-sm text-pili-concrete">
+            Nenhuma ordem de serviço registrada para este equipamento.
+          </p>
+        ) : (
+          <ul className="divide-y divide-pili-mist">
+            {equipment.serviceOrders.map((os) => {
+              const cor = STATUS_CORES[os.status] ?? STATUS_CORES.default;
+              return (
+                <li key={os.id} className="py-4 first:pt-0 last:pb-0">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                    <span className="font-mono text-sm font-medium text-pili-graphite">
+                      {os.number}
+                    </span>
+                    <span
+                      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${cor}`}
+                    >
+                      <CircleDot className="h-3 w-3" />
+                      {os.status}
+                    </span>
+                    <span className="text-xs uppercase tracking-wide text-pili-concrete">
+                      {os.type}
+                    </span>
+                  </div>
+
+                  <p className="mt-2 text-sm leading-relaxed text-pili-graphite">
+                    {os.description}
+                  </p>
+
+                  <div className="mt-2 flex flex-wrap gap-x-6 gap-y-1 font-mono text-xs text-pili-concrete">
+                    {os.scheduledAt && (
+                      <span>Agendada: {formatDate(os.scheduledAt)}</span>
+                    )}
+                    {os.completedAt && (
+                      <span>Concluída: {formatDate(os.completedAt)}</span>
+                    )}
+                    {!os.scheduledAt && !os.completedAt && (
+                      <span>Aberta em {formatDate(os.createdAt)}</span>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
+
+      {/* ---- Section 4: Back button ---- */}
       <div className="flex flex-col gap-3 sm:flex-row">
         <Link
           href="/portal/equipamentos"

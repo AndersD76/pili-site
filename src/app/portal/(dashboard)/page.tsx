@@ -4,10 +4,10 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import {
   HardDrive,
-  FileText,
   ArrowRight,
   ShoppingCart,
   Package,
+  Wrench,
 } from "lucide-react";
 
 export default async function PortalDashboardPage() {
@@ -28,6 +28,15 @@ export default async function PortalDashboardPage() {
   const warrantyActive = equipment.filter(
     (eq) => eq.warrantyEndsAt && eq.warrantyEndsAt > new Date()
   );
+
+  // Ordens ainda não concluídas, entre os equipamentos deste cliente. É o dado
+  // que justifica um portal de pós-venda e não aparecia em lugar nenhum.
+  const ordensAbertas = await db.serviceOrder.count({
+    where: {
+      equipment: { userId: session.user.id },
+      completedAt: null,
+    },
+  });
 
   return (
     <div className="min-h-screen bg-pili-paper">
@@ -76,17 +85,17 @@ export default async function PortalDashboardPage() {
             </div>
           </div>
 
-          {/* Documentos */}
+          {/* Ordens de serviço em aberto */}
           <div className="flex items-center gap-4 rounded-lg border border-pili-mist bg-pili-white p-6">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-pili-paper">
-              <FileText className="h-6 w-6 text-pili-concrete" />
+              <Wrench className="h-6 w-6 text-pili-concrete" />
             </div>
             <div>
               <p className="text-sm font-medium text-pili-concrete">
-                Documentos
+                Ordens em aberto
               </p>
               <p className="font-display text-2xl font-bold text-pili-graphite">
-                --
+                {ordensAbertas}
               </p>
             </div>
           </div>

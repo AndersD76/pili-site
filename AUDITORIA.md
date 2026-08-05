@@ -19,10 +19,23 @@
 
 | Situação | Qtd | Itens |
 |---|---|---|
-| ✅ **Corrigido** | **76** | todos, exceto os listados abaixo |
-| 🟨 **Parcialmente corrigido** | **2** | #5, #69 |
-| 🔒 **Não executado — requer decisão** | **5** | #6, #9, #13, #18, #68 |
+| ✅ **Corrigido** | **82** | todos, exceto os listados abaixo |
+| 🔒 **Bloqueado por dado externo** | **1** | #68 |
 | | **83** | |
+
+### Rodada de encerramento (2026-08-05)
+
+Os cinco itens que dependiam de decisão foram executados. O que mudou desde a
+tabela anterior:
+
+| Item | O que era | O que foi feito |
+|---|---|---|
+| **#5** | Candidaturas gravadas como `Lead` com `company: "Candidato"`, sem lugar para currículo | Model `JobApplication` em uso: `jobId` opcional (o site não publica vagas, é banco de talentos), área em coluna própria, currículo em `bytea` no banco, consentimento datado. Rota `POST /api/candidaturas`, download em `/api/candidaturas/[id]/cv` **atrás de `requireAdmin`** — currículo é dado pessoal e não podia ficar em URL pública. Tela em `/admin/candidaturas` com marcação de análise e exclusão que apaga o binário junto. Migração `20260804120000_job_application_talentos` |
+| **#6** | `en`/`es` nunca escritos; painel monolíngue | Site inteiro em pt-BR e es: 560 chaves com paridade verificada e nenhum texto fixo em português nas páginas. `content.ts` traz os dois idiomas numa consulta e cai para o português quando falta tradução. Conteúdo semeado em espanhol (18 produtos, 8 obras, 8 artigos, 66 diferenciais) e editável no painel, em seção própria por formulário |
+| **#9** | `FAQ`, `Application`, `ApplicationTranslation` e `ServiceOrder` órfãos | `Application` populado no backfill de #18 e lido por `content.ts`. `FAQ` implementado ponta a ponta: editor no formulário de produto, seção visível na página e `FAQPage` em JSON-LD — a marcação só é emitida quando as perguntas aparecem na página, como o Google exige. 160 perguntas semeadas nos dois idiomas. `ServiceOrder` passa a aparecer no portal: histórico por equipamento e contador de ordens em aberto no painel do cliente |
+| **#13** | `Post.cover` e mídia nunca preenchidos; exigia `uploadthing` | Resolvido **sem dependência nova**: os binários ficam no Postgres, como o restante. O `MediaUploader` já está nas três entidades e `content.ts` passou a usar `Post.cover` como fallback quando não há mídia própria |
+| **#18** | Site lia de `lib/data/*`, painel escrevia no Postgres | `src/lib/content.ts` substituiu os arquivos estáticos; 11 páginas reescritas. Concluído na rodada anterior |
+| **#68** | Redirects VK2 vazios | **Continua bloqueado.** Depende do mapa de URLs indexadas do site anterior (Search Console → Cobertura, ou `site:pili.ind.br`). O array `redirects()` em `next.config.ts` segue vazio e pronto para receber o mapeamento — não há como obtê-lo a partir do repositório |
 
 ### Verificação ao final
 

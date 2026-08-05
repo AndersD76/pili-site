@@ -74,6 +74,7 @@ export interface Produto {
   length: string;
   specs: { label: string; value: string }[];
   features: { title: string; description: string; icon?: string }[];
+  faqs: { question: string; answer: string }[];
   applications: string[];
   featured: boolean;
   image: string;
@@ -123,6 +124,11 @@ function selecaoProduto(locale: Locale) {
         icon: true,
       },
     },
+    faqs: {
+      where: idiomas,
+      orderBy: { order: "asc" },
+      select: { locale: true, question: true, answer: true },
+    },
     applications: { select: { slug: true } },
     media: {
       orderBy: { order: "asc" },
@@ -150,6 +156,7 @@ type LinhaProduto = {
     description: string;
     icon: string | null;
   }[];
+  faqs: { locale: Locale; question: string; answer: string }[];
   applications: { slug: string }[];
   media: { id: string; alt: string | null }[];
 };
@@ -166,6 +173,12 @@ function mapearProduto(p: LinhaProduto, locale: Locale): Produto {
       ? noIdioma
       : p.features.filter((f) => f.locale === LOCALE_PADRAO);
 
+  const faqsNoIdioma = p.faqs.filter((f) => f.locale === locale);
+  const faqs =
+    faqsNoIdioma.length > 0
+      ? faqsNoIdioma
+      : p.faqs.filter((f) => f.locale === LOCALE_PADRAO);
+
   return {
     slug: p.slug,
     category: p.category,
@@ -180,6 +193,7 @@ function mapearProduto(p: LinhaProduto, locale: Locale): Produto {
       description: f.description,
       icon: f.icon ?? undefined,
     })),
+    faqs: faqs.map((f) => ({ question: f.question, answer: f.answer })),
     applications: p.applications.map((a) => a.slug),
     featured: p.featured,
     // A primeira mídia é a principal — a ordem é definida no painel.
@@ -364,6 +378,7 @@ function selecaoArtigo(locale: Locale) {
     slug: true,
     author: true,
     category: true,
+    cover: true,
     readTime: true,
     publishedAt: true,
     createdAt: true,
@@ -387,6 +402,7 @@ type LinhaArtigo = {
   slug: string;
   author: string;
   category: PostCategory;
+  cover: string | null;
   readTime: number;
   publishedAt: Date | null;
   createdAt: Date;
@@ -417,7 +433,11 @@ function mapearArtigo(p: LinhaArtigo, locale: Locale): Artigo {
     readTime: p.readTime,
     // Destaque do blog é o artigo mais recente; não há campo próprio no schema.
     featured: false,
-    image: p.media[0] ? mediaUrl(p.media[0].id) : IMAGEM_PADRAO,
+    // A capa própria tem prioridade; `cover` cobre os artigos importados de
+    // fora, que têm URL em vez de arquivo no banco.
+    image: p.media[0]
+      ? mediaUrl(p.media[0].id)
+      : (p.cover ?? IMAGEM_PADRAO),
     tags: p.tags,
     metaTitle: t?.metaTitle ?? null,
     metaDesc: t?.metaDesc ?? null,
