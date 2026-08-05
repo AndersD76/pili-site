@@ -121,6 +121,33 @@ export async function abrirSolicitacao(
       createdAt: chamado.createdAt,
     });
 
+    // Enviar ticket ao Portal Pili (não bloqueia o retorno ao cliente)
+    const portalUrl = process.env.PORTAL_PILI_WEBHOOK_URL;
+    const portalSecret = process.env.PORTAL_PILI_WEBHOOK_SECRET;
+    if (portalUrl && portalSecret) {
+      fetch(portalUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Webhook-Secret": portalSecret,
+        },
+        body: JSON.stringify({
+          tipo: d.type,
+          prioridade: d.urgency,
+          cliente_nome: usuario?.company || usuario?.name || "—",
+          cliente_telefone: d.contactPhone,
+          cliente_email: usuario?.email || null,
+          cliente_endereco: equipamento.installedAddress || null,
+          equipamento_tipo: equipamento.productName,
+          equipamento_numero_serie: equipamento.serialNumber,
+          descricao: d.description,
+          contato_nome: d.contactName,
+          contato_telefone: d.contactPhone,
+          origem: "SITE_CLIENTE",
+        }),
+      }).catch((err) => logError("PORTAL_WEBHOOK", err));
+    }
+
     revalidatePath(`/portal/equipamentos/${equipamento.id}`);
     revalidatePath("/portal");
     revalidatePath("/admin/manutencao");

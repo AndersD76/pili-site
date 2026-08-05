@@ -429,10 +429,35 @@ model ClientEquipment {
   warrantyEndsAt   DateTime? @db.Timestamptz(3)
   /// Solicitações de manutenção abertas pelo cliente no portal.
   maintenance      MaintenanceRequest[]
+  documents        EquipmentDocument[]
   user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt        DateTime       @default(now()) @db.Timestamptz(3)
 
   @@index([userId])
+}
+
+enum DocumentType {
+  CIVIL
+  ELETRICO
+  HIDRAULICO
+  MANUAL
+  CERTIFICADO
+  LAUDO
+}
+
+model EquipmentDocument {
+  id          String          @id @default(cuid())
+  equipmentId String
+  type        DocumentType
+  title       String
+  filename    String
+  data        Bytes
+  mimeType    String
+  size        Int
+  equipment   ClientEquipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+  createdAt   DateTime        @default(now()) @db.Timestamptz(3)
+
+  @@index([equipmentId])
 }
 
 /// Motivo do chamado.
