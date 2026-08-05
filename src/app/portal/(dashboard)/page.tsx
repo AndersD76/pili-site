@@ -29,12 +29,12 @@ export default async function PortalDashboardPage() {
     (eq) => eq.warrantyEndsAt && eq.warrantyEndsAt > new Date()
   );
 
-  // Ordens ainda não concluídas, entre os equipamentos deste cliente. É o dado
-  // que justifica um portal de pós-venda e não aparecia em lugar nenhum.
-  const ordensAbertas = await db.serviceOrder.count({
+  // Chamados que a equipe ainda não fechou. A ordem de serviço em si é emitida
+  // no ERP da PILI — aqui fica o pedido do cliente.
+  const chamadosAbertos = await db.maintenanceRequest.count({
     where: {
-      equipment: { userId: session.user.id },
-      completedAt: null,
+      userId: session.user.id,
+      status: { in: ["ABERTA", "EM_ANDAMENTO"] },
     },
   });
 
@@ -85,17 +85,17 @@ export default async function PortalDashboardPage() {
             </div>
           </div>
 
-          {/* Ordens de serviço em aberto */}
+          {/* Chamados de manutenção em aberto */}
           <div className="flex items-center gap-4 rounded-lg border border-pili-mist bg-pili-white p-6">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-pili-paper">
               <Wrench className="h-6 w-6 text-pili-concrete" />
             </div>
             <div>
               <p className="text-sm font-medium text-pili-concrete">
-                Ordens em aberto
+                Chamados em aberto
               </p>
               <p className="font-display text-2xl font-bold text-pili-graphite">
-                {ordensAbertas}
+                {chamadosAbertos}
               </p>
             </div>
           </div>

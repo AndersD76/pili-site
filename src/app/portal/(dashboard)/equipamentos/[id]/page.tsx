@@ -9,25 +9,35 @@ import {
   ShieldX,
   HardDrive,
   Wrench,
-  CircleDot,
 } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { SolicitarManutencao } from "@/components/portal/solicitar-manutencao";
 
 /* ---------- helpers ---------- */
 
-/**
- * Cor por status. `status` é texto livre no schema, então há um padrão para
- * valores que não conhecemos, em vez de a etiqueta sumir.
- */
-const STATUS_CORES: Record<string, string> = {
-  ABERTA: "bg-amber-50 text-amber-700",
-  AGENDADA: "bg-blue-50 text-blue-700",
-  EM_ANDAMENTO: "bg-blue-50 text-blue-700",
-  CONCLUIDA: "bg-emerald-50 text-emerald-700",
-  CANCELADA: "bg-gray-100 text-gray-500",
-  default: "bg-gray-100 text-gray-600",
-};
+/** Rótulo e cor por status do chamado. */
+const STATUS = {
+  ABERTA: { label: "Aberto", cor: "bg-amber-50 text-amber-700" },
+  EM_ANDAMENTO: { label: "Em andamento", cor: "bg-blue-50 text-blue-700" },
+  CONCLUIDA: { label: "Concluído", cor: "bg-emerald-50 text-emerald-700" },
+  CANCELADA: { label: "Cancelado", cor: "bg-gray-100 text-gray-500" },
+} as const;
+
+const TIPOS = {
+  CORRETIVA: "Corretiva",
+  PREVENTIVA: "Preventiva",
+  INSTALACAO: "Instalação",
+  DUVIDA_TECNICA: "Dúvida técnica",
+  OUTRO: "Outro",
+} as const;
+
+const URGENCIAS = {
+  PARADA: "Equipamento parado",
+  ALTA: "Alta",
+  MEDIA: "Média",
+  BAIXA: "Baixa",
+} as const;
 
 function formatDate(date: Date) {
   return date.toLocaleDateString("pt-BR", {
@@ -78,12 +88,7 @@ export default async function EquipamentoDetailPage({ params }: PageProps) {
   const equipment = await db.clientEquipment.findFirst({
     where: { id, userId: session.user.id },
     include: {
-      // As ordens de serviço são o motivo de existir um portal de pós-venda:
-      // o model e a relação já estavam no schema, mas nenhuma tela os lia.
-      serviceOrders: {
-        orderBy: [{ scheduledAt: "desc" }, { createdAt: "desc" }],
-        take: 50,
-      },
+      maintenance: { orderBy: { createdAt: "desc" }, take: 50 },
     },
   });
 
@@ -198,58 +203,60 @@ export default async function EquipamentoDetailPage({ params }: PageProps) {
         </dl>
       </div>
 
-      {/* ---- Section 3: Ordens de serviço ---- */}
+      {/* ---- Section 3: Chamados de manutenção ---- */}
       <div className="mb-8 rounded-lg border border-pili-mist bg-pili-white p-6">
         <h2 className="mb-5 flex items-center gap-2 font-display text-lg font-bold text-pili-graphite">
           <Wrench className="h-5 w-5 text-pili-concrete" />
-          Ordens de serviço
+          Chamados de manutenção
         </h2>
 
-        {equipment.serviceOrders.length === 0 ? (
-          <p className="text-sm text-pili-concrete">
-            Nenhuma ordem de serviço registrada para este equipamento.
+        {equipment.maintenance.length === 0 ? (
+          <p className="mb-6 text-sm text-pili-concrete">
+            Nenhum chamado aberto para este equipamento.
           </p>
         ) : (
-          <ul className="divide-y divide-pili-mist">
-            {equipment.serviceOrders.map((os) => {
-              const cor = STATUS_CORES[os.status] ?? STATUS_CORES.default;
+          <ul className="mb-6 divide-y divide-pili-mist">
+            {equipment.maintenance.map((c) => {
+              const st = STATUS[c.status];
               return (
-                <li key={os.id} className="py-4 first:pt-0 last:pb-0">
+                <li key={c.id} className="py-4 first:pt-0">
                   <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                     <span className="font-mono text-sm font-medium text-pili-graphite">
-                      {os.number}
+                      #{c.number}
                     </span>
                     <span
-                      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${cor}`}
+                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${st.cor}`}
                     >
-                      <CircleDot className="h-3 w-3" />
-                      {os.status}
+                      {st.label}
                     </span>
                     <span className="text-xs uppercase tracking-wide text-pili-concrete">
-                      {os.type}
+                      {TIPOS[c.type]}
                     </span>
+                    {c.urgency === "PARADA" && (
+                      <span className="text-xs font-semibold text-red-700">
+                        {URGENCIAS.PARADA}
+                      </span>
+                    )}
                   </div>
 
                   <p className="mt-2 text-sm leading-relaxed text-pili-graphite">
-                    {os.description}
+                    {c.description}
                   </p>
 
-                  <div className="mt-2 flex flex-wrap gap-x-6 gap-y-1 font-mono text-xs text-pili-concrete">
-                    {os.scheduledAt && (
-                      <span>Agendada: {formatDate(os.scheduledAt)}</span>
-                    )}
-                    {os.completedAt && (
-                      <span>Concluída: {formatDate(os.completedAt)}</span>
-                    )}
-                    {!os.scheduledAt && !os.completedAt && (
-                      <span>Aberta em {formatDate(os.createdAt)}</span>
-                    )}
-                  </div>
+                  <p className="mt-2 font-mono text-xs text-pili-concrete">
+                    Aberto em {formatDate(c.createdAt)}
+                  </p>
                 </li>
               );
             })}
           </ul>
         )}
+
+        <SolicitarManutencao
+          equipmentId={equipment.id}
+          nomePadrao={session.user.name ?? ""}
+          telefonePadrao=""
+        />
       </div>
 
       {/* ---- Section 4: Back button ---- */}
