@@ -12,6 +12,7 @@ import {
   UserCog,
   Settings,
   Menu,
+  BriefcaseBusiness,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,11 @@ import {
 const navItems = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Leads", href: "/admin/leads", icon: Users },
+  {
+    label: "Candidaturas",
+    href: "/admin/candidaturas",
+    icon: BriefcaseBusiness,
+  },
   { label: "Produtos", href: "/admin/produtos", icon: Package },
   { label: "Obras", href: "/admin/obras", icon: Building2 },
   { label: "Blog", href: "/admin/blog", icon: FileText },

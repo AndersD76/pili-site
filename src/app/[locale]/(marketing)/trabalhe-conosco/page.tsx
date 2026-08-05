@@ -13,6 +13,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Users } from "lucide-react";
 import { useTranslations } from "next-intl";
+import {
+  ACCEPT_CV_ATTRIBUTE,
+  MAX_CV_SIZE,
+  MAX_CV_SIZE_LABEL,
+} from "@/lib/media";
 
 const AREAS = [
   "engenharia",
@@ -27,6 +32,8 @@ const AREAS = [
 
 export default function TrabalheConoscoPage() {
   const t = useTranslations();
+  const [cv, setCv] = useState<File | null>(null);
+  const [erroCv, setErroCv] = useState<string | null>(null);
   const [status, setStatus] = useState<
     "idle" | "loading" | "success" | "error"
   >("idle");
@@ -42,24 +49,38 @@ export default function TrabalheConoscoPage() {
   });
 
   async function onSubmit(values: JobApplicationFormInput) {
+    setErroCv(null);
+
+    if (cv) {
+      if (cv.size > MAX_CV_SIZE) {
+        setErroCv(t("trabalhe.cvTooBig", { max: MAX_CV_SIZE_LABEL }));
+        return;
+      }
+      // Checagem local só para dar retorno imediato; quem decide é o servidor,
+      // que confere os magic bytes.
+      const extensao = cv.name.toLowerCase().split(".").pop() ?? "";
+      if (!["pdf", "doc", "docx"].includes(extensao)) {
+        setErroCv(t("trabalhe.cvBadFormat"));
+        return;
+      }
+    }
+
     setStatus("loading");
     try {
-      const res = await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: values.name,
-          email: values.email,
-          phone: values.phone,
-          company: "Candidato",
-          consent: values.consent,
-          source: "TRABALHE_CONOSCO",
-          message: `Área: ${values.area}\n\n${values.message ?? ""}`.trim(),
-          pageUrl: window.location.href,
-        }),
-      });
+      // `multipart/form-data` por causa do arquivo — o corpo não pode ser JSON.
+      const body = new FormData();
+      body.set("name", values.name);
+      body.set("email", values.email);
+      body.set("phone", values.phone);
+      body.set("area", values.area);
+      body.set("message", values.message ?? "");
+      body.set("consent", String(values.consent));
+      if (cv) body.set("cv", cv);
+
+      const res = await fetch("/api/candidaturas", { method: "POST", body });
       if (!res.ok) throw new Error("Failed");
       setStatus("success");
+      setCv(null);
       reset();
     } catch {
       setStatus("error");
@@ -207,6 +228,24 @@ export default function TrabalheConoscoPage() {
                       {...register("message")}
                       className="flex w-full border border-pili-mist bg-pili-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pili-safety"
                     />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="app-cv">{t("trabalhe.cv")}</Label>
+                    <input
+                      id="app-cv"
+                      type="file"
+                      accept={ACCEPT_CV_ATTRIBUTE}
+                      onChange={(e) => {
+                        setCv(e.target.files?.[0] ?? null);
+                        setErroCv(null);
+                      }}
+                      className="block w-full text-sm text-pili-concrete file:mr-3 file:border file:border-pili-mist file:bg-pili-paper file:px-4 file:py-2 file:text-sm file:font-medium file:text-pili-graphite hover:file:bg-pili-mist"
+                    />
+                    <p className="text-xs text-pili-cement">
+                      {t("trabalhe.cvHelp", { max: MAX_CV_SIZE_LABEL })}
+                    </p>
+                    {erroCv && <p className="text-xs text-pili-danger">{erroCv}</p>}
                   </div>
 
                   <div className="flex items-start gap-2">

@@ -384,16 +384,36 @@ model JobTranslation {
   @@unique([jobId, locale])
 }
 
+/// Candidatura enviada pelo formulário de "Trabalhe conosco".
+///
+/// `jobId` é opcional: o site não publica vagas, o formulário alimenta um
+/// banco de talentos. Antes as candidaturas eram gravadas como `Lead` com
+/// `company: "Candidato"` e a área concatenada dentro da mensagem — apareciam
+/// misturadas ao funil comercial e o currículo não tinha onde ficar.
 model JobApplication {
-  id        String   @id @default(cuid())
-  jobId     String
-  name      String
-  email     String
-  phone     String
-  cvUrl     String
-  message   String?  @db.Text
-  createdAt DateTime @default(now()) @db.Timestamptz(3)
-  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  id         String    @id @default(cuid())
+  jobId      String?
+  name       String
+  email      String
+  phone      String
+  /// Área de interesse; chave de `trabalhe.areas` nas mensagens.
+  area       String
+  message    String?   @db.Text
+  /// Currículo guardado no próprio banco, como as fotos. Servido só para o
+  /// admin autenticado — é dado pessoal, não pode ficar em URL pública.
+  cvData     Bytes?
+  cvFilename String?
+  cvMimeType String?
+  cvSize     Int?
+  /// Consentimento LGPD registrado no envio.
+  consentAt  DateTime? @db.Timestamptz(3)
+  reviewedAt DateTime? @db.Timestamptz(3)
+  deletedAt  DateTime? @db.Timestamptz(3)
+  createdAt  DateTime  @default(now()) @db.Timestamptz(3)
+  job        Job?      @relation(fields: [jobId], references: [id], onDelete: SetNull)
+
+  @@index([deletedAt, createdAt])
+  @@index([area])
 }
 
 // ============ PORTAL CLIENTE ============

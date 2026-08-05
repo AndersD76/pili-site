@@ -8,7 +8,13 @@ import { SpecTable } from "@/components/marketing/spec-table";
 import { FeatureGrid } from "@/components/marketing/feature-grid";
 import { LeadForm } from "@/components/marketing/lead-form";
 import { ProductCard } from "@/components/marketing/product-card";
-import { generatePageMetadata, generateProductJsonLd, generateBreadcrumbJsonLd, jsonLdScript} from "@/lib/seo";
+import {
+  generatePageMetadata,
+  generateProductJsonLd,
+  generateBreadcrumbJsonLd,
+  generateFaqJsonLd,
+  jsonLdScript,
+} from "@/lib/seo";
 
 /**
  * O conteúdo vem do banco e muda pelo painel. Com ISR a página é servida do
@@ -81,6 +87,14 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd) }}
       />
+      {product.faqs.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: jsonLdScript(generateFaqJsonLd(product.faqs)),
+          }}
+        />
+      )}
 
       {/* Breadcrumb */}
       <div className="border-b border-pili-mist bg-pili-paper px-6 py-3 lg:px-8">
@@ -227,6 +241,29 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
                 </Link>
               ))}
             </div>
+          </div>
+        </section>
+      )}
+
+      {/* FAQ — as perguntas precisam estar visíveis para o rich result valer */}
+      {product.faqs.length > 0 && (
+        <section className="bg-pili-paper py-16 px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl">
+            <h2 className="font-display text-[length:var(--text-h2)] font-black uppercase text-pili-black">
+              {t("produtos.faq")}
+            </h2>
+            <dl className="mt-8 divide-y divide-pili-mist border-y border-pili-mist">
+              {product.faqs.map((faq) => (
+                <div key={faq.question} className="py-6">
+                  <dt className="font-display text-base font-bold text-pili-black">
+                    {faq.question}
+                  </dt>
+                  <dd className="mt-2 leading-relaxed text-pili-concrete">
+                    {faq.answer}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </section>
       )}

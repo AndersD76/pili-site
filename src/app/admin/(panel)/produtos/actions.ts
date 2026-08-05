@@ -23,6 +23,32 @@ import {
  * removida e o site volta a exibir o português, em vez de mostrar um card com
  * título vazio.
  */
+/**
+ * Regrava as perguntas frequentes do produto.
+ *
+ * Substituição completa, como as especificações: reconciliar item a item não
+ * traria ganho e abriria espaço para órfãos. As perguntas ficam no idioma
+ * padrão; a versão em espanhol é editada depois, direto no banco ou por uma
+ * evolução deste formulário.
+ */
+async function salvarFaqs(
+  productId: string,
+  faqs: { question: string; answer: string }[],
+) {
+  await db.fAQ.deleteMany({ where: { productId, locale: "pt_BR" } });
+  if (faqs.length === 0) return;
+
+  await db.fAQ.createMany({
+    data: faqs.map((f, i) => ({
+      productId,
+      locale: "pt_BR" as const,
+      question: f.question,
+      answer: f.answer,
+      order: i,
+    })),
+  });
+}
+
 async function salvarTraducaoEs(
   productId: string,
   d: {
@@ -64,6 +90,11 @@ function parseProductForm(data: FormData) {
     return { ok: false as const, error: "Formato de especificações inválido" };
   }
 
+  const faqs = formJsonArray(data, "faqs");
+  if (faqs === null) {
+    return { ok: false as const, error: "Formato das perguntas inválido" };
+  }
+
   const tagline = formString(data, "tagline").trim();
 
   const metaTitle = formString(data, "metaTitle").trim();
@@ -80,6 +111,7 @@ function parseProductForm(data: FormData) {
     active: formBool(data, "active"),
     featured: formBool(data, "featured"),
     specs,
+    faqs,
     nameEs: formString(data, "nameEs"),
     taglineEs: formString(data, "taglineEs"),
     descriptionEs: formString(data, "descriptionEs"),
@@ -130,6 +162,7 @@ export async function getProductById(id: string) {
         translations: true,
         specs: { orderBy: { order: "asc" } },
         features: { orderBy: { order: "asc" } },
+        faqs: { where: { locale: "pt_BR" }, orderBy: { order: "asc" } },
       },
     });
     return { data: product, error: null };
@@ -197,6 +230,7 @@ export async function createProduct(data: FormData) {
       },
     });
 
+    await salvarFaqs(product.id, parsed.data.faqs);
     await salvarTraducaoEs(product.id, parsed.data);
 
     revalidatePath("/admin/produtos");
@@ -271,6 +305,7 @@ export async function updateProduct(id: string, data: FormData) {
       ),
     ]);
 
+    await salvarFaqs(id, parsed.data.faqs);
     await salvarTraducaoEs(id, parsed.data);
 
     revalidatePath("/admin/produtos");

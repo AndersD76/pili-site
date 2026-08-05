@@ -204,7 +204,8 @@
     "intro": "Plataformas de descarga de 9 a 30 metros, colectores de muestras y equipos especiales. Todos fabricados en Erechim/RS con acero de alta resistencia.",
     "models": "modelos",
     "helpText": "Use nuestra calculadora de capacidad o hable directamente con el equipo técnico de PILI para recibir una recomendación personalizada.",
-    "calculator": "Calculadora"
+    "calculator": "Calculadora",
+    "faq": "Preguntas frecuentes"
   },
   "solucoes": {
     "title": "Soluciones por sector",
@@ -577,7 +578,11 @@
     "consentSuffix": "y el almacenamiento de mi currículum en el banco de talentos.",
     "submit": "Enviar candidatura",
     "sendError": "Error al enviar. Inténtelo de nuevo o escriba a {email}.",
-    "metaTitle": "Trabaje con nosotros"
+    "metaTitle": "Trabaje con nosotros",
+    "cv": "Currículum",
+    "cvHelp": "PDF o Word, hasta {max}. Opcional, pero agiliza el análisis.",
+    "cvTooBig": "El archivo supera {max}.",
+    "cvBadFormat": "Formato no aceptado. Envíe PDF, DOC o DOCX."
   },
   "certBand": {
     "iso": "Sistema de gestión de la calidad",
