@@ -4,7 +4,13 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { X, Send, ExternalLink } from "lucide-react";
-import { GiorgiaMark } from "./giorgia-mark";
+import Image from "next/image";
+
+/**
+ * Avatar da assistente. O `GiorgiaMark` continua no projeto como marca
+ * monocromática — serve onde a foto não cabe (favicon, e-mail, impressão).
+ */
+const AVATAR = "/images/giorgia-avatar.webp";
 
 interface ChatMessage {
   text: string;
@@ -152,7 +158,15 @@ export function Giorgia({ whatsapp }: { whatsapp: string }) {
         >
           <span className="absolute inset-0 animate-[robo-ping_2.5s_ease-in-out_infinite] rounded-full bg-pili-safety opacity-40" />
 
-          <GiorgiaMark className="relative h-7 w-7" />
+          <Image
+            src={AVATAR}
+            alt=""
+            width={56}
+            height={56}
+            className="relative size-14 rounded-full object-cover"
+            // Fica visível já no primeiro paint, no canto da tela.
+            priority
+          />
 
           <span className="absolute -right-0.5 -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-pili-graphite text-[10px] font-bold leading-none text-pili-white">
             1
@@ -179,9 +193,13 @@ export function Giorgia({ whatsapp }: { whatsapp: string }) {
         >
           {/* Cabeçalho */}
           <div className="flex items-center gap-3 bg-pili-graphite px-4 py-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-pili-safety text-pili-white">
-              <GiorgiaMark className="h-5 w-5" />
-            </div>
+            <Image
+              src={AVATAR}
+              alt=""
+              width={36}
+              height={36}
+              className="size-9 rounded-full object-cover"
+            />
             <div className="flex-1">
               <p className="text-sm font-semibold leading-tight text-pili-white">
                 GiorgIA

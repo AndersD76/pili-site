@@ -171,7 +171,8 @@
       "produtividade": "Aumento de 30-50% en la productividad",
       "manutencao": "Menor costo de mantenimiento por tonelada",
       "payback": "Retorno promedio entre 18 y 36 meses"
-    }
+    },
+    "clientsSubtitle": "Equipos PILI en operación. Haga clic para ver la obra y los números medidos."
   },
   "produtos": {
     "metaTitle": "Volcadores hidráulicos y equipos de descarga",
@@ -493,7 +494,14 @@
       "i2": "Auditorías internas periódicas y mejora continua",
       "i3": "Trazabilidad completa de materiales y componentes",
       "i4": "Control dimensional riguroso en todas las etapas",
-      "i5": "Calificación y certificación de soldadores"
+      "i5": "Calificación y certificación de soldadores",
+      "politicaTitulo": "Política de la Calidad",
+      "politica": "PILI está comprometida a atender las expectativas de los clientes en productos y servicios, con tecnologías hidráulicas y neumáticas, con procesos definidos y constantemente mejorados, además de mantener el crecimiento del negocio.",
+      "objetivosTitulo": "Objetivos de la Calidad",
+      "o1": "Atender la satisfacción de los clientes",
+      "o2": "Asegurar la calidad de los productos y servicios",
+      "o3": "Asegurar la sostenibilidad del negocio",
+      "o4": "Mejorar constantemente los procesos"
     },
     "nr10": {
       "subtitle": "Seguridad en instalaciones eléctricas",
@@ -521,7 +529,10 @@
       "i5": "Posibilidad de extensión de la garantía mediante contrato"
     },
     "intro": "Todos los equipos PILI son diseñados y fabricados conforme a las normas brasileñas e internacionales de calidad y seguridad. Garantía estructural de 5 años en toda la línea.",
-    "docsText": "¿Necesita informes, certificados o documentación técnica para una licitación? Nuestro equipo puede proporcionar todos los documentos necesarios."
+    "docsText": "¿Necesita informes, certificados o documentación técnica para una licitación? Nuestro equipo puede proporcionar todos los documentos necesarios.",
+    "verDetalhes": "Ver detalles",
+    "fechar": "Cerrar",
+    "verPagina": "Ver página de certificaciones"
   },
   "ecossistema": {
     "metaTitle": "Ecosistema PILI",
