@@ -67,6 +67,12 @@ model User {
   name          String?
   email         String            @unique
   emailVerified DateTime? @db.Timestamptz(3)
+  /// Senha provisória que o usuário ainda não trocou.
+  ///
+  /// Contas criadas em lote pelo sync do CRM nascem com senha gerada por nós.
+  /// Enquanto isto for `true` o portal só mostra a tela de troca — sem isso a
+  /// senha provisória vira definitiva e vale para sempre.
+  mustChangePassword Boolean @default(false)
   image         String?
   passwordHash  String?
   role          Role              @default(CLIENTE)
@@ -424,7 +430,10 @@ model ClientEquipment {
   userId           String
   serialNumber     String         @unique
   productName      String
-  installedAt      DateTime @db.Timestamptz(3)
+  /// Nulo quando a data não é conhecida. O CRM tem o equipamento vendido, mas
+  /// nem sempre a data de instalação — gravar "hoje" nesse caso seria inventar
+  /// um dado que o cliente veria como verdadeiro na ficha dele.
+  installedAt      DateTime? @db.Timestamptz(3)
   installedAddress String?
   warrantyEndsAt   DateTime? @db.Timestamptz(3)
   /// Solicitações de manutenção abertas pelo cliente no portal.

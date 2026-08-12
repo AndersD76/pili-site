@@ -5,6 +5,7 @@ import {
   SITE_DESCRIPTION,
   COMPANY,
   SOCIAL,
+  EM_DOMINIO_DEFINITIVO,
 } from "./constants";
 
 /** Imagem padrão de compartilhamento. Precisa existir em `public/`. */
@@ -58,7 +59,13 @@ export function generatePageMetadata({
       description,
       images: [image],
     },
-    robots: noIndex ? { index: false, follow: false } : undefined,
+    // O `robots.txt` já bloqueia o domínio provisório, mas ele só vale para
+    // quem o lê antes de rastrear. A meta tag protege quem chega por link
+    // direto, e some sozinha quando o site assumir o domínio definitivo.
+    robots:
+      noIndex || !EM_DOMINIO_DEFINITIVO
+        ? { index: false, follow: false }
+        : undefined,
   };
 }
 

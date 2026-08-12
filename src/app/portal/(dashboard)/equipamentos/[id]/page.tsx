@@ -172,7 +172,9 @@ export default async function EquipamentoDetailPage({ params }: PageProps) {
                 Data de instalação
               </dt>
               <dd className="mt-0.5 text-sm text-pili-graphite">
-                {formatDate(equipment.installedAt)}
+                {equipment.installedAt
+                  ? formatDate(equipment.installedAt)
+                  : "Não informada"}
               </dd>
             </div>
           </div>

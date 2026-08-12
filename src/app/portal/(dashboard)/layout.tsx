@@ -16,6 +16,12 @@ export default async function PortalDashboardLayout({
     redirect("/admin");
   }
 
+  // Senha provisória da importação: nada do portal abre antes da troca. A
+  // página de troca fica fora deste grupo justamente para não cair aqui.
+  if (session.user.mustChangePassword) {
+    redirect("/portal/trocar-senha");
+  }
+
   return (
     <div className="min-h-screen bg-pili-paper">
       <PortalSidebar />

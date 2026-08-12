@@ -114,6 +114,40 @@ export async function uploadMedia(
   }
 }
 
+/**
+ * Invalida tudo que mostra esta foto.
+ *
+ * Só `uploadMedia` fazia isso. Excluir e reordenar invalidavam apenas
+ * `/admin/media`, então a tela de edição do produto/obra/artigo continuava
+ * servindo a lista antiga do cache — a foto sumia da tela e reaparecia ao
+ * voltar para a página. E o site público seguia exibindo a foto excluída até a
+ * revalidação por tempo.
+ */
+function invalidarPaginas(alvo: {
+  productId?: string | null;
+  caseId?: string | null;
+  postId?: string | null;
+}) {
+  revalidatePath("/admin/media");
+
+  if (alvo.productId) {
+    revalidatePath(`/admin/produtos/${alvo.productId}`);
+    revalidatePath("/[locale]/(marketing)/produtos", "page");
+    revalidatePath("/[locale]/(marketing)/produtos/[slug]", "page");
+  }
+  if (alvo.caseId) {
+    revalidatePath(`/admin/obras/${alvo.caseId}`);
+    revalidatePath("/[locale]/(marketing)/obras", "page");
+    revalidatePath("/[locale]/(marketing)/obras/[slug]", "page");
+  }
+  if (alvo.postId) {
+    revalidatePath(`/admin/blog/${alvo.postId}`);
+    revalidatePath("/[locale]/(marketing)/blog", "page");
+    revalidatePath("/[locale]/(marketing)/blog/[slug]", "page");
+  }
+  revalidatePath("/[locale]/(marketing)", "page");
+}
+
 /** Atualiza o texto alternativo — obrigatório para acessibilidade e SEO. */
 export async function updateMediaAlt(
   id: string,
@@ -122,11 +156,12 @@ export async function updateMediaAlt(
   await requireRoleOrThrow("ADMIN", "COMERCIAL");
 
   try {
-    await db.media.update({
+    const media = await db.media.update({
       where: { id },
       data: { alt: alt.trim() || null },
+      select: { productId: true, caseId: true, postId: true },
     });
-    revalidatePath("/admin/media");
+    invalidarPaginas(media);
     return { success: true };
   } catch (err) {
     logError("MEDIA_UPDATE_ALT", err);
@@ -140,8 +175,19 @@ export async function deleteMedia(
   await requireRoleOrThrow("ADMIN", "COMERCIAL");
 
   try {
+    // O vínculo precisa ser lido antes: depois do delete não há mais de onde
+    // descobrir quais páginas invalidar.
+    const media = await db.media.findUnique({
+      where: { id },
+      select: { productId: true, caseId: true, postId: true },
+    });
+
+    if (!media) {
+      return { success: false, error: "Foto não encontrada." };
+    }
+
     await db.media.delete({ where: { id } });
-    revalidatePath("/admin/media");
+    invalidarPaginas(media);
     return { success: true };
   } catch (err) {
     logError("MEDIA_DELETE", err);
@@ -199,7 +245,13 @@ export async function reorderMedia(
       ),
     );
 
-    revalidatePath("/admin/media");
+    // A ordem define qual foto é a principal — o site inteiro precisa saber.
+    const dono = await db.media.findUnique({
+      where: { id: ids[0] },
+      select: { productId: true, caseId: true, postId: true },
+    });
+    if (dono) invalidarPaginas(dono);
+
     return { success: true };
   } catch (err) {
     logError("MEDIA_REORDER", err);

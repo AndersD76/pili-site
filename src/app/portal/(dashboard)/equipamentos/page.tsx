@@ -99,10 +99,12 @@ export default async function EquipamentosPage() {
                       <span className="truncate">{eq.installedAddress}</span>
                     </p>
                   )}
-                  <p className="flex items-center gap-1.5">
-                    <Calendar className="h-3.5 w-3.5 shrink-0" />
-                    Instalado em {formatDate(eq.installedAt)}
-                  </p>
+                  {eq.installedAt && (
+                    <p className="flex items-center gap-1.5">
+                      <Calendar className="h-3.5 w-3.5 shrink-0" />
+                      Instalado em {formatDate(eq.installedAt)}
+                    </p>
+                  )}
                 </div>
 
                 {/* Warranty + action */}

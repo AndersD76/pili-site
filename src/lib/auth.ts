@@ -80,6 +80,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           email: user.email,
           image: user.image,
           role: user.role,
+          mustChangePassword: user.mustChangePassword,
         };
       },
     }),
@@ -96,6 +97,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.id = user.id as string;
         // Menor privilégio: sem role explícita, trata como cliente.
         token.role = user.role ?? "CLIENTE";
+        token.mustChangePassword = user.mustChangePassword ?? false;
         token.roleCheckedAt = now;
         return token;
       }
@@ -111,7 +113,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         try {
           const current = await db.user.findUnique({
             where: { id: token.id },
-            select: { role: true },
+            select: { role: true, mustChangePassword: true },
           });
 
           if (!current) {
@@ -120,6 +122,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             token.role = "CLIENTE" as Role;
           } else {
             token.role = current.role;
+            // Revalidado junto com o papel: assim que a senha é trocada, o
+            // bloqueio do portal cai sem exigir novo login.
+            token.mustChangePassword = current.mustChangePassword;
           }
           token.roleCheckedAt = now;
         } catch (err) {
@@ -135,6 +140,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (session.user) {
         session.user.id = token.id;
         session.user.role = token.role;
+        session.user.mustChangePassword = token.mustChangePassword ?? false;
       }
       return session;
     },

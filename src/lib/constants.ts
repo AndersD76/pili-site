@@ -4,6 +4,20 @@ export const SITE_DESCRIPTION =
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://pili.ind.br";
 
+/**
+ * Domínio definitivo do site.
+ *
+ * Enquanto a migração não acontece, `pili.ind.br` ainda serve o site antigo em
+ * Apache e este projeto vive num domínio provisório do Railway. Comparar os
+ * dois é o que permite bloquear a indexação do provisório: sem isso o Google
+ * indexa o endereço temporário, que depois da virada vira conteúdo duplicado
+ * competindo com o domínio real.
+ */
+export const DOMINIO_DEFINITIVO = "https://pili.ind.br";
+
+/** Estamos servindo do domínio definitivo? */
+export const EM_DOMINIO_DEFINITIVO = SITE_URL === DOMINIO_DEFINITIVO;
+
 export const COMPANY = {
   name: "M.B. Pili Equipamentos Industriais Ltda",
   cnpj: "05.620.512/0001-74",
