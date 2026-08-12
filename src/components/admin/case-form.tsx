@@ -9,6 +9,7 @@ import { useState, useTransition } from "react";
 
 import { createCase, updateCase } from "@/app/admin/(panel)/obras/actions";
 import { Button } from "@/components/ui/button";
+import { BotaoTraduzir } from "@/components/admin/botao-traduzir";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -63,8 +64,10 @@ function slugify(text: string): string {
 
 export function CaseForm({
   caseData,
+  traducaoAtiva,
 }: {
   caseData?: CaseWithRelations;
+  traducaoAtiva: boolean;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -330,15 +333,32 @@ export function CaseForm({
       <Separator />
 
       <div className="space-y-4">
-        <div>
-          <h2 className="font-display text-lg font-semibold text-pili-black">
-            Espanhol
-          </h2>
-          <p className="mt-1 text-sm text-pili-concrete">
-            Conteúdo exibido em /es. Deixe em branco para o site em espanhol
-            usar o texto em português. Cliente, local, ano, métricas e fotos são
-            os mesmos nos dois idiomas.
-          </p>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 className="font-display text-lg font-semibold text-pili-black">
+              Espanhol
+            </h2>
+            <p className="mt-1 text-sm text-pili-concrete">
+              Conteúdo exibido em /es. Deixe em branco para o site em espanhol
+              usar o texto em português. Cliente, local, ano, métricas e fotos
+              são os mesmos nos dois idiomas.
+            </p>
+          </div>
+
+          <BotaoTraduzir
+            habilitado={traducaoAtiva}
+            origem={() => ({
+              title: getValues("title"),
+              summary: getValues("summary"),
+              content: getValues("content"),
+            })}
+            aoTraduzir={(c) => {
+              const p = { shouldDirty: true } as const;
+              if (c.title !== undefined) setValue("titleEs", c.title, p);
+              if (c.summary !== undefined) setValue("summaryEs", c.summary, p);
+              if (c.content !== undefined) setValue("contentEs", c.content, p);
+            }}
+          />
         </div>
 
         <div className="space-y-2">

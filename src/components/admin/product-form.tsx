@@ -9,6 +9,7 @@ import { useState, useTransition } from "react";
 
 import { createProduct, updateProduct } from "@/app/admin/(panel)/produtos/actions";
 import { Button } from "@/components/ui/button";
+import { BotaoTraduzir } from "@/components/admin/botao-traduzir";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -98,8 +99,10 @@ function slugify(text: string): string {
 
 export function ProductForm({
   product,
+  traducaoAtiva,
 }: {
   product?: ProductWithRelations;
+  traducaoAtiva: boolean;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -338,15 +341,38 @@ export function ProductForm({
       <Separator />
 
       <div className="space-y-4">
-        <div>
-          <h2 className="font-display text-lg font-semibold text-pili-black">
-            Espanhol
-          </h2>
-          <p className="mt-1 text-sm text-pili-concrete">
-            Conteúdo exibido em /es. Deixe em branco para o site em espanhol
-            usar o texto em português. As especificações e as fotos são as
-            mesmas nos dois idiomas.
-          </p>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 className="font-display text-lg font-semibold text-pili-black">
+              Espanhol
+            </h2>
+            <p className="mt-1 text-sm text-pili-concrete">
+              Conteúdo exibido em /es. Deixe em branco para o site em espanhol
+              usar o texto em português. As especificações e as fotos são as
+              mesmas nos dois idiomas.
+            </p>
+          </div>
+
+          <BotaoTraduzir
+            habilitado={traducaoAtiva}
+            origem={() => ({
+              name: getValues("name"),
+              tagline: getValues("tagline"),
+              description: getValues("description"),
+              metaTitle: getValues("metaTitle"),
+              metaDesc: getValues("metaDesc"),
+            })}
+            aoTraduzir={(c) => {
+              // `shouldDirty` marca o formulário como alterado, senão o aviso
+              // de "há alterações não salvas" não aparece.
+              const p = { shouldDirty: true } as const;
+              if (c.name !== undefined) setValue("nameEs", c.name, p);
+              if (c.tagline !== undefined) setValue("taglineEs", c.tagline, p);
+              if (c.description !== undefined) setValue("descriptionEs", c.description, p);
+              if (c.metaTitle !== undefined) setValue("metaTitleEs", c.metaTitle, p);
+              if (c.metaDesc !== undefined) setValue("metaDescEs", c.metaDesc, p);
+            }}
+          />
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">

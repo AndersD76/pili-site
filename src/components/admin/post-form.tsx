@@ -9,6 +9,7 @@ import { useState, useTransition } from "react";
 
 import { createPost, updatePost } from "@/app/admin/(panel)/blog/actions";
 import { Button } from "@/components/ui/button";
+import { BotaoTraduzir } from "@/components/admin/botao-traduzir";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -50,8 +51,10 @@ function slugify(text: string): string {
 
 export function PostForm({
   post,
+  traducaoAtiva,
 }: {
   post?: PostWithRelations;
+  traducaoAtiva: boolean;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -219,15 +222,32 @@ export function PostForm({
       <Separator />
 
       <div className="space-y-4">
-        <div>
-          <h2 className="font-display text-lg font-semibold text-pili-black">
-            Espanhol
-          </h2>
-          <p className="mt-1 text-sm text-pili-concrete">
-            Conteúdo exibido em /es. Deixe em branco para o site em espanhol
-            usar o texto em português. Autor, tags e capa são os mesmos nos dois
-            idiomas.
-          </p>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 className="font-display text-lg font-semibold text-pili-black">
+              Espanhol
+            </h2>
+            <p className="mt-1 text-sm text-pili-concrete">
+              Conteúdo exibido em /es. Deixe em branco para o site em espanhol
+              usar o texto em português. Autor, tags e capa são os mesmos nos
+              dois idiomas.
+            </p>
+          </div>
+
+          <BotaoTraduzir
+            habilitado={traducaoAtiva}
+            origem={() => ({
+              title: getValues("title"),
+              excerpt: getValues("excerpt"),
+              content: getValues("content"),
+            })}
+            aoTraduzir={(c) => {
+              const p = { shouldDirty: true } as const;
+              if (c.title !== undefined) setValue("titleEs", c.title, p);
+              if (c.excerpt !== undefined) setValue("excerptEs", c.excerpt, p);
+              if (c.content !== undefined) setValue("contentEs", c.content, p);
+            }}
+          />
         </div>
 
         <div className="space-y-2">

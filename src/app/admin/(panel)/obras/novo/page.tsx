@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { traducaoDisponivel } from "@/lib/traduzir";
 import { ArrowLeft } from "lucide-react";
 import { requireRole } from "@/lib/auth-guard";
 import { CaseForm } from "@/components/admin/case-form";
@@ -26,7 +27,7 @@ export default async function NovaObraPage() {
         </div>
       </div>
 
-      <CaseForm />
+      <CaseForm traducaoAtiva={traducaoDisponivel()} />
     </div>
   );
 }
