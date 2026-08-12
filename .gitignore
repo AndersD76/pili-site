@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Senhas temporarias dos clientes, geradas por scripts/sync-clientes-portal.mjs.
+# O arquivo sai em texto puro; nao pode entrar no repositorio.
+scripts/credenciais-clientes.csv

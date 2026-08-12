@@ -1,7 +1,6 @@
 import { getResend, FROM_EMAIL } from "./client";
 import { MaintenanceTicketEmail } from "./templates/maintenance-ticket";
 import { logError } from "@/lib/prisma-errors";
-import { db } from "@/lib/db";
 
 /**
  * Destino dos chamados de manutenção.
@@ -75,56 +74,12 @@ export async function sendMaintenanceEmail(
       react: <MaintenanceTicketEmail {...ticket} />,
     });
 
-    await db.maintenanceRequest.update({
-      where: { id: ticket.id },
-      data: { notifiedAt: new Date() },
-    });
-
+    // `notifiedAt` pertence à entrega no Portal (`lib/portal-pili.ts`). Se o
+    // e-mail também o marcasse, um chamado que nunca chegou ao Portal
+    // apareceria como entregue no painel.
     return true;
   } catch (err) {
     logError("MANUTENCAO_EMAIL_FALHOU", err);
     return false;
   }
-}
-
-/**
- * Reenvia os chamados que nunca foram notificados.
- *
- * Serve para o dia em que o transporte de e-mail for configurado: nenhum
- * chamado aberto nesse meio-tempo se perde.
- */
-export async function notificarChamadosPendentes(): Promise<number> {
-  const pendentes = await db.maintenanceRequest.findMany({
-    where: { notifiedAt: null, status: { in: ["ABERTA", "EM_ANDAMENTO"] } },
-    include: {
-      equipment: true,
-      user: { select: { name: true, email: true, company: true } },
-    },
-    orderBy: { createdAt: "asc" },
-    take: 100,
-  });
-
-  let enviados = 0;
-
-  for (const c of pendentes) {
-    const ok = await sendMaintenanceEmail({
-      id: c.id,
-      number: c.number,
-      type: c.type,
-      urgency: c.urgency,
-      description: c.description,
-      contactName: c.contactName,
-      contactPhone: c.contactPhone,
-      clientName: c.user.name ?? "—",
-      clientEmail: c.user.email,
-      clientCompany: c.user.company,
-      equipmentName: c.equipment.productName,
-      serialNumber: c.equipment.serialNumber,
-      installedAddress: c.equipment.installedAddress,
-      createdAt: c.createdAt,
-    });
-    if (ok) enviados++;
-  }
-
-  return enviados;
 }
