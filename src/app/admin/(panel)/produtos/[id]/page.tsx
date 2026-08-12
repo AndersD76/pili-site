@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { traducaoDisponivel } from "@/lib/traduzir";
 import { MediaUploader } from "@/components/admin/media-uploader";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
@@ -40,7 +41,7 @@ export default async function EditarProdutoPage({
         </div>
       </div>
 
-      <ProductForm product={product} />
+      <ProductForm product={product} traducaoAtiva={traducaoDisponivel()} />
 
       <div className="max-w-2xl rounded-lg border border-pili-mist bg-pili-white p-6">
         <MediaUploader

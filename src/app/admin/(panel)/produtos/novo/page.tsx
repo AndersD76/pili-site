@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { traducaoDisponivel } from "@/lib/traduzir";
 import { ArrowLeft } from "lucide-react";
 import { requireRole } from "@/lib/auth-guard";
 import { ProductForm } from "@/components/admin/product-form";
@@ -26,7 +27,7 @@ export default async function NovoProdutoPage() {
         </div>
       </div>
 
-      <ProductForm />
+      <ProductForm traducaoAtiva={traducaoDisponivel()} />
     </div>
   );
 }
