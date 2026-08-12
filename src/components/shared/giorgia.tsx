@@ -153,7 +153,7 @@ export function Giorgia({ whatsapp }: { whatsapp: string }) {
           onClick={handleOpen}
           onMouseEnter={() => setShowTooltip(true)}
           onMouseLeave={() => setShowTooltip(false)}
-          className="fixed bottom-(--fab-bottom) right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-pili-safety text-pili-white shadow-lg transition-all hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pili-safety focus-visible:ring-offset-2"
+          className="fixed bottom-(--fab-bottom) right-6 z-40 flex h-16 w-16 items-center justify-center rounded-full bg-pili-safety text-pili-white shadow-lg transition-all hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pili-safety focus-visible:ring-offset-2"
           aria-label={t("open")}
         >
           <span className="absolute inset-0 animate-[robo-ping_2.5s_ease-in-out_infinite] rounded-full bg-pili-safety opacity-40" />
@@ -161,9 +161,9 @@ export function Giorgia({ whatsapp }: { whatsapp: string }) {
           <Image
             src={AVATAR}
             alt=""
-            width={56}
-            height={56}
-            className="relative size-14 rounded-full object-cover"
+            width={64}
+            height={64}
+            className="relative size-16 rounded-full object-cover"
             // Fica visível já no primeiro paint, no canto da tela.
             priority
           />
