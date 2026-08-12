@@ -8,6 +8,7 @@ import { logError } from "@/lib/prisma-errors";
 import { consumeRateLimit, getClientIp } from "@/lib/rate-limit";
 import { headers } from "next/headers";
 import { sendMaintenanceEmail } from "@/lib/email/send-maintenance-email";
+import { enviarTicketPortal } from "@/lib/portal-pili";
 
 export const solicitacaoSchema = z.object({
   equipmentId: z.string().min(1),
@@ -101,9 +102,8 @@ export async function abrirSolicitacao(
       select: { name: true, email: true, company: true },
     });
 
-    // O envio não bloqueia o retorno: o chamado já está gravado, e enquanto não
-    // houver transporte de e-mail configurado a função apenas registra que a
-    // notificação ficou pendente.
+    // Cópia por e-mail, secundária: quem manda no `notifiedAt` é o Portal.
+    // Hoje não há transporte configurado e a função só registra a ausência.
     await sendMaintenanceEmail({
       id: chamado.id,
       number: chamado.number,
@@ -121,32 +121,22 @@ export async function abrirSolicitacao(
       createdAt: chamado.createdAt,
     });
 
-    // Enviar ticket ao Portal Pili (não bloqueia o retorno ao cliente)
-    const portalUrl = process.env.PORTAL_PILI_WEBHOOK_URL;
-    const portalSecret = process.env.PORTAL_PILI_WEBHOOK_SECRET;
-    if (portalUrl && portalSecret) {
-      fetch(portalUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Webhook-Secret": portalSecret,
-        },
-        body: JSON.stringify({
-          tipo: d.type,
-          prioridade: d.urgency,
-          cliente_nome: usuario?.company || usuario?.name || "—",
-          cliente_telefone: d.contactPhone,
-          cliente_email: usuario?.email || null,
-          cliente_endereco: equipamento.installedAddress || null,
-          equipamento_tipo: equipamento.productName,
-          equipamento_numero_serie: equipamento.serialNumber,
-          descricao: d.description,
-          contato_nome: d.contactName,
-          contato_telefone: d.contactPhone,
-          origem: "SITE_CLIENTE",
-        }),
-      }).catch((err) => logError("PORTAL_WEBHOOK", err));
-    }
+    // Entrega oficial do chamado. Aguardada de propósito: sem `await` uma
+    // recusa do Portal sumia sem deixar rastro recuperável.
+    await enviarTicketPortal({
+      id: chamado.id,
+      type: d.type,
+      urgency: d.urgency,
+      description: d.description,
+      contactName: d.contactName,
+      contactPhone: d.contactPhone,
+      clientName: usuario?.name ?? "—",
+      clientEmail: usuario?.email ?? null,
+      clientCompany: usuario?.company ?? null,
+      equipmentName: equipamento.productName,
+      serialNumber: equipamento.serialNumber,
+      installedAddress: equipamento.installedAddress,
+    });
 
     revalidatePath(`/portal/equipamentos/${equipamento.id}`);
     revalidatePath("/portal");

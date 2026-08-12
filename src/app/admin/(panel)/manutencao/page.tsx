@@ -2,7 +2,8 @@ import { Inbox, MailWarning } from "lucide-react";
 import { requireRole } from "@/lib/auth-guard";
 import { formatDateTime } from "@/lib/datetime";
 import { getChamados } from "./actions";
-import { MAINTENANCE_NOTIFY_EMAIL } from "@/lib/email/send-maintenance-email";
+import { portalConfigurado } from "@/lib/portal-pili";
+import { ReenviarPendentes } from "@/components/admin/reenviar-pendentes";
 import { ChamadoCard } from "@/components/admin/chamado-card";
 
 export default async function ManutencaoPage() {
@@ -13,7 +14,12 @@ export default async function ManutencaoPage() {
   const abertos = chamados.filter(
     (c) => c.status === "ABERTA" || c.status === "EM_ANDAMENTO",
   ).length;
-  const semAviso = chamados.filter((c) => !c.notifiedAt && c.status !== "CANCELADA").length;
+  // Pendente = não chegou ao Portal Pili. Cancelados não contam: ninguém
+  // precisa entregar um chamado que o próprio cliente encerrou.
+  const pendentes = chamados.filter(
+    (c) => !c.notifiedAt && c.status !== "CANCELADA",
+  ).length;
+  const integrado = portalConfigurado();
 
   return (
     <div className="space-y-6">
@@ -28,21 +34,24 @@ export default async function ManutencaoPage() {
         </p>
       </div>
 
-      {semAviso > 0 && (
-        <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm leading-relaxed text-amber-800">
-          <MailWarning className="mt-0.5 size-5 shrink-0" />
-          <div>
-            <p className="font-medium">
-              {semAviso} {semAviso === 1 ? "chamado" : "chamados"} sem aviso por
-              e-mail.
-            </p>
-            <p className="mt-1">
-              Nenhum transporte de e-mail está configurado, então nada foi
-              enviado para {MAINTENANCE_NOTIFY_EMAIL}. Os chamados estão
-              registrados e podem ser notificados em lote assim que o envio for
-              habilitado — nenhum se perde.
-            </p>
+      {pendentes > 0 && (
+        <div className="flex flex-wrap items-start justify-between gap-4 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm leading-relaxed text-amber-800">
+          <div className="flex items-start gap-3">
+            <MailWarning className="mt-0.5 size-5 shrink-0" />
+            <div>
+              <p className="font-medium">
+                {pendentes} {pendentes === 1 ? "chamado" : "chamados"} sem
+                confirmação do Portal Pili.
+              </p>
+              <p className="mt-1">
+                {integrado
+                  ? "O Portal não confirmou o recebimento. Use o reenvio — nenhum chamado se perde."
+                  : "A integração ainda não está configurada, então nada foi enviado. Os chamados estão registrados aqui e podem ser entregues em lote quando o endereço do Portal for definido."}
+              </p>
+            </div>
           </div>
+
+          <ReenviarPendentes habilitado={integrado} />
         </div>
       )}
 
