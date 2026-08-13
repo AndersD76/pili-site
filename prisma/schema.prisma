@@ -224,6 +224,7 @@ model Media {
   caseId      String?
   postId      String?
   heroSlideId String?
+  setorSlug   String?
   /// Conteudo binario do arquivo.
   data      Bytes
   filename  String
@@ -239,11 +240,14 @@ model Media {
   case      Case?    @relation(fields: [caseId], references: [id], onDelete: Cascade)
   post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
   heroSlide HeroSlide? @relation(fields: [heroSlideId], references: [id], onDelete: Cascade)
+  setor     Setor?     @relation(fields: [setorSlug], references: [slug], onDelete: Cascade)
   createdAt DateTime @default(now()) @db.Timestamptz(3)
 
   @@index([productId])
   @@index([caseId])
   @@index([postId])
+  @@index([heroSlideId])
+  @@index([setorSlug])
 }
 
 // ============ CASES / OBRAS ============
@@ -580,6 +584,40 @@ model SiteSettings {
   statsPaises       Int    @default(18)
   statsCapacidade   String @default("100t")
   updatedAt      DateTime @updatedAt @db.Timestamptz(3)
+}
+
+// ============ SETORES DE APLICACAO ============
+
+/// Cartao de "Solucoes por setor" na home.
+///
+/// O slug e a chave primaria de proposito: ele casa com a rota
+/// /solucoes/[setor], que tem um conjunto fixo de cinco paginas. Por isso o
+/// painel edita os setores existentes e nao cria novos — um setor inventado
+/// aqui viraria um card apontando para 404.
+///
+/// Sem tradução cadastrada o site usa o texto das mensagens; sem imagem, a
+/// foto padrao. Editar e opcional, nao obrigatorio.
+model Setor {
+  slug         String             @id
+  ordem        Int                @default(0)
+  ativo        Boolean            @default(true)
+  media        Media[]
+  translations SetorTranslation[]
+  createdAt    DateTime           @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime           @updatedAt @db.Timestamptz(3)
+
+  @@index([ativo, ordem])
+}
+
+model SetorTranslation {
+  id        String @id @default(cuid())
+  setorSlug String
+  locale    Locale
+  titulo    String
+  descricao String
+  setor     Setor  @relation(fields: [setorSlug], references: [slug], onDelete: Cascade)
+
+  @@unique([setorSlug, locale])
 }
 
 // ============ CARROSSEL DA HOME ============

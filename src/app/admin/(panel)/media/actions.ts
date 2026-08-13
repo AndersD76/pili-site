@@ -23,6 +23,7 @@ interface UploadTarget {
   caseId?: string;
   postId?: string;
   heroSlideId?: string;
+  setorSlug?: string;
 }
 
 /**
@@ -83,6 +84,7 @@ export async function uploadMedia(
         caseId: target.caseId ?? null,
         postId: target.postId ?? null,
         heroSlideId: target.heroSlideId ?? null,
+        setorSlug: target.setorSlug ?? null,
       },
       orderBy: { order: "desc" },
       select: { order: true },
@@ -101,6 +103,7 @@ export async function uploadMedia(
         caseId: target.caseId ?? null,
         postId: target.postId ?? null,
         heroSlideId: target.heroSlideId ?? null,
+        setorSlug: target.setorSlug ?? null,
       },
       select: { id: true, filename: true, alt: true, order: true },
     });
@@ -110,6 +113,7 @@ export async function uploadMedia(
     if (target.caseId) revalidatePath(`/admin/obras/${target.caseId}`);
     if (target.postId) revalidatePath(`/admin/blog/${target.postId}`);
     if (target.heroSlideId) revalidatePath(`/admin/hero/${target.heroSlideId}`);
+    if (target.setorSlug) revalidatePath(`/admin/setores/${target.setorSlug}`);
 
     return { success: true, media };
   } catch (err) {
@@ -132,6 +136,7 @@ function invalidarPaginas(alvo: {
   caseId?: string | null;
   postId?: string | null;
   heroSlideId?: string | null;
+  setorSlug?: string | null;
 }) {
   revalidatePath("/admin/media");
 
@@ -155,6 +160,12 @@ function invalidarPaginas(alvo: {
   if (alvo.heroSlideId) {
     revalidatePath(`/admin/hero/${alvo.heroSlideId}`);
   }
+  // O card do setor esta na home, revalidada logo abaixo; e a foto tambem
+  // alimenta a pagina do setor.
+  if (alvo.setorSlug) {
+    revalidatePath(`/admin/setores/${alvo.setorSlug}`);
+    revalidatePath("/[locale]/(marketing)/solucoes/[setor]", "page");
+  }
   revalidatePath("/[locale]/(marketing)", "page");
 }
 
@@ -174,6 +185,7 @@ export async function updateMediaAlt(
         caseId: true,
         postId: true,
         heroSlideId: true,
+        setorSlug: true,
       },
     });
     invalidarPaginas(media);
@@ -199,6 +211,7 @@ export async function deleteMedia(
         caseId: true,
         postId: true,
         heroSlideId: true,
+        setorSlug: true,
       },
     });
 
@@ -273,6 +286,7 @@ export async function reorderMedia(
         caseId: true,
         postId: true,
         heroSlideId: true,
+        setorSlug: true,
       },
     });
     if (dono) invalidarPaginas(dono);

@@ -6,6 +6,7 @@ import { getSiteSettings, anosDeMercado } from "@/lib/site-settings";
 import { StatsBand } from "@/components/marketing/stats-band";
 import { HeroCarousel } from "@/components/marketing/hero-carousel";
 import { getHeroSlides, type SlideData } from "@/lib/hero-slides";
+import { getSetores } from "@/lib/setores";
 import { ProductCard } from "@/components/marketing/product-card";
 import { EcosystemGrid } from "@/components/marketing/ecosystem-grid";
 import { ClientsBand } from "@/components/marketing/clients-band";
@@ -46,14 +47,8 @@ export async function generateMetadata({
 }
 
 
-/** Foto por setor. Rótulo e descrição vêm das traduções. */
-const APPLICATION_IMAGES: Record<string, string> = {
-  porto: "/images/tombador-pili.jpg",
-  cooperativa: "/images/tombador-pili.jpg",
-  industria: "/images/tombador-pili.jpg",
-  fertilizante: "/images/tombador-pili.jpg",
-  cimento: "/images/tombador-pili.jpg",
-};
+/** Usada enquanto o setor não tem foto própria enviada pelo painel. */
+const FOTO_SETOR_PADRAO = "/images/tombador-pili.jpg";
 
 export default async function HomePage({
   params,
@@ -72,6 +67,7 @@ export default async function HomePage({
 
   // Sem slide cadastrado o hero cai na imagem e no título padrão, montados
   // como um slide só — um caminho de render em vez de dois.
+  const setores = await getSetores();
   const doBanco = await getHeroSlides();
   const slides: SlideData[] =
     doBanco.length > 0
@@ -203,41 +199,43 @@ export default async function HomePage({
             </h2>
           </AnimateOnScroll>
           <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            {Object.entries(APPLICATION_IMAGES).map(
-              ([key, src], index) => (
-                <AnimateOnScroll key={key} delay={index * 0.08}>
-                  <Link
-                    href={`/solucoes/${key}`}
-                    className="group relative block aspect-[3/4] overflow-hidden sm:aspect-auto sm:h-72"
-                  >
-                    <Image
-                      src={src}
-                      alt={t(`forms.applications.${key}`)}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                      sizes="(max-width: 640px) 100vw, 20vw"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-pili-black via-pili-black/50 to-transparent transition-all group-hover:from-pili-black/90" />
+            {setores.map((setor, index) => (
+              <AnimateOnScroll key={setor.slug} delay={index * 0.08}>
+                <Link
+                  href={`/solucoes/${setor.slug}`}
+                  className="group relative block aspect-[3/4] overflow-hidden sm:aspect-auto sm:h-72"
+                >
+                  <Image
+                    src={setor.imagem ?? FOTO_SETOR_PADRAO}
+                    alt={
+                      setor.alt ??
+                      setor.titulo ??
+                      t(`forms.applications.${setor.slug}`)
+                    }
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    sizes="(max-width: 640px) 100vw, 20vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-pili-black via-pili-black/50 to-transparent transition-all group-hover:from-pili-black/90" />
 
-                    {/* Yellow top accent */}
-                    <div className="absolute inset-x-0 top-0 h-1 bg-pili-safety opacity-0 transition-opacity group-hover:opacity-100" />
+                  {/* Yellow top accent */}
+                  <div className="absolute inset-x-0 top-0 h-1 bg-pili-safety opacity-0 transition-opacity group-hover:opacity-100" />
 
-                    <div className="absolute inset-x-0 bottom-0 p-4">
-                      <h3 className="font-display text-lg font-bold uppercase text-pili-white">
-                        {t(`forms.applications.${key}`)}
-                      </h3>
-                      <p className="mt-1 text-xs text-pili-cement transition-colors group-hover:text-pili-mist">
-                        {t(`home.sectors.${key}`)}
-                      </p>
-                      <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-pili-safety opacity-0 transition-all group-hover:opacity-100">
-                        {t("common.seeSolution")}
-                        <ArrowRight className="h-3 w-3" />
-                      </span>
-                    </div>
-                  </Link>
-                </AnimateOnScroll>
-              )
-            )}
+                  <div className="absolute inset-x-0 bottom-0 p-4">
+                    <h3 className="font-display text-lg font-bold uppercase text-pili-white">
+                      {setor.titulo ?? t(`forms.applications.${setor.slug}`)}
+                    </h3>
+                    <p className="mt-1 text-xs text-pili-cement transition-colors group-hover:text-pili-mist">
+                      {setor.descricao ?? t(`home.sectors.${setor.slug}`)}
+                    </p>
+                    <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-pili-safety opacity-0 transition-all group-hover:opacity-100">
+                      {t("common.seeSolution")}
+                      <ArrowRight className="h-3 w-3" />
+                    </span>
+                  </div>
+                </Link>
+              </AnimateOnScroll>
+            ))}
           </div>
         </div>
       </section>
