@@ -37,6 +37,7 @@ interface MediaUploaderProps {
   productId?: string;
   caseId?: string;
   postId?: string;
+  heroSlideId?: string;
   label?: string;
   help?: string;
 }
@@ -53,6 +54,7 @@ export function MediaUploader({
   productId,
   caseId,
   postId,
+  heroSlideId,
   label = "Fotos",
   help,
 }: MediaUploaderProps) {
@@ -87,6 +89,7 @@ export function MediaUploader({
             productId,
             caseId,
             postId,
+            heroSlideId,
           });
           if (result.success && result.media) {
             novos.push(result.media);

@@ -52,6 +52,19 @@ export const siteSettingsSchema = z.object({
       message: "Longitude inválida (entre -180 e 180)",
     }),
   mapaZoom: z.coerce.number().int().min(1, "Zoom entre 1 e 19").max(19, "Zoom entre 1 e 19"),
+  // Texto livre: o site exibe "850+" e "100t", onde o "+" e a unidade fazem
+  // parte do número. Anos de mercado não entra — é calculado de `fundacao`.
+  statsEquipamentos: z
+    .string()
+    .trim()
+    .min(1, "Informe os equipamentos instalados")
+    .max(20),
+  statsPaises: z.coerce
+    .number()
+    .int()
+    .min(1, "Informe ao menos 1 país")
+    .max(300, "Número de países inválido"),
+  statsCapacidade: z.string().trim().min(1, "Informe a capacidade máxima").max(20),
 });
 
 export type SiteSettingsInput = z.infer<typeof siteSettingsSchema>;
@@ -89,6 +102,9 @@ export async function updateSiteSettings(
     mapaLat: d.mapaLat === "" ? null : Number(d.mapaLat),
     mapaLng: d.mapaLng === "" ? null : Number(d.mapaLng),
     mapaZoom: d.mapaZoom,
+    statsEquipamentos: d.statsEquipamentos,
+    statsPaises: d.statsPaises,
+    statsCapacidade: d.statsCapacidade,
   };
 
   try {

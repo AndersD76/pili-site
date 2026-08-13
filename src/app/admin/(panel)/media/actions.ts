@@ -22,6 +22,7 @@ interface UploadTarget {
   productId?: string;
   caseId?: string;
   postId?: string;
+  heroSlideId?: string;
 }
 
 /**
@@ -81,6 +82,7 @@ export async function uploadMedia(
         productId: target.productId ?? null,
         caseId: target.caseId ?? null,
         postId: target.postId ?? null,
+        heroSlideId: target.heroSlideId ?? null,
       },
       orderBy: { order: "desc" },
       select: { order: true },
@@ -98,6 +100,7 @@ export async function uploadMedia(
         productId: target.productId ?? null,
         caseId: target.caseId ?? null,
         postId: target.postId ?? null,
+        heroSlideId: target.heroSlideId ?? null,
       },
       select: { id: true, filename: true, alt: true, order: true },
     });
@@ -106,6 +109,7 @@ export async function uploadMedia(
     if (target.productId) revalidatePath(`/admin/produtos/${target.productId}`);
     if (target.caseId) revalidatePath(`/admin/obras/${target.caseId}`);
     if (target.postId) revalidatePath(`/admin/blog/${target.postId}`);
+    if (target.heroSlideId) revalidatePath(`/admin/hero/${target.heroSlideId}`);
 
     return { success: true, media };
   } catch (err) {
@@ -127,6 +131,7 @@ function invalidarPaginas(alvo: {
   productId?: string | null;
   caseId?: string | null;
   postId?: string | null;
+  heroSlideId?: string | null;
 }) {
   revalidatePath("/admin/media");
 
@@ -145,6 +150,11 @@ function invalidarPaginas(alvo: {
     revalidatePath("/[locale]/(marketing)/blog", "page");
     revalidatePath("/[locale]/(marketing)/blog/[slug]", "page");
   }
+  // O carrossel do hero: a home ja e revalidada logo abaixo, aqui basta a
+  // tela de edicao do slide.
+  if (alvo.heroSlideId) {
+    revalidatePath(`/admin/hero/${alvo.heroSlideId}`);
+  }
   revalidatePath("/[locale]/(marketing)", "page");
 }
 
@@ -159,7 +169,12 @@ export async function updateMediaAlt(
     const media = await db.media.update({
       where: { id },
       data: { alt: alt.trim() || null },
-      select: { productId: true, caseId: true, postId: true },
+      select: {
+        productId: true,
+        caseId: true,
+        postId: true,
+        heroSlideId: true,
+      },
     });
     invalidarPaginas(media);
     return { success: true };
@@ -179,7 +194,12 @@ export async function deleteMedia(
     // descobrir quais páginas invalidar.
     const media = await db.media.findUnique({
       where: { id },
-      select: { productId: true, caseId: true, postId: true },
+      select: {
+        productId: true,
+        caseId: true,
+        postId: true,
+        heroSlideId: true,
+      },
     });
 
     if (!media) {
@@ -248,7 +268,12 @@ export async function reorderMedia(
     // A ordem define qual foto é a principal — o site inteiro precisa saber.
     const dono = await db.media.findUnique({
       where: { id: ids[0] },
-      select: { productId: true, caseId: true, postId: true },
+      select: {
+        productId: true,
+        caseId: true,
+        postId: true,
+        heroSlideId: true,
+      },
     });
     if (dono) invalidarPaginas(dono);
 

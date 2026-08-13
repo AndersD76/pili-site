@@ -15,6 +15,7 @@ import {
   BriefcaseBusiness,
   Wrench,
   MapPin,
+  GalleryHorizontal,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -35,6 +36,7 @@ const navItems = [
     href: "/admin/candidaturas",
     icon: BriefcaseBusiness,
   },
+  { label: "Carrossel", href: "/admin/hero", icon: GalleryHorizontal },
   { label: "Produtos", href: "/admin/produtos", icon: Package },
   { label: "Obras", href: "/admin/obras", icon: Building2 },
   { label: "Blog", href: "/admin/blog", icon: FileText },

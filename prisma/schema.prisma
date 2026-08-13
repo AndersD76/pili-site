@@ -219,10 +219,11 @@ model ApplicationTranslation {
 /// `Cache-Control: immutable` — o id nunca muda para o mesmo arquivo, entao o
 /// CDN e o navegador guardam indefinidamente e o banco e lido uma vez so.
 model Media {
-  id        String   @id @default(cuid())
-  productId String?
-  caseId    String?
-  postId    String?
+  id          String  @id @default(cuid())
+  productId   String?
+  caseId      String?
+  postId      String?
+  heroSlideId String?
   /// Conteudo binario do arquivo.
   data      Bytes
   filename  String
@@ -237,6 +238,7 @@ model Media {
   product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
   case      Case?    @relation(fields: [caseId], references: [id], onDelete: Cascade)
   post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  heroSlide HeroSlide? @relation(fields: [heroSlideId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now()) @db.Timestamptz(3)
 
   @@index([productId])
@@ -569,7 +571,51 @@ model SiteSettings {
   mapaLat        Float?
   mapaLng        Float?
   mapaZoom       Int      @default(15)
+  /// Numeros da faixa de destaque e do topo da home.
+  ///
+  /// Texto livre porque o site exibe "850+" e "100t" — o "+" e a unidade fazem
+  /// parte do numero. Anos de mercado nao entram aqui: sao calculados a partir
+  /// de `fundacao`, senao ficariam desatualizados na virada do ano.
+  statsEquipamentos String @default("850+")
+  statsPaises       Int    @default(18)
+  statsCapacidade   String @default("100t")
   updatedAt      DateTime @updatedAt @db.Timestamptz(3)
+}
+
+// ============ CARROSSEL DA HOME ============
+
+/// Slide do fundo do hero na home.
+///
+/// A imagem vem da biblioteca de midia, pelo mesmo `MediaUploader` de produtos,
+/// obras e artigos: a primeira foto da lista e o fundo do slide.
+///
+/// Sem nenhum slide ativo a home cai no fundo estatico e no titulo das
+/// mensagens — o hero nunca fica vazio.
+model HeroSlide {
+  id           String                 @id @default(cuid())
+  ordem        Int                    @default(0)
+  ativo        Boolean                @default(true)
+  media        Media[]
+  translations HeroSlideTranslation[]
+  createdAt    DateTime               @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime               @updatedAt @db.Timestamptz(3)
+
+  @@index([ativo, ordem])
+}
+
+/// Titulo e subtitulo do slide, por idioma.
+///
+/// O site e bilingue: sem traducao o visitante espanhol leria o titulo em
+/// portugues.
+model HeroSlideTranslation {
+  id        String    @id @default(cuid())
+  slideId   String
+  locale    Locale
+  titulo    String
+  subtitulo String?
+  slide     HeroSlide @relation(fields: [slideId], references: [id], onDelete: Cascade)
+
+  @@unique([slideId, locale])
 }
 
 enum FilialTipo {

@@ -4,7 +4,14 @@ import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { Building2, Globe, Loader2, MapPin, Share2 } from "lucide-react";
+import {
+  Building2,
+  Globe,
+  Loader2,
+  MapPin,
+  Share2,
+  TrendingUp,
+} from "lucide-react";
 import {
   updateSiteSettings,
   siteSettingsSchema,
@@ -125,6 +132,44 @@ export function SiteSettingsForm({ initial }: { initial: SiteSettingsInput }) {
               <Campo id="mapaLat" label="Latitude" register={register} error={errors.mapaLat?.message} />
               <Campo id="mapaLng" label="Longitude" register={register} error={errors.mapaLng?.message} />
               <Campo id="mapaZoom" label="Zoom (1-19)" type="number" register={register} error={errors.mapaZoom?.message} />
+            </div>
+          </section>
+
+          {/* ---- Números da home ---- */}
+          <section className="rounded-lg border border-pili-mist bg-white p-6">
+            <div className="mb-5 flex items-center gap-3">
+              <TrendingUp className="h-5 w-5 text-pili-safety" />
+              <h2 className="font-display text-lg font-bold text-pili-black">
+                Números da home
+              </h2>
+            </div>
+            <p className="mb-5 text-sm text-pili-concrete">
+              A faixa de destaque da home e o selo no topo do hero. Escreva como
+              deve aparecer no site, incluindo sinal e unidade: &ldquo;850+&rdquo;,
+              &ldquo;100t&rdquo;. Anos de mercado não está aqui porque é
+              calculado a partir do ano de fundação — assim ele nunca fica
+              desatualizado.
+            </p>
+            <div className="grid gap-4 sm:grid-cols-3">
+              <Campo
+                id="statsEquipamentos"
+                label="Equipamentos instalados"
+                register={register}
+                error={errors.statsEquipamentos?.message}
+              />
+              <Campo
+                id="statsPaises"
+                label="Países atendidos"
+                type="number"
+                register={register}
+                error={errors.statsPaises?.message}
+              />
+              <Campo
+                id="statsCapacidade"
+                label="Capacidade máxima"
+                register={register}
+                error={errors.statsCapacidade?.message}
+              />
             </div>
           </section>
         </div>

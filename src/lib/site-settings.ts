@@ -1,6 +1,6 @@
 import { cache } from "react";
 import { db } from "./db";
-import { COMPANY, SOCIAL, ECOSYSTEM } from "./constants";
+import { COMPANY, SOCIAL, ECOSYSTEM, STATS } from "./constants";
 import { logError } from "./prisma-errors";
 
 /**
@@ -29,6 +29,19 @@ export interface SiteSettingsData {
   mapaLat: number | null;
   mapaLng: number | null;
   mapaZoom: number;
+  statsEquipamentos: string;
+  statsPaises: number;
+  statsCapacidade: string;
+}
+
+/**
+ * Anos de mercado.
+ *
+ * Calculado, nunca digitado: um número fixo no painel envelheceria sozinho na
+ * virada do ano.
+ */
+export function anosDeMercado(s: SiteSettingsData): number {
+  return new Date().getFullYear() - s.fundacao;
 }
 
 const FALLBACK: SiteSettingsData = {
@@ -49,6 +62,9 @@ const FALLBACK: SiteSettingsData = {
   mapaLat: -27.6339,
   mapaLng: -52.2739,
   mapaZoom: 14,
+  statsEquipamentos: STATS.equipment,
+  statsPaises: STATS.countries,
+  statsCapacidade: STATS.maxCapacity,
 };
 
 /**
@@ -77,6 +93,9 @@ export const getSiteSettings = cache(async (): Promise<SiteSettingsData> => {
       mapaLat: row.mapaLat,
       mapaLng: row.mapaLng,
       mapaZoom: row.mapaZoom,
+      statsEquipamentos: row.statsEquipamentos,
+      statsPaises: row.statsPaises,
+      statsCapacidade: row.statsCapacidade,
     };
   } catch (err) {
     logError("SITE_SETTINGS", err);

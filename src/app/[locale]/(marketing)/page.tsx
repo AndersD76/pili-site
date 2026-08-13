@@ -2,8 +2,10 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { getProdutosDestaque, getObrasDestaque } from "@/lib/content";
 import { Link } from "@/i18n/routing";
 import Image from "next/image";
-import { STATS, COMPANY } from "@/lib/constants";
+import { getSiteSettings, anosDeMercado } from "@/lib/site-settings";
 import { StatsBand } from "@/components/marketing/stats-band";
+import { HeroCarousel } from "@/components/marketing/hero-carousel";
+import { getHeroSlides, type SlideData } from "@/lib/hero-slides";
 import { ProductCard } from "@/components/marketing/product-card";
 import { EcosystemGrid } from "@/components/marketing/ecosystem-grid";
 import { ClientsBand } from "@/components/marketing/clients-band";
@@ -64,56 +66,46 @@ export default async function HomePage({
   const t = await getTranslations();
   const featuredProducts = await getProdutosDestaque();
   const featuredCases = await getObrasDestaque();
+  // Números e dados institucionais vêm do painel, não mais de constants.ts.
+  const settings = await getSiteSettings();
+  const anos = anosDeMercado(settings);
+
+  // Sem slide cadastrado o hero cai na imagem e no título padrão, montados
+  // como um slide só — um caminho de render em vez de dois.
+  const doBanco = await getHeroSlides();
+  const slides: SlideData[] =
+    doBanco.length > 0
+      ? doBanco
+      : [
+          {
+            id: "padrao",
+            imagem: "/images/tombador-pili.jpg",
+            alt: t("home.heroAlt"),
+            titulo: t("hero.headline"),
+            subtitulo: t("hero.sub", {
+              years: anos,
+              countries: settings.statsPaises,
+            }),
+          },
+        ];
 
   return (
     <main>
-      {/* ──── 1. HERO — Full-screen with yellow accent ──── */}
+      {/* ──── 1. HERO — carrossel gerenciado em /admin/hero ──── */}
       <section className="relative flex min-h-svh items-center bg-pili-black px-6 pb-16 pt-[calc(var(--header-height)+2.5rem)] lg:px-16">
-        <Image
-          src="/images/tombador-pili.jpg"
-          alt={t("home.heroAlt")}
-          fill
-          priority
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-pili-black via-pili-black/85 to-pili-black/30" />
-
-        {/* Yellow accent bar — left side */}
-        <div className="absolute left-0 top-0 h-full w-1.5 bg-pili-safety lg:w-2" />
-
-        {/* Grid pattern overlay */}
-        <div className="absolute inset-0 grid-pattern opacity-40" />
-
-        <div className="relative z-10 max-w-5xl">
-          <AnimateOnScroll direction="up" delay={0}>
+        <HeroCarousel
+          slides={slides}
+          badge={
             <div className="mb-5 inline-flex items-center gap-3 border border-pili-iron/60 bg-pili-black/60 px-4 py-2 backdrop-blur-sm">
               <div className="h-2 w-2 bg-pili-safety" />
               <span className="font-mono text-xs uppercase tracking-widest text-pili-cement">
-                Desde {COMPANY.founded} &middot; {STATS.equipment}{" "}
-                equipamentos &middot; {STATS.countries} países
+                Desde {settings.fundacao} &middot;{" "}
+                {settings.statsEquipamentos} equipamentos &middot;{" "}
+                {settings.statsPaises} países
               </span>
             </div>
-          </AnimateOnScroll>
-
-          <AnimateOnScroll direction="up" delay={0.15}>
-            <h1 className="font-display text-[length:var(--text-display-1)] font-black uppercase leading-[0.95] tracking-tight text-pili-white">
-              {t("hero.headline")}
-            </h1>
-          </AnimateOnScroll>
-
-          <AnimateOnScroll direction="up" delay={0.3}>
-            <div className="mt-6 flex items-center gap-4">
-              <div className="h-px w-12 bg-pili-safety" />
-              <p className="max-w-xl font-mono text-sm tracking-wide text-pili-cement">
-                {t("hero.sub", {
-                  years: STATS.years,
-                  countries: STATS.countries,
-                })}
-              </p>
-            </div>
-          </AnimateOnScroll>
-
-          <AnimateOnScroll direction="up" delay={0.45}>
+          }
+          acoes={
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
                 href="/orcamento"
@@ -129,8 +121,8 @@ export default async function HomePage({
                 {t("hero.cta_secondary")}
               </Link>
             </div>
-          </AnimateOnScroll>
-        </div>
+          }
+        />
 
         {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
@@ -144,7 +136,12 @@ export default async function HomePage({
       </section>
 
       {/* ──── 2. STATS BAND ──── */}
-      <StatsBand />
+      <StatsBand
+        anos={anos}
+        equipamentos={settings.statsEquipamentos}
+        paises={settings.statsPaises}
+        capacidade={settings.statsCapacidade}
+      />
 
       {/* ──── 3. PRODUTOS EM DESTAQUE ──── */}
       <section className="py-24 px-6 lg:px-8">
@@ -323,7 +320,8 @@ export default async function HomePage({
               {t("home.videoTitle")}
             </h2>
             <p className="mt-4 text-pili-cement">
-              Mais de {STATS.equipment} tombadores instalados em {STATS.countries}{" "}
+              Mais de {settings.statsEquipamentos} tombadores instalados em{" "}
+              {settings.statsPaises}{" "}
               países. Assista ao funcionamento dos nossos equipamentos em
               operações reais.
             </p>

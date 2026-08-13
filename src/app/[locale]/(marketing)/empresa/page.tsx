@@ -2,7 +2,7 @@ import { Link } from "@/i18n/routing";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { generatePageMetadata } from "@/lib/seo";
-import { COMPANY, STATS } from "@/lib/constants";
+import { getSiteSettings, anosDeMercado } from "@/lib/site-settings";
 import { ShieldCheck, HardHat, Lightbulb, ArrowRight } from "lucide-react";
 import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
 import { StatsBand } from "@/components/marketing/stats-band";
@@ -14,15 +14,16 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "empresa" });
+  const settings = await getSiteSettings();
   return generatePageMetadata({
     locale,
     title: t("title"),
     description: t("metaDesc", {
-      name: COMPANY.name,
-      founded: COMPANY.founded,
-      years: STATS.years,
-      equipment: STATS.equipment,
-      countries: STATS.countries,
+      name: settings.razaoSocial,
+      founded: settings.fundacao,
+      years: anosDeMercado(settings),
+      equipment: settings.statsEquipamentos,
+      countries: settings.statsPaises,
     }),
     path: "/empresa",
   });
@@ -55,6 +56,9 @@ export default async function EmpresaPage({
   setRequestLocale(locale);
 
   const t = await getTranslations();
+  // Institucionais e números vêm do painel.
+  const settings = await getSiteSettings();
+  const anos = anosDeMercado(settings);
 
   return (
     <main className="pt-[var(--header-height)]">
@@ -72,7 +76,7 @@ export default async function EmpresaPage({
         <div className="relative mx-auto max-w-6xl">
           <AnimateOnScroll>
             <span className="font-mono text-xs uppercase tracking-widest text-pili-safety">
-              {t("empresa.since", { year: COMPANY.founded })}
+              {t("empresa.since", { year: settings.fundacao })}
             </span>
             <h1 className="mt-3 font-display text-[length:var(--text-display-2)] font-black uppercase text-pili-white">
               {t("empresa.title")}
@@ -81,10 +85,10 @@ export default async function EmpresaPage({
               <div className="h-px w-12 bg-pili-safety" />
               <p className="max-w-2xl text-pili-cement">
                 {t("empresa.intro", {
-                  year: COMPANY.founded,
-                  years: STATS.years,
-                  equipment: STATS.equipment,
-                  countries: STATS.countries,
+                  year: settings.fundacao,
+                  years: anos,
+                  equipment: settings.statsEquipamentos,
+                  countries: settings.statsPaises,
                 })}
               </p>
             </div>
@@ -93,7 +97,12 @@ export default async function EmpresaPage({
       </section>
 
       {/* Stats */}
-      <StatsBand />
+      <StatsBand
+        anos={anos}
+        equipamentos={settings.statsEquipamentos}
+        paises={settings.statsPaises}
+        capacidade={settings.statsCapacidade}
+      />
 
       {/* Historia / Timeline */}
       <section className="py-24 px-6 lg:px-8">
@@ -127,8 +136,8 @@ export default async function EmpresaPage({
                     <p className="mt-2 max-w-lg leading-relaxed text-pili-concrete">
                       {event.key === "global"
                         ? t("empresa.globalText", {
-                            equipment: STATS.equipment,
-                            countries: STATS.countries,
+                            equipment: settings.statsEquipamentos,
+                            countries: settings.statsPaises,
                           })
                         : t(`empresa.timeline.${event.key}.text`)}
                     </p>
