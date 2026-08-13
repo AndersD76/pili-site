@@ -37,10 +37,10 @@ export function FloatingWidgets({ whatsapp }: { whatsapp: string }) {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-(--fab-bottom) left-6 z-40 flex h-16 w-16 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_4px_16px_rgba(37,211,102,0.4)] transition-all hover:scale-110 hover:shadow-[0_6px_24px_rgba(37,211,102,0.5)]"
+        className="fixed bottom-(--fab-bottom) left-6 z-40 flex h-20 w-20 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_4px_16px_rgba(37,211,102,0.4)] transition-all hover:scale-110 hover:shadow-[0_6px_24px_rgba(37,211,102,0.5)]"
         aria-label={t("whatsappLabel")}
       >
-        <WhatsAppIcon className="h-8 w-8" />
+        <WhatsAppIcon className="h-10 w-10" />
       </a>
 
       <Giorgia whatsapp={whatsapp} />
