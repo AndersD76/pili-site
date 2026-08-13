@@ -33,7 +33,11 @@ const QUICK_ACTIONS: QuickAction[] = [
 ];
 
 /**
- * GiorgIA — assistente virtual da PILI Industrial.
+ * Giorgio — assistente virtual da PILI Industrial.
+ *
+ * O arquivo e o componente continuam com o nome antigo (`giorgia`): renomear
+ * arrastaria a chave de tradução, o SVG e as duas fotos junto, sem mudar nada
+ * do que o visitante vê. O nome exibido é o daqui e o de `messages/*.json`.
  *
  * O número do WhatsApp chega por prop porque este é um Client Component: quem
  * lê `SiteSettings` é o layout, no servidor. Antes vinha fixo de `constants.ts`
@@ -202,7 +206,7 @@ export function Giorgia({ whatsapp }: { whatsapp: string }) {
             />
             <div className="flex-1">
               <p className="text-sm font-semibold leading-tight text-pili-white">
-                GiorgIA
+                Giorgio
               </p>
               <p className="text-xs text-pili-cement">{t("role")}</p>
             </div>
