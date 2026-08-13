@@ -44,3 +44,11 @@ next-env.d.ts
 # O arquivo sai em texto puro; nao pode entrar no repositorio.
 scripts/credenciais-clientes.csv
 scripts/clientes-sem-email.csv
+
+# Fotos originais da fabrica: 4000x6000, ~3MB cada. Nao entram no repositorio
+# nem no deploy — o site serve as derivadas otimizadas de public/images/blog/,
+# que sao versionadas normalmente. Guarde os originais fora do projeto.
+/public/images/economizador de energia/
+/public/images/engenharia/
+/public/images/história/
+/public/images/pessoas/
