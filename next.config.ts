@@ -14,7 +14,9 @@ const csp = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net https://va.vercel-scripts.com${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://utfs.io https://uploadthing.com https://pili.ind.br https://images.unsplash.com https://www.google-analytics.com https://www.facebook.com",
+  // Tiles do mapa de unidades no rodape. O Leaflet busca cada tile como <img>:
+  // sem estes hosts aqui o mapa sobe cinza, sem erro visivel alem do console.
+  "img-src 'self' data: blob: https://utfs.io https://uploadthing.com https://pili.ind.br https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://www.google-analytics.com https://www.facebook.com",
   "font-src 'self' data:",
   `connect-src 'self' https://*.upstash.io https://vitals.vercel-insights.com https://www.google-analytics.com https://connect.facebook.net${isDev ? " ws: http://localhost:*" : ""}`,
   "frame-ancestors 'none'",
@@ -45,12 +47,6 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "pili.ind.br",
-      },
-      {
-        // Imagens de capa dos artigos em `lib/data/blog.ts` ainda são
-        // placeholders do Unsplash. Substituir por fotos próprias e remover.
-        protocol: "https",
-        hostname: "images.unsplash.com",
       },
     ],
   },

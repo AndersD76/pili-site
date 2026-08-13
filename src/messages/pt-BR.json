@@ -60,6 +60,14 @@
     "terms": "Termos de uso",
     "rights": "Todos os direitos reservados",
     "fullEcosystem": "Ver ecossistema completo",
+    "units": "Nossas unidades",
+    "headquarters": "Matriz",
+    "mapLabel": "Mapa com as unidades da PILI no Brasil",
+    "unitTypes": {
+      "FILIAL": "Filial",
+      "ESCRITORIO": "Escritório comercial",
+      "ASSISTENCIA": "Assistência técnica"
+    },
     "links": {
       "tombadorFixo": "Tombador fixo",
       "tombadorMovel": "Tombador móvel",

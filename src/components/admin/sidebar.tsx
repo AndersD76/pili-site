@@ -14,6 +14,7 @@ import {
   Menu,
   BriefcaseBusiness,
   Wrench,
+  MapPin,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -39,6 +40,7 @@ const navItems = [
   { label: "Blog", href: "/admin/blog", icon: FileText },
   { label: "Mídia", href: "/admin/media", icon: Image },
   { label: "Usuários", href: "/admin/usuarios", icon: UserCog },
+  { label: "Unidades", href: "/admin/filiais", icon: MapPin },
   { label: "Configurações", href: "/admin/config", icon: Settings },
 ] as const;
 

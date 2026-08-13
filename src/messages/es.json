@@ -60,6 +60,14 @@
     "terms": "Términos de uso",
     "rights": "Todos los derechos reservados",
     "fullEcosystem": "Ver ecosistema completo",
+    "units": "Nuestras unidades",
+    "headquarters": "Casa matriz",
+    "mapLabel": "Mapa con las unidades de PILI en Brasil",
+    "unitTypes": {
+      "FILIAL": "Sucursal",
+      "ESCRITORIO": "Oficina comercial",
+      "ASSISTENCIA": "Asistencia técnica"
+    },
     "links": {
       "tombadorFixo": "Volcador fijo",
       "tombadorMovel": "Volcador móvil",

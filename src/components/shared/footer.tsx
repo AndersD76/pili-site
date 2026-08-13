@@ -1,7 +1,9 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { getSiteSettings, redesSociais } from "@/lib/site-settings";
+import { getFiliais, pontosDoMapa } from "@/lib/filiais";
 import { ICONE_POR_REDE } from "@/components/shared/brand-icons";
+import { MapaUnidades } from "@/components/shared/mapa-unidades";
 import Image from "next/image";
 
 /**
@@ -29,7 +31,20 @@ const COMPANY_LINKS = [
 
 export async function Footer() {
   const t = await getTranslations("footer");
-  const settings = await getSiteSettings();
+  const [settings, filiais] = await Promise.all([
+    getSiteSettings(),
+    getFiliais(),
+  ]);
+
+  const pontos = pontosDoMapa(
+    {
+      endereco: settings.endereco,
+      lat: settings.mapaLat,
+      lng: settings.mapaLng,
+    },
+    filiais,
+    t("headquarters"),
+  );
 
   return (
     <footer className="bg-pili-black">
@@ -44,12 +59,12 @@ export async function Footer() {
               height={66}
               className="h-14 w-auto"
             />
+            {/* O endereço saiu daqui: ele agora vive no bloco de unidades,
+                junto das filiais. Repetir na mesma tela só cria divergência. */}
             <p className="mt-4 font-mono text-xs leading-relaxed text-pili-concrete">
               {settings.razaoSocial}
               <br />
               CNPJ {settings.cnpj}
-              <br />
-              {settings.endereco}
             </p>
           </div>
 
@@ -174,6 +189,59 @@ export async function Footer() {
                 );
               })}
             </div>
+          </div>
+        </div>
+
+        {/* Unidades + mapa */}
+        <div className="mt-14 border-t border-pili-iron/50 pt-10">
+          <h3 className="text-xs font-semibold uppercase tracking-widest text-pili-cement">
+            {t("units")}
+          </h3>
+
+          <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_1.1fr]">
+            <ul className="grid gap-6 sm:grid-cols-2">
+              <li>
+                <span className="text-sm font-semibold text-pili-white">
+                  {t("headquarters")}
+                </span>
+                <p className="mt-1 font-mono text-xs leading-relaxed text-pili-concrete">
+                  {settings.endereco}
+                </p>
+                <a
+                  href={`tel:${settings.telefone.replace(/\s/g, "")}`}
+                  className="mt-1 inline-block font-mono text-xs text-pili-mist transition-colors hover:text-pili-white"
+                >
+                  {settings.telefone}
+                </a>
+              </li>
+
+              {filiais.map((filial) => (
+                <li key={filial.id}>
+                  <span className="text-sm font-semibold text-pili-white">
+                    {filial.nome}
+                  </span>
+                  <span className="ml-2 text-[11px] uppercase tracking-wider text-pili-cement">
+                    {t(`unitTypes.${filial.tipo}`)}
+                  </span>
+                  <p className="mt-1 font-mono text-xs leading-relaxed text-pili-concrete">
+                    {filial.endereco}
+                    <br />
+                    {filial.cidade}/{filial.uf}
+                    {filial.cep ? ` — ${filial.cep}` : ""}
+                  </p>
+                  {filial.telefone && (
+                    <a
+                      href={`tel:${filial.telefone.replace(/\s/g, "")}`}
+                      className="mt-1 inline-block font-mono text-xs text-pili-mist transition-colors hover:text-pili-white"
+                    >
+                      {filial.telefone}
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+
+            <MapaUnidades pontos={pontos} titulo={t("mapLabel")} />
           </div>
         </div>
       </div>

@@ -571,3 +571,34 @@ model SiteSettings {
   mapaZoom       Int      @default(15)
   updatedAt      DateTime @updatedAt @db.Timestamptz(3)
 }
+
+enum FilialTipo {
+  FILIAL
+  ESCRITORIO
+  ASSISTENCIA
+}
+
+/// Unidades alem da matriz.
+///
+/// A matriz continua vindo de `SiteSettings`: repetir o endereco dela aqui
+/// criaria duas fontes para o mesmo dado, que e exatamente como ele desanda.
+/// Sem `lat`/`lng` a unidade ainda aparece como endereco, so nao entra no mapa.
+model Filial {
+  id        String     @id @default(cuid())
+  nome      String
+  tipo      FilialTipo @default(FILIAL)
+  cidade    String
+  uf        String
+  endereco  String
+  cep       String?
+  telefone  String?
+  lat       Float?
+  lng       Float?
+  /// Ordem de exibicao no rodape; empate cai para a cidade.
+  ordem     Int        @default(0)
+  ativa     Boolean    @default(true)
+  createdAt DateTime   @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime   @updatedAt @db.Timestamptz(3)
+
+  @@index([ativa, ordem])
+}
