@@ -2,6 +2,7 @@ import { Link } from "@/i18n/routing";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { generatePageMetadata } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
+import { getSetores } from "@/lib/setores";
 
 export async function generateMetadata({
   params,
@@ -18,7 +19,10 @@ export async function generateMetadata({
   });
 }
 
-/** Rótulo, manchete e descrição de cada setor vêm das traduções. */
+/**
+ * Ordem e conjunto fixos: cada slug tem uma pagina propria.
+ * Rotulo, manchete e descricao saem do painel, com as traducoes como padrao.
+ */
 const SECTORS = [
   "porto",
   "cooperativa",
@@ -36,6 +40,7 @@ export default async function SolucoesPage({
   setRequestLocale(locale);
 
   const t = await getTranslations();
+  const setores = await getSetores();
 
   return (
     <main className="pt-[var(--header-height)]">
@@ -53,7 +58,9 @@ export default async function SolucoesPage({
       <section className="py-16 px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {SECTORS.map((slug) => (
+            {SECTORS.map((slug) => {
+              const setor = setores.find((s) => s.slug === slug);
+              return (
               <Link
                 key={slug}
                 href={`/solucoes/${slug}`}
@@ -63,20 +70,21 @@ export default async function SolucoesPage({
                   {slug}
                 </span>
                 <h2 className="mt-2 font-display text-2xl font-bold uppercase text-pili-black">
-                  {t(`forms.applications.${slug}`)}
+                  {setor?.titulo ?? t(`forms.applications.${slug}`)}
                 </h2>
                 <p className="mt-1 text-sm font-medium text-pili-iron">
-                  {t(`solucoes.cards.${slug}.headline`)}
+                  {setor?.headline ?? t(`solucoes.cards.${slug}.headline`)}
                 </p>
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-pili-concrete">
-                  {t(`solucoes.cards.${slug}.desc`)}
+                  {setor?.descricaoLonga ?? t(`solucoes.cards.${slug}.desc`)}
                 </p>
                 <span className="mt-6 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-pili-black transition-colors group-hover:text-pili-safety-deep">
                   {t("common.seeSolution")}
                   <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                 </span>
               </Link>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

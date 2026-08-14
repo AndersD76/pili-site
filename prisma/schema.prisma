@@ -225,6 +225,7 @@ model Media {
   postId      String?
   heroSlideId String?
   setorSlug   String?
+  blocoChave  String?
   /// Conteudo binario do arquivo.
   data      Bytes
   filename  String
@@ -241,6 +242,7 @@ model Media {
   post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
   heroSlide HeroSlide? @relation(fields: [heroSlideId], references: [id], onDelete: Cascade)
   setor     Setor?     @relation(fields: [setorSlug], references: [slug], onDelete: Cascade)
+  bloco     BlocoConteudo? @relation(fields: [blocoChave], references: [chave], onDelete: Cascade)
   createdAt DateTime @default(now()) @db.Timestamptz(3)
 
   @@index([productId])
@@ -248,6 +250,7 @@ model Media {
   @@index([postId])
   @@index([heroSlideId])
   @@index([setorSlug])
+  @@index([blocoChave])
 }
 
 // ============ CASES / OBRAS ============
@@ -586,6 +589,64 @@ model SiteSettings {
   updatedAt      DateTime @updatedAt @db.Timestamptz(3)
 }
 
+
+// ============ LINHA DO TEMPO DA EMPRESA ============
+
+/// Marco da trajetoria exibido em /empresa.
+///
+/// O ano e texto, nao numero: o ultimo marco e "Hoje", que nao tem ano.
+/// Sem nenhum marco cadastrado a pagina usa a linha do tempo das mensagens.
+model MarcoHistoria {
+  id           String                     @id @default(cuid())
+  ano          String?
+  ordem        Int                        @default(0)
+  ativo        Boolean                    @default(true)
+  translations MarcoHistoriaTranslation[]
+  createdAt    DateTime                   @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime                   @updatedAt @db.Timestamptz(3)
+
+  @@index([ativo, ordem])
+}
+
+model MarcoHistoriaTranslation {
+  id      String        @id @default(cuid())
+  marcoId String
+  locale  Locale
+  titulo  String
+  texto   String        @db.Text
+  marco   MarcoHistoria @relation(fields: [marcoId], references: [id], onDelete: Cascade)
+
+  @@unique([marcoId, locale])
+}
+
+// ============ BLOCOS DE CONTEUDO ============
+
+/// Bloco de secao com imagem e texto editaveis.
+///
+/// Generico de proposito: a chave identifica a secao ("ecossistema"), e a
+/// mesma tabela serve para os proximos blocos sem uma tabela por secao.
+/// Campo vazio significa "usar o texto das mensagens".
+model BlocoConteudo {
+  chave        String                     @id
+  ativo        Boolean                    @default(true)
+  media        Media[]
+  translations BlocoConteudoTranslation[]
+  createdAt    DateTime                   @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime                   @updatedAt @db.Timestamptz(3)
+}
+
+model BlocoConteudoTranslation {
+  id        String        @id @default(cuid())
+  chave     String
+  locale    Locale
+  titulo    String?
+  subtitulo String?
+  texto     String?       @db.Text
+  bloco     BlocoConteudo @relation(fields: [chave], references: [chave], onDelete: Cascade)
+
+  @@unique([chave, locale])
+}
+
 // ============ SETORES DE APLICACAO ============
 
 /// Cartao de "Solucoes por setor" na home.
@@ -613,8 +674,12 @@ model SetorTranslation {
   id        String @id @default(cuid())
   setorSlug String
   locale    Locale
+  /// Titulo e descricao curtos do card da home.
   titulo    String
   descricao String
+  /// Textos da pagina /solucoes/[setor]. Vazios, a pagina usa as mensagens.
+  headline       String?
+  descricaoLonga String? @db.Text
   setor     Setor  @relation(fields: [setorSlug], references: [slug], onDelete: Cascade)
 
   @@unique([setorSlug, locale])

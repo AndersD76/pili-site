@@ -17,6 +17,8 @@ import {
   MapPin,
   GalleryHorizontal,
   LayoutGrid,
+  Milestone,
+  PanelTop,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -39,6 +41,8 @@ const navItems = [
   },
   { label: "Carrossel", href: "/admin/hero", icon: GalleryHorizontal },
   { label: "Setores", href: "/admin/setores", icon: LayoutGrid },
+  { label: "Ecossistema", href: "/admin/blocos/ecossistema", icon: PanelTop },
+  { label: "Trajetória", href: "/admin/historia", icon: Milestone },
   { label: "Produtos", href: "/admin/produtos", icon: Package },
   { label: "Obras", href: "/admin/obras", icon: Building2 },
   { label: "Blog", href: "/admin/blog", icon: FileText },

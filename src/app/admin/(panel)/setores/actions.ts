@@ -18,8 +18,13 @@ import { firstIssue } from "@/lib/validators/admin";
 export const setorSchema = z.object({
   tituloPt: z.string().trim().max(60),
   descricaoPt: z.string().trim().max(200),
+  // Textos da pagina /solucoes/[setor]; independentes do card da home.
+  headlinePt: z.string().trim().max(120),
+  descricaoLongaPt: z.string().trim().max(600),
   tituloEs: z.string().trim().max(60),
   descricaoEs: z.string().trim().max(200),
+  headlineEs: z.string().trim().max(120),
+  descricaoLongaEs: z.string().trim().max(600),
   ordem: z.coerce.number().int().min(0).max(99),
   ativo: z.boolean(),
 });
@@ -42,13 +47,19 @@ function traducoes(d: SetorInput) {
     locale: Locale;
     titulo: string;
     descricao: string;
+    headline: string | null;
+    descricaoLonga: string | null;
   }[] = [];
+
+  const nulo = (v: string) => (v.trim() === "" ? null : v.trim());
 
   if (d.tituloPt !== "" && d.descricaoPt !== "") {
     linhas.push({
       locale: Locale.pt_BR,
       titulo: d.tituloPt,
       descricao: d.descricaoPt,
+      headline: nulo(d.headlinePt),
+      descricaoLonga: nulo(d.descricaoLongaPt),
     });
   }
 
@@ -57,6 +68,8 @@ function traducoes(d: SetorInput) {
       locale: Locale.es,
       titulo: d.tituloEs,
       descricao: d.descricaoEs,
+      headline: nulo(d.headlineEs),
+      descricaoLonga: nulo(d.descricaoLongaEs),
     });
   }
 

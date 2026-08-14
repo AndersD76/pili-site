@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 
 /**
@@ -27,11 +28,15 @@ export function SetorForm({
   initial,
   padraoTitulo,
   padraoDescricao,
+  padraoHeadline,
+  padraoDescLonga,
 }: {
   slug: string;
   initial: SetorInput;
   padraoTitulo: string;
   padraoDescricao: string;
+  padraoHeadline: string;
+  padraoDescLonga: string;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -125,6 +130,55 @@ export function SetorForm({
                 {errors.descricaoEs.message}
               </p>
             )}
+          </div>
+        </div>
+      </section>
+
+      <section className="rounded-lg border border-pili-mist bg-white p-6">
+        <h2 className="mb-1 font-display text-lg font-bold text-pili-black">
+          Página do setor
+        </h2>
+        <p className="mb-5 text-sm text-pili-concrete">
+          Textos exibidos em /solucoes/{slug}, independentes do card da home.
+        </p>
+
+        <div className="space-y-4">
+          <div className="space-y-1.5">
+            <Label htmlFor="headlinePt">Chamada (português)</Label>
+            <Input
+              id="headlinePt"
+              placeholder={padraoHeadline}
+              {...register("headlinePt")}
+            />
+            {errors.headlinePt && (
+              <p className="text-xs text-red-600">{errors.headlinePt.message}</p>
+            )}
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="descricaoLongaPt">Descrição (português)</Label>
+            <Textarea
+              id="descricaoLongaPt"
+              rows={3}
+              placeholder={padraoDescLonga}
+              {...register("descricaoLongaPt")}
+            />
+            {errors.descricaoLongaPt && (
+              <p className="text-xs text-red-600">
+                {errors.descricaoLongaPt.message}
+              </p>
+            )}
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="headlineEs">Chamada (espanhol)</Label>
+            <Input id="headlineEs" {...register("headlineEs")} />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="descricaoLongaEs">Descrição (espanhol)</Label>
+            <Textarea
+              id="descricaoLongaEs"
+              rows={3}
+              {...register("descricaoLongaEs")}
+            />
           </div>
         </div>
       </section>

@@ -24,6 +24,7 @@ interface UploadTarget {
   postId?: string;
   heroSlideId?: string;
   setorSlug?: string;
+  blocoChave?: string;
 }
 
 /**
@@ -85,6 +86,7 @@ export async function uploadMedia(
         postId: target.postId ?? null,
         heroSlideId: target.heroSlideId ?? null,
         setorSlug: target.setorSlug ?? null,
+        blocoChave: target.blocoChave ?? null,
       },
       orderBy: { order: "desc" },
       select: { order: true },
@@ -104,6 +106,7 @@ export async function uploadMedia(
         postId: target.postId ?? null,
         heroSlideId: target.heroSlideId ?? null,
         setorSlug: target.setorSlug ?? null,
+        blocoChave: target.blocoChave ?? null,
       },
       select: { id: true, filename: true, alt: true, order: true },
     });
@@ -114,6 +117,7 @@ export async function uploadMedia(
     if (target.postId) revalidatePath(`/admin/blog/${target.postId}`);
     if (target.heroSlideId) revalidatePath(`/admin/hero/${target.heroSlideId}`);
     if (target.setorSlug) revalidatePath(`/admin/setores/${target.setorSlug}`);
+    if (target.blocoChave) revalidatePath(`/admin/blocos/${target.blocoChave}`);
 
     return { success: true, media };
   } catch (err) {
@@ -137,6 +141,7 @@ function invalidarPaginas(alvo: {
   postId?: string | null;
   heroSlideId?: string | null;
   setorSlug?: string | null;
+  blocoChave?: string | null;
 }) {
   revalidatePath("/admin/media");
 
@@ -166,6 +171,9 @@ function invalidarPaginas(alvo: {
     revalidatePath(`/admin/setores/${alvo.setorSlug}`);
     revalidatePath("/[locale]/(marketing)/solucoes/[setor]", "page");
   }
+  if (alvo.blocoChave) {
+    revalidatePath(`/admin/blocos/${alvo.blocoChave}`);
+  }
   revalidatePath("/[locale]/(marketing)", "page");
 }
 
@@ -186,6 +194,7 @@ export async function updateMediaAlt(
         postId: true,
         heroSlideId: true,
         setorSlug: true,
+        blocoChave: true,
       },
     });
     invalidarPaginas(media);
@@ -212,6 +221,7 @@ export async function deleteMedia(
         postId: true,
         heroSlideId: true,
         setorSlug: true,
+        blocoChave: true,
       },
     });
 
@@ -287,6 +297,7 @@ export async function reorderMedia(
         postId: true,
         heroSlideId: true,
         setorSlug: true,
+        blocoChave: true,
       },
     });
     if (dono) invalidarPaginas(dono);

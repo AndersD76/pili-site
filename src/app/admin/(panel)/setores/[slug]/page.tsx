@@ -31,6 +31,8 @@ export default async function EditarSetorPage({
   // O texto que o site usa hoje, para aparecer como placeholder no formulário.
   const padraoTitulo = t(`forms.applications.${slug}`);
   const padraoDescricao = t(`home.sectors.${slug}`);
+  const padraoHeadline = t(`solucoes.cards.${slug}.headline`);
+  const padraoDescLonga = t(`solucoes.cards.${slug}.desc`);
 
   return (
     <div className="space-y-6">
@@ -47,11 +49,17 @@ export default async function EditarSetorPage({
         slug={setor.slug}
         padraoTitulo={padraoTitulo}
         padraoDescricao={padraoDescricao}
+        padraoHeadline={padraoHeadline}
+        padraoDescLonga={padraoDescLonga}
         initial={{
           tituloPt: pt?.titulo ?? "",
           descricaoPt: pt?.descricao ?? "",
+          headlinePt: pt?.headline ?? "",
+          descricaoLongaPt: pt?.descricaoLonga ?? "",
           tituloEs: es?.titulo ?? "",
           descricaoEs: es?.descricao ?? "",
+          headlineEs: es?.headline ?? "",
+          descricaoLongaEs: es?.descricaoLonga ?? "",
           ordem: setor.ordem,
           ativo: setor.ativo,
         }}

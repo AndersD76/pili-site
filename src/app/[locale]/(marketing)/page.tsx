@@ -9,7 +9,6 @@ import { getHeroSlides, type SlideData } from "@/lib/hero-slides";
 import { getSetores } from "@/lib/setores";
 import { ProductCard } from "@/components/marketing/product-card";
 import { EcosystemGrid } from "@/components/marketing/ecosystem-grid";
-import { ClientsBand } from "@/components/marketing/clients-band";
 import { CertificationsBand } from "@/components/marketing/certifications-band";
 import { LeadForm } from "@/components/marketing/lead-form";
 import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
@@ -455,8 +454,11 @@ export default async function HomePage({
       {/* ──── 9. ECOSSISTEMA PILI ──── */}
       <EcosystemGrid />
 
-      {/* ──── 10. CLIENTES ──── */}
-      <ClientsBand />
+      {/* A faixa "Quem confia na PILI" saiu daqui. Ela nomeava Cargill, JBS,
+          BRF, Votorantim e COFCO com números de operação por cliente. Esses
+          dados vêm das obras semeadas em `seed-all.ts`, que são material de
+          demonstração: atribuir desempenho medido a terceiro nomeado sem
+          contrato de divulgação é exposição, não prova social. */}
 
       {/* ──── 11. CERTIFICACOES ──── */}
       <CertificationsBand />

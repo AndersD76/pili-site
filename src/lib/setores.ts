@@ -31,6 +31,9 @@ export interface SetorData {
   /** `null` quando não há tradução: a home usa o texto das mensagens. */
   titulo: string | null;
   descricao: string | null;
+  /// Textos da pagina /solucoes/[setor]; vazios, a pagina usa as mensagens.
+  headline: string | null;
+  descricaoLonga: string | null;
 }
 
 export const getSetores = cache(async (): Promise<SetorData[]> => {
@@ -63,6 +66,8 @@ export const getSetores = cache(async (): Promise<SetorData[]> => {
         alt: foto?.alt ?? null,
         titulo: traducao?.titulo ?? null,
         descricao: traducao?.descricao ?? null,
+        headline: traducao?.headline ?? null,
+        descricaoLonga: traducao?.descricaoLonga ?? null,
       };
     });
   } catch (err) {
