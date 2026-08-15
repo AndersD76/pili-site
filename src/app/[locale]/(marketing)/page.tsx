@@ -11,7 +11,10 @@ import { ProductCard } from "@/components/marketing/product-card";
 import { EcosystemGrid } from "@/components/marketing/ecosystem-grid";
 import { CertificationsBand } from "@/components/marketing/certifications-band";
 import { LeadForm } from "@/components/marketing/lead-form";
-import { Modelo3DModal } from "@/components/marketing/modelo-3d-modal";
+import {
+  Modelo3DModal,
+  type Hotspot3D,
+} from "@/components/marketing/modelo-3d-modal";
 import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
 import {
   ArrowRight,
@@ -49,6 +52,14 @@ export async function generateMetadata({
 
 /** Usada enquanto o setor não tem foto própria enviada pelo painel. */
 const FOTO_SETOR_PADRAO = "/images/tombador-pili.jpg";
+
+const HOTSPOTS_TOMBADOR: Hotspot3D[] = [
+  { position: "0 0.005 0.018", normal: "0 0 1", label: "Fundacao" },
+  { position: "0.018 0.04 0", normal: "1 0 0", label: "Plataforma" },
+  { position: "0.018 0.12 0", normal: "1 0 0", label: "Cilindros hidraulicos" },
+  { position: "-0.018 0.18 0", normal: "-1 0 0", label: "Portico" },
+  { position: "0 0.235 0.018", normal: "0 0 1", label: "Tombador" },
+];
 
 export default async function HomePage({
   params,
@@ -348,16 +359,16 @@ export default async function HomePage({
               Explore o equipamento em 3D
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-pili-cement">
-              Visualize o tombador hidraulico OPD 63 em detalhes. Gire, amplie e
+              Visualize o tombador hidraulico em detalhes. Gire, amplie e
               inspecione cada angulo do equipamento que movimenta
               mais de {settings.statsEquipamentos} operacoes pelo mundo.
             </p>
             <div className="mt-10">
               <Modelo3DModal
-                src="/models/opd63.glb"
-                poster="/models/opd63-poster.webp"
-                alt="Tombador hidraulico OPD 63 PILI"
-                titulo="OPD 63 — Tombador Hidraulico"
+                src="/models/tombador.glb"
+                alt="Tombador hidraulico PILI — instalacao completa"
+                titulo="Tombador Hidraulico PILI"
+                hotspots={HOTSPOTS_TOMBADOR}
               />
             </div>
           </AnimateOnScroll>
