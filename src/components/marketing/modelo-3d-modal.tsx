@@ -98,61 +98,66 @@ const MODAL_STYLES = `
     font-family: var(--font-display), system-ui, sans-serif;
   }
   @keyframes card-in {
-    0% { opacity: 0; transform: translateY(20px) scale(0.9); }
-    60% { opacity: 1; transform: translateY(-4px) scale(1.02); }
+    0% { opacity: 0; transform: translateY(16px) scale(0.92); }
+    60% { opacity: 1; transform: translateY(-3px) scale(1.01); }
     100% { opacity: 1; transform: translateY(0) scale(1); }
   }
   @keyframes card-glow {
     0%, 100% { box-shadow: 0 0 0 rgba(245,197,24,0); }
-    50% { box-shadow: 0 0 20px rgba(245,197,24,0.15); }
+    50% { box-shadow: 0 0 16px rgba(245,197,24,0.12); }
   }
   @keyframes valor-pop {
     0% { opacity: 0; transform: scale(0.5); }
-    50% { transform: scale(1.15); }
+    50% { transform: scale(1.12); }
     100% { opacity: 1; transform: scale(1); }
   }
   .info-card {
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(12px);
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(10px);
     border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 10px;
-    padding: 14px 18px;
+    border-radius: 8px;
+    padding: 10px 14px;
     opacity: 0;
-    animation: card-in 0.6s cubic-bezier(0.16,1,0.3,1) forwards;
+    animation: card-in 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
   }
   .info-card--destaque {
-    border-color: rgba(245,197,24,0.3);
-    animation: card-in 0.6s cubic-bezier(0.16,1,0.3,1) forwards,
+    border-color: rgba(245,197,24,0.25);
+    animation: card-in 0.5s cubic-bezier(0.16,1,0.3,1) forwards,
                card-glow 3s ease-in-out 1.5s infinite;
   }
   .info-card__valor {
     font-family: var(--font-display), system-ui, sans-serif;
-    font-size: 22px; font-weight: 800;
+    font-size: 18px; font-weight: 800;
     color: #fff;
     letter-spacing: -0.02em;
     opacity: 0;
-    animation: valor-pop 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
+    animation: valor-pop 0.4s cubic-bezier(0.16,1,0.3,1) forwards;
   }
   .info-card__valor--destaque { color: #F5C518; }
   .info-card__label {
-    font-size: 10px; font-weight: 600;
+    font-size: 9px; font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: rgba(255,255,255,0.5);
-    margin-top: 2px;
+    color: rgba(255,255,255,0.45);
+    margin-top: 1px;
     font-family: var(--font-mono), monospace;
   }
   @keyframes titulo-slide {
-    0% { opacity: 0; transform: translateX(-30px); }
+    0% { opacity: 0; transform: translateX(-20px); }
     100% { opacity: 1; transform: translateX(0); }
   }
   @keyframes linha-grow {
     0% { width: 0; }
-    100% { width: 48px; }
+    100% { width: 40px; }
   }
-  .mv-titulo { opacity: 0; animation: titulo-slide 0.7s cubic-bezier(0.16,1,0.3,1) 0.2s forwards; }
-  .mv-linha { height: 2px; width: 0; background: #E00010; animation: linha-grow 0.5s ease 0.5s forwards; }
-  .mv-sub { opacity: 0; animation: titulo-slide 0.7s cubic-bezier(0.16,1,0.3,1) 0.4s forwards; }
+  @keyframes dialog-in {
+    0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .mv-titulo { opacity: 0; animation: titulo-slide 0.6s cubic-bezier(0.16,1,0.3,1) 0.2s forwards; }
+  .mv-linha { height: 2px; width: 0; background: #E00010; animation: linha-grow 0.4s ease 0.4s forwards; }
+  .mv-sub { opacity: 0; animation: titulo-slide 0.6s cubic-bezier(0.16,1,0.3,1) 0.35s forwards; }
+  .mv-dialog { animation: dialog-in 0.4s cubic-bezier(0.16,1,0.3,1) forwards; }
 `;
 
 export function Modelo3DModal({
@@ -205,122 +210,122 @@ export function Modelo3DModal({
 
       {aberto && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
           onClick={(e) => {
             if (e.target === e.currentTarget) fechar();
           }}
         >
           <style dangerouslySetInnerHTML={{ __html: MODAL_STYLES }} />
 
-          {bgImage && (
-            <div
-              className="mv-bg"
-              style={{ backgroundImage: `url(${bgImage})` }}
-            />
-          )}
-          <div className="absolute inset-0 bg-[#0B0B0C]/80" />
+          <div className="mv-dialog relative mx-4 flex max-h-[85vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0B0B0C]">
+            {bgImage && (
+              <div
+                className="mv-bg"
+                style={{ backgroundImage: `url(${bgImage})` }}
+              />
+            )}
+            <div className="absolute inset-0 rounded-2xl bg-[#0B0B0C]/75" />
 
-          <button
-            type="button"
-            onClick={fechar}
-            aria-label="Fechar"
-            className="absolute right-4 top-4 z-20 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
-          >
-            <X className="size-6" />
-          </button>
+            <div className="relative z-10 flex items-center justify-between px-5 pt-4 pb-2">
+              <div>
+                {titulo && (
+                  <p className="mv-titulo font-display text-base font-bold text-white">
+                    {titulo}
+                  </p>
+                )}
+                <div className="mv-linha mt-1.5" />
+                {subtitulo && (
+                  <p className="mv-sub mt-1 text-xs text-white/40">
+                    {subtitulo}
+                  </p>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={fechar}
+                aria-label="Fechar"
+                className="rounded-full bg-white/10 p-1.5 text-white transition-colors hover:bg-white/20"
+              >
+                <X className="size-5" />
+              </button>
+            </div>
 
-          {(titulo || subtitulo) && (
-            <div className="absolute left-6 top-5 z-20 max-w-xs lg:left-10 lg:top-8 lg:max-w-sm">
-              {titulo && (
-                <p className="mv-titulo font-display text-lg font-bold text-white lg:text-xl">
-                  {titulo}
-                </p>
-              )}
-              <div className="mv-linha mt-2" />
-              {subtitulo && (
-                <p className="mv-sub mt-2 text-xs leading-relaxed text-white/50 lg:text-sm">
-                  {subtitulo}
-                </p>
+            <div className="relative z-10 flex flex-1 items-center justify-center px-4 py-2">
+              {pronto ? (
+                <model-viewer
+                  src={src}
+                  poster={poster}
+                  alt={alt}
+                  auto-rotate=""
+                  auto-rotate-delay="800"
+                  rotation-per-second="20deg"
+                  camera-controls=""
+                  camera-orbit="45deg 65deg 105%"
+                  interaction-prompt="none"
+                  min-field-of-view="18deg"
+                  shadow-intensity="1.2"
+                  shadow-softness="0.8"
+                  exposure="1.1"
+                  environment-image="neutral"
+                  loading="eager"
+                  style={{
+                    width: "100%",
+                    height: "min(55vh, 500px)",
+                    background: "transparent",
+                    // @ts-expect-error -- CSS custom properties for model-viewer
+                    "--poster-color": "transparent",
+                    "--progress-bar-color": "#E00010",
+                    "--progress-mask": "transparent",
+                  }}
+                >
+                  {hotspots.map((h, i) => (
+                    <div
+                      key={i}
+                      className="hs3d"
+                      slot={`hotspot-${i + 1}`}
+                      data-position={h.position}
+                      data-normal={h.normal}
+                      data-visibility-attribute="visible"
+                    >
+                      <span className="hs3d__dot" />
+                      <span className="hs3d__line" />
+                      <span className="hs3d__label">{h.label}</span>
+                    </div>
+                  ))}
+                </model-viewer>
+              ) : (
+                <div className="flex flex-col items-center gap-3 py-20 text-white">
+                  <div className="size-8 animate-spin rounded-full border-2 border-white/20 border-t-pili-red" />
+                  <p className="text-sm text-white/50">Carregando modelo 3D...</p>
+                </div>
               )}
             </div>
-          )}
 
-          {cards.length > 0 && (
-            <div className="absolute bottom-6 left-6 right-6 z-20 flex flex-wrap gap-3 lg:bottom-10 lg:left-10 lg:right-auto lg:flex-nowrap lg:gap-4">
-              {cards.map((c, i) => (
-                <div
-                  key={i}
-                  className={`info-card ${c.destaque ? "info-card--destaque" : ""}`}
-                  style={{ animationDelay: `${0.6 + i * 0.15}s` }}
-                >
+            {cards.length > 0 && (
+              <div className="relative z-10 flex flex-wrap gap-2.5 border-t border-white/5 px-5 py-4">
+                {cards.map((c, i) => (
                   <div
-                    className={`info-card__valor ${c.destaque ? "info-card__valor--destaque" : ""}`}
-                    style={{ animationDelay: `${0.8 + i * 0.15}s` }}
+                    key={i}
+                    className={`info-card ${c.destaque ? "info-card--destaque" : ""}`}
+                    style={{ animationDelay: `${0.5 + i * 0.12}s` }}
                   >
-                    {c.valor}
+                    <div
+                      className={`info-card__valor ${c.destaque ? "info-card__valor--destaque" : ""}`}
+                      style={{ animationDelay: `${0.7 + i * 0.12}s` }}
+                    >
+                      {c.valor}
+                    </div>
+                    <div className="info-card__label">{c.label}</div>
                   </div>
-                  <div className="info-card__label">{c.label}</div>
+                ))}
+                <div className="ml-auto flex items-center">
+                  <p className="font-display text-[10px] font-bold uppercase tracking-widest text-pili-red">
+                    PILI Industrial
+                  </p>
                 </div>
-              ))}
-            </div>
-          )}
-
-          <div className="absolute bottom-5 right-6 z-20 lg:bottom-10 lg:right-10">
-            <p className="font-display text-xs font-bold uppercase tracking-widest text-pili-red">
-              PILI Industrial
-            </p>
+              </div>
+            )}
           </div>
-
-          {pronto ? (
-            <model-viewer
-              src={src}
-              poster={poster}
-              alt={alt}
-              auto-rotate=""
-              auto-rotate-delay="800"
-              rotation-per-second="20deg"
-              camera-controls=""
-              camera-orbit="45deg 65deg 105%"
-              interaction-prompt="none"
-              min-field-of-view="18deg"
-              shadow-intensity="1.2"
-              shadow-softness="0.8"
-              exposure="1.1"
-              environment-image="neutral"
-              loading="eager"
-              style={{
-                width: "min(92vw, 1400px)",
-                height: "min(85vh, 950px)",
-                background: "transparent",
-                position: "relative",
-                zIndex: 10,
-                // @ts-expect-error -- CSS custom properties for model-viewer
-                "--poster-color": "transparent",
-                "--progress-bar-color": "#E00010",
-                "--progress-mask": "transparent",
-              }}
-            >
-              {hotspots.map((h, i) => (
-                <div
-                  key={i}
-                  className="hs3d"
-                  slot={`hotspot-${i + 1}`}
-                  data-position={h.position}
-                  data-normal={h.normal}
-                  data-visibility-attribute="visible"
-                >
-                  <span className="hs3d__dot" />
-                  <span className="hs3d__line" />
-                  <span className="hs3d__label">{h.label}</span>
-                </div>
-              ))}
-            </model-viewer>
-          ) : (
-            <div className="relative z-10 flex flex-col items-center gap-3 text-white">
-              <div className="size-10 animate-spin rounded-full border-2 border-white/20 border-t-pili-red" />
-              <p className="text-sm text-white/60">Carregando modelo 3D...</p>
-            </div>
-          )}
         </div>
       )}
     </>
