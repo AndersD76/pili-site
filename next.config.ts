@@ -24,6 +24,7 @@ const csp = [
   "frame-src https://www.openstreetmap.org",
   "base-uri 'self'",
   "form-action 'self'",
+  "worker-src 'self' blob:",
   "object-src 'none'",
   "upgrade-insecure-requests",
 ].join("; ");

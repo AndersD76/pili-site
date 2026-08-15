@@ -11,6 +11,7 @@ import { ProductCard } from "@/components/marketing/product-card";
 import { EcosystemGrid } from "@/components/marketing/ecosystem-grid";
 import { CertificationsBand } from "@/components/marketing/certifications-band";
 import { LeadForm } from "@/components/marketing/lead-form";
+import { Modelo3DModal } from "@/components/marketing/modelo-3d-modal";
 import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
 import {
   ArrowRight,
@@ -331,6 +332,34 @@ export default async function HomePage({
               Canal PILI no YouTube
               <ArrowRight className="h-4 w-4" />
             </a>
+          </AnimateOnScroll>
+        </div>
+      </section>
+
+      {/* ──── 6b. MODELO 3D ──── */}
+      <section className="relative overflow-hidden bg-[#0B0B0C] py-24 px-6 lg:px-8">
+        <div className="absolute inset-0 grid-pattern opacity-10" />
+        <div className="relative mx-auto max-w-4xl text-center">
+          <AnimateOnScroll>
+            <p className="font-mono text-xs uppercase tracking-widest text-pili-red">
+              Experiencia interativa
+            </p>
+            <h2 className="mt-4 font-display text-[length:var(--text-h2)] font-black uppercase text-white">
+              Explore o equipamento em 3D
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-pili-cement">
+              Visualize o tombador hidraulico OPD 63 em detalhes. Gire, amplie e
+              inspecione cada angulo do equipamento que movimenta
+              mais de {settings.statsEquipamentos} operacoes pelo mundo.
+            </p>
+            <div className="mt-10">
+              <Modelo3DModal
+                src="/models/opd63.glb"
+                poster="/models/opd63-poster.webp"
+                alt="Tombador hidraulico OPD 63 PILI"
+                titulo="OPD 63 — Tombador Hidraulico"
+              />
+            </div>
           </AnimateOnScroll>
         </div>
       </section>

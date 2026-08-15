@@ -73,12 +73,22 @@ export default function CatalogoPage() {
               <p className="mt-3 text-sm text-pili-concrete">
                 {t("catalogo.releasedText")}
               </p>
-              <Link
-                href="/produtos"
-                className="mt-6 inline-flex items-center gap-2 bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
-              >
-                {t("catalogo.seeProducts")}
-              </Link>
+              <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+                {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- download de arquivo, nao navegacao SPA */}
+                <a
+                  href="/api/catalogo/pdf"
+                  className="inline-flex items-center gap-2 bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
+                >
+                  <Download className="h-4 w-4" />
+                  Baixar catalogo em PDF
+                </a>
+                <Link
+                  href="/produtos"
+                  className="inline-flex items-center gap-2 border border-pili-mist px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors hover:border-pili-black"
+                >
+                  {t("catalogo.seeProducts")}
+                </Link>
+              </div>
             </div>
           ) : (
             /* Lead gate form */
