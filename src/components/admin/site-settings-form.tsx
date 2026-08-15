@@ -12,11 +12,11 @@ import {
   Share2,
   TrendingUp,
 } from "lucide-react";
+import { updateSiteSettings } from "@/app/admin/(panel)/config/actions";
 import {
-  updateSiteSettings,
   siteSettingsSchema,
   type SiteSettingsInput,
-} from "@/app/admin/(panel)/config/actions";
+} from "@/lib/validators/admin";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

@@ -6,11 +6,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
-import {
-  atualizarSetor,
-  setorSchema,
-  type SetorInput,
-} from "@/app/admin/(panel)/setores/actions";
+import { atualizarSetor } from "@/app/admin/(panel)/setores/actions";
+import { setorSchema, type SetorInput } from "@/lib/validators/admin";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

@@ -1,30 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
 import { db } from "@/lib/db";
 import { requirePortalAuth } from "@/lib/auth-guard";
 import { logError } from "@/lib/prisma-errors";
-import { passwordSchema, MIN_PASSWORD_LENGTH } from "@/lib/validators/user";
-
-export const trocaSenhaSchema = z
-  .object({
-    atual: z.string().min(1, "Informe a senha atual"),
-    // Mesma regra do cadastro de usuários do admin: uma única definição de
-    // "senha aceitável" em todo o sistema.
-    nova: passwordSchema,
-    confirmacao: z.string(),
-  })
-  .refine((d) => d.nova === d.confirmacao, {
-    message: "As senhas não conferem",
-    path: ["confirmacao"],
-  })
-  .refine((d) => d.nova !== d.atual, {
-    message: "A nova senha precisa ser diferente da atual",
-    path: ["nova"],
-  });
-
-export type TrocaSenhaInput = z.infer<typeof trocaSenhaSchema>;
+import { trocaSenhaSchema } from "@/lib/validators/portal";
 
 /**
  * Troca a senha do próprio usuário.

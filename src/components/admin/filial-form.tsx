@@ -10,9 +10,8 @@ import {
   criarFilial,
   atualizarFilial,
   excluirFilial,
-  filialSchema,
-  type FilialInput,
 } from "@/app/admin/(panel)/filiais/actions";
+import { filialSchema, type FilialInput } from "@/lib/validators/admin";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

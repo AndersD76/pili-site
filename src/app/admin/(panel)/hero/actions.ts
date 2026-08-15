@@ -1,30 +1,15 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
 import { Locale } from "@prisma/client";
 import { db } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth-guard";
 import { logError } from "@/lib/prisma-errors";
-import { firstIssue } from "@/lib/validators/admin";
-
-/**
- * Slide do carrossel.
- *
- * O título em português é obrigatório porque é o fallback de todos os idiomas:
- * sem ele um slide sem tradução em espanhol simplesmente sumiria do carrossel.
- * O espanhol é opcional e cai para o português quando vazio.
- */
-export const heroSlideSchema = z.object({
-  tituloPt: z.string().trim().min(1, "Título em português obrigatório").max(120),
-  subtituloPt: z.string().trim().max(240),
-  tituloEs: z.string().trim().max(120),
-  subtituloEs: z.string().trim().max(240),
-  ordem: z.coerce.number().int().min(0).max(999),
-  ativo: z.boolean(),
-});
-
-export type HeroSlideInput = z.infer<typeof heroSlideSchema>;
+import {
+  firstIssue,
+  heroSlideSchema,
+  type HeroSlideInput,
+} from "@/lib/validators/admin";
 
 interface ActionResult {
   success: boolean;

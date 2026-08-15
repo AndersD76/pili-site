@@ -1,35 +1,15 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
 import { Locale } from "@prisma/client";
 import { db } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth-guard";
 import { logError } from "@/lib/prisma-errors";
-import { firstIssue } from "@/lib/validators/admin";
-
-/**
- * Edição de um setor.
- *
- * Todos os textos são opcionais: em branco, o site continua usando o rótulo e a
- * descrição das mensagens. Preencher é sobrescrever, não obrigação — por isso
- * não existe criação nem exclusão de setor aqui.
- */
-export const setorSchema = z.object({
-  tituloPt: z.string().trim().max(60),
-  descricaoPt: z.string().trim().max(200),
-  // Textos da pagina /solucoes/[setor]; independentes do card da home.
-  headlinePt: z.string().trim().max(120),
-  descricaoLongaPt: z.string().trim().max(600),
-  tituloEs: z.string().trim().max(60),
-  descricaoEs: z.string().trim().max(200),
-  headlineEs: z.string().trim().max(120),
-  descricaoLongaEs: z.string().trim().max(600),
-  ordem: z.coerce.number().int().min(0).max(99),
-  ativo: z.boolean(),
-});
-
-export type SetorInput = z.infer<typeof setorSchema>;
+import {
+  firstIssue,
+  setorSchema,
+  type SetorInput,
+} from "@/lib/validators/admin";
 
 interface ActionResult {
   success: boolean;

@@ -10,9 +10,8 @@ import {
   criarMarco,
   atualizarMarco,
   excluirMarco,
-  marcoSchema,
-  type MarcoInput,
 } from "@/app/admin/(panel)/historia/actions";
+import { marcoSchema, type MarcoInput } from "@/lib/validators/admin";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

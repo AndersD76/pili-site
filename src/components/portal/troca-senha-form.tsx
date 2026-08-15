@@ -5,11 +5,11 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { KeyRound, Loader2 } from "lucide-react";
+import { trocarSenha } from "@/app/portal/trocar-senha/actions";
 import {
-  trocarSenha,
   trocaSenhaSchema,
   type TrocaSenhaInput,
-} from "@/app/portal/trocar-senha/actions";
+} from "@/lib/validators/portal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

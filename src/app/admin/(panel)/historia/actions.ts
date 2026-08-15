@@ -1,30 +1,16 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
 import { Locale } from "@prisma/client";
 import { db } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth-guard";
 import { logError } from "@/lib/prisma-errors";
-import { firstIssue } from "@/lib/validators/admin";
-
-/**
- * Marco da trajetória exibida em /empresa.
- *
- * O ano é texto e opcional: o último marco da linha é "Hoje", que não tem ano.
- * O português é obrigatório porque é o fallback dos demais idiomas.
- */
-export const marcoSchema = z.object({
-  ano: z.string().trim().max(12),
-  tituloPt: z.string().trim().min(1, "Título em português obrigatório").max(80),
-  textoPt: z.string().trim().min(1, "Texto em português obrigatório").max(600),
-  tituloEs: z.string().trim().max(80),
-  textoEs: z.string().trim().max(600),
-  ordem: z.coerce.number().int().min(0).max(999),
-  ativo: z.boolean(),
-});
-
-export type MarcoInput = z.infer<typeof marcoSchema>;
+import {
+  firstIssue,
+  marcoSchema,
+  blocoSchema,
+  type MarcoInput,
+} from "@/lib/validators/admin";
 
 interface ActionResult {
   success: boolean;
@@ -132,17 +118,6 @@ export async function excluirMarco(id: string): Promise<ActionResult> {
 }
 
 /* ------------------------------------------------ blocos de seção */
-
-export const blocoSchema = z.object({
-  tituloPt: z.string().trim().max(80),
-  subtituloPt: z.string().trim().max(120),
-  textoPt: z.string().trim().max(800),
-  tituloEs: z.string().trim().max(80),
-  subtituloEs: z.string().trim().max(120),
-  textoEs: z.string().trim().max(800),
-});
-
-export type BlocoInput = z.infer<typeof blocoSchema>;
 
 function vazioParaNulo(v: string): string | null {
   return v.trim() === "" ? null : v.trim();

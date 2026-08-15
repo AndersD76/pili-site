@@ -113,6 +113,160 @@ export const postInputSchema = z.object({
 
 export type PostInput = z.infer<typeof postInputSchema>;
 
+/* ---------- configurações do site ---------- */
+
+const urlOpcional = z
+  .string()
+  .trim()
+  .max(300)
+  .refine((v) => v === "" || /^https?:\/\//.test(v), {
+    message: "Informe uma URL completa, começando com https://",
+  });
+
+export const siteSettingsSchema = z.object({
+  razaoSocial: z.string().trim().min(1, "Razão social obrigatória").max(200),
+  cnpj: z.string().trim().min(1, "CNPJ obrigatório").max(20),
+  endereco: z.string().trim().min(1, "Endereço obrigatório").max(200),
+  telefone: z.string().trim().min(1, "Telefone obrigatório").max(30),
+  whatsapp: z.string().trim().min(1, "WhatsApp obrigatório").max(30),
+  email: z.string().trim().email("E-mail inválido"),
+  emailComercial: z.string().trim().email("E-mail comercial inválido"),
+  fundacao: z.coerce
+    .number()
+    .int()
+    .min(1900, "Ano inválido")
+    .max(new Date().getFullYear(), "Ano inválido"),
+  instagram: urlOpcional,
+  linkedin: urlOpcional,
+  facebook: urlOpcional,
+  youtube: urlOpcional,
+  piliTechUrl: urlOpcional,
+  mapaLat: z
+    .string()
+    .trim()
+    .refine((v) => v === "" || (!isNaN(Number(v)) && Math.abs(Number(v)) <= 90), {
+      message: "Latitude inválida (entre -90 e 90)",
+    }),
+  mapaLng: z
+    .string()
+    .trim()
+    .refine((v) => v === "" || (!isNaN(Number(v)) && Math.abs(Number(v)) <= 180), {
+      message: "Longitude inválida (entre -180 e 180)",
+    }),
+  mapaZoom: z.coerce.number().int().min(1, "Zoom entre 1 e 19").max(19, "Zoom entre 1 e 19"),
+  statsEquipamentos: z
+    .string()
+    .trim()
+    .min(1, "Informe os equipamentos instalados")
+    .max(20),
+  statsPaises: z.coerce
+    .number()
+    .int()
+    .min(1, "Informe ao menos 1 país")
+    .max(300, "Número de países inválido"),
+  statsCapacidade: z.string().trim().min(1, "Informe a capacidade máxima").max(20),
+});
+
+export type SiteSettingsInput = z.infer<typeof siteSettingsSchema>;
+
+/* ---------- hero slides ---------- */
+
+export const heroSlideSchema = z.object({
+  tituloPt: z.string().trim().min(1, "Título em português obrigatório").max(120),
+  subtituloPt: z.string().trim().max(240),
+  tituloEs: z.string().trim().max(120),
+  subtituloEs: z.string().trim().max(240),
+  ordem: z.coerce.number().int().min(0).max(999),
+  ativo: z.boolean(),
+});
+
+export type HeroSlideInput = z.infer<typeof heroSlideSchema>;
+
+/* ---------- filiais ---------- */
+
+function coordenada(limite: number, nome: string) {
+  return z
+    .string()
+    .trim()
+    .refine((v) => v === "" || (!isNaN(Number(v)) && Math.abs(Number(v)) <= limite), {
+      message: `${nome} inválida (entre -${limite} e ${limite})`,
+    });
+}
+
+export const filialSchema = z
+  .object({
+    nome: z.string().trim().min(1, "Nome obrigatório").max(120),
+    tipo: z.enum(["FILIAL", "ESCRITORIO", "ASSISTENCIA"]),
+    cidade: z.string().trim().min(1, "Cidade obrigatória").max(120),
+    uf: z
+      .string()
+      .trim()
+      .length(2, "UF deve ter 2 letras")
+      .regex(/^[A-Za-z]{2}$/, "UF deve conter apenas letras"),
+    endereco: z.string().trim().min(1, "Endereço obrigatório").max(240),
+    cep: z
+      .string()
+      .trim()
+      .refine((v) => v === "" || /^\d{5}-?\d{3}$/.test(v), {
+        message: "CEP inválido (use 00000-000)",
+      }),
+    telefone: z.string().trim().max(30),
+    lat: coordenada(90, "Latitude"),
+    lng: coordenada(180, "Longitude"),
+    ordem: z.coerce.number().int().min(0).max(999),
+    ativa: z.boolean(),
+  })
+  .refine((d) => (d.lat === "") === (d.lng === ""), {
+    message: "Preencha latitude e longitude juntas, ou deixe as duas em branco",
+    path: ["lng"],
+  });
+
+export type FilialInput = z.infer<typeof filialSchema>;
+
+/* ---------- marcos da trajetória ---------- */
+
+export const marcoSchema = z.object({
+  ano: z.string().trim().max(12),
+  tituloPt: z.string().trim().min(1, "Título em português obrigatório").max(80),
+  textoPt: z.string().trim().min(1, "Texto em português obrigatório").max(600),
+  tituloEs: z.string().trim().max(80),
+  textoEs: z.string().trim().max(600),
+  ordem: z.coerce.number().int().min(0).max(999),
+  ativo: z.boolean(),
+});
+
+export type MarcoInput = z.infer<typeof marcoSchema>;
+
+/* ---------- blocos de seção ---------- */
+
+export const blocoSchema = z.object({
+  tituloPt: z.string().trim().max(80),
+  subtituloPt: z.string().trim().max(120),
+  textoPt: z.string().trim().max(800),
+  tituloEs: z.string().trim().max(80),
+  subtituloEs: z.string().trim().max(120),
+  textoEs: z.string().trim().max(800),
+});
+
+export type BlocoInput = z.infer<typeof blocoSchema>;
+
+/* ---------- setores ---------- */
+
+export const setorSchema = z.object({
+  tituloPt: z.string().trim().max(60),
+  descricaoPt: z.string().trim().max(200),
+  headlinePt: z.string().trim().max(120),
+  descricaoLongaPt: z.string().trim().max(600),
+  tituloEs: z.string().trim().max(60),
+  descricaoEs: z.string().trim().max(200),
+  headlineEs: z.string().trim().max(120),
+  descricaoLongaEs: z.string().trim().max(600),
+  ordem: z.coerce.number().int().min(0).max(99),
+  ativo: z.boolean(),
+});
+
+export type SetorInput = z.infer<typeof setorSchema>;
+
 /* ---------- FormData ---------- */
 
 /** Lê um booleano serializado como "true"/"false" pelo formulário. */
