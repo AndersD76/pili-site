@@ -1,4 +1,9 @@
-import { PrismaClient, type ProductCategory, Locale } from "@prisma/client";
+import {
+  PrismaClient,
+  type ProductCategory,
+  Locale,
+  PostCategory,
+} from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const db = new PrismaClient();
@@ -935,153 +940,242 @@ async function seedProducts() {
 // 3. BLOG POSTS
 // ============================================================================
 
-interface BlogSeed {
-  slug: string;
-  author: string;
-  cover: string | null;
-  publishedAt: string;
-  tags: string[];
+interface BlogTraducao {
   title: string;
   excerpt: string;
   content: string;
+  metaTitle: string;
+  metaDesc: string;
 }
 
+interface BlogSeed {
+  slug: string;
+  author: string;
+  category: PostCategory;
+  readTime: number;
+  cover: string | null;
+  publishedAt: string;
+  tags: string[];
+  traducoes: Record<"pt_BR" | "es", BlogTraducao>;
+}
+
+/**
+ * Posts do blog.
+ *
+ * O conteudo anterior era material de demonstracao: capas do Unsplash, numeros
+ * sem lastro ("2.000 pecas", "reducao de 40% em Paranagua"), falas atribuidas a
+ * um diretor que nunca as disse e tres materias anunciando Store, Raster e
+ * Harbor — plataformas ja retiradas do site em `constants.ts`. Como o seed usa
+ * `upsert`, cada execucao republicava tudo isso.
+ *
+ * O que esta aqui agora usa foto propria da fabrica e so afirma o que o proprio
+ * site sustenta em `constants.ts` e nas mensagens de `empresa`.
+ */
 const BLOG_DATA: BlogSeed[] = [
   {
-    slug: "pili-industrial-agrishow-2025",
-    author: "Marketing PILI",
-    cover: "https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=1200&h=630&fit=crop",
-    publishedAt: "2025-05-05",
-    tags: ["agrishow", "feira", "tombador hidraulico", "agronegocio"],
-    title: "PILI Industrial marca presenca na Agrishow 2025",
-    excerpt:
-      "A PILI Industrial participou da Agrishow 2025 em Ribeirao Preto, apresentando sua linha completa de tombadores hidraulicos e as plataformas do ecossistema digital PILI.",
-    content: `A PILI Industrial marcou presenca na Agrishow 2025, a maior feira de tecnologia agricola da America Latina, realizada entre 28 de abril e 2 de maio em Ribeirao Preto/SP. O estande da empresa reuniu a linha completa de tombadores hidraulicos, coletores de amostras e as plataformas digitais do ecossistema PILI, atraindo produtores, cooperativas e operadores portuarios de todo o Brasil.
+    slug: "pili-1979-2026-quarenta-e-sete-anos",
+    author: "PILI Industrial",
+    category: PostCategory.artigo,
+    readTime: 4,
+    cover: "/images/blog/historia-logo-tombador.webp",
+    publishedAt: "2026-08-10",
+    tags: ["historia", "Erechim", "fabricacao nacional", "PILI"],
+    traducoes: {
+      pt_BR: {
+        title: "De 1979 a 2026: o que cabe em 47 anos fabricando em Erechim",
+        excerpt:
+          "A PILI começou como metalurgia industrial no interior do Rio Grande do Sul e só fabricou seu primeiro tombador onze anos depois. A linha do tempo entre uma coisa e outra.",
+        metaTitle: "47 anos da PILI: de 1979 a 2026, fabricando em Erechim",
+        metaDesc:
+          "Fundada em 1979 em Erechim/RS, a PILI Industrial soma mais de 850 equipamentos em 18 países. Conheça a trajetória da fábrica de tombadores hidráulicos.",
+        content: `O logo aparece pintado na lateral das vigas, sempre no mesmo amarelo. É uma das últimas etapas antes de o equipamento sair de Erechim — e a primeira coisa que alguém vê quando ele chega ao pátio do cliente, do outro lado do país ou do continente.
 
-Durante os cinco dias de evento, a equipe comercial realizou mais de 300 atendimentos tecnicos e fechou contratos para 12 novos equipamentos, incluindo dois tombadores de 30 metros destinados a terminais portuarios no Arco Norte. O destaque do estande foi a demonstracao ao vivo do PILI Tech, o sistema de gestao de patio com IoT que monitora filas, tempos de espera e eficiencia operacional em tempo real.
+A PILI foi fundada em 1979, em Erechim, no norte do Rio Grande do Sul. Não nasceu fabricando tombadores. O começo foi metalurgia industrial e equipamentos sob medida para o setor agroindustrial da região: o tipo de oficina que resolve o problema que o cliente traz, em vez de vender o produto que já está pronto.
 
-"A Agrishow e o momento em que consolidamos relacionamentos com clientes estrategicos e apresentamos as inovacoes do ano. Em 2025, o foco foi mostrar como nossos equipamentos se integram ao ecossistema digital para entregar nao apenas descarga rapida, mas inteligencia operacional completa", afirmou o diretor comercial da PILI Industrial.
+O primeiro tombador hidráulico da casa só saiu em 1990. Onze anos depois da fundação. Esse equipamento marcou a virada do trabalho sob medida genérico para a especialização em plataformas de descarga de grãos, que é o que a empresa faz até hoje.
 
-A participacao na feira reforca o posicionamento da PILI como referencia em solucoes de descarga de graos, com mais de 45 anos de experiencia e presenca em 18 paises. A proxima parada da empresa sera a Expodireto Cotrijal 2026, em Nao-Me-Toque/RS.`,
+Em 2010 veio a marca de 300 equipamentos instalados no Brasil. Em 2017, a base operacional em Paranaguá, no Paraná, junto ao maior complexo portuário de exportação de grãos da América Latina. Estar perto de onde o produto embarca encurta o tempo de resposta quando alguma coisa para.
+
+Hoje são mais de 850 equipamentos em operação, em 18 países, em plataformas que vão de 9 a 30 metros e de 35 a 100 toneladas.
+
+Quarenta e sete anos é tempo suficiente para que um equipamento vendido no começo ainda esteja trabalhando. Talvez esse seja o indicador mais honesto de uma fábrica de bens de capital: não quantos vendeu no ano passado, e sim quantos dos que vendeu há vinte anos continuam de pé.`,
+      },
+      es: {
+        title: "De 1979 a 2026: lo que cabe en 47 años fabricando en Erechim",
+        excerpt:
+          "PILI empezó como metalurgia industrial en el interior de Rio Grande do Sul y recién fabricó su primer volcador once años después. La línea de tiempo entre una cosa y otra.",
+        metaTitle: "47 años de PILI: de 1979 a 2026, fabricando en Erechim",
+        metaDesc:
+          "Fundada en 1979 en Erechim/RS, PILI Industrial suma más de 850 equipos en 18 países. Conozca la trayectoria de la fábrica de volcadores hidráulicos.",
+        content: `El logo aparece pintado en el lateral de las vigas, siempre en el mismo amarillo. Es una de las últimas etapas antes de que el equipo salga de Erechim, y lo primero que alguien ve cuando llega al patio del cliente, del otro lado del país o del continente.
+
+PILI fue fundada en 1979, en Erechim, al norte de Rio Grande do Sul. No nació fabricando volcadores. El comienzo fue metalurgia industrial y equipos a medida para el sector agroindustrial de la región: el tipo de taller que resuelve el problema que trae el cliente, en lugar de vender el producto que ya está hecho.
+
+El primer volcador hidráulico de la casa recién salió en 1990. Once años después de la fundación. Ese equipo marcó el giro del trabajo a medida genérico hacia la especialización en plataformas de descarga de granos, que es lo que la empresa hace hasta hoy.
+
+En 2010 llegó la marca de 300 equipos instalados en Brasil. En 2017, la base operativa en Paranaguá, en Paraná, junto al mayor complejo portuario de exportación de granos de América Latina. Estar cerca de donde embarca el producto acorta el tiempo de respuesta cuando algo se detiene.
+
+Hoy son más de 850 equipos en operación, en 18 países, en plataformas que van de 9 a 30 metros y de 35 a 100 toneladas.
+
+Cuarenta y siete años es tiempo suficiente para que un equipo vendido al comienzo siga trabajando. Quizás ese sea el indicador más honesto de una fábrica de bienes de capital: no cuántos vendió el año pasado, sino cuántos de los que vendió hace veinte años siguen en pie.`,
+      },
+    },
   },
+
   {
-    slug: "novo-tombador-30-metros-recorde-capacidade",
-    author: "Eng. Carlos Monteiro",
-    cover: "/images/tombador-pili.jpg",
-    publishedAt: "2025-03-18",
-    tags: ["tombador", "lancamento", "100 toneladas", "porto"],
-    title: "Novo tombador de 30 metros bate recorde de capacidade",
-    excerpt:
-      "A PILI Industrial lanca o tombador hidraulico de 30 metros com capacidade para 100 toneladas, o maior ja fabricado pela empresa em seus 45 anos de historia.",
-    content: `A PILI Industrial anunciou o lancamento do seu novo tombador hidraulico de 30 metros com capacidade para 100 toneladas, estabelecendo um novo recorde na linha de produtos da empresa. O equipamento foi projetado para atender a demanda crescente de terminais portuarios e grandes cooperativas que operam com carretas rodotrens e bitrens de alta capacidade.
+    slug: "como-nasce-o-projeto-de-um-tombador",
+    author: "PILI Industrial",
+    category: PostCategory.artigo,
+    readTime: 5,
+    cover: "/images/blog/engenharia-projeto-cad.webp",
+    publishedAt: "2026-08-11",
+    tags: ["engenharia", "projeto", "CAD", "fabricacao"],
+    traducoes: {
+      pt_BR: {
+        title: "Como nasce o projeto de um tombador",
+        excerpt:
+          "Antes de existir em aço, um tombador de 21 metros existe como linha na tela. O caminho que vai do requisito do cliente até a lista de materiais que chega ao chão de fábrica.",
+        metaTitle: "Como nasce o projeto de um tombador hidráulico",
+        metaDesc:
+          "Do requisito do cliente ao comissionamento: como a engenharia da PILI transforma a operação de descarga em projeto, lista de materiais e equipamento fabricado.",
+        content: `Antes de existir em aço, um tombador existe como linha na tela.
 
-O novo modelo incorpora um sistema hidraulico de dupla acao com quatro cilindros sincronizados, reduzindo o ciclo de descarga para menos de 40 segundos. A estrutura utiliza aco de alta resistencia ASTM A572 Grau 50 com tratamento superficial por jateamento e pintura epoxi de alto desempenho, garantindo vida util superior a 25 anos em ambiente portuario agressivo.
+O ponto de partida nunca é o equipamento: é a operação. Que veículo vai subir na plataforma, se carreta, bitrem ou rodotrem. Quantas descargas por dia. Quanto espaço existe no pátio e o que já está construído em volta. Que produto vai ser descarregado, porque grão, fertilizante e cimento se comportam de formas diferentes. Se o equipamento é fixo ou móvel.
 
-Entre as inovacoes tecnicas, destaca-se o sistema de pesagem dinamica integrado a plataforma, que permite verificar o peso da carga durante o processo de descarga sem necessidade de balanca rodoviaria separada. O equipamento tambem conta com sensores de posicao e inclinacao conectados ao PILI Tech, possibilitando monitoramento remoto de performance e manutencao preditiva.
+Dessas respostas sai o porte. E aqui mora um mal-entendido comum: um tombador de 9 metros e um de 30 metros não são o mesmo produto em escalas diferentes. Muda a estrutura, muda a fundação, muda o dimensionamento da central hidráulica, muda o painel elétrico. A faixa de 35 a 100 toneladas não é um catálogo de tamanhos, é uma família de projetos distintos.
 
-As primeiras duas unidades ja foram encomendadas por um terminal portuario no Maranhao e devem entrar em operacao no segundo semestre de 2025. O investimento em pesquisa e desenvolvimento para este modelo levou 18 meses e envolveu simulacoes estruturais em elementos finitos e testes em escala real na planta de Erechim/RS.`,
+O desenho detalha isso camada por camada. Na tela de projeto, uma plataforma de 21 metros aparece separada por cores: a estrutura em verde, a tubulação hidráulica em ciano, a elétrica em vermelho, os perfis metálicos em magenta. Cada linha é uma peça que alguém vai cortar, dobrar, soldar, jatear e pintar.
+
+E o desenho não termina em si mesmo. Dele sai a lista de materiais que alimenta a ordem de produção: cilindro telescópico, conjunto de central hidráulica, mesa, chumbadores, painel, kit de comando. É esse vínculo entre projeto e ordem de produção que evita a falha clássica da fabricação sob medida, que é a peça desenhada e nunca comprada.
+
+A fabricação acontece em Erechim, com corte laser, solda robotizada e jateamento, num parque dimensionado para montar equipamentos de até 30 metros. Depois vêm o transporte, a montagem em campo e o comissionamento.
+
+O projeto só fecha quando a plataforma sobe carregada e desce vazia dentro dos parâmetros das NR-10 e NR-12, com a garantia estrutural de cinco anos valendo. Até lá, ele continua sendo o que era no começo: um desenho que precisa dar certo no aço.`,
+      },
+      es: {
+        title: "Cómo nace el proyecto de un volcador",
+        excerpt:
+          "Antes de existir en acero, un volcador de 21 metros existe como línea en la pantalla. El camino que va del requisito del cliente a la lista de materiales que llega a planta.",
+        metaTitle: "Cómo nace el proyecto de un volcador hidráulico",
+        metaDesc:
+          "Del requisito del cliente a la puesta en marcha: cómo la ingeniería de PILI transforma la operación de descarga en proyecto, lista de materiales y equipo fabricado.",
+        content: `Antes de existir en acero, un volcador existe como línea en la pantalla.
+
+El punto de partida nunca es el equipo: es la operación. Qué vehículo va a subir a la plataforma, si semirremolque, bitrén o rodotrén. Cuántas descargas por día. Cuánto espacio hay en el patio y qué ya está construido alrededor. Qué producto se va a descargar, porque grano, fertilizante y cemento se comportan de formas distintas. Si el equipo es fijo o móvil.
+
+De esas respuestas sale el porte. Y ahí vive un malentendido común: un volcador de 9 metros y uno de 30 metros no son el mismo producto en escalas distintas. Cambia la estructura, cambia la fundación, cambia el dimensionamiento de la central hidráulica, cambia el tablero eléctrico. El rango de 35 a 100 toneladas no es un catálogo de tamaños, es una familia de proyectos distintos.
+
+El plano detalla eso capa por capa. En la pantalla de proyecto, una plataforma de 21 metros aparece separada por colores: la estructura en verde, la tubería hidráulica en cian, la eléctrica en rojo, los perfiles metálicos en magenta. Cada línea es una pieza que alguien va a cortar, doblar, soldar, arenar y pintar.
+
+Y el plano no termina en sí mismo. De él sale la lista de materiales que alimenta la orden de producción: cilindro telescópico, conjunto de central hidráulica, mesa, anclajes, tablero, kit de mando. Es ese vínculo entre proyecto y orden de producción lo que evita la falla clásica de la fabricación a medida, que es la pieza dibujada y nunca comprada.
+
+La fabricación ocurre en Erechim, con corte láser, soldadura robotizada y arenado, en un parque dimensionado para montar equipos de hasta 30 metros. Después vienen el transporte, el montaje en campo y la puesta en marcha.
+
+El proyecto recién cierra cuando la plataforma sube cargada y baja vacía dentro de los parámetros de las normas NR-10 y NR-12, con la garantía estructural de cinco años vigente. Hasta ahí, sigue siendo lo que era al comienzo: un plano que necesita funcionar en el acero.`,
+      },
+    },
   },
+
   {
-    slug: "pili-raster-conformidade-eudr-exportadores",
-    author: "Equipe PILI",
-    cover: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1200&h=630&fit=crop",
-    publishedAt: "2025-02-10",
-    tags: ["EUDR", "rastreabilidade", "exportacao", "sustentabilidade"],
-    title: "PILI Raster garante conformidade EUDR para exportadores brasileiros",
-    excerpt:
-      "A plataforma de rastreabilidade de graos PILI Raster permite que exportadores brasileiros atendam as exigencias do Regulamento Europeu contra Desmatamento.",
-    content: `O Regulamento da Uniao Europeia contra o Desmatamento (EUDR), que entra em vigor em dezembro de 2025, exige que exportadores de commodities como soja, cafe e cacau comprovem que seus produtos nao estao associados a areas desmatadas apos dezembro de 2020. A plataforma PILI Raster foi desenvolvida especificamente para atender essa demanda, oferecendo rastreabilidade completa da cadeia produtiva de graos desde a lavoura ate o porto de embarque.
+    slug: "economizador-de-energia-em-tombadores-hidraulicos",
+    author: "PILI Industrial",
+    category: PostCategory.artigo,
+    readTime: 5,
+    cover: "/images/blog/economizador-energia-painel.webp",
+    publishedAt: "2026-08-12",
+    tags: [
+      "economizador de energia",
+      "central hidraulica",
+      "eficiencia energetica",
+      "tombador",
+    ],
+    traducoes: {
+      pt_BR: {
+        title: "Economizador de energia: o opcional que aparece na conta de luz",
+        excerpt:
+          "Num tombador hidráulico, o motor da central é a maior carga elétrica isolada da operação. Entender quanto ele consome sem estar descarregando é o que decide se o economizador se paga.",
+        metaTitle: "Economizador de energia em tombadores hidráulicos",
+        metaDesc:
+          "Como avaliar o economizador de energia de um tombador hidráulico: o que pesa no consumo da central, quando o item opcional se paga e o que levantar antes de especificar.",
+        content: `Quem compara duas propostas de tombador costuma olhar comprimento, capacidade e prazo de entrega. O consumo de energia raramente entra na conversa. E ele é o único item da lista que continua cobrando todo mês, muito depois de a compra ter sido paga.
 
-O sistema integra dados de geolocalizacao das propriedades rurais com imagens de satelite e registros do Cadastro Ambiental Rural (CAR), gerando relatorios de due diligence automatizados que atendem aos requisitos do EUDR. Cada lote de graos recebe um certificado digital com QR Code que permite rastrear a origem, o transporte e o processamento do produto em toda a cadeia.
+Um tombador hidráulico se move por pressão de óleo. O motor elétrico aciona a bomba, a bomba pressuriza o circuito e o óleo empurra os cilindros que erguem a plataforma com o caminhão em cima. Em equipamentos de porte intermediário esse motor tem 30 cv; nos maiores, mais. É, com folga, a maior carga elétrica isolada de uma operação de descarga.
 
-"O Brasil e o maior exportador de soja do mundo e precisa demonstrar que sua producao e sustentavel. O PILI Raster elimina a complexidade da rastreabilidade e transforma conformidade regulatoria em vantagem competitiva", explica a equipe de desenvolvimento da plataforma. Ja sao mais de 150 propriedades cadastradas em Mato Grosso, Goias e Parana, com expectativa de alcancar 500 ate o final de 2025.
+O ponto que costuma passar despercebido é que o ciclo não é contínuo. Entre posicionar o veículo, travar as rodas, erguer, esperar o produto escoar, baixar e liberar a saída, existe uma parcela relevante de tempo em que o sistema está ligado e pressurizado sem realizar trabalho útil. Essa energia não vira descarga: vira calor no óleo, que depois ainda precisa ser dissipado.
 
-A plataforma opera em integracao nativa com o PILI Tech e o PILI Harbor, permitindo que a rastreabilidade acompanhe o grao desde a colheita, passando pela recepcao na cooperativa ou terminal, ate o embarque no navio. Essa integracao completa posiciona o ecossistema PILI como solucao unica para conformidade EUDR no agronegocio brasileiro.`,
+Reduzir esse desperdício é a função do economizador de energia. Na PILI ele é item opcional de projeto, não equipamento de série: nas listas de produção cada plataforma é orçada explicitamente com ou sem o conjunto. A escolha entra na especificação junto com o comprimento da mesa e o tipo de acionamento.
+
+Isso significa que todo mundo deveria pedir? Não. O retorno depende de quanto o equipamento fica energizado sem estar descarregando, e esse número muda muito de operação para operação. Uma cooperativa que concentra a descarga em poucas semanas de safra tem um perfil; um terminal que roda o dia inteiro em ritmo constante tem outro. Some a isso a tarifa contratada e a diferença entre consumo e demanda, e duas plantas com o mesmo equipamento podem chegar a conclusões opostas.
+
+Por isso a pergunta certa não é se o economizador vale a pena em tese, e sim quantas horas por dia a sua central fica ligada sem erguer plataforma. Levantar esse dado antes de fechar a especificação custa uma conversa. Descobrir depois custa a diferença, todo mês, pelo resto da vida útil do equipamento.`,
+      },
+      es: {
+        title:
+          "Economizador de energía: el opcional que aparece en la factura de luz",
+        excerpt:
+          "En un volcador hidráulico, el motor de la central es la mayor carga eléctrica aislada de la operación. Entender cuánto consume sin estar descargando decide si el economizador se paga.",
+        metaTitle: "Economizador de energía en volcadores hidráulicos",
+        metaDesc:
+          "Cómo evaluar el economizador de energía de un volcador hidráulico: qué pesa en el consumo de la central, cuándo se paga el opcional y qué relevar antes de especificar.",
+        content: `Quien compara dos propuestas de volcador suele mirar largo, capacidad y plazo de entrega. El consumo de energía rara vez entra en la conversación. Y es el único ítem de la lista que sigue cobrando todos los meses, mucho después de que la compra fue pagada.
+
+Un volcador hidráulico se mueve por presión de aceite. El motor eléctrico acciona la bomba, la bomba presuriza el circuito y el aceite empuja los cilindros que levantan la plataforma con el camión encima. En equipos de porte intermedio ese motor tiene 30 cv; en los mayores, más. Es, con holgura, la mayor carga eléctrica aislada de una operación de descarga.
+
+El punto que suele pasar desapercibido es que el ciclo no es continuo. Entre posicionar el vehículo, trabar las ruedas, levantar, esperar que el producto escurra, bajar y liberar la salida, existe una parte relevante del tiempo en que el sistema está encendido y presurizado sin realizar trabajo útil. Esa energía no se convierte en descarga: se convierte en calor en el aceite, que después todavía hay que disipar.
+
+Reducir ese desperdicio es la función del economizador de energía. En PILI es un ítem opcional de proyecto, no equipamiento de serie: en las listas de producción cada plataforma se cotiza explícitamente con o sin el conjunto. La elección entra en la especificación junto con el largo de la mesa y el tipo de accionamiento.
+
+¿Significa que todos deberían pedirlo? No. El retorno depende de cuánto tiempo el equipo queda energizado sin estar descargando, y ese número cambia mucho de operación a operación. Una cooperativa que concentra la descarga en pocas semanas de cosecha tiene un perfil; una terminal que trabaja todo el día a ritmo constante tiene otro. Sume a eso la tarifa contratada y la diferencia entre consumo y demanda, y dos plantas con el mismo equipo pueden llegar a conclusiones opuestas.
+
+Por eso la pregunta correcta no es si el economizador vale la pena en teoría, sino cuántas horas por día su central queda encendida sin levantar plataforma. Relevar ese dato antes de cerrar la especificación cuesta una conversación. Descubrirlo después cuesta la diferencia, todos los meses, por el resto de la vida útil del equipo.`,
+      },
+    },
   },
+
   {
-    slug: "como-dimensionar-tombador-ideal",
-    author: "Eng. Carlos Monteiro",
-    cover: "/images/tombador-pili.jpg",
-    publishedAt: "2025-01-22",
-    tags: ["tombador", "dimensionamento", "guia tecnico", "engenharia"],
-    title: "Como dimensionar o tombador ideal para sua operacao",
-    excerpt:
-      "Guia tecnico completo para escolher o tombador hidraulico correto considerando tipo de veiculo, capacidade, ciclo operacional e condicoes do terreno.",
-    content: `Dimensionar corretamente um tombador hidraulico e fundamental para garantir eficiencia operacional, seguranca e retorno sobre o investimento. A escolha errada pode resultar em gargalos de descarga, desgaste prematuro do equipamento e custos operacionais elevados. Neste artigo, apresentamos os principais criterios tecnicos que devem ser considerados.
+    slug: "as-pessoas-por-tras-do-amarelo",
+    author: "PILI Industrial",
+    category: PostCategory.artigo,
+    readTime: 4,
+    cover: "/images/blog/pessoas-proxima-geracao.webp",
+    publishedAt: "2026-08-13",
+    tags: ["pessoas", "cultura", "Erechim", "equipe"],
+    traducoes: {
+      pt_BR: {
+        title: "As pessoas por trás do amarelo",
+        excerpt:
+          "Um tombador é projetado para durar décadas. Quem sustenta essa promessa não é o aço: é a engenharia, a solda, o painel e o técnico que atende quando o equipamento para em plena safra.",
+        metaTitle: "As pessoas por trás do amarelo",
+        metaDesc:
+          "Engenharia, fabricação e pós-venda: quem sustenta a promessa de um tombador hidráulico projetado para durar décadas na fábrica da PILI em Erechim/RS.",
+        content: `Um tombador hidráulico é um equipamento simples de explicar e difícil de fazer. Ergue um caminhão carregado, inclina, deixa o produto escoar e devolve o veículo ao chão. Repete isso milhares de vezes, por décadas, ao ar livre, com poeira, chuva e carga variável.
 
-O primeiro fator e o tipo de veiculo predominante na operacao. Tombadores de 9 a 12 metros atendem caminhoes truck e bi-truck, enquanto modelos de 18 metros sao indicados para carretas de tres eixos. Para operacoes portuarias com rodotrens e bitrens, os tombadores de 24 a 30 metros sao a escolha adequada. A capacidade nominal do equipamento deve ser dimensionada com margem de 20% acima do peso bruto total combinado (PBTC) maximo dos veiculos atendidos.
+O que sustenta essa promessa não está no aço. Está nas pessoas que decidem a espessura da chapa, que dimensionam o cilindro, que fecham o painel elétrico conforme a NR-10 e que atendem o telefone quando o equipamento para em plena safra.
 
-O ciclo operacional desejado determina a potencia do sistema hidraulico e a velocidade de basculamento. Em operacoes de alta demanda como portos e grandes cooperativas, ciclos abaixo de 60 segundos exigem sistemas hidraulicos de alta vazao com acumuladores de pressao. Ja em industrias com fluxo moderado, ciclos de 90 a 120 segundos podem ser suficientes e representam economia significativa no investimento inicial.
+Na engenharia, isso significa gente que entende de estrutura metálica, hidráulica e automação ao mesmo tempo, porque nesse produto as três coisas conversam entre si e falham juntas. No chão de fábrica, significa corte, solda e jateamento com controle dimensional em cada etapa, que é o que a certificação ISO 9001 cobra na prática. No pós-venda, significa técnico em campo e peça disponível.
 
-Condicoes do terreno e infraestrutura existente tambem influenciam a decisao. Tombadores fixos necessitam de fundacao em concreto armado dimensionada para as cargas dinamicas do basculamento. Modelos moveis sobre rodas oferecem flexibilidade de posicionamento, mas tem capacidade limitada a 60 toneladas. A equipe tecnica da PILI Industrial oferece consultoria gratuita para dimensionamento, incluindo visita tecnica e analise de fluxo operacional.`,
-  },
-  {
-    slug: "pili-tech-reduz-tempo-espera-paranagua",
-    author: "Equipe PILI",
-    cover: "https://images.unsplash.com/photo-1494412574643-ff11b0a5eb19?w=1200&h=630&fit=crop",
-    publishedAt: "2024-11-15",
-    tags: ["PILI Tech", "IoT", "porto", "logistica", "Paranagua"],
-    title: "PILI Tech reduz tempo de espera em 40% no Porto de Paranagua",
-    excerpt:
-      "O sistema de gestao de patio PILI Tech reduziu o tempo medio de espera de caminhoes de 4,5 para 2,7 horas no terminal portuario de Paranagua.",
-    content: `O Porto de Paranagua, um dos maiores complexos portuarios do Brasil para exportacao de graos, registrou uma reducao de 40% no tempo medio de espera de caminhoes apos a implantacao do sistema PILI Tech em seu principal terminal de descarga. O tempo medio caiu de 4 horas e 30 minutos para 2 horas e 42 minutos, impactando diretamente a eficiencia logistica e os custos de transporte.
+Há uma foto que resume isso melhor do que qualquer texto institucional: uma criança de capacete sentada na borda de uma plataforma recém-pintada, dentro do galpão, com a ponte rolante ao fundo. A escala é completamente desproporcional, e é exatamente esse o ponto. Aquele equipamento provavelmente ainda vai estar trabalhando quando ela for adulta.
 
-O PILI Tech utiliza sensores IoT instalados nos tombadores, balancas e pontos de controle do patio para monitorar em tempo real o fluxo de veiculos, tempos de ciclo e status de cada equipamento. Algoritmos de otimizacao distribuem automaticamente os caminhoes entre as linhas de descarga disponiveis, evitando gargalos e ociosidade simultanea de equipamentos.
+Fabricar bem de capital é um exercício de prazo longo. As decisões tomadas hoje na mesa de projeto vão ser cobradas daqui a vinte anos, num pátio que ninguém aqui vai visitar. Fazer isso direito depende menos de discurso e mais de quem está na fábrica todo dia.`,
+      },
+      es: {
+        title: "Las personas detrás del amarillo",
+        excerpt:
+          "Un volcador se proyecta para durar décadas. Quien sostiene esa promesa no es el acero: es la ingeniería, la soldadura, el tablero y el técnico que atiende cuando el equipo se detiene en plena cosecha.",
+        metaTitle: "Las personas detrás del amarillo",
+        metaDesc:
+          "Ingeniería, fabricación y posventa: quiénes sostienen la promesa de un volcador hidráulico proyectado para durar décadas en la fábrica de PILI en Erechim/RS.",
+        content: `Un volcador hidráulico es un equipo simple de explicar y difícil de hacer. Levanta un camión cargado, inclina, deja escurrir el producto y devuelve el vehículo al suelo. Repite eso miles de veces, por décadas, a la intemperie, con polvo, lluvia y carga variable.
 
-O painel de controle permite que gestores do terminal visualizem indicadores como taxa de ocupacao, tempo medio de ciclo, previsao de filas e alertas de manutencao preventiva. Relatorios automatizados sao gerados diariamente e enviados por e-mail para a diretoria de operacoes, facilitando a tomada de decisao baseada em dados.
+Lo que sostiene esa promesa no está en el acero. Está en las personas que deciden el espesor de la chapa, que dimensionan el cilindro, que cierran el tablero eléctrico conforme a la norma NR-10 y que atienden el teléfono cuando el equipo se detiene en plena cosecha.
 
-"Antes do PILI Tech, a gestao do patio era feita visualmente, com radio e prancheta. Hoje temos visibilidade completa da operacao em tempo real e conseguimos antecipar problemas antes que eles gerem filas. A reducao de 40% no tempo de espera representou economia de mais de R$ 2 milhoes por safra em custos de demurrage e estadias de caminhoes", relatou o gerente de operacoes do terminal.`,
-  },
-  {
-    slug: "pili-store-2000-pecas-catalogo",
-    author: "Marketing PILI",
-    cover: "https://images.unsplash.com/photo-1553413077-190dd305871c?w=1200&h=630&fit=crop",
-    publishedAt: "2024-09-20",
-    tags: ["PILI Store", "e-commerce", "pecas de reposicao", "pos-venda"],
-    title: "PILI Store ultrapassa 2.000 pecas no catalogo online",
-    excerpt:
-      "A loja virtual PILI Store atinge a marca de 2.000 pecas de reposicao no catalogo, com entrega para todo o Brasil e rastreamento integrado.",
-    content: `A PILI Store, plataforma de e-commerce para pecas de reposicao de equipamentos PILI Industrial, ultrapassou a marca de 2.000 itens disponiveis no catalogo online. A loja oferece desde componentes hidraulicos como cilindros, valvulas e mangueiras ate pecas estruturais, sensores e kits de manutencao preventiva para toda a linha de tombadores e coletores de amostras.
+En ingeniería, eso significa gente que entiende de estructura metálica, hidráulica y automatización al mismo tiempo, porque en este producto las tres cosas se comunican entre sí y fallan juntas. En planta, significa corte, soldadura y arenado con control dimensional en cada etapa, que es lo que la certificación ISO 9001 exige en la práctica. En posventa, significa técnico en campo y repuesto disponible.
 
-O crescimento do catalogo reflete a estrategia da PILI de digitalizar o atendimento pos-venda e reduzir o tempo de resposta para clientes que necessitam de pecas de reposicao com urgencia. A plataforma conta com busca inteligente por modelo do equipamento, numero de serie e codigo da peca, alem de recomendacoes automaticas de componentes relacionados e kits de manutencao programada.
+Hay una foto que resume esto mejor que cualquier texto institucional: un niño con casco sentado en el borde de una plataforma recién pintada, dentro del galpón, con el puente grúa al fondo. La escala es completamente desproporcionada, y ese es exactamente el punto. Ese equipo probablemente siga trabajando cuando él sea adulto.
 
-"Nossos clientes operam equipamentos criticos que nao podem ficar parados. A PILI Store garante que qualquer peca de reposicao esteja a poucos cliques de distancia, com prazo de entrega de 24 a 72 horas para as principais capitais do Brasil", destaca a equipe de pos-venda da empresa.
-
-A loja ja registrou mais de 5.000 pedidos desde o lancamento e mantem indice de satisfacao de 4,8 de 5 estrelas. Os proximos passos incluem integracao com o PILI Tech para pedidos automaticos de pecas baseados em alertas de manutencao preditiva, e expansao do catalogo para equipamentos de terceiros compativeis com a linha PILI.`,
-  },
-  {
-    slug: "tendencias-logistica-graos-2025",
-    author: "Eng. Carlos Monteiro",
-    cover: "https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?w=1200&h=630&fit=crop",
-    publishedAt: "2024-08-05",
-    tags: ["logistica", "tendencias", "agronegocio", "automacao", "sustentabilidade"],
-    title: "Tendencias em logistica de graos para 2025",
-    excerpt:
-      "Analise das principais tendencias que estao transformando a logistica de graos no Brasil: automacao, rastreabilidade, descarbonizacao e infraestrutura multimodal.",
-    content: `O Brasil consolidou-se como o maior exportador mundial de soja e um dos principais fornecedores globais de milho, cafe e algodao. Com safras que superam 300 milhoes de toneladas anuais, a logistica de graos enfrenta desafios crescentes de escala, eficiencia e sustentabilidade. Identificamos quatro tendencias que devem moldar o setor em 2025 e nos proximos anos.
-
-A primeira e a automacao completa dos processos de recebimento e descarga. Tombadores hidraulicos com sensores IoT, balancas dinamicas integradas e sistemas de amostragem automatica eliminam processos manuais e reduzem o ciclo de descarga de minutos para segundos. Cooperativas e terminais que adotaram automacao reportam ganhos de produtividade entre 30% e 50%, alem de reducao significativa de erros humanos na classificacao de graos.
-
-A segunda tendencia e a rastreabilidade de ponta a ponta, impulsionada por regulamentacoes como o EUDR europeu e exigencias crescentes de compradores internacionais. Plataformas digitais que rastreiam o grao desde a propriedade rural ate o porto de embarque deixaram de ser diferencial para se tornarem requisito obrigatorio de acesso a mercados premium.
-
-A terceira e quarta tendencias convergem: descarbonizacao da cadeia logistica e expansao da infraestrutura multimodal. O investimento em ferrovias como a Ferrograo e a expansao de terminais hidroviarios no Arco Norte prometem reduzir a dependencia do transporte rodoviario, enquanto equipamentos eletricos e hibridos comecam a substituir sistemas puramente diesel em terminais de descarga. A PILI Industrial ja desenvolve versoes com acionamento eletrico para toda a sua linha de tombadores, alinhada a essa tendencia global.`,
-  },
-  {
-    slug: "pili-harbor-gestao-patio-inteligente-iot",
-    author: "Equipe PILI",
-    cover: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&h=630&fit=crop&q=80",
-    publishedAt: "2024-07-12",
-    tags: ["PILI Harbor", "IoT", "gestao de patio", "inteligencia artificial"],
-    title: "PILI Harbor: gestao de patio inteligente com IoT",
-    excerpt:
-      "Conheca o PILI Harbor, a plataforma de gestao de patio que integra IoT, visao computacional e inteligencia artificial para otimizar operacoes de terminais graneleiros.",
-    content: `A PILI Industrial lancou o PILI Harbor, sua mais nova plataforma digital voltada para a gestao inteligente de patios em terminais graneleiros, cooperativas e industrias. O sistema combina sensores IoT, cameras com visao computacional e algoritmos de inteligencia artificial para oferecer controle total sobre o fluxo de veiculos, alocacao de recursos e eficiencia operacional.
-
-O PILI Harbor mapeia digitalmente todo o patio de operacoes, identificando automaticamente veiculos por placa e RFID, direcionando caminhoes para filas de descarga otimizadas e monitorando o status de cada equipamento em tempo real. O modulo de previsao de demanda utiliza dados historicos e informacoes de safra para antecipar picos de movimento e sugerir escalas de operacao adequadas.
-
-A integracao com o PILI Tech e o PILI Raster cria um ecossistema completo: o Harbor gerencia o patio, o Tech monitora os equipamentos de descarga e o Raster garante a rastreabilidade do grao. Juntas, as tres plataformas eliminam processos manuais, reduzem tempos de espera e geram dados que transformam a operacao logistica de reativa para preditiva.
-
-O sistema ja opera em fase piloto em tres terminais no Parana e Mato Grosso do Sul, com resultados iniciais que indicam reducao de 35% no tempo de permanencia de veiculos no patio e aumento de 25% na utilizacao dos equipamentos de descarga. O lancamento comercial esta previsto para o primeiro trimestre de 2025, com planos de assinatura mensal que incluem hardware IoT, software e suporte tecnico 24/7.`,
+Fabricar bienes de capital es un ejercicio de plazo largo. Las decisiones tomadas hoy en la mesa de proyecto se van a cobrar dentro de veinte años, en un patio que nadie de acá va a visitar. Hacerlo bien depende menos de discurso y más de quién está en la fábrica todos los días.`,
+      },
+    },
   },
 ];
 
@@ -1089,37 +1183,38 @@ async function seedBlogPosts() {
   console.log("\n--- Seeding blog posts ---");
 
   for (const b of BLOG_DATA) {
+    const dados = {
+      author: b.author,
+      category: b.category,
+      readTime: b.readTime,
+      cover: b.cover,
+      published: true,
+      publishedAt: new Date(b.publishedAt),
+      tags: b.tags,
+    };
+
     const post = await db.post.upsert({
       where: { slug: b.slug },
-      update: {
-        author: b.author,
-        cover: b.cover,
-        published: true,
-        publishedAt: new Date(b.publishedAt),
-        tags: b.tags,
-      },
-      create: {
-        slug: b.slug,
-        author: b.author,
-        cover: b.cover,
-        published: true,
-        publishedAt: new Date(b.publishedAt),
-        tags: b.tags,
-      },
+      update: dados,
+      create: { slug: b.slug, ...dados },
     });
 
     // Delete existing translations and recreate
     await db.postTranslation.deleteMany({ where: { postId: post.id } });
 
-    await db.postTranslation.create({
-      data: {
-        postId: post.id,
-        locale: Locale.pt_BR,
-        title: b.title,
-        excerpt: b.excerpt,
-        content: b.content,
-      },
-    });
+    for (const [locale, t] of Object.entries(b.traducoes)) {
+      await db.postTranslation.create({
+        data: {
+          postId: post.id,
+          locale: locale === "es" ? Locale.es : Locale.pt_BR,
+          title: t.title,
+          excerpt: t.excerpt,
+          content: t.content,
+          metaTitle: t.metaTitle,
+          metaDesc: t.metaDesc,
+        },
+      });
+    }
 
     console.log(`  [OK] Post: ${b.slug}`);
   }

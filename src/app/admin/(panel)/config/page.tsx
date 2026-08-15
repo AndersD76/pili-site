@@ -39,6 +39,9 @@ export default async function ConfigPage() {
           mapaLat: settings.mapaLat === null ? "" : String(settings.mapaLat),
           mapaLng: settings.mapaLng === null ? "" : String(settings.mapaLng),
           mapaZoom: settings.mapaZoom,
+          statsEquipamentos: settings.statsEquipamentos,
+          statsPaises: settings.statsPaises,
+          statsCapacidade: settings.statsCapacidade,
         }}
       />
     </div>

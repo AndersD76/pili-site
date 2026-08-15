@@ -1,7 +1,6 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { STATS } from "@/lib/constants";
 import { AnimatedCounter } from "@/components/shared/animated-counter";
 import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
 
@@ -10,18 +9,33 @@ interface Stat {
   label: string;
 }
 
+/**
+ * Os valores chegam por prop, vindos de `SiteSettings`.
+ *
+ * Antes saíam de `STATS`, em constants.ts, e mudar "850+" exigia deploy. Não
+ * existe mais fallback para a constante de propósito: dois lugares definindo o
+ * mesmo número é como um deles fica para trás.
+ */
 interface StatsBandProps {
-  stats?: Stat[];
+  anos: number;
+  equipamentos: string;
+  paises: number;
+  capacidade: string;
 }
 
-export function StatsBand({ stats }: StatsBandProps) {
+export function StatsBand({
+  anos,
+  equipamentos,
+  paises,
+  capacidade,
+}: StatsBandProps) {
   const t = useTranslations("stats");
 
-  const dados: Stat[] = stats ?? [
-    { value: `${STATS.years}`, label: t("yearsLabel") },
-    { value: STATS.equipment, label: t("equipmentLabel") },
-    { value: `${STATS.countries}`, label: t("countriesLabel") },
-    { value: STATS.maxCapacity, label: t("capacityLabel") },
+  const dados: Stat[] = [
+    { value: `${anos}`, label: t("yearsLabel") },
+    { value: equipamentos, label: t("equipmentLabel") },
+    { value: `${paises}`, label: t("countriesLabel") },
+    { value: capacidade, label: t("capacityLabel") },
   ];
 
   return (

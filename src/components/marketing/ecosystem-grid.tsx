@@ -1,8 +1,8 @@
-"use client";
-
-import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 
 import { Link } from "@/i18n/routing";
+import { getBloco } from "@/lib/conteudo-editavel";
 import { ECOSYSTEM } from "@/lib/constants";
 import { ExternalLink, Cpu, ArrowRight } from "lucide-react";
 import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
@@ -17,23 +17,45 @@ const BRANDS = [
   },
 ] as const;
 
-export function EcosystemGrid() {
-  const t = useTranslations();
+/**
+ * Seção do ecossistema.
+ *
+ * Virou componente de servidor para poder ler o bloco editável em
+ * /admin/blocos/ecossistema: imagem de fundo e textos. Campo vazio no painel
+ * significa "usar a mensagem padrão", então a seção nunca fica sem conteúdo.
+ */
+export async function EcosystemGrid() {
+  const t = await getTranslations();
+  const bloco = await getBloco("ecossistema");
+
   return (
-    <section className="bg-pili-black py-24 px-6 lg:px-8">
+    <section className="relative overflow-hidden bg-pili-black py-24 px-6 lg:px-8">
+      {bloco?.imagem && (
+        <>
+          <Image
+            src={bloco.imagem}
+            alt={bloco.alt ?? ""}
+            fill
+            className="object-cover"
+            sizes="100vw"
+          />
+          {/* Véu escuro: sem ele o texto branco some sobre foto clara. */}
+          <div className="absolute inset-0 bg-pili-black/80" />
+        </>
+      )}
       <div className="absolute inset-0 grid-pattern opacity-20" />
-      <div className="mx-auto max-w-6xl">
+      <div className="relative mx-auto max-w-6xl">
         <AnimateOnScroll>
           <span className="font-mono text-xs uppercase tracking-widest text-pili-safety">
-            {t("ecossistema.ownTech")}
+            {bloco?.subtitulo ?? t("ecossistema.ownTech")}
           </span>
           <h2 className="mt-2 font-display text-[length:var(--text-h1)] font-black uppercase text-pili-white">
-            {t("sections.ecosystem")}
+            {bloco?.titulo ?? t("sections.ecosystem")}
           </h2>
           <div className="mt-2 flex items-center gap-4">
             <div className="h-px w-12 bg-pili-safety" />
             <p className="max-w-2xl text-pili-cement">
-              {t("ecossistema.intro")}
+              {bloco?.texto ?? t("ecossistema.intro")}
             </p>
           </div>
         </AnimateOnScroll>

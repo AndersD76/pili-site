@@ -60,6 +60,14 @@
     "terms": "Términos de uso",
     "rights": "Todos los derechos reservados",
     "fullEcosystem": "Ver ecosistema completo",
+    "units": "Nuestras unidades",
+    "headquarters": "Casa matriz",
+    "mapLabel": "Mapa con las unidades de PILI en Brasil",
+    "unitTypes": {
+      "FILIAL": "Sucursal",
+      "ESCRITORIO": "Oficina comercial",
+      "ASSISTENCIA": "Asistencia técnica"
+    },
     "links": {
       "tombadorFixo": "Volcador fijo",
       "tombadorMovel": "Volcador móvil",
@@ -411,7 +419,41 @@
       "maximo": "10 a 14 meses"
     },
     "meters": "{n} metros",
-    "trucksError": "Informe un número de camiones mayor que cero"
+    "trucksError": "Informe un número de camiones mayor que cero",
+    "explainer": "Indique el vehículo que entra al patio, cuántos llegan por día y qué transportan. Con eso señalamos la menor plataforma de nuestro catálogo que soporta ese vehículo, y mostramos toda la cuenta para que usted la verifique.",
+    "vehicleType": "Tipo de vehículo",
+    "vehicleHelp": "{comprimento} m de largo, hasta {pbtc} t de peso bruto (límites CONTRAN).",
+    "vehicles": {
+      "caminhao": "Camión (chasis simple)",
+      "carreta": "Semirremolque",
+      "bitrem": "Bitrén",
+      "rodotrem": "Rodotrén"
+    },
+    "hoursPerDay": "Horas de operación por día",
+    "hoursHelp": "Se usa para verificar si el equipo procesa la fila dentro de la jornada.",
+    "densityHelp": "Densidad a granel considerada: {d} t/m³.",
+    "cycle": "Ciclo de volcado",
+    "tons": "{n}t",
+    "seconds": "{n} s",
+    "seeModel": "Ver ficha completa del modelo",
+    "whyTitle": "Por qué este modelo",
+    "whyLength": "El {veiculo} mide cerca de {veiculoM} m y debe subir entero a la plataforma. Esta tiene {plataformaM} m.",
+    "whyWeight": "El peso bruto del conjunto llega a {pbtc} t; la capacidad de esta plataforma es de {capacidade} t.",
+    "whySmallest": "Entre los modelos que sirven, indicamos el menor: una plataforma mayor de lo necesario es costo sin retorno.",
+    "whyAboveCatalog": "El {veiculo} mide {comprimentoM} m y hasta {pbtc} t. Ningún modelo de catálogo soporta ese conjunto, por lo que el caso es de proyecto a medida. Hable con ingeniería.",
+    "howTitle": "Cómo llegamos a ese número",
+    "step1": "Un vehículo cargado lleva cerca de {volume} m³. A {densidade} t/m³, eso da {toneladas} t por viaje.",
+    "step2": "{toneladas} t por vehículo × {veiculos} vehículos por día = {total} t por día.",
+    "step3": "El ciclo de volcado es de {ciclo} s. Sumando {manobra} s de entrada, trabado y salida, son cerca de {porHora} vehículos por hora.",
+    "step4": "Para la fila del día se necesitan cerca de {horas} h, dentro de una jornada de {jornada} h.",
+    "fitsShift": "La jornada indicada soporta ese volumen.",
+    "doesNotFitShift": "El volumen no entra en la jornada indicada. Conviene evaluar más horas de operación o una segunda plataforma.",
+    "contactTitle": "Hablar con ingeniería",
+    "contactText": "Indique su correo para que nuestro equipo revise el dimensionamiento con los datos reales de su operación.",
+    "sendContact": "Enviar",
+    "contactSentTitle": "Recibimos su contacto",
+    "contactSentText": "Nuestro equipo comercial revisará el dimensionamiento y se pondrá en contacto. Si prefiere adelantar, solicite una cotización con los detalles de la operación.",
+    "noCatalog": "Catálogo no disponible en este momento. Hable con nuestro equipo para dimensionar el equipo."
   },
   "empresa": {
     "metaTitle": "La empresa",

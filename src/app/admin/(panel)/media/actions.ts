@@ -22,6 +22,9 @@ interface UploadTarget {
   productId?: string;
   caseId?: string;
   postId?: string;
+  heroSlideId?: string;
+  setorSlug?: string;
+  blocoChave?: string;
 }
 
 /**
@@ -81,6 +84,9 @@ export async function uploadMedia(
         productId: target.productId ?? null,
         caseId: target.caseId ?? null,
         postId: target.postId ?? null,
+        heroSlideId: target.heroSlideId ?? null,
+        setorSlug: target.setorSlug ?? null,
+        blocoChave: target.blocoChave ?? null,
       },
       orderBy: { order: "desc" },
       select: { order: true },
@@ -98,6 +104,9 @@ export async function uploadMedia(
         productId: target.productId ?? null,
         caseId: target.caseId ?? null,
         postId: target.postId ?? null,
+        heroSlideId: target.heroSlideId ?? null,
+        setorSlug: target.setorSlug ?? null,
+        blocoChave: target.blocoChave ?? null,
       },
       select: { id: true, filename: true, alt: true, order: true },
     });
@@ -106,6 +115,9 @@ export async function uploadMedia(
     if (target.productId) revalidatePath(`/admin/produtos/${target.productId}`);
     if (target.caseId) revalidatePath(`/admin/obras/${target.caseId}`);
     if (target.postId) revalidatePath(`/admin/blog/${target.postId}`);
+    if (target.heroSlideId) revalidatePath(`/admin/hero/${target.heroSlideId}`);
+    if (target.setorSlug) revalidatePath(`/admin/setores/${target.setorSlug}`);
+    if (target.blocoChave) revalidatePath(`/admin/blocos/${target.blocoChave}`);
 
     return { success: true, media };
   } catch (err) {
@@ -127,6 +139,9 @@ function invalidarPaginas(alvo: {
   productId?: string | null;
   caseId?: string | null;
   postId?: string | null;
+  heroSlideId?: string | null;
+  setorSlug?: string | null;
+  blocoChave?: string | null;
 }) {
   revalidatePath("/admin/media");
 
@@ -145,6 +160,20 @@ function invalidarPaginas(alvo: {
     revalidatePath("/[locale]/(marketing)/blog", "page");
     revalidatePath("/[locale]/(marketing)/blog/[slug]", "page");
   }
+  // O carrossel do hero: a home ja e revalidada logo abaixo, aqui basta a
+  // tela de edicao do slide.
+  if (alvo.heroSlideId) {
+    revalidatePath(`/admin/hero/${alvo.heroSlideId}`);
+  }
+  // O card do setor esta na home, revalidada logo abaixo; e a foto tambem
+  // alimenta a pagina do setor.
+  if (alvo.setorSlug) {
+    revalidatePath(`/admin/setores/${alvo.setorSlug}`);
+    revalidatePath("/[locale]/(marketing)/solucoes/[setor]", "page");
+  }
+  if (alvo.blocoChave) {
+    revalidatePath(`/admin/blocos/${alvo.blocoChave}`);
+  }
   revalidatePath("/[locale]/(marketing)", "page");
 }
 
@@ -159,7 +188,14 @@ export async function updateMediaAlt(
     const media = await db.media.update({
       where: { id },
       data: { alt: alt.trim() || null },
-      select: { productId: true, caseId: true, postId: true },
+      select: {
+        productId: true,
+        caseId: true,
+        postId: true,
+        heroSlideId: true,
+        setorSlug: true,
+        blocoChave: true,
+      },
     });
     invalidarPaginas(media);
     return { success: true };
@@ -179,7 +215,14 @@ export async function deleteMedia(
     // descobrir quais páginas invalidar.
     const media = await db.media.findUnique({
       where: { id },
-      select: { productId: true, caseId: true, postId: true },
+      select: {
+        productId: true,
+        caseId: true,
+        postId: true,
+        heroSlideId: true,
+        setorSlug: true,
+        blocoChave: true,
+      },
     });
 
     if (!media) {
@@ -248,7 +291,14 @@ export async function reorderMedia(
     // A ordem define qual foto é a principal — o site inteiro precisa saber.
     const dono = await db.media.findUnique({
       where: { id: ids[0] },
-      select: { productId: true, caseId: true, postId: true },
+      select: {
+        productId: true,
+        caseId: true,
+        postId: true,
+        heroSlideId: true,
+        setorSlug: true,
+        blocoChave: true,
+      },
     });
     if (dono) invalidarPaginas(dono);
 

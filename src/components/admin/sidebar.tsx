@@ -14,6 +14,11 @@ import {
   Menu,
   BriefcaseBusiness,
   Wrench,
+  MapPin,
+  GalleryHorizontal,
+  LayoutGrid,
+  Milestone,
+  PanelTop,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -34,11 +39,16 @@ const navItems = [
     href: "/admin/candidaturas",
     icon: BriefcaseBusiness,
   },
+  { label: "Carrossel", href: "/admin/hero", icon: GalleryHorizontal },
+  { label: "Setores", href: "/admin/setores", icon: LayoutGrid },
+  { label: "Ecossistema", href: "/admin/blocos/ecossistema", icon: PanelTop },
+  { label: "Trajetória", href: "/admin/historia", icon: Milestone },
   { label: "Produtos", href: "/admin/produtos", icon: Package },
   { label: "Obras", href: "/admin/obras", icon: Building2 },
   { label: "Blog", href: "/admin/blog", icon: FileText },
   { label: "Mídia", href: "/admin/media", icon: Image },
   { label: "Usuários", href: "/admin/usuarios", icon: UserCog },
+  { label: "Unidades", href: "/admin/filiais", icon: MapPin },
   { label: "Configurações", href: "/admin/config", icon: Settings },
 ] as const;
 

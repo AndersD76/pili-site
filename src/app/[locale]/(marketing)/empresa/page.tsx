@@ -2,7 +2,8 @@ import { Link } from "@/i18n/routing";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { generatePageMetadata } from "@/lib/seo";
-import { COMPANY, STATS } from "@/lib/constants";
+import { getSiteSettings, anosDeMercado } from "@/lib/site-settings";
+import { getMarcosHistoria } from "@/lib/conteudo-editavel";
 import { ShieldCheck, HardHat, Lightbulb, ArrowRight } from "lucide-react";
 import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
 import { StatsBand } from "@/components/marketing/stats-band";
@@ -14,21 +15,25 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "empresa" });
+  const settings = await getSiteSettings();
   return generatePageMetadata({
     locale,
     title: t("title"),
     description: t("metaDesc", {
-      name: COMPANY.name,
-      founded: COMPANY.founded,
-      years: STATS.years,
-      equipment: STATS.equipment,
-      countries: STATS.countries,
+      name: settings.razaoSocial,
+      founded: settings.fundacao,
+      years: anosDeMercado(settings),
+      equipment: settings.statsEquipamentos,
+      countries: settings.statsPaises,
     }),
     path: "/empresa",
   });
 }
 
-/** Ano na linha do tempo; título e texto vêm de `empresa.timeline`. */
+/**
+ * Trajetória padrão, usada enquanto ninguém cadastrar marcos em /admin/historia.
+ * Ano na linha do tempo; título e texto vêm de `empresa.timeline`.
+ */
 const TIMELINE = [
   { year: "1979", key: "fundacao" },
   { year: "1990", key: "primeiroTombador" },
@@ -55,6 +60,27 @@ export default async function EmpresaPage({
   setRequestLocale(locale);
 
   const t = await getTranslations();
+  // Institucionais e números vêm do painel.
+  const settings = await getSiteSettings();
+  const anos = anosDeMercado(settings);
+
+  // Marcos cadastrados no painel substituem a trajetória padrão por inteiro.
+  // Misturar as duas fontes produziria uma linha do tempo com anos repetidos.
+  const marcos = await getMarcosHistoria();
+  const linhaDoTempo =
+    marcos.length > 0
+      ? marcos.map((m) => ({ ano: m.ano, titulo: m.titulo, texto: m.texto }))
+      : TIMELINE.map((e) => ({
+          ano: e.year as string | null,
+          titulo: t(`empresa.timeline.${e.key}.title`),
+          texto:
+            e.key === "global"
+              ? t("empresa.globalText", {
+                  equipment: settings.statsEquipamentos,
+                  countries: settings.statsPaises,
+                })
+              : t(`empresa.timeline.${e.key}.text`),
+        }));
 
   return (
     <main className="pt-[var(--header-height)]">
@@ -72,7 +98,7 @@ export default async function EmpresaPage({
         <div className="relative mx-auto max-w-6xl">
           <AnimateOnScroll>
             <span className="font-mono text-xs uppercase tracking-widest text-pili-safety">
-              {t("empresa.since", { year: COMPANY.founded })}
+              {t("empresa.since", { year: settings.fundacao })}
             </span>
             <h1 className="mt-3 font-display text-[length:var(--text-display-2)] font-black uppercase text-pili-white">
               {t("empresa.title")}
@@ -81,10 +107,10 @@ export default async function EmpresaPage({
               <div className="h-px w-12 bg-pili-safety" />
               <p className="max-w-2xl text-pili-cement">
                 {t("empresa.intro", {
-                  year: COMPANY.founded,
-                  years: STATS.years,
-                  equipment: STATS.equipment,
-                  countries: STATS.countries,
+                  year: settings.fundacao,
+                  years: anos,
+                  equipment: settings.statsEquipamentos,
+                  countries: settings.statsPaises,
                 })}
               </p>
             </div>
@@ -93,7 +119,12 @@ export default async function EmpresaPage({
       </section>
 
       {/* Stats */}
-      <StatsBand />
+      <StatsBand
+        anos={anos}
+        equipamentos={settings.statsEquipamentos}
+        paises={settings.statsPaises}
+        capacidade={settings.statsCapacidade}
+      />
 
       {/* Historia / Timeline */}
       <section className="py-24 px-6 lg:px-8">
@@ -107,30 +138,25 @@ export default async function EmpresaPage({
             </h2>
           </AnimateOnScroll>
           <div className="mt-16 space-y-0">
-            {TIMELINE.map((event, i) => (
+            {linhaDoTempo.map((marco, i) => (
               <AnimateOnScroll key={i} delay={i * 0.1}>
                 <div className="relative flex gap-8 pb-12 last:pb-0">
                   <div className="flex flex-col items-center">
                     <div className="flex h-14 w-14 items-center justify-center border-2 border-pili-black bg-pili-white">
                       <span className="font-mono text-xs font-bold text-pili-black">
-                        {event.year ?? t("empresa.today")}
+                        {marco.ano ?? t("empresa.today")}
                       </span>
                     </div>
-                    {i < TIMELINE.length - 1 && (
+                    {i < linhaDoTempo.length - 1 && (
                       <div className="w-px flex-1 bg-pili-mist" />
                     )}
                   </div>
                   <div className="pb-4 pt-3">
                     <h3 className="font-display text-lg font-bold uppercase text-pili-black">
-                      {t(`empresa.timeline.${event.key}.title`)}
+                      {marco.titulo}
                     </h3>
                     <p className="mt-2 max-w-lg leading-relaxed text-pili-concrete">
-                      {event.key === "global"
-                        ? t("empresa.globalText", {
-                            equipment: STATS.equipment,
-                            countries: STATS.countries,
-                          })
-                        : t(`empresa.timeline.${event.key}.text`)}
+                      {marco.texto}
                     </p>
                   </div>
                 </div>
