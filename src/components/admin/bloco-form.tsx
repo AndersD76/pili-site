@@ -6,11 +6,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
-import {
-  atualizarBloco,
-  blocoSchema,
-  type BlocoInput,
-} from "@/app/admin/(panel)/historia/actions";
+import { atualizarBloco } from "@/app/admin/(panel)/historia/actions";
+import { blocoSchema, type BlocoInput } from "@/lib/validators/admin";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

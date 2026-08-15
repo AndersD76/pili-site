@@ -4,11 +4,11 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Wrench, Loader2, CheckCircle2 } from "lucide-react";
+import { abrirSolicitacao } from "@/app/portal/(dashboard)/equipamentos/[id]/actions";
 import {
-  abrirSolicitacao,
   solicitacaoSchema,
   type SolicitacaoInput,
-} from "@/app/portal/(dashboard)/equipamentos/[id]/actions";
+} from "@/lib/validators/portal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

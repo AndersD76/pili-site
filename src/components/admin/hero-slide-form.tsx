@@ -10,9 +10,8 @@ import {
   criarHeroSlide,
   atualizarHeroSlide,
   excluirHeroSlide,
-  heroSlideSchema,
-  type HeroSlideInput,
 } from "@/app/admin/(panel)/hero/actions";
+import { heroSlideSchema, type HeroSlideInput } from "@/lib/validators/admin";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

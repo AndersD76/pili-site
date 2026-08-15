@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
 import { db } from "@/lib/db";
 import { requirePortalAuth } from "@/lib/auth-guard";
 import { logError } from "@/lib/prisma-errors";
@@ -9,27 +8,7 @@ import { consumeRateLimit, getClientIp } from "@/lib/rate-limit";
 import { headers } from "next/headers";
 import { sendMaintenanceEmail } from "@/lib/email/send-maintenance-email";
 import { enviarTicketPortal } from "@/lib/portal-pili";
-
-export const solicitacaoSchema = z.object({
-  equipmentId: z.string().min(1),
-  type: z.enum([
-    "CORRETIVA",
-    "PREVENTIVA",
-    "INSTALACAO",
-    "DUVIDA_TECNICA",
-    "OUTRO",
-  ]),
-  urgency: z.enum(["BAIXA", "MEDIA", "ALTA", "PARADA"]),
-  description: z
-    .string()
-    .trim()
-    .min(20, "Descreva o problema com pelo menos 20 caracteres")
-    .max(4000),
-  contactName: z.string().trim().min(1, "Informe quem atende no local").max(200),
-  contactPhone: z.string().trim().min(8, "Telefone inválido").max(30),
-});
-
-export type SolicitacaoInput = z.infer<typeof solicitacaoSchema>;
+import { solicitacaoSchema } from "@/lib/validators/portal";
 
 /**
  * Abre um chamado de manutenção para um equipamento do cliente.
