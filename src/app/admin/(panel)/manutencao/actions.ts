@@ -80,6 +80,22 @@ export async function atualizarChamado(input: unknown) {
  * o Portal pode ter estado fora do ar — nos dois casos o pedido do cliente não
  * pode ficar só neste painel.
  */
+export async function excluirChamado(
+  id: string,
+): Promise<{ success: boolean; error?: string }> {
+  await requireRoleOrThrow(...PAPEIS);
+
+  try {
+    await db.maintenanceRequest.delete({ where: { id } });
+    revalidatePath("/admin/manutencao");
+    revalidatePath("/portal");
+    return { success: true };
+  } catch (err) {
+    logError("MANUTENCAO_DELETE", err);
+    return { success: false, error: "Erro ao excluir o chamado." };
+  }
+}
+
 export async function reenviarPendentes() {
   await requireRoleOrThrow(...PAPEIS);
 

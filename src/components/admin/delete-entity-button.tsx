@@ -6,10 +6,23 @@ import { Trash2 } from "lucide-react";
 import { deleteProduct } from "@/app/admin/(panel)/produtos/actions";
 import { deleteCase } from "@/app/admin/(panel)/obras/actions";
 import { deletePost } from "@/app/admin/(panel)/blog/actions";
+import { deleteUser } from "@/app/admin/(panel)/usuarios/actions";
+import { excluirChamado } from "@/app/admin/(panel)/manutencao/actions";
+import { excluirHeroSlide } from "@/app/admin/(panel)/hero/actions";
+import { excluirFilial } from "@/app/admin/(panel)/filiais/actions";
+import { excluirMarco } from "@/app/admin/(panel)/historia/actions";
 import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
-type Entity = "produto" | "obra" | "artigo";
+type Entity =
+  | "produto"
+  | "obra"
+  | "artigo"
+  | "usuario"
+  | "chamado"
+  | "slide"
+  | "unidade"
+  | "marco";
 
 const ACTIONS: Record<
   Entity,
@@ -18,23 +31,20 @@ const ACTIONS: Record<
   produto: deleteProduct,
   obra: deleteCase,
   artigo: deletePost,
+  usuario: deleteUser,
+  chamado: excluirChamado,
+  slide: excluirHeroSlide,
+  unidade: excluirFilial,
+  marco: excluirMarco,
 };
 
 interface DeleteEntityButtonProps {
   id: string;
-  /** Nome exibido na confirmação, para o operador saber o que está apagando. */
   label: string;
   entity: Entity;
   warning: string;
 }
 
-/**
- * Exclusão com confirmação.
- *
- * Estas três entidades sofrem *hard delete* com cascata; antes o ícone de
- * lixeira ficava ao lado do de edição e apagava o registro num clique, sem
- * confirmar e sem desfazer.
- */
 export function DeleteEntityButton({
   id,
   label,

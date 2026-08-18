@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 export const SLIDE_VAZIO: HeroSlideInput = {
   tituloPt: "",
@@ -77,8 +78,6 @@ export function HeroSlideForm({
 
   function onExcluir() {
     if (!id) return;
-    if (!confirm("Excluir este slide? A imagem enviada some junto.")) return;
-
     setExcluindo(true);
     startTransition(async () => {
       try {
@@ -193,20 +192,27 @@ export function HeroSlideForm({
 
       <div className="flex items-center justify-between gap-3">
         {id ? (
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={onExcluir}
-            disabled={isPending}
-            className="text-red-600 hover:bg-red-50 hover:text-red-700"
-          >
-            {excluindo ? (
-              <Loader2 className="mr-2 size-4 animate-spin" />
-            ) : (
-              <Trash2 className="mr-2 size-4" />
-            )}
-            Excluir slide
-          </Button>
+          <ConfirmDialog
+            title="Excluir slide"
+            description="O slide e a imagem de fundo serão removidos permanentemente. A ação não pode ser desfeita."
+            confirmLabel="Excluir slide"
+            onConfirm={onExcluir}
+            trigger={
+              <Button
+                type="button"
+                variant="ghost"
+                disabled={isPending}
+                className="text-red-600 hover:bg-red-50 hover:text-red-700"
+              >
+                {excluindo ? (
+                  <Loader2 className="mr-2 size-4 animate-spin" />
+                ) : (
+                  <Trash2 className="mr-2 size-4" />
+                )}
+                Excluir slide
+              </Button>
+            }
+          />
         ) : (
           <span />
         )}

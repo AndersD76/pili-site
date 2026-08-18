@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 const TIPOS = [
   { value: "FILIAL", label: "Filial" },
@@ -86,8 +87,6 @@ export function FilialForm({
 
   function onExcluir() {
     if (!id) return;
-    if (!confirm("Excluir esta unidade? A ação não pode ser desfeita.")) return;
-
     setExcluindo(true);
     startTransition(async () => {
       try {
@@ -258,20 +257,27 @@ export function FilialForm({
 
       <div className="flex items-center justify-between gap-3">
         {id ? (
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={onExcluir}
-            disabled={isPending}
-            className="text-red-600 hover:bg-red-50 hover:text-red-700"
-          >
-            {excluindo ? (
-              <Loader2 className="mr-2 size-4 animate-spin" />
-            ) : (
-              <Trash2 className="mr-2 size-4" />
-            )}
-            Excluir unidade
-          </Button>
+          <ConfirmDialog
+            title="Excluir unidade"
+            description="A unidade será removida permanentemente do site. A ação não pode ser desfeita."
+            confirmLabel="Excluir unidade"
+            onConfirm={onExcluir}
+            trigger={
+              <Button
+                type="button"
+                variant="ghost"
+                disabled={isPending}
+                className="text-red-600 hover:bg-red-50 hover:text-red-700"
+              >
+                {excluindo ? (
+                  <Loader2 className="mr-2 size-4 animate-spin" />
+                ) : (
+                  <Trash2 className="mr-2 size-4" />
+                )}
+                Excluir unidade
+              </Button>
+            }
+          />
         ) : (
           <span />
         )}

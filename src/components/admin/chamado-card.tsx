@@ -2,11 +2,15 @@
 
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { Loader2, MailWarning, Phone, User } from "lucide-react";
-import { atualizarChamado } from "@/app/admin/(panel)/manutencao/actions";
+import { Loader2, MailWarning, Phone, Trash2, User } from "lucide-react";
+import {
+  atualizarChamado,
+  excluirChamado,
+} from "@/app/admin/(panel)/manutencao/actions";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 const STATUS = [
   { value: "ABERTA", label: "Aberto" },
@@ -167,6 +171,8 @@ export function ChamadoCard(props: ChamadoCardProps) {
             {isPending && <Loader2 className="size-4 animate-spin" />}
             Salvar
           </Button>
+
+          <DeleteChamadoButton id={props.id} number={props.number} />
         </div>
 
         <div className="space-y-1.5">
@@ -183,5 +189,41 @@ export function ChamadoCard(props: ChamadoCardProps) {
         </div>
       </div>
     </div>
+  );
+}
+
+function DeleteChamadoButton({ id, number }: { id: string; number: number }) {
+  const [isPending, startTransition] = useTransition();
+
+  function handleDelete() {
+    startTransition(async () => {
+      const r = await excluirChamado(id);
+      if (r.success) {
+        toast.success(`Chamado #${number} excluído.`);
+      } else {
+        toast.error(r.error ?? "Erro ao excluir.");
+      }
+    });
+  }
+
+  return (
+    <ConfirmDialog
+      title="Excluir chamado"
+      description={`O chamado #${number} será removido permanentemente. A ação não pode ser desfeita.`}
+      confirmLabel="Excluir chamado"
+      onConfirm={handleDelete}
+      trigger={
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon-xs"
+          disabled={isPending}
+          className="text-red-600 hover:text-red-700"
+        >
+          <Trash2 className="size-4" />
+          <span className="sr-only">Excluir chamado</span>
+        </Button>
+      }
+    />
   );
 }

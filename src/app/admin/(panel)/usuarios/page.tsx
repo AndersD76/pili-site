@@ -4,6 +4,7 @@ import { requireRole } from "@/lib/auth-guard";
 import { db } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { DeleteEntityButton } from "@/components/admin/delete-entity-button";
 import {
   Table,
   TableBody,
@@ -121,13 +122,21 @@ export default async function UsuariosPage() {
                   <TableCell className="text-sm text-pili-steel">
                     {formatDate(user.createdAt)}
                   </TableCell>
-                  <TableCell>
-                    <Button variant="ghost" size="icon" asChild>
-                      <Link href={`/admin/usuarios/${user.id}`}>
-                        <Pencil className="size-4" />
-                        <span className="sr-only">Editar</span>
-                      </Link>
-                    </Button>
+                  <TableCell className="text-right">
+                    <div className="flex items-center justify-end gap-1">
+                      <Button variant="ghost" size="icon-xs" asChild>
+                        <Link href={`/admin/usuarios/${user.id}`}>
+                          <Pencil className="size-4" />
+                          <span className="sr-only">Editar</span>
+                        </Link>
+                      </Button>
+                      <DeleteEntityButton
+                        id={user.id}
+                        label={user.name ?? user.email}
+                        entity="usuario"
+                        warning="Todos os dados do usuário serão removidos. A ação não pode ser desfeita."
+                      />
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}

@@ -141,8 +141,6 @@ export async function updateUser(
     return { success: false, error: "Nome e e-mail são obrigatórios." };
   }
 
-  // Um admin rebaixando a si mesmo se trancaria fora do painel — e não haveria
-  // outro caminho para voltar, já que não existe fluxo de recuperação de senha.
   if (session.user.id === userId && role !== "ADMIN") {
     return {
       success: false,
@@ -172,5 +170,24 @@ export async function updateUser(
     }
     logError("USUARIOS_UPDATE", err);
     return { success: false, error: "Erro ao atualizar usuário." };
+  }
+}
+
+/* ---------- deleteUser ---------- */
+
+export async function deleteUser(userId: string): Promise<ActionResult> {
+  const session = await requireAdmin();
+
+  if (session.user.id === userId) {
+    return { success: false, error: "Você não pode excluir a própria conta." };
+  }
+
+  try {
+    await db.user.delete({ where: { id: userId } });
+    revalidatePath("/admin/usuarios");
+    return { success: true };
+  } catch (err) {
+    logError("USUARIOS_DELETE", err);
+    return { success: false, error: "Erro ao excluir usuário." };
   }
 }

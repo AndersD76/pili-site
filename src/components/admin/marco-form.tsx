@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 export const MARCO_VAZIO: MarcoInput = {
   ano: "",
@@ -67,8 +68,6 @@ export function MarcoForm({
 
   function onExcluir() {
     if (!id) return;
-    if (!confirm("Excluir este marco da linha do tempo?")) return;
-
     setExcluindo(true);
     startTransition(async () => {
       try {
@@ -172,20 +171,27 @@ export function MarcoForm({
 
       <div className="flex items-center justify-between gap-3">
         {id ? (
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={onExcluir}
-            disabled={isPending}
-            className="text-red-600 hover:bg-red-50 hover:text-red-700"
-          >
-            {excluindo ? (
-              <Loader2 className="mr-2 size-4 animate-spin" />
-            ) : (
-              <Trash2 className="mr-2 size-4" />
-            )}
-            Excluir marco
-          </Button>
+          <ConfirmDialog
+            title="Excluir marco"
+            description="O marco será removido permanentemente da linha do tempo. A ação não pode ser desfeita."
+            confirmLabel="Excluir marco"
+            onConfirm={onExcluir}
+            trigger={
+              <Button
+                type="button"
+                variant="ghost"
+                disabled={isPending}
+                className="text-red-600 hover:bg-red-50 hover:text-red-700"
+              >
+                {excluindo ? (
+                  <Loader2 className="mr-2 size-4 animate-spin" />
+                ) : (
+                  <Trash2 className="mr-2 size-4" />
+                )}
+                Excluir marco
+              </Button>
+            }
+          />
         ) : (
           <span />
         )}
