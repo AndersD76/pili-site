@@ -4,6 +4,7 @@ import { requireRole } from "@/lib/auth-guard";
 import { getMarcosHistoriaAdmin } from "@/lib/conteudo-editavel";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { DeleteEntityButton } from "@/components/admin/delete-entity-button";
 
 export const metadata = { title: "Trajetória" };
 
@@ -47,10 +48,12 @@ export default async function HistoriaPage() {
             const temEs = marco.translations.some((t) => t.locale === "es");
 
             return (
-              <li key={marco.id}>
+              // O botão fica fora do Link: <button> dentro de <a> é elemento
+              // interativo aninhado — o clique navegaria em vez de excluir.
+              <li key={marco.id} className="flex items-stretch gap-2">
                 <Link
                   href={`/admin/historia/${marco.id}`}
-                  className="flex gap-4 rounded-lg border border-pili-mist bg-pili-white p-4 transition-colors hover:border-pili-cement"
+                  className="flex flex-1 gap-4 rounded-lg border border-pili-mist bg-pili-white p-4 transition-colors hover:border-pili-cement"
                 >
                   <span className="flex h-12 w-16 shrink-0 items-center justify-center border-2 border-pili-black font-mono text-xs font-bold">
                     {marco.ano ?? "Hoje"}
@@ -74,6 +77,14 @@ export default async function HistoriaPage() {
                     </p>
                   </div>
                 </Link>
+                <div className="flex items-center">
+                  <DeleteEntityButton
+                    id={marco.id}
+                    label={pt?.titulo ?? String(marco.ano ?? "marco")}
+                    entity="marco"
+                    warning="O marco sai da linha do tempo da página Empresa. A ação não pode ser desfeita."
+                  />
+                </div>
               </li>
             );
           })}
