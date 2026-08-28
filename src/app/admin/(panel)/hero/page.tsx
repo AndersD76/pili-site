@@ -5,6 +5,7 @@ import { getHeroSlidesAdmin } from "@/lib/hero-slides";
 import { mediaUrl } from "@/lib/media";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { DeleteEntityButton } from "@/components/admin/delete-entity-button";
 
 export const metadata = { title: "Carrossel da home" };
 
@@ -50,7 +51,7 @@ export default async function HeroPage() {
             return (
               <li
                 key={slide.id}
-                className="overflow-hidden rounded-lg border border-pili-mist bg-pili-white"
+                className="relative overflow-hidden rounded-lg border border-pili-mist bg-pili-white"
               >
                 <Link href={`/admin/hero/${slide.id}`} className="block">
                   <div className="relative aspect-video bg-pili-fog">
@@ -87,6 +88,18 @@ export default async function HeroPage() {
                     </p>
                   </div>
                 </Link>
+
+                {/* Sobreposto e fora do Link: <button> dentro de <a> é elemento
+                    interativo aninhado — o clique navegaria em vez de excluir.
+                    O fundo claro garante contraste sobre a foto do slide. */}
+                <div className="absolute right-2 top-2 rounded-md bg-pili-white/90 shadow-sm">
+                  <DeleteEntityButton
+                    id={slide.id}
+                    label={pt?.titulo ?? `slide #${slide.ordem}`}
+                    entity="slide"
+                    warning="O slide sai do carrossel da home e a foto vai junto. A ação não pode ser desfeita."
+                  />
+                </div>
               </li>
             );
           })}

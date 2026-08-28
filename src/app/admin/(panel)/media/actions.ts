@@ -111,13 +111,11 @@ export async function uploadMedia(
       select: { id: true, filename: true, alt: true, order: true },
     });
 
-    revalidatePath("/admin/media");
-    if (target.productId) revalidatePath(`/admin/produtos/${target.productId}`);
-    if (target.caseId) revalidatePath(`/admin/obras/${target.caseId}`);
-    if (target.postId) revalidatePath(`/admin/blog/${target.postId}`);
-    if (target.heroSlideId) revalidatePath(`/admin/hero/${target.heroSlideId}`);
-    if (target.setorSlug) revalidatePath(`/admin/setores/${target.setorSlug}`);
-    if (target.blocoChave) revalidatePath(`/admin/blocos/${target.blocoChave}`);
+    // A primeira foto enviada vira a imagem de destaque da entidade. Antes só
+    // as telas do painel eram invalidadas aqui, então a obra/artigo continuava
+    // exibindo a imagem padrão no site público até o ISR expirar — quem acabava
+    // de subir a foto olhava o site, não via mudança e reenviava.
+    invalidarPaginas(target);
 
     return { success: true, media };
   } catch (err) {
@@ -129,11 +127,10 @@ export async function uploadMedia(
 /**
  * Invalida tudo que mostra esta foto.
  *
- * Só `uploadMedia` fazia isso. Excluir e reordenar invalidavam apenas
- * `/admin/media`, então a tela de edição do produto/obra/artigo continuava
- * servindo a lista antiga do cache — a foto sumia da tela e reaparecia ao
- * voltar para a página. E o site público seguia exibindo a foto excluída até a
- * revalidação por tempo.
+ * Enviar, excluir e reordenar mudam qual foto é a principal, então as três
+ * passam por aqui. Antes cada uma invalidava um subconjunto diferente: a foto
+ * sumia da tela de edição e reaparecia ao voltar para a página, e o site
+ * público seguia servindo a imagem antiga até a revalidação por tempo.
  */
 function invalidarPaginas(alvo: {
   productId?: string | null;

@@ -5,6 +5,7 @@ import { getFiliaisAdmin } from "@/lib/filiais";
 import { getSiteSettings } from "@/lib/site-settings";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { DeleteEntityButton } from "@/components/admin/delete-entity-button";
 
 export const metadata = { title: "Unidades" };
 
@@ -117,13 +118,21 @@ export default async function FiliaisPage() {
                       <Badge variant="secondary">Oculta</Badge>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-right">
-                    <Link
-                      href={`/admin/filiais/${f.id}`}
-                      className="text-pili-steel underline underline-offset-2 hover:text-pili-black"
-                    >
-                      Editar
-                    </Link>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center justify-end gap-3">
+                      <Link
+                        href={`/admin/filiais/${f.id}`}
+                        className="text-pili-steel underline underline-offset-2 hover:text-pili-black"
+                      >
+                        Editar
+                      </Link>
+                      <DeleteEntityButton
+                        id={f.id}
+                        label={f.nome}
+                        entity="unidade"
+                        warning="A unidade sai do rodapé e do mapa. A ação não pode ser desfeita."
+                      />
+                    </div>
                   </td>
                 </tr>
               ))}
