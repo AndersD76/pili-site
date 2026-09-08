@@ -13,7 +13,6 @@ import { CertificationsBand } from "@/components/marketing/certifications-band";
 import { LeadForm } from "@/components/marketing/lead-form";
 import {
   Modelo3DModal,
-  type Hotspot3D,
   type InfoCard3D,
 } from "@/components/marketing/modelo-3d-modal";
 import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
@@ -53,14 +52,6 @@ export async function generateMetadata({
 
 /** Usada enquanto o setor não tem foto própria enviada pelo painel. */
 const FOTO_SETOR_PADRAO = "/images/tombador-pili.jpg";
-
-const HOTSPOTS_TOMBADOR: Hotspot3D[] = [
-  { position: "0 0.005 -0.10", normal: "0 0 -1", label: "Fundacao" },
-  { position: "0.018 0.01 -0.04", normal: "1 0 0", label: "Plataforma" },
-  { position: "0.018 0.02 0.04", normal: "1 0 0", label: "Cilindros hidraulicos" },
-  { position: "-0.018 0.025 0.08", normal: "-1 0 0", label: "Portico" },
-  { position: "0 0.03 0.11", normal: "0 0 1", label: "Tombador" },
-];
 
 const CARDS_TOMBADOR: InfoCard3D[] = [
   { valor: "24,38m", label: "Comprimento", destaque: true },
@@ -378,7 +369,6 @@ export default async function HomePage({
                 alt="Tombador hidraulico PILI — instalacao completa"
                 titulo="Tombador Hidraulico PILI"
                 subtitulo="Gire e amplie para explorar cada detalhe do equipamento"
-                hotspots={HOTSPOTS_TOMBADOR}
                 cards={CARDS_TOMBADOR}
               />
             </div>
