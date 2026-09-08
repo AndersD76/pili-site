@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { Link } from "@/i18n/routing";
@@ -8,6 +7,7 @@ import { SpecTable } from "@/components/marketing/spec-table";
 import { FeatureGrid } from "@/components/marketing/feature-grid";
 import { LeadForm } from "@/components/marketing/lead-form";
 import { ProductCard } from "@/components/marketing/product-card";
+import { ProductGallery } from "@/components/marketing/product-gallery";
 import {
   generatePageMetadata,
   generateProductJsonLd,
@@ -112,37 +112,17 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
       <section className="bg-pili-paper pb-16 pt-8 px-6 lg:px-8">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2">
           {/* Galeria — a primeira foto é a principal, definida no painel */}
-          <div className="space-y-3">
-            <div className="relative aspect-4/3 overflow-hidden bg-pili-steel">
-              <Image
-                src={product.image}
-                alt={product.images[0]?.alt ?? product.name}
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-              />
-            </div>
-
-            {product.images.length > 1 && (
-              <ul className="grid grid-cols-4 gap-3">
-                {product.images.slice(1, 5).map((img) => (
-                  <li
-                    key={img.url}
-                    className="relative aspect-4/3 overflow-hidden bg-pili-steel"
-                  >
-                    <Image
-                      src={img.url}
-                      alt={img.alt ?? product.name}
-                      fill
-                      sizes="25vw"
-                      className="object-cover"
-                    />
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          <ProductGallery
+            imagens={product.images}
+            nome={product.name}
+            imagemPadrao={product.image}
+            textos={{
+              ampliar: t("common.galleryZoom"),
+              anterior: t("common.galleryPrev"),
+              proxima: t("common.galleryNext"),
+              foto: t("common.galleryPhoto"),
+            }}
+          />
 
           {/* Info */}
           <div className="flex flex-col">

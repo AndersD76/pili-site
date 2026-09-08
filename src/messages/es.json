@@ -117,7 +117,11 @@
     "home": "Inicio",
     "requestQuote": "Solicitar presupuesto",
     "readMore": "Leer más",
-    "seeSolution": "Ver solución"
+    "seeSolution": "Ver solución",
+    "galleryZoom": "Ampliar foto",
+    "galleryPrev": "Foto anterior",
+    "galleryNext": "Foto siguiente",
+    "galleryPhoto": "Foto"
   },
   "giorgia": {
     "role": "Asistente virtual",
