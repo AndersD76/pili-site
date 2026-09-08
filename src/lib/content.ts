@@ -4,6 +4,7 @@ import { db } from "./db";
 import { mediaUrl } from "./media";
 import { logError } from "./prisma-errors";
 import type { ProductCategory, PostCategory, Locale } from "@prisma/client";
+import { PRODUTO_PUBLICAVEL, fotoUsavel } from "@/lib/produto-publicavel";
 
 /**
  * Leitura do conteúdo público a partir do banco.
@@ -132,7 +133,7 @@ function selecaoProduto(locale: Locale) {
     applications: { select: { slug: true } },
     media: {
       orderBy: { order: "asc" },
-      select: { id: true, alt: true },
+      select: { id: true, alt: true, filename: true },
     },
   } as const;
 }
@@ -158,12 +159,14 @@ type LinhaProduto = {
   }[];
   faqs: { locale: Locale; question: string; answer: string }[];
   applications: { slug: string }[];
-  media: { id: string; alt: string | null }[];
+  media: { id: string; alt: string | null; filename: string }[];
 };
 
 function mapearProduto(p: LinhaProduto, locale: Locale): Produto {
   const t = traduzir(p.translations, locale);
-  const imagens = p.media.map((m) => ({ url: mediaUrl(m.id), alt: m.alt }));
+  const imagens = p.media
+    .filter((m) => fotoUsavel(m.filename))
+    .map((m) => ({ url: mediaUrl(m.id), alt: m.alt }));
 
   // Os diferenciais também são traduzidos um a um; se nenhum existir no idioma
   // pedido, cai para a lista em português.
@@ -208,7 +211,7 @@ export const getProdutos = cache(async (): Promise<Produto[]> => {
   const locale = await localeAtual();
   try {
     const linhas = await db.product.findMany({
-      where: { active: true },
+      where: PRODUTO_PUBLICAVEL,
       select: selecaoProduto(locale),
       orderBy: [{ order: "asc" }, { createdAt: "asc" }],
     });
@@ -223,7 +226,7 @@ export const getProduto = cache(async (slug: string): Promise<Produto | null> =>
   const locale = await localeAtual();
   try {
     const linha = await db.product.findFirst({
-      where: { slug, active: true },
+      where: { slug, ...PRODUTO_PUBLICAVEL },
       select: selecaoProduto(locale),
     });
     return linha ? mapearProduto(linha, locale) : null;

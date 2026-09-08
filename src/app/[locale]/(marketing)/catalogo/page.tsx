@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import {
   catalogFormSchema,
@@ -15,6 +15,8 @@ import { Download, FileText } from "lucide-react";
 
 export default function CatalogoPage() {
   const t = useTranslations();
+  // O catalogo sai no idioma da pagina: o PDF tem versao pt-BR e es.
+  const locale = useLocale();
   const [status, setStatus] = useState<
     "idle" | "loading" | "unlocked" | "error"
   >("idle");
@@ -74,9 +76,8 @@ export default function CatalogoPage() {
                 {t("catalogo.releasedText")}
               </p>
               <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-                {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- download de arquivo, nao navegacao SPA */}
                 <a
-                  href="/api/catalogo/pdf"
+                  href={`/api/catalogo/pdf?locale=${locale}`}
                   className="inline-flex items-center gap-2 bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
                 >
                   <Download className="h-4 w-4" />

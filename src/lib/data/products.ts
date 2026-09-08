@@ -130,7 +130,7 @@ export const PRODUCTS: ProductData[] = [
       {
         title: "Estrutura reforçada",
         description:
-          "Aço ASTM A572 Gr.50 com tratamento anticorrosivo por jateamento e pintura epoxi.",
+          "Aço ASTM A572 Gr.50 com tratamento anticorrosivo por jateamento e pintura epóxi.",
         icon: "Shield",
       },
       {
@@ -234,7 +234,7 @@ export const PRODUCTS: ProductData[] = [
       {
         title: "Resistência à corrosão",
         description:
-          "Jateamento SA 2.5 com pintura epoxi de alta espessura para ambientes portuários agressivos.",
+          "Jateamento SA 2.5 com pintura epóxi de alta espessura para ambientes portuários agressivos.",
         icon: "Shield",
       },
       {
@@ -303,7 +303,7 @@ export const PRODUCTS: ProductData[] = [
     name: "Tombador 30 Metros Fixo",
     tagline: "O maior tombador hidráulico do mercado brasileiro",
     description:
-      "Plataforma de descarga fixa de 30 metros com capacidade para 100 toneladas. O tombador de maior porte da America Latina, projetado para os maiores terminais portuários e operações com os maiores rodotrens do mercado.",
+      "Plataforma de descarga fixa de 30 metros com capacidade para 100 toneladas. O tombador de maior porte da América Latina, projetado para os maiores terminais portuários e operações com os maiores rodotrens do mercado.",
     capacity: "100 t",
     length: "30.000 mm",
     specs: [
@@ -330,9 +330,9 @@ export const PRODUCTS: ProductData[] = [
         icon: "Zap",
       },
       {
-        title: "Aco de alta resistência",
+        title: "Aço de alta resistência",
         description:
-          "Estrutura em aço ASTM A572 Gr.50 com tratamento anticorrosivo por jateamento e pintura epoxi.",
+          "Estrutura em aço ASTM A572 Gr.50 com tratamento anticorrosivo por jateamento e pintura epóxi.",
         icon: "Shield",
       },
       {
