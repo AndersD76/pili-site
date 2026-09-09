@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import { BotaoTraduzir } from "@/components/admin/botao-traduzir";
 
 export const SLIDE_VAZIO: HeroSlideInput = {
   tituloPt: "",
@@ -35,9 +36,11 @@ export const SLIDE_VAZIO: HeroSlideInput = {
 export function HeroSlideForm({
   id,
   initial,
+  traducaoAtiva,
 }: {
   id?: string;
   initial: HeroSlideInput;
+  traducaoAtiva: boolean;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -46,6 +49,8 @@ export function HeroSlideForm({
   const {
     register,
     handleSubmit,
+    getValues,
+    setValue,
     formState: { errors, isDirty },
   } = useForm<HeroSlideInput>({
     resolver: zodResolver(heroSlideSchema),
@@ -138,13 +143,30 @@ export function HeroSlideForm({
       </section>
 
       <section className="rounded-lg border border-pili-mist bg-white p-6">
-        <h2 className="mb-1 font-display text-lg font-bold text-pili-black">
-          Espanhol
-        </h2>
-        <p className="mb-5 text-sm text-pili-concrete">
-          Deixe em branco para exibir o texto em português também no site em
-          espanhol.
-        </p>
+        <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h2 className="mb-1 font-display text-lg font-bold text-pili-black">
+              Espanhol
+            </h2>
+            <p className="text-sm text-pili-concrete">
+              Deixe em branco para exibir o texto em português também no site em
+              espanhol.
+            </p>
+          </div>
+
+          <BotaoTraduzir
+            habilitado={traducaoAtiva}
+            origem={() => ({
+              title: getValues("tituloPt"),
+              summary: getValues("subtituloPt") ?? "",
+            })}
+            aoTraduzir={(c) => {
+              const p = { shouldDirty: true } as const;
+              if (c.title !== undefined) setValue("tituloEs", c.title, p);
+              if (c.summary !== undefined) setValue("subtituloEs", c.summary, p);
+            }}
+          />
+        </div>
 
         <div className="space-y-4">
           <div className="space-y-1.5">

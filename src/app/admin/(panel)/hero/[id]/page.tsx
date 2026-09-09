@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { requireRole } from "@/lib/auth-guard";
 import { db } from "@/lib/db";
 import { HeroSlideForm } from "@/components/admin/hero-slide-form";
+import { traducaoDisponivel } from "@/lib/traduzir";
 import { MediaUploader } from "@/components/admin/media-uploader";
 
 export const metadata = { title: "Editar slide" };
@@ -47,6 +48,7 @@ export default async function EditarHeroSlidePage({
           ordem: slide.ordem,
           ativo: slide.ativo,
         }}
+        traducaoAtiva={traducaoDisponivel()}
       />
 
       <div className="max-w-2xl rounded-lg border border-pili-mist bg-pili-white p-6">

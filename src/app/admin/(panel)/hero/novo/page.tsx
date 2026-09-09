@@ -1,5 +1,6 @@
 import { requireRole } from "@/lib/auth-guard";
 import { HeroSlideForm, SLIDE_VAZIO } from "@/components/admin/hero-slide-form";
+import { traducaoDisponivel } from "@/lib/traduzir";
 
 export const metadata = { title: "Novo slide" };
 
@@ -18,7 +19,7 @@ export default async function NovoHeroSlidePage() {
         </p>
       </div>
 
-      <HeroSlideForm initial={SLIDE_VAZIO} />
+      <HeroSlideForm initial={SLIDE_VAZIO} traducaoAtiva={traducaoDisponivel()} />
     </div>
   );
 }
