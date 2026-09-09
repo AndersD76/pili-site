@@ -54,7 +54,13 @@ export function Header({ piliTechUrl }: { piliTechUrl: string | null }) {
           : "bg-transparent"
       )}
     >
-      <div className="flex h-[var(--header-height)] w-full items-center justify-between gap-10 px-6 lg:gap-16 lg:px-16">
+      {/*
+       * O menu completo custa ~1735px de largura. Enquanto ele abria em `lg`
+       * (1024px), qualquer notebook de 1366px cortava o conteudo nas laterais —
+       * so cabia reduzindo o zoom do navegador. Agora a barra cresce por
+       * degraus e o menu horizontal so aparece em `2xl`, onde de fato cabe.
+       */}
+      <div className="flex h-[var(--header-height)] w-full items-center justify-between gap-4 px-4 sm:px-6 xl:gap-8 xl:px-10 2xl:gap-6 2xl:px-8 min-[1920px]:gap-12 min-[1920px]:px-16">
         {/* Logo */}
         <Link href="/" className="flex shrink-0 items-center">
           <img
@@ -65,13 +71,13 @@ export function Header({ piliTechUrl }: { piliTechUrl: string | null }) {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-3 lg:flex">
+        <nav className="hidden items-center gap-1 2xl:flex min-[1920px]:gap-3">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.key}
               href={item.href}
               className={cn(
-                "px-3 py-2 text-lg font-bold uppercase tracking-wider transition-colors",
+                "px-2 py-2 text-sm font-bold uppercase tracking-wide transition-colors min-[1920px]:px-3 min-[1920px]:text-lg min-[1920px]:tracking-wider",
                 pathname.startsWith(item.href)
                   ? "text-pili-safety"
                   : "text-pili-mist hover:text-pili-white"
@@ -140,7 +146,7 @@ export function Header({ piliTechUrl }: { piliTechUrl: string | null }) {
 
           <NextLink
             href="/portal"
-            className="hidden items-center gap-1.5 px-3 py-2 text-base font-semibold text-pili-mist transition-colors hover:text-pili-white lg:inline-flex"
+            className="hidden items-center gap-1.5 px-2 py-2 text-sm font-semibold text-pili-mist transition-colors hover:text-pili-white 2xl:inline-flex min-[1920px]:px-3 min-[1920px]:text-base"
             title={th("portalTitle")}
           >
             <UserCircle className="h-5 w-5" />
@@ -149,7 +155,7 @@ export function Header({ piliTechUrl }: { piliTechUrl: string | null }) {
 
           <NextLink
             href="/admin"
-            className="hidden items-center gap-1.5 px-2 py-2 text-sm font-medium text-pili-iron transition-colors hover:text-pili-mist lg:inline-flex"
+            className="hidden items-center gap-1.5 px-2 py-2 text-sm font-medium text-pili-iron transition-colors hover:text-pili-mist 2xl:inline-flex"
             title={th("adminTitle")}
           >
             <ShieldCheck className="h-3.5 w-3.5" />
@@ -157,14 +163,14 @@ export function Header({ piliTechUrl }: { piliTechUrl: string | null }) {
 
           <Link
             href="/orcamento"
-            className="hidden items-center justify-center bg-pili-safety px-6 py-3 text-sm font-bold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep lg:inline-flex"
+            className="hidden items-center justify-center bg-pili-safety px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep 2xl:inline-flex min-[1920px]:px-6 min-[1920px]:py-3 min-[1920px]:text-sm"
           >
             {t("quote")}
           </Link>
 
           {/* Mobile toggle */}
           <button
-            className="p-2 text-pili-white lg:hidden"
+            className="p-2 text-pili-white 2xl:hidden"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? th("closeMenu") : th("openMenu")}
           >
@@ -179,7 +185,7 @@ export function Header({ piliTechUrl }: { piliTechUrl: string | null }) {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <nav className="border-t border-pili-iron bg-pili-black px-6 py-6 lg:hidden">
+        <nav className="border-t border-pili-iron bg-pili-black px-6 py-6 2xl:hidden">
           <div className="flex flex-col gap-1">
             {NAV_ITEMS.map((item) => (
               <Link

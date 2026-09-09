@@ -73,8 +73,10 @@ export default async function FiliaisPage() {
           </p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-lg border border-pili-mist">
-          <table className="w-full text-sm">
+        // `overflow-x-auto` para a tabela rolar dentro do card em tela
+        // estreita, em vez de empurrar a largura da pagina inteira.
+        <div className="overflow-x-auto rounded-lg border border-pili-mist">
+          <table className="w-full min-w-[640px] text-sm">
             <thead className="bg-pili-fog text-left">
               <tr>
                 <th className="px-4 py-3 font-semibold text-pili-black">
