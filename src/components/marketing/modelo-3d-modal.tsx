@@ -16,6 +16,12 @@ import { X, Box } from "lucide-react";
  */
 const SCRIPT_SRC = "/vendor/o3dv-0.18.0.min.js";
 
+/**
+ * O .glb tem ~6 MB e a engine ainda precisa interpretar a malha depois de
+ * baixar. 45 s cobre 3G ruim com folga; passou disso, algo quebrou.
+ */
+const TEMPO_LIMITE_MS = 45_000;
+
 function carregarScript(): Promise<void> {
   if (document.querySelector(`script[src="${SCRIPT_SRC}"]`)) {
     return Promise.resolve();
@@ -287,6 +293,7 @@ export function Modelo3DModal({
 
     let cancelado = false;
     let viewer: any = null;
+    let tempoLimite: ReturnType<typeof setTimeout> | undefined;
 
     (async () => {
       try {
@@ -304,11 +311,26 @@ export function Modelo3DModal({
 
         if (cancelado || !containerRef.current) return;
 
+        // `onModelLoaded` e o unico ponto que desliga o spinner. Quando a
+        // engine falha em interpretar o .glb ela nao chama callback nenhum nem
+        // lanca erro, e o "Carregando modelo 3D..." fica girando indefinidamente.
+        // Este limite transforma esse silencio numa mensagem acionavel.
+        tempoLimite = setTimeout(() => {
+          if (cancelado) return;
+          setCarregando((aindaCarregando) => {
+            if (aindaCarregando) {
+              setErro("O modelo demorou demais para abrir. Recarregue a pagina.");
+            }
+            return false;
+          });
+        }, TEMPO_LIMITE_MS);
+
         viewer = new OV.EmbeddedViewer(containerRef.current, {
           backgroundColor: new OV.RGBAColor(11, 11, 12, 255),
           defaultColor: new OV.RGBColor(212, 212, 212),
           onModelLoaded: () => {
             if (cancelado) return;
+            clearTimeout(tempoLimite);
             setCarregando(false);
             try {
               setEixo(orientarModelo(OV, viewer));
@@ -333,6 +355,7 @@ export function Modelo3DModal({
         viewer.LoadModelFromFileList([arquivo]);
       } catch (e) {
         if (!cancelado) {
+          clearTimeout(tempoLimite);
           setErro(e instanceof Error ? e.message : "Erro ao carregar o 3D");
           setCarregando(false);
         }
@@ -341,6 +364,7 @@ export function Modelo3DModal({
 
     return () => {
       cancelado = true;
+      clearTimeout(tempoLimite);
       try {
         viewer?.Destroy?.();
       } catch {
