@@ -1,5 +1,10 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
-import { getProdutosDestaque, getObrasDestaque } from "@/lib/content";
+import {
+  getProdutosDestaque,
+  getObrasDestaque,
+  getProdutos,
+  type Produto,
+} from "@/lib/content";
 import { Link } from "@/i18n/routing";
 import Image from "next/image";
 import { getSiteSettings, anosDeMercado } from "@/lib/site-settings";
@@ -53,12 +58,33 @@ export async function generateMetadata({
 /** Usada enquanto o setor não tem foto própria enviada pelo painel. */
 const FOTO_SETOR_PADRAO = "/images/tombador-pili.jpg";
 
-const CARDS_TOMBADOR: InfoCard3D[] = [
-  { valor: "24,38m", label: "Comprimento", destaque: true },
-  { valor: "3,91m", label: "Largura" },
-  { valor: "3,40m", label: "Altura" },
-  { valor: "120t", label: "Capacidade", destaque: true },
-];
+/**
+ * Fichas do modelo 3D, montadas a partir das specs do produto no banco.
+ *
+ * Estes numeros ficavam fixos aqui e nao correspondiam a equipamento nenhum
+ * do catalogo (24,38m / 3,91m / 3,40m / 120t). O modelo exibido e o tombador
+ * de 30 metros, cujas specs reais vivem no CMS -- editar o produto no painel
+ * agora muda o que aparece no modal.
+ */
+const SLUG_MODELO_3D = "tombador-30m-fixo";
+
+function cardsDoProduto(produto: Produto | undefined): InfoCard3D[] {
+  if (!produto) return [];
+
+  // A ordem segue a leitura do equipamento: o que ele mede, depois o que ele
+  // aguenta. Spec ausente sai da lista em vez de virar card vazio.
+  const desejados: { chave: string; label: string; destaque?: boolean }[] = [
+    { chave: "comprimento", label: "Comprimento", destaque: true },
+    { chave: "largura", label: "Largura" },
+    { chave: "angulo maximo", label: "Angulo maximo" },
+    { chave: "capacidade", label: "Capacidade", destaque: true },
+  ];
+
+  return desejados.flatMap(({ chave, label, destaque }) => {
+    const spec = produto.specs.find((s) => s.label.toLowerCase() === chave);
+    return spec ? [{ valor: spec.value, label, destaque }] : [];
+  });
+}
 
 export default async function HomePage({
   params,
@@ -70,6 +96,10 @@ export default async function HomePage({
 
   const t = await getTranslations();
   const featuredProducts = await getProdutosDestaque();
+  // O modal 3D mostra o tombador de 30 m; as fichas saem das specs dele.
+  const produtoModelo3D = (await getProdutos()).find(
+    (p) => p.slug === SLUG_MODELO_3D,
+  );
   const featuredCases = await getObrasDestaque();
   // Números e dados institucionais vêm do painel, não mais de constants.ts.
   const settings = await getSiteSettings();
@@ -369,7 +399,7 @@ export default async function HomePage({
                 alt="Tombador hidraulico PILI — instalacao completa"
                 titulo="Tombador Hidraulico PILI"
                 subtitulo="Gire e amplie para explorar cada detalhe do equipamento"
-                cards={CARDS_TOMBADOR}
+                cards={cardsDoProduto(produtoModelo3D)}
               />
             </div>
           </AnimateOnScroll>
