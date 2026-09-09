@@ -120,9 +120,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: route.changeFrequency,
         priority: route.priority,
         alternates: {
-          languages: Object.fromEntries(
-            LOCALES.map((l) => [l, `${SITE_URL}/${l}${route.path}`]),
-          ),
+          languages: {
+            ...Object.fromEntries(
+              LOCALES.map((l) => [l, `${SITE_URL}/${l}${route.path}`]),
+            ),
+            // Mesmo destino neutro declarado nas meta tags: sem ele o Google
+            // decide sozinho o idioma para quem não é pt-BR nem es.
+            "x-default": `${SITE_URL}/pt-BR${route.path}`,
+          },
         },
       });
     }

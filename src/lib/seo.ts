@@ -8,8 +8,14 @@ import {
   EM_DOMINIO_DEFINITIVO,
 } from "./constants";
 
-/** Imagem padrão de compartilhamento. Precisa existir em `public/`. */
-export const DEFAULT_OG_IMAGE = "/images/tombador-pili.jpg";
+/**
+ * Imagem padrão de compartilhamento. Precisa existir em `public/`.
+ *
+ * 1200x630 é o mínimo que Google, WhatsApp e LinkedIn exibem sem recortar nem
+ * degradar. A `tombador-pili.jpg` que ficava aqui tem 1032x581 — abaixo do
+ * mínimo e em outra proporção, então cada rede cortava por conta própria.
+ */
+export const DEFAULT_OG_IMAGE = "/images/og-pili.jpg";
 
 interface PageSeoParams {
   title: string;
@@ -42,6 +48,10 @@ export function generatePageMetadata({
       languages: {
         "pt-BR": `${SITE_URL}/pt-BR${path}`,
         es: `${SITE_URL}/es${path}`,
+        // Sem `x-default` o Google escolhe sozinho o que servir a quem não é
+        // pt-BR nem es — um comprador em inglês pode cair no espanhol. A PILI
+        // exporta para 18 países, então o português é o destino neutro.
+        "x-default": `${SITE_URL}/pt-BR${path}`,
       },
     },
     openGraph: {

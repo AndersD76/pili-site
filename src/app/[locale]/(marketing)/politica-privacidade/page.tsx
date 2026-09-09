@@ -16,7 +16,6 @@ export async function generateMetadata({
     // O caminho canônico levava acento ("/política-privacidade") e apontava
     // para uma URL que não existe; a rota real é sem acento.
     path: "/politica-privacidade",
-    noIndex: true,
   });
 }
 

@@ -5,7 +5,6 @@ import Link from "next/link";
 import {
   HardDrive,
   ArrowRight,
-  ShoppingCart,
   Package,
   Wrench,
 } from "lucide-react";
@@ -180,22 +179,6 @@ export default async function PortalDashboardPage() {
             <ArrowRight className="h-5 w-5 shrink-0 text-pili-concrete transition-colors group-hover:text-pili-safety" />
           </Link>
 
-          <a
-            href="https://store.pili.ind.br"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center justify-between rounded-lg border border-pili-mist bg-pili-white p-6 transition-colors hover:border-pili-safety"
-          >
-            <div>
-              <h3 className="font-display font-bold text-pili-graphite">
-                PILI Store
-              </h3>
-              <p className="mt-1 text-sm text-pili-concrete">
-                Peças de reposição e acessórios
-              </p>
-            </div>
-            <ShoppingCart className="h-5 w-5 shrink-0 text-pili-concrete transition-colors group-hover:text-pili-safety" />
-          </a>
         </div>
       </div>
     </div>

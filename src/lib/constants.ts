@@ -2,18 +2,23 @@ export const SITE_NAME = "PILI Industrial";
 export const SITE_DESCRIPTION =
   "Fabricante de tombadores hidráulicos e plataformas de descarga de grãos desde 1979. De 9 a 30 metros, 35 a 100 toneladas.";
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://pili.ind.br";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.pili.ind.br";
 
 /**
  * Domínio definitivo do site.
  *
- * Enquanto a migração não acontece, `pili.ind.br` ainda serve o site antigo em
- * Apache e este projeto vive num domínio provisório do Railway. Comparar os
- * dois é o que permite bloquear a indexação do provisório: sem isso o Google
- * indexa o endereço temporário, que depois da virada vira conteúdo duplicado
- * competindo com o domínio real.
+ * É `www` e não a raiz: o Railway não aceita CNAME em domínio apex, e o A/AAAA
+ * da raiz aponta para a KingHost, que ainda serve o site antigo em Apache. Este
+ * projeto responde em `www.pili.ind.br`, então é esse o endereço que o Google
+ * deve indexar — canonical, hreflang e sitemap saem daqui.
+ *
+ * Comparar `SITE_URL` com isto é o que bloqueia a indexação de qualquer
+ * endereço provisório (o `*.up.railway.app`, por exemplo): sem isso o Google
+ * indexa o temporário, que vira conteúdo duplicado competindo com o real.
+ *
+ * Quando a raiz passar a redirecionar para `www`, nada aqui muda.
  */
-export const DOMINIO_DEFINITIVO = "https://pili.ind.br";
+export const DOMINIO_DEFINITIVO = "https://www.pili.ind.br";
 
 /** Estamos servindo do domínio definitivo? */
 export const EM_DOMINIO_DEFINITIVO = SITE_URL === DOMINIO_DEFINITIVO;
@@ -42,7 +47,10 @@ export const COMPANY = {
  * plataforma que não existe custa credibilidade e gera link quebrado.
  */
 export const ECOSYSTEM = {
-  tech: process.env.PILI_TECH_URL ?? "https://tech.pili.ind.br",
+  // `tech.pili.ind.br` nunca chegou a existir: o subdominio nao resolve e o
+  // link do PILI Tech no header e no rodape apontava para uma pagina de erro.
+  // A plataforma vive em dominio proprio.
+  tech: process.env.PILI_TECH_URL ?? "https://www.pilitech.com.br",
 } as const;
 
 export const SOCIAL = {
