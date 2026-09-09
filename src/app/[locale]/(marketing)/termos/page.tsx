@@ -16,7 +16,6 @@ export async function generateMetadata({
     title: t("title"),
     description: t("metaDesc"),
     path: "/termos",
-    noIndex: true,
   });
 }
 
