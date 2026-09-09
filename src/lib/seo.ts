@@ -109,6 +109,20 @@ export function generateOrganizationJsonLd() {
   };
 }
 
+/**
+ * Nome legivel da categoria para o `Product` do schema.org.
+ *
+ * O campo recebia o enum cru do Prisma ("TOMBADOR_FIXO"), que aparece assim
+ * para o Google e nao significa nada para quem le o resultado da busca.
+ */
+const CATEGORIA_LEGIVEL: Record<string, string> = {
+  TOMBADOR_FIXO: "Tombador hidráulico fixo",
+  TOMBADOR_MOVEL: "Tombador hidráulico móvel",
+  COLETOR_AMOSTRAS: "Coletor de amostras de grãos",
+  UNIDADE_TRANSBORDO: "Unidade de transbordo",
+  ESPECIAL: "Equipamento industrial sob medida",
+};
+
 export function generateProductJsonLd(product: {
   name: string;
   description: string;
@@ -122,7 +136,12 @@ export function generateProductJsonLd(product: {
     "@type": "Product",
     name: product.name,
     description: product.description,
-    image: product.image,
+    // O Google exige URL absoluta aqui. As fotos do CMS chegam como
+    // `/api/media/<id>`, e um caminho relativo faz o rich result de produto
+    // ser recusado -- a pagina indexa, mas perde a miniatura no resultado.
+    image: product.image.startsWith("http")
+      ? product.image
+      : `${SITE_URL}${product.image}`,
     url: `${SITE_URL}/pt-BR/produtos/${product.slug}`,
     brand: {
       "@type": "Brand",
@@ -132,7 +151,7 @@ export function generateProductJsonLd(product: {
       "@type": "Organization",
       name: COMPANY.name,
     },
-    category: product.category,
+    category: CATEGORIA_LEGIVEL[product.category] ?? product.category,
   };
 }
 
