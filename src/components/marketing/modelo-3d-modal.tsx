@@ -350,6 +350,15 @@ export function Modelo3DModal({
               /* noop */
             }
           },
+          // A engine avisa aqui quando nao consegue interpretar o arquivo — por
+          // exemplo um .glb com extensao que o importador nao suporta. Sem
+          // isto, a falha so aparecia como spinner eterno ate o tempo limite.
+          onModelLoadFailed: () => {
+            if (cancelado) return;
+            clearTimeout(tempoLimite);
+            setErro("Nao foi possivel interpretar o modelo 3D.");
+            setCarregando(false);
+          },
         });
         viewerRef.current = viewer;
         viewer.LoadModelFromFileList([arquivo]);
