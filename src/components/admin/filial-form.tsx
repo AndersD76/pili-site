@@ -223,9 +223,12 @@ export function FilialForm({
         </p>
 
         <BuscarCoordenadas
-          endereco={[watch("endereco"), watch("cidade"), watch("uf")]
-            .filter(Boolean)
-            .join(", ")}
+          endereco={{
+            logradouro: watch("endereco"),
+            cidade: watch("cidade"),
+            uf: watch("uf"),
+            cep: watch("cep"),
+          }}
           onEncontrado={({ lat, lng }) => {
             setValue("lat", String(lat), { shouldDirty: true });
             setValue("lng", String(lng), { shouldDirty: true });

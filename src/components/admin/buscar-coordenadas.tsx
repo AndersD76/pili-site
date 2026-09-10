@@ -4,6 +4,13 @@ import { useState } from "react";
 import { Loader2, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+export interface EnderecoBusca {
+  logradouro?: string;
+  cidade?: string;
+  uf?: string;
+  cep?: string;
+}
+
 /**
  * Acha latitude e longitude a partir do endereço já digitado no formulário.
  *
@@ -15,41 +22,66 @@ export function BuscarCoordenadas({
   endereco,
   onEncontrado,
 }: {
-  /** Texto do endereço montado pelo formulário — vazio desabilita o botão. */
-  endereco: string;
+  endereco: EnderecoBusca;
   onEncontrado: (coords: { lat: number; lng: number }) => void;
 }) {
   const [buscando, setBuscando] = useState(false);
   const [mensagem, setMensagem] = useState<string | null>(null);
-  const [erro, setErro] = useState(false);
+  const [tom, setTom] = useState<"ok" | "aviso" | "erro">("ok");
+
+  const preenchido = Boolean(
+    endereco.logradouro?.trim() || endereco.cidade?.trim() || endereco.cep?.trim(),
+  );
 
   async function buscar() {
     setBuscando(true);
     setMensagem(null);
-    setErro(false);
+
+    const params = new URLSearchParams();
+    for (const [chave, valor] of Object.entries(endereco)) {
+      if (valor?.trim()) params.set(chave, valor.trim());
+    }
+
     try {
-      const resposta = await fetch(
-        `/api/admin/geocodificar?q=${encodeURIComponent(endereco)}`,
-      );
+      const resposta = await fetch(`/api/admin/geocodificar?${params}`);
       const dados = await resposta.json();
 
       if (!resposta.ok) {
-        setErro(true);
+        setTom("erro");
         setMensagem(dados.error ?? "Não foi possível buscar o endereço.");
         return;
       }
 
       onEncontrado({ lat: dados.lat, lng: dados.lng });
-      setMensagem(`Ponto encontrado: ${dados.endereco}`);
+
+      if (dados.precisao === "aproximada") {
+        setTom("aviso");
+        setMensagem(
+          `Não achei a rua. Marquei o centro de ${dados.endereco.split(",")[0]} — arraste a coordenada se precisar de precisão.`,
+        );
+        return;
+      }
+
+      setTom("ok");
+      setMensagem(
+        dados.corrigido
+          ? `Pelo CEP, a rua é "${dados.corrigido}". Ponto marcado em ${dados.endereco}.`
+          : `Ponto encontrado: ${dados.endereco}`,
+      );
     } catch {
-      setErro(true);
+      setTom("erro");
       setMensagem("Falha de conexão ao buscar o endereço.");
     } finally {
       setBuscando(false);
     }
   }
 
-  const vazio = endereco.trim().length < 5;
+  const cor =
+    tom === "erro"
+      ? "text-pili-danger"
+      : tom === "aviso"
+        ? "text-pili-warning"
+        : "text-pili-success";
 
   return (
     <div className="space-y-2">
@@ -57,7 +89,7 @@ export function BuscarCoordenadas({
         type="button"
         variant="outline"
         onClick={buscar}
-        disabled={buscando || vazio}
+        disabled={buscando || !preenchido}
       >
         {buscando ? (
           <Loader2 className="mr-2 size-4 animate-spin" />
@@ -67,19 +99,18 @@ export function BuscarCoordenadas({
         Achar no mapa pelo endereço
       </Button>
 
-      {vazio ? (
+      {!preenchido ? (
         <p className="text-xs text-pili-concrete">
-          Preencha o endereço acima para o mapa localizar o ponto sozinho.
+          Preencha o endereço ou o CEP acima para o mapa localizar o ponto.
         </p>
-      ) : null}
+      ) : (
+        <p className="text-xs text-pili-concrete">
+          Com o CEP preenchido a busca fica mais certeira: ele corrige o nome da
+          rua pelos Correios antes de procurar no mapa.
+        </p>
+      )}
 
-      {mensagem ? (
-        <p
-          className={`text-xs ${erro ? "text-pili-danger" : "text-pili-success"}`}
-        >
-          {mensagem}
-        </p>
-      ) : null}
+      {mensagem ? <p className={`text-xs ${cor}`}>{mensagem}</p> : null}
     </div>
   );
 }

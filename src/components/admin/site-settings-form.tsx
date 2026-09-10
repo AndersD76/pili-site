@@ -132,7 +132,7 @@ export function SiteSettingsForm({ initial }: { initial: SiteSettingsInput }) {
               esconder o mapa.
             </p>
             <BuscarCoordenadas
-              endereco={watch("endereco") ?? ""}
+              endereco={{ logradouro: watch("endereco") ?? "" }}
               onEncontrado={({ lat, lng }) => {
                 setValue("mapaLat", String(lat), { shouldDirty: true });
                 setValue("mapaLng", String(lng), { shouldDirty: true });
