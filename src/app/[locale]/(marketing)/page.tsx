@@ -21,6 +21,7 @@ import {
   type InfoCard3D,
 } from "@/components/marketing/modelo-3d-modal";
 import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
+import { MascotePili } from "@/components/shared/mascote-pili";
 import {
   ArrowRight,
   Calculator,
@@ -382,19 +383,16 @@ export default async function HomePage({
           {/* O mascote apresenta o equipamento: convida antes de o visitante
               descobrir sozinho que o bloco abaixo é interativo. */}
           <AnimateOnScroll className="flex justify-center lg:justify-start">
-            <div className="relative">
-              <p className="mascote-balao absolute -top-4 left-1/2 z-10 w-max max-w-[15rem] -translate-x-1/2 rounded-xl bg-pili-white px-4 py-2.5 text-sm font-semibold text-pili-black shadow-lg lg:left-auto lg:right-0 lg:translate-x-8">
-                Quer ver o tombador por dentro?
-                <span className="absolute -bottom-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 bg-pili-white lg:left-6 lg:translate-x-0" />
-              </p>
-              <Image
-                src="/images/mascote-pili.webp"
-                alt="Mascote da PILI Industrial"
-                width={280}
-                height={292}
-                className="mascote-flutua mt-10 w-[190px] lg:w-[280px]"
-              />
-            </div>
+            <MascotePili
+              largura={280}
+              className="w-[220px] lg:w-[280px]"
+              frases={[
+                "Quer ver o tombador por dentro?",
+                "Gire, aproxime e olhe de perto.",
+                "São 30 metros e 100 toneladas. Vem ver.",
+                "Cada detalhe saiu da nossa fábrica em Erechim.",
+              ]}
+            />
           </AnimateOnScroll>
 
           <AnimateOnScroll className="text-center lg:text-left">

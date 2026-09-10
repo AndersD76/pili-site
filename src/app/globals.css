@@ -309,27 +309,36 @@ main {
   }
 }
 
-@keyframes mascote-balao {
+/**
+ * Giro completo de vez em quando.
+ *
+ * Ele passa a maior parte do ciclo parado: o giro e um respiro a cada 11 s,
+ * nao um carrossel girando sem parar ao lado do texto.
+ */
+@keyframes mascote-gira {
   0%,
+  86%,
   100% {
-    transform: translateY(0);
+    transform: rotateY(0deg);
   }
-  50% {
-    transform: translateY(-4px);
+  93% {
+    transform: rotateY(360deg);
   }
 }
 
-.mascote-flutua {
+.mascote-palco {
   animation: mascote-flutua 4s ease-in-out infinite;
+  perspective: 800px;
 }
 
-.mascote-balao {
-  animation: mascote-balao 4s ease-in-out infinite;
+.mascote-gira {
+  animation: mascote-gira 11s ease-in-out infinite;
+  transform-style: preserve-3d;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mascote-flutua,
-  .mascote-balao {
+  .mascote-palco,
+  .mascote-gira {
     animation: none;
   }
 }

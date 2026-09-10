@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef, type ReactNode } from "react";
-import Image from "next/image";
 import { X, Box } from "lucide-react";
+import { MascotePili } from "@/components/shared/mascote-pili";
 
 /**
  * Visualizador 3D do equipamento — mesma engine do portal (online-3d-viewer).
@@ -549,19 +549,17 @@ export function Modelo3DModal({
 
                 {/* O mascote fica orientando até a primeira interação. */}
                 {dica && !carregando && !erro && (
-                  <div className="pointer-events-none absolute bottom-4 left-4 flex items-end gap-3">
-                    <Image
-                      src="/images/mascote-pili.webp"
-                      alt=""
-                      width={72}
-                      height={75}
-                      className="mascote-flutua w-[56px] sm:w-[72px]"
+                  <div className="pointer-events-none absolute bottom-4 left-4">
+                    <MascotePili
+                      largura={72}
+                      posicao="lado"
+                      frases={[
+                        "Arraste para girar o equipamento.",
+                        "Role o mouse para aproximar.",
+                        "Abriu deitado? Use o botão eixo.",
+                        "Perdeu o enquadramento? É só encaixar.",
+                      ]}
                     />
-                    <p className="mascote-balao relative mb-3 max-w-[15rem] rounded-xl bg-pili-white px-3.5 py-2.5 text-xs font-semibold leading-snug text-pili-black shadow-lg">
-                      Arraste para girar e role para aproximar. Se ele abrir
-                      deitado, use o botão eixo.
-                      <span className="absolute -left-1.5 bottom-3 h-3 w-3 rotate-45 bg-pili-white" />
-                    </p>
                   </div>
                 )}
 
