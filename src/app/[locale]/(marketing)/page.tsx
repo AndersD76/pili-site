@@ -358,10 +358,9 @@ export default async function HomePage({
               {t("home.videoTitle")}
             </h2>
             <p className="mt-4 text-pili-cement">
-              Mais de {settings.statsEquipamentos} tombadores instalados em{" "}
-              {settings.statsPaises}{" "}
-              países. Assista ao funcionamento dos nossos equipamentos em
-              operações reais.
+              {settings.statsEquipamentos} tombadores instalados em{" "}
+              {settings.statsPaises} países. Assista ao funcionamento dos nossos
+              equipamentos em operações reais.
             </p>
             <a
               href="https://www.youtube.com/channel/UCkjB-kHuDaB9tKHtFcp-S8g"
@@ -377,27 +376,45 @@ export default async function HomePage({
       </section>
 
       {/* ──── 6b. MODELO 3D ──── */}
-      <section className="relative overflow-hidden bg-[#0B0B0C] py-24 px-6 lg:px-8">
+      <section className="relative overflow-hidden bg-[#0B0B0C] px-6 py-24 lg:px-8">
         <div className="absolute inset-0 grid-pattern opacity-10" />
-        <div className="relative mx-auto max-w-4xl text-center">
-          <AnimateOnScroll>
-            <p className="font-mono text-xs uppercase tracking-widest text-pili-red">
-              Experiencia interativa
+        <div className="relative mx-auto grid max-w-5xl items-center gap-12 lg:grid-cols-[minmax(0,300px)_1fr]">
+          {/* O mascote apresenta o equipamento: convida antes de o visitante
+              descobrir sozinho que o bloco abaixo é interativo. */}
+          <AnimateOnScroll className="flex justify-center lg:justify-start">
+            <div className="relative">
+              <p className="absolute -top-4 left-1/2 z-10 w-max max-w-[15rem] -translate-x-1/2 rounded-xl bg-pili-white px-4 py-2.5 text-sm font-semibold text-pili-black shadow-lg lg:left-auto lg:right-0 lg:translate-x-8">
+                Vem comigo: eu abro o tombador por dentro.
+                <span className="absolute -bottom-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 bg-pili-white lg:left-6 lg:translate-x-0" />
+              </p>
+              <Image
+                src="/images/mascote-pili.webp"
+                alt="Mascote da PILI Industrial"
+                width={280}
+                height={292}
+                className="mt-10 w-[190px] lg:w-[280px]"
+              />
+            </div>
+          </AnimateOnScroll>
+
+          <AnimateOnScroll className="text-center lg:text-left">
+            <p className="font-mono text-xs uppercase tracking-widest text-pili-safety">
+              Experiência interativa
             </p>
             <h2 className="mt-4 font-display text-[length:var(--text-h2)] font-black uppercase text-white">
               Explore o equipamento em 3D
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-pili-cement">
-              Visualize o tombador hidraulico em detalhes. Gire, amplie e
-              inspecione cada angulo do equipamento que movimenta
-              mais de {settings.statsEquipamentos} operacoes pelo mundo.
+            <p className="mt-4 max-w-2xl text-pili-cement">
+              Visualize o tombador hidráulico em detalhes. Gire, amplie e
+              inspecione cada ângulo do equipamento que movimenta os grãos de{" "}
+              {settings.statsEquipamentos} operações pelo mundo.
             </p>
             <div className="mt-10">
               <Modelo3DModal
                 src="/models/tombador.glb"
                 bgImage="/images/tombador-pili.jpg"
-                alt="Tombador hidraulico PILI — instalacao completa"
-                titulo="Tombador Hidraulico PILI"
+                alt="Tombador hidráulico PILI — instalação completa"
+                titulo="Tombador Hidráulico PILI"
                 subtitulo="Gire e amplie para explorar cada detalhe do equipamento"
                 cards={cardsDoProduto(produtoModelo3D)}
               />

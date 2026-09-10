@@ -1,4 +1,4 @@
-import { Montserrat, JetBrains_Mono } from "next/font/google";
+import { Archivo, IBM_Plex_Mono } from "next/font/google";
 
 /**
  * Fontes compartilhadas pelos root layouts.
@@ -8,18 +8,20 @@ import { Montserrat, JetBrains_Mono } from "next/font/google";
  * e reutilizadas, senão o Next gera arquivos duplicados.
  */
 
-export const montserrat = Montserrat({
-  variable: "--font-montserrat",
+export const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
+  // 900 cobre o "Archivo Black" do manual; 800/600/400 sao os pesos da
+  // hierarquia de titulos, subtitulos e corpo.
   weight: ["400", "500", "600", "700", "800", "900"],
   display: "swap",
 });
 
-export const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
+export const plexMono = IBM_Plex_Mono({
+  variable: "--font-ibm-plex-mono",
   subsets: ["latin"],
   weight: ["400", "500"],
   display: "swap",
 });
 
-export const fontVariables = `${montserrat.variable} ${jetbrainsMono.variable}`;
+export const fontVariables = `${archivo.variable} ${plexMono.variable}`;

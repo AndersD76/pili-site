@@ -173,8 +173,8 @@ const MODAL_STYLES = `
     100% { opacity: 1; transform: translateY(0) scale(1); }
   }
   @keyframes card-glow {
-    0%, 100% { box-shadow: 0 0 0 rgba(227,30,36,0); }
-    50% { box-shadow: 0 0 16px rgba(227,30,36,0.18); }
+    0%, 100% { box-shadow: 0 0 0 rgba(227,6,19,0); }
+    50% { box-shadow: 0 0 16px rgba(227,6,19,0.18); }
   }
   @keyframes valor-pop {
     0% { opacity: 0; transform: scale(0.5); }
@@ -191,7 +191,7 @@ const MODAL_STYLES = `
     animation: card-in 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
   }
   .info-card--destaque {
-    border-color: rgba(227,30,36,0.35);
+    border-color: rgba(227,6,19,0.35);
     animation: card-in 0.5s cubic-bezier(0.16,1,0.3,1) forwards,
                card-glow 3s ease-in-out 1.5s infinite;
   }
@@ -203,7 +203,7 @@ const MODAL_STYLES = `
     opacity: 0;
     animation: valor-pop 0.4s cubic-bezier(0.16,1,0.3,1) forwards;
   }
-  .info-card__valor--destaque { color: #E31E24; }
+  .info-card__valor--destaque { color: #E30613; }
   .info-card__label {
     font-size: 9px; font-weight: 600;
     text-transform: uppercase;
@@ -222,7 +222,7 @@ const MODAL_STYLES = `
     100% { opacity: 1; transform: scale(1) translateY(0); }
   }
   .mv-titulo { opacity: 0; animation: titulo-slide 0.6s cubic-bezier(0.16,1,0.3,1) 0.2s forwards; }
-  .mv-linha { height: 2px; width: 0; background: #E31E24; animation: linha-grow 0.4s ease 0.4s forwards; }
+  .mv-linha { height: 2px; width: 0; background: #E30613; animation: linha-grow 0.4s ease 0.4s forwards; }
   .mv-sub { opacity: 0; animation: titulo-slide 0.6s cubic-bezier(0.16,1,0.3,1) 0.35s forwards; }
   .mv-dialog { animation: dialog-in 0.4s cubic-bezier(0.16,1,0.3,1) forwards; }
 `;

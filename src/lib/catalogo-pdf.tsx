@@ -25,7 +25,8 @@ import {
   type TextosCatalogo,
 } from "./catalogo-i18n";
 
-const RED = "#E31E24";
+// Vermelho Pili do manual (PANTONE 485 C · RAL 3020).
+const RED = "#E30613";
 const BLACK = "#0A0A0A";
 const GRAPHITE = "#1A1A1A";
 const STEEL = "#2A2A2A";
@@ -41,24 +42,25 @@ const MARGEM = 40;
  * Fontes da marca embarcadas em public/fonts.
  *
  * O @react-pdf so entrega as Helvetica nativas sem registro, e o catalogo
- * precisa sair na mesma tipografia do site: Montserrat no texto e JetBrains
- * Mono nos numeros tecnicos.
+ * precisa sair na tipografia do manual: Archivo no texto e nos titulos, IBM
+ * Plex Mono nos rotulos e numeros tecnicos.
  */
 let fontesRegistradas = false;
 function registrarFontes() {
   if (fontesRegistradas) return;
   const dir = join(process.cwd(), "public", "fonts");
   Font.register({
-    family: "Montserrat",
+    family: "Archivo",
     fonts: [
-      { src: join(dir, "Montserrat-Regular.ttf"), fontWeight: 400 },
-      { src: join(dir, "Montserrat-SemiBold.ttf"), fontWeight: 600 },
-      { src: join(dir, "Montserrat-Bold.ttf"), fontWeight: 700 },
+      { src: join(dir, "Archivo-Regular.ttf"), fontWeight: 400 },
+      { src: join(dir, "Archivo-SemiBold.ttf"), fontWeight: 600 },
+      { src: join(dir, "Archivo-Bold.ttf"), fontWeight: 700 },
+      { src: join(dir, "Archivo-Black.ttf"), fontWeight: 900 },
     ],
   });
   Font.register({
-    family: "JetBrainsMono",
-    fonts: [{ src: join(dir, "JetBrainsMono-Bold.ttf"), fontWeight: 700 }],
+    family: "PlexMono",
+    fonts: [{ src: join(dir, "IBMPlexMono-Bold.ttf"), fontWeight: 700 }],
   });
   // Sem isto o react-pdf hifeniza no meio da palavra ("Especifica-coes").
   Font.registerHyphenationCallback((palavra) => [palavra]);
@@ -66,7 +68,7 @@ function registrarFontes() {
 }
 
 const s = StyleSheet.create({
-  page: { fontFamily: "Montserrat", fontSize: 9, color: BLACK },
+  page: { fontFamily: "Archivo", fontSize: 9, color: BLACK },
 
   barra: {
     height: 30,
@@ -97,7 +99,7 @@ const s = StyleSheet.create({
   },
   faixaNome: {
     fontSize: 21,
-    fontWeight: 700,
+    fontWeight: 900,
     color: WHITE,
     lineHeight: 1.15,
     maxWidth: 350,
@@ -114,7 +116,7 @@ const s = StyleSheet.create({
   },
   stat: { flex: 1, paddingRight: 12 },
   statDivisor: { borderLeftWidth: 1, borderLeftColor: MIST, paddingLeft: 16 },
-  statValor: { fontFamily: "JetBrainsMono", fontSize: 16, fontWeight: 700 },
+  statValor: { fontFamily: "PlexMono", fontSize: 16, fontWeight: 700 },
   statLabel: {
     fontSize: 7,
     fontWeight: 600,
@@ -160,7 +162,7 @@ const s = StyleSheet.create({
   legendaFaixa: { backgroundColor: GRAPHITE, paddingHorizontal: 14, paddingVertical: 11 },
   legendaTopo: { flexDirection: "row", alignItems: "center", marginBottom: 3 },
   legendaNumero: {
-    fontFamily: "JetBrainsMono",
+    fontFamily: "PlexMono",
     fontSize: 8,
     fontWeight: 700,
     color: RED,
@@ -204,11 +206,11 @@ const s = StyleSheet.create({
   capa: { backgroundColor: BLACK },
   capaCorpo: { paddingHorizontal: MARGEM, paddingTop: 74 },
   capaLogo: { width: 148, height: 46, objectFit: "contain", marginBottom: 52 },
-  capaTitulo: { fontSize: 38, fontWeight: 700, color: WHITE, lineHeight: 1.1, maxWidth: 400 },
+  capaTitulo: { fontSize: 38, fontWeight: 900, color: WHITE, lineHeight: 1.1, maxWidth: 400 },
   capaRegua: { width: 64, height: 4, backgroundColor: RED, marginVertical: 22 },
   capaSubtitulo: { fontSize: 12, color: CEMENT, maxWidth: 340, lineHeight: 1.5 },
   capaChamada: {
-    fontFamily: "JetBrainsMono",
+    fontFamily: "PlexMono",
     fontSize: 11,
     fontWeight: 700,
     color: WHITE,
@@ -236,7 +238,7 @@ const s = StyleSheet.create({
   },
   capaRodapeTexto: { fontSize: 8, color: CEMENT, letterSpacing: 1 },
 
-  indiceTitulo: { fontSize: 26, fontWeight: 700, marginBottom: 4 },
+  indiceTitulo: { fontSize: 26, fontWeight: 900, marginBottom: 4 },
   indiceLegenda: { fontSize: 9, color: CONCRETE },
   indiceGrupo: { marginTop: 14 },
   indiceGrupoTitulo: {
@@ -268,13 +270,13 @@ const s = StyleSheet.create({
     maxLines: 1,
     textOverflow: "ellipsis",
   },
-  indicePagina: { fontFamily: "JetBrainsMono", fontSize: 9, fontWeight: 700 },
+  indicePagina: { fontFamily: "PlexMono", fontSize: 9, fontWeight: 700 },
 
   contracapa: { backgroundColor: BLACK },
   contracapaCorpo: { paddingHorizontal: MARGEM, paddingTop: 110 },
   contracapaTitulo: {
     fontSize: 28,
-    fontWeight: 700,
+    fontWeight: 900,
     color: WHITE,
     maxWidth: 380,
     lineHeight: 1.15,
