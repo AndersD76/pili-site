@@ -1,6 +1,6 @@
 export const SITE_NAME = "PILI Industrial";
 export const SITE_DESCRIPTION =
-  "A força em suas mãos. Fabricante de tombadores hidráulicos e plataformas de descarga de grãos desde 1979, com 400 equipamentos entregues.";
+  "A força em suas mãos. Fabricante de tombadores hidráulicos e plataformas de descarregamento de grãos desde 1979, com 400 equipamentos entregues.";
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.pili.ind.br";
 
