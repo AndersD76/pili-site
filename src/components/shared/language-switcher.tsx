@@ -1,21 +1,44 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/routing";
 import { LOCALES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 /**
- * Bandeira e rótulo por idioma.
+ * Bandeiras em SVG, não em emoji.
  *
- * O emoji de bandeira é uma sequência de Regional Indicator Symbols — renderiza
- * nativamente em macOS, iOS, Android e Linux. No Windows o sistema não tem os
- * glifos e cai para as duas letras do país ("BR", "ES"), o que continua legível;
- * por isso o rótulo textual acompanha a bandeira em vez de substituí-la.
+ * O emoji de bandeira é uma sequência de Regional Indicator Symbols e o Windows
+ * não tem os glifos: no lugar da bandeira saíam as duas letras do país, que
+ * ainda apareciam coladas no rótulo ("ES ES"). Desenhadas aqui, as bandeiras
+ * aparecem igual em qualquer sistema.
  */
-const LOCALE_INFO: Record<string, { flag: string; label: string; name: string }> = {
-  "pt-BR": { flag: "🇧🇷", label: "PT", name: "Português" },
-  es: { flag: "🇪🇸", label: "ES", name: "Español" },
+function BandeiraBrasil() {
+  return (
+    <svg viewBox="0 0 28 20" className="h-3.5 w-5" aria-hidden="true">
+      <rect width="28" height="20" rx="2" fill="#009B3A" />
+      <path d="M14 3.2 25.2 10 14 16.8 2.8 10Z" fill="#FEDF00" />
+      <circle cx="14" cy="10" r="4.1" fill="#002776" />
+    </svg>
+  );
+}
+
+function BandeiraEspanha() {
+  return (
+    <svg viewBox="0 0 28 20" className="h-3.5 w-5" aria-hidden="true">
+      <rect width="28" height="20" rx="2" fill="#C60B1E" />
+      <rect y="5" width="28" height="10" fill="#FFC400" />
+    </svg>
+  );
+}
+
+const LOCALE_INFO: Record<
+  string,
+  { bandeira: ReactNode; label: string; name: string }
+> = {
+  "pt-BR": { bandeira: <BandeiraBrasil />, label: "PT", name: "Português" },
+  es: { bandeira: <BandeiraEspanha />, label: "ES", name: "Español" },
 };
 
 export function LanguageSwitcher() {
@@ -50,8 +73,8 @@ export function LanguageSwitcher() {
                 : "text-pili-cement hover:bg-pili-white/5 hover:text-pili-white",
             )}
           >
-            <span aria-hidden="true" className="text-base leading-none">
-              {info.flag}
+            <span className="flex items-center leading-none">
+              {info.bandeira}
             </span>
             <span className="font-mono text-[11px] font-semibold uppercase tracking-wider">
               {info.label}

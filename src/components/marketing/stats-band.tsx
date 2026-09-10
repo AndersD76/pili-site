@@ -12,7 +12,7 @@ interface Stat {
 /**
  * Os valores chegam por prop, vindos de `SiteSettings`.
  *
- * Antes saíam de `STATS`, em constants.ts, e mudar "850+" exigia deploy. Não
+ * Antes saíam de `STATS`, em constants.ts, e mudar o número exigia deploy. Não
  * existe mais fallback para a constante de propósito: dois lugares definindo o
  * mesmo número é como um deles fica para trás.
  */

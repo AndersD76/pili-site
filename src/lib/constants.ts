@@ -66,7 +66,7 @@ export const DEFAULT_LOCALE: Locale = "pt-BR";
 
 export const STATS = {
   years: new Date().getFullYear() - COMPANY.founded,
-  equipment: "850+",
+  equipment: "400",
   countries: 18,
   maxCapacity: "100t",
 } as const;

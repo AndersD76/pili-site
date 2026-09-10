@@ -145,7 +145,7 @@ export function SiteSettingsForm({ initial }: { initial: SiteSettingsInput }) {
             </div>
             <p className="mb-5 text-sm text-pili-concrete">
               A faixa de destaque da home e o selo no topo do hero. Escreva como
-              deve aparecer no site, incluindo sinal e unidade: &ldquo;850+&rdquo;,
+              deve aparecer no site, incluindo sinal e unidade: &ldquo;400&rdquo;,
               &ldquo;100t&rdquo;. Anos de mercado não está aqui porque é
               calculado a partir do ano de fundação — assim ele nunca fica
               desatualizado.
