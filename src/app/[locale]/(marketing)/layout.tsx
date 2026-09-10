@@ -40,7 +40,12 @@ export default async function MarketingLayout({
       <Footer />
       <FloatingWidgets whatsapp={settings.whatsapp} />
       <CookieBanner />
-      <Analytics />
+      <Analytics
+        gaId={process.env.GA_ID ?? process.env.NEXT_PUBLIC_GA_ID}
+        pixelId={
+          process.env.META_PIXEL_ID ?? process.env.NEXT_PUBLIC_META_PIXEL_ID
+        }
+      />
     </>
   );
 }

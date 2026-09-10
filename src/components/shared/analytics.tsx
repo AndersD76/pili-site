@@ -13,14 +13,22 @@ import { useCookieConsent } from "./cookie-banner";
  * O `@vercel/analytics` saiu daqui: o site roda no Railway, então o script
  * `/_vercel/insights/script.js` respondia 404 e sujava o console de todo
  * visitante sem medir nada.
+ *
+ * Os IDs chegam por prop, lidos do ambiente pelo layout no servidor. Assim
+ * trocar a medição é reiniciar o serviço, não rebuildar: variável
+ * `NEXT_PUBLIC_` fica gravada dentro do bundle no momento do build, e mais de
+ * uma configuração já se perdeu nessa pegadinha.
  */
-export function Analytics() {
+export function Analytics({
+  gaId,
+  pixelId,
+}: {
+  gaId?: string;
+  pixelId?: string;
+}) {
   const consent = useCookieConsent();
 
   if (consent !== "accepted") return null;
-
-  const gaId = process.env.NEXT_PUBLIC_GA_ID;
-  const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
   return (
     <>
