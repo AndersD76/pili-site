@@ -1,16 +1,18 @@
 "use client";
 
 import Script from "next/script";
-import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 import { useCookieConsent } from "./cookie-banner";
 
 /**
  * Carrega o rastreamento **somente após consentimento explícito**.
  *
- * Antes o `@vercel/analytics` estava declarado no `package.json` e nunca era
- * montado, e as variáveis de GA/Meta Pixel só apareciam como texto na tela de
+ * Antes as variáveis de GA/Meta Pixel só apareciam como texto na tela de
  * configurações do admin — nenhuma medição existia de fato. O banner de cookies,
  * por sua vez, gravava a escolha no `localStorage` e nada a lia.
+ *
+ * O `@vercel/analytics` saiu daqui: o site roda no Railway, então o script
+ * `/_vercel/insights/script.js` respondia 404 e sujava o console de todo
+ * visitante sem medir nada.
  */
 export function Analytics() {
   const consent = useCookieConsent();
@@ -22,8 +24,6 @@ export function Analytics() {
 
   return (
     <>
-      <VercelAnalytics />
-
       {gaId && (
         <>
           <Script
