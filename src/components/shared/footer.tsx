@@ -151,6 +151,20 @@ export async function Footer() {
                   {settings.email}
                 </a>
               </li>
+              {/* Os dois endereços estão cadastrados no painel; só o de
+                  atendimento aparecia, e quem procura orçamento escrevia para
+                  a caixa errada. */}
+              {settings.emailComercial &&
+              settings.emailComercial !== settings.email ? (
+                <li>
+                  <a
+                    href={`mailto:${settings.emailComercial}`}
+                    className="text-sm text-pili-mist transition-colors hover:text-pili-white"
+                  >
+                    {settings.emailComercial}
+                  </a>
+                </li>
+              ) : null}
               <li>
                 <a
                   href={`tel:${settings.telefone.replace(/\s/g, "")}`}
