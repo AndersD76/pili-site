@@ -212,7 +212,7 @@ export function HeroSlideForm({
         </label>
       </section>
 
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex items-center justify-between gap-3 sticky bottom-0 z-20 -mx-4 mt-2 border-t border-pili-mist bg-pili-paper/95 px-4 py-3 backdrop-blur lg:-mx-6 lg:px-6">
         {id ? (
           <ConfirmDialog
             title="Excluir slide"

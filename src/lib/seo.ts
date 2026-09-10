@@ -50,7 +50,7 @@ export function generatePageMetadata({
         es: `${SITE_URL}/es${path}`,
         // Sem `x-default` o Google escolhe sozinho o que servir a quem não é
         // pt-BR nem es — um comprador em inglês pode cair no espanhol. A PILI
-        // exporta para 18 países, então o português é o destino neutro.
+        // exporta para 3 países, então o português é o destino neutro.
         "x-default": `${SITE_URL}/pt-BR${path}`,
       },
     },

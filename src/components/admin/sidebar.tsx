@@ -99,7 +99,7 @@ function SidebarNav() {
 
 export function Sidebar() {
   return (
-    <aside className="hidden lg:flex lg:w-60 lg:flex-col lg:fixed lg:inset-y-0 bg-pili-graphite">
+    <aside className="hidden lg:flex lg:w-60 lg:flex-col lg:fixed lg:inset-y-0 bg-pili-steel-gray">
       <div className="flex h-16 items-center gap-2 px-6">
         <span className="font-display text-xl font-bold tracking-tight text-pili-safety">
           PILI
@@ -129,7 +129,7 @@ export function MobileSidebar() {
           <span className="sr-only">Abrir menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-60 bg-pili-graphite p-0 border-none">
+      <SheetContent side="left" className="w-60 bg-pili-steel-gray p-0 border-none">
         <SheetHeader className="px-6 pt-4 pb-2">
           <SheetTitle className="flex items-center gap-2">
             <span className="font-display text-xl font-bold tracking-tight text-pili-safety">

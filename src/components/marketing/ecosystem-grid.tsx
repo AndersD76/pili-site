@@ -12,7 +12,8 @@ const BRANDS = [
     name: "PILI Tech",
     href: ECOSYSTEM.tech,
     icon: Cpu,
-    accent: "border-t-cyan-500",
+    // Vinho profundo: a cor de apoio que o manual reserva para o ecossistema.
+    accent: "border-t-pili-wine",
     slug: "tech",
   },
 ] as const;
@@ -64,7 +65,7 @@ export async function EcosystemGrid() {
           {BRANDS.map((brand, index) => (
             <AnimateOnScroll key={brand.name} delay={index * 0.1}>
               <div
-                className={`group flex h-full flex-col border border-pili-iron border-t-2 ${brand.accent} bg-pili-graphite p-6 transition-all duration-300 hover:bg-pili-steel`}
+                className={`group flex h-full flex-col border border-pili-iron border-t-2 ${brand.accent} bg-pili-graphite p-6 transition-all duration-300 hover:bg-pili-wine`}
               >
                 <brand.icon className="h-8 w-8 text-pili-safety" />
                 <h3 className="mt-4 font-display text-lg font-bold uppercase text-pili-white">

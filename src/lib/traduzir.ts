@@ -54,7 +54,7 @@ ciclo → ciclo
 
 const SISTEMA = `Você traduz conteúdo de marketing industrial de português do Brasil para espanhol da América Latina.
 
-A empresa é a PILI Industrial, fabricante de volcadores hidráulicos para descarga de granos, com clientes em 18 países.
+A empresa é a PILI Industrial, fabricante de volcadores hidráulicos para descarga de granos, com clientes em 3 países.
 
 Regras:
 - Espanhol neutro da América Latina, não da Espanha. Use "usted", nunca "vosotros".

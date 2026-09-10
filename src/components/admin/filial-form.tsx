@@ -13,6 +13,7 @@ import {
 } from "@/app/admin/(panel)/filiais/actions";
 import { filialSchema, type FilialInput } from "@/lib/validators/admin";
 import { Button } from "@/components/ui/button";
+import { BuscarCoordenadas } from "@/components/admin/buscar-coordenadas";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
@@ -59,6 +60,8 @@ export function FilialForm({
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors, isDirty },
   } = useForm<FilialInput>({
     resolver: zodResolver(filialSchema),
@@ -219,7 +222,17 @@ export function FilialForm({
           aparece no rodapé como endereço, mas não recebe marcador no mapa.
         </p>
 
-        <div className="grid gap-4 sm:grid-cols-3">
+        <BuscarCoordenadas
+          endereco={[watch("endereco"), watch("cidade"), watch("uf")]
+            .filter(Boolean)
+            .join(", ")}
+          onEncontrado={({ lat, lng }) => {
+            setValue("lat", String(lat), { shouldDirty: true });
+            setValue("lng", String(lng), { shouldDirty: true });
+          }}
+        />
+
+        <div className="mt-4 grid gap-4 sm:grid-cols-3">
           <div className="space-y-1.5">
             <Label htmlFor="lat">Latitude</Label>
             <Input id="lat" placeholder="-19.9167" {...register("lat")} />
@@ -255,7 +268,7 @@ export function FilialForm({
         </label>
       </section>
 
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex items-center justify-between gap-3 sticky bottom-0 z-20 -mx-4 mt-2 border-t border-pili-mist bg-pili-paper/95 px-4 py-3 backdrop-blur lg:-mx-6 lg:px-6">
         {id ? (
           <ConfirmDialog
             title="Excluir unidade"

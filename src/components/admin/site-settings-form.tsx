@@ -18,6 +18,7 @@ import {
   type SiteSettingsInput,
 } from "@/lib/validators/admin";
 import { Button } from "@/components/ui/button";
+import { BuscarCoordenadas } from "@/components/admin/buscar-coordenadas";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -33,6 +34,8 @@ export function SiteSettingsForm({ initial }: { initial: SiteSettingsInput }) {
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors, isDirty },
   } = useForm<SiteSettingsInput>({
     resolver: zodResolver(siteSettingsSchema),
@@ -128,7 +131,14 @@ export function SiteSettingsForm({ initial }: { initial: SiteSettingsInput }) {
               e escolha &ldquo;Mostrar endereço&rdquo;. Deixe em branco para
               esconder o mapa.
             </p>
-            <div className="grid gap-4 sm:grid-cols-3">
+            <BuscarCoordenadas
+              endereco={watch("endereco") ?? ""}
+              onEncontrado={({ lat, lng }) => {
+                setValue("mapaLat", String(lat), { shouldDirty: true });
+                setValue("mapaLng", String(lng), { shouldDirty: true });
+              }}
+            />
+            <div className="mt-4 grid gap-4 sm:grid-cols-3">
               <Campo id="mapaLat" label="Latitude" register={register} error={errors.mapaLat?.message} />
               <Campo id="mapaLng" label="Longitude" register={register} error={errors.mapaLng?.message} />
               <Campo id="mapaZoom" label="Zoom (1-19)" type="number" register={register} error={errors.mapaZoom?.message} />
@@ -175,7 +185,7 @@ export function SiteSettingsForm({ initial }: { initial: SiteSettingsInput }) {
         </div>
       </div>
 
-      <div className="flex items-center justify-end gap-3">
+      <div className="flex items-center justify-end gap-3 sticky bottom-0 z-20 -mx-4 mt-2 border-t border-pili-mist bg-pili-paper/95 px-4 py-3 backdrop-blur lg:-mx-6 lg:px-6">
         {isDirty && !isPending && (
           <span className="text-sm text-pili-concrete">
             Há alterações não salvas

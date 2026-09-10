@@ -987,7 +987,7 @@ const BLOG_DATA: BlogSeed[] = [
           "A PILI começou como metalurgia industrial no interior do Rio Grande do Sul e só fabricou seu primeiro tombador onze anos depois. A linha do tempo entre uma coisa e outra.",
         metaTitle: "47 anos da PILI: de 1979 a 2026, fabricando em Erechim",
         metaDesc:
-          "Fundada em 1979 em Erechim/RS, a PILI Industrial soma 400 equipamentos em 18 países. Conheça a trajetória da fábrica de tombadores hidráulicos.",
+          "Fundada em 1979 em Erechim/RS, a PILI Industrial soma 400 equipamentos em 3 países. Conheça a trajetória da fábrica de tombadores hidráulicos.",
         content: `O logo aparece pintado na lateral das vigas, sempre no mesmo amarelo. É uma das últimas etapas antes de o equipamento sair de Erechim — e a primeira coisa que alguém vê quando ele chega ao pátio do cliente, do outro lado do país ou do continente.
 
 A PILI foi fundada em 1979, em Erechim, no norte do Rio Grande do Sul. Não nasceu fabricando tombadores. O começo foi metalurgia industrial e equipamentos sob medida para o setor agroindustrial da região: o tipo de oficina que resolve o problema que o cliente traz, em vez de vender o produto que já está pronto.
@@ -996,7 +996,7 @@ O primeiro tombador hidráulico da casa só saiu em 1990. Onze anos depois da fu
 
 Em 2010 veio a marca de 300 equipamentos instalados no Brasil. Em 2017, a base operacional em Paranaguá, no Paraná, junto ao maior complexo portuário de exportação de grãos da América Latina. Estar perto de onde o produto embarca encurta o tempo de resposta quando alguma coisa para.
 
-Hoje são 400 equipamentos em operação, em 18 países, em plataformas que vão de 9 a 30 metros e de 35 a 100 toneladas.
+Hoje são 400 equipamentos em operação, em 3 países, em plataformas que vão de 9 a 30 metros e de 35 a 100 toneladas.
 
 Quarenta e sete anos é tempo suficiente para que um equipamento vendido no começo ainda esteja trabalhando. Talvez esse seja o indicador mais honesto de uma fábrica de bens de capital: não quantos vendeu no ano passado, e sim quantos dos que vendeu há vinte anos continuam de pé.`,
       },
@@ -1006,7 +1006,7 @@ Quarenta e sete anos é tempo suficiente para que um equipamento vendido no come
           "PILI empezó como metalurgia industrial en el interior de Rio Grande do Sul y recién fabricó su primer volcador once años después. La línea de tiempo entre una cosa y otra.",
         metaTitle: "47 años de PILI: de 1979 a 2026, fabricando en Erechim",
         metaDesc:
-          "Fundada en 1979 en Erechim/RS, PILI Industrial suma 400 equipos en 18 países. Conozca la trayectoria de la fábrica de volcadores hidráulicos.",
+          "Fundada en 1979 en Erechim/RS, PILI Industrial suma 400 equipos en 3 países. Conozca la trayectoria de la fábrica de volcadores hidráulicos.",
         content: `El logo aparece pintado en el lateral de las vigas, siempre en el mismo amarillo. Es una de las últimas etapas antes de que el equipo salga de Erechim, y lo primero que alguien ve cuando llega al patio del cliente, del otro lado del país o del continente.
 
 PILI fue fundada en 1979, en Erechim, al norte de Rio Grande do Sul. No nació fabricando volcadores. El comienzo fue metalurgia industrial y equipos a medida para el sector agroindustrial de la región: el tipo de taller que resuelve el problema que trae el cliente, en lugar de vender el producto que ya está hecho.
@@ -1015,7 +1015,7 @@ El primer volcador hidráulico de la casa recién salió en 1990. Once años des
 
 En 2010 llegó la marca de 300 equipos instalados en Brasil. En 2017, la base operativa en Paranaguá, en Paraná, junto al mayor complejo portuario de exportación de granos de América Latina. Estar cerca de donde embarca el producto acorta el tiempo de respuesta cuando algo se detiene.
 
-Hoy son 400 equipos en operación, en 18 países, en plataformas que van de 9 a 30 metros y de 35 a 100 toneladas.
+Hoy son 400 equipos en operación, en 3 países, en plataformas que van de 9 a 30 metros y de 35 a 100 toneladas.
 
 Cuarenta y siete años es tiempo suficiente para que un equipo vendido al comienzo siga trabajando. Quizás ese sea el indicador más honesto de una fábrica de bienes de capital: no cuántos vendió el año pasado, sino cuántos de los que vendió hace veinte años siguen en pie.`,
       },
