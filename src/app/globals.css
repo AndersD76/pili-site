@@ -292,3 +292,44 @@ main {
     opacity: 1;
   }
 }
+
+/**
+ * Mascote flutuando.
+ *
+ * Parado ao lado do texto ele parecia um adesivo colado na página. A flutuação
+ * é curta e lenta: chama o olho para o botão do 3D sem virar distração.
+ */
+@keyframes mascote-flutua {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1deg);
+  }
+}
+
+@keyframes mascote-balao {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.mascote-flutua {
+  animation: mascote-flutua 4s ease-in-out infinite;
+}
+
+.mascote-balao {
+  animation: mascote-balao 4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mascote-flutua,
+  .mascote-balao {
+    animation: none;
+  }
+}

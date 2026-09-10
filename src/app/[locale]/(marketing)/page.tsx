@@ -383,8 +383,8 @@ export default async function HomePage({
               descobrir sozinho que o bloco abaixo é interativo. */}
           <AnimateOnScroll className="flex justify-center lg:justify-start">
             <div className="relative">
-              <p className="absolute -top-4 left-1/2 z-10 w-max max-w-[15rem] -translate-x-1/2 rounded-xl bg-pili-white px-4 py-2.5 text-sm font-semibold text-pili-black shadow-lg lg:left-auto lg:right-0 lg:translate-x-8">
-                Vem comigo: eu abro o tombador por dentro.
+              <p className="mascote-balao absolute -top-4 left-1/2 z-10 w-max max-w-[15rem] -translate-x-1/2 rounded-xl bg-pili-white px-4 py-2.5 text-sm font-semibold text-pili-black shadow-lg lg:left-auto lg:right-0 lg:translate-x-8">
+                Quer ver o tombador por dentro?
                 <span className="absolute -bottom-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 bg-pili-white lg:left-6 lg:translate-x-0" />
               </p>
               <Image
@@ -392,7 +392,7 @@ export default async function HomePage({
                 alt="Mascote da PILI Industrial"
                 width={280}
                 height={292}
-                className="mt-10 w-[190px] lg:w-[280px]"
+                className="mascote-flutua mt-10 w-[190px] lg:w-[280px]"
               />
             </div>
           </AnimateOnScroll>
