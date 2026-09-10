@@ -49,6 +49,39 @@
   --color-background: var(--pili-white);
   --color-foreground: var(--pili-black);
 
+  /**
+   * Tokens dos componentes shadcn, mapeados para a paleta PILI.
+   *
+   * Os componentes em components/ui usam `bg-destructive`, `text-muted-foreground`,
+   * `bg-accent` e companhia, mas nenhum desses nomes existia no tema: a classe
+   * nao gerava cor alguma. O botao de excluir do painel, por exemplo, saia
+   * branco sobre fundo branco — invisivel, embora clicavel.
+   *
+   * O site tem um tema so (industrial claro), entao aqui nao ha variante escura.
+   */
+  --color-card: var(--pili-white);
+  --color-card-foreground: var(--pili-black);
+  --color-popover: var(--pili-white);
+  --color-popover-foreground: var(--pili-black);
+
+  --color-primary: var(--pili-black);
+  --color-primary-foreground: var(--pili-white);
+  --color-secondary: var(--pili-paper);
+  --color-secondary-foreground: var(--pili-black);
+
+  --color-muted: var(--pili-paper);
+  --color-muted-foreground: var(--pili-concrete);
+  --color-accent: var(--pili-paper);
+  --color-accent-foreground: var(--pili-black);
+
+  /* Vermelho de alerta, distinto do vermelho da marca. */
+  --color-destructive: var(--pili-danger);
+  --color-destructive-foreground: var(--pili-white);
+
+  --color-border: var(--pili-mist);
+  --color-input: var(--pili-mist);
+  --color-ring: var(--pili-safety);
+
   --color-pili-black: var(--pili-black);
   --color-pili-graphite: var(--pili-graphite);
   --color-pili-steel: var(--pili-steel);
