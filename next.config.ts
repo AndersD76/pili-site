@@ -53,6 +53,16 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      /**
+       * A raiz responde antes do middleware de idioma.
+       *
+       * O middleware do next-intl mandava um 307 de corpo vazio para /pt-BR, e
+       * quem colava "pili.ind.br" no WhatsApp nao via card nenhum: o robo de
+       * pre-visualizacao lia a resposta vazia do redirecionamento, sem as tags
+       * Open Graph, e desistia. Um 308 permanente e seguido com mais confianca
+       * pelos robos e ainda encurta a cadeia apex -> www -> idioma.
+       */
+      { source: "/", destination: "/pt-BR", permanent: true },
       // VK2 legacy redirects (add mappings as discovered)
     ];
   },
