@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { X, Send, ExternalLink } from "lucide-react";
 import Image from "next/image";
+import { useRodapeVisivel } from "./use-rodape-visivel";
 
 /**
  * Avatar da assistente. O `GiorgiaMark` continua no projeto como marca
@@ -47,6 +48,7 @@ export function Giorgia({ whatsapp }: { whatsapp: string }) {
   const router = useRouter();
   const t = useTranslations("giorgia");
   const [open, setOpen] = useState(false);
+  const rodapeVisivel = useRodapeVisivel();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [typingIndex, setTypingIndex] = useState(0);
   const [showActions, setShowActions] = useState(false);
@@ -157,7 +159,11 @@ export function Giorgia({ whatsapp }: { whatsapp: string }) {
           onClick={handleOpen}
           onMouseEnter={() => setShowTooltip(true)}
           onMouseLeave={() => setShowTooltip(false)}
-          className="fixed bottom-(--fab-bottom) right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-pili-graphite text-pili-white shadow-lg transition-all hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pili-safety focus-visible:ring-offset-2"
+          className={`fixed bottom-(--fab-bottom) right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-pili-graphite text-pili-white shadow-lg transition-all hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pili-safety focus-visible:ring-offset-2 ${
+            rodapeVisivel
+              ? "pointer-events-none translate-y-4 opacity-0"
+              : "opacity-100"
+          }`}
           aria-label={t("open")}
         >
           <span className="absolute inset-0 animate-[robo-ping_2.5s_ease-in-out_infinite] rounded-full bg-pili-safety opacity-40" />

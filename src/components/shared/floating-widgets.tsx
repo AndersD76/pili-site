@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { useCookieConsent } from "./cookie-banner";
 import { WhatsAppIcon } from "./brand-icons";
 import { Giorgia } from "./giorgia";
+import { useRodapeVisivel } from "./use-rodape-visivel";
 
 /**
  * Botões flutuantes do canto inferior.
@@ -17,6 +18,7 @@ import { Giorgia } from "./giorgia";
 export function FloatingWidgets({ whatsapp }: { whatsapp: string }) {
   const t = useTranslations("floating");
   const consent = useCookieConsent();
+  const rodapeVisivel = useRodapeVisivel();
 
   const url = `https://wa.me/${whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(
     t("whatsappMessage"),
@@ -37,7 +39,11 @@ export function FloatingWidgets({ whatsapp }: { whatsapp: string }) {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-(--fab-bottom) left-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_4px_16px_rgba(37,211,102,0.4)] transition-all hover:scale-110 hover:shadow-[0_6px_24px_rgba(37,211,102,0.5)]"
+        className={`fixed bottom-(--fab-bottom) left-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_4px_16px_rgba(37,211,102,0.4)] transition-all hover:scale-110 hover:shadow-[0_6px_24px_rgba(37,211,102,0.5)] ${
+          rodapeVisivel
+            ? "pointer-events-none translate-y-4 opacity-0"
+            : "opacity-100"
+        }`}
         aria-label={t("whatsappLabel")}
       >
         <WhatsAppIcon className="h-7 w-7" />
