@@ -17,6 +17,22 @@ import { X, Box } from "lucide-react";
 const SCRIPT_SRC = "/vendor/o3dv-0.18.0.min.js";
 
 /**
+ * Mapa de ambiente do visualizador (gerado por scripts/gerar-envmap.mjs).
+ *
+ * Em material PBR a engine zera a luz ambiente e ilumina pelo
+ * `scene.environment`. Sem estas seis faces o tombador sai quase preto.
+ * A ordem é a que a biblioteca espera: posx, negx, posy, negy, posz, negz.
+ */
+const ENVMAP = [
+  "/models/envmap/posx.jpg",
+  "/models/envmap/negx.jpg",
+  "/models/envmap/posy.jpg",
+  "/models/envmap/negy.jpg",
+  "/models/envmap/posz.jpg",
+  "/models/envmap/negz.jpg",
+];
+
+/**
  * O .glb tem ~6 MB e a engine ainda precisa interpretar a malha depois de
  * baixar. 45 s cobre 3G ruim com folga; passou disso, algo quebrou.
  */
@@ -328,6 +344,8 @@ export function Modelo3DModal({
         viewer = new OV.EmbeddedViewer(containerRef.current, {
           backgroundColor: new OV.RGBAColor(11, 11, 12, 255),
           defaultColor: new OV.RGBColor(212, 212, 212),
+          // false: o mapa ilumina o modelo, mas o fundo continua o preto do modal.
+          environmentSettings: new OV.EnvironmentSettings(ENVMAP, false),
           onModelLoaded: () => {
             if (cancelado) return;
             clearTimeout(tempoLimite);
