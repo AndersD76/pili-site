@@ -35,6 +35,12 @@ export interface EcosystemProject {
   tagline: string;
   description: string;
   color: string;
+  /**
+   * Captura da interface, por idioma. O arquivo vive em
+   * public/images/ecossistema/; enquanto nao existir, a pagina mostra o
+   * quadro vazio com o nome da plataforma.
+   */
+  screenshot?: Record<string, string>;
   features: EcosystemFeature[];
   stats: EcosystemStat[];
   url: string;
@@ -51,7 +57,12 @@ export const ECOSYSTEM_PROJECTS: EcosystemProject[] = [
     tagline: "Plataforma IoT de gestão de pátio industrial",
     description:
       "Plataforma SaaS de monitoramento e gestão de pátio industrial com sensores IoT, protocolo MQTT e dashboards em tempo real. Controle de filas de caminhões, tempos de descarga, performance de equipamentos e indicadores operacionais. Dados transmitidos por 4G e processados em nuvem, com alertas inteligentes e relatórios automáticos para gestores e equipes de campo.",
-    color: "pili-info",
+    // Vinho profundo: a cor de apoio que o manual reserva ao ecossistema.
+    color: "pili-wine",
+    screenshot: {
+      "pt-BR": "/images/ecossistema/tech-pt-BR.webp",
+      es: "/images/ecossistema/tech-es.webp",
+    },
     features: [
       {
         title: "Dashboard em tempo real",

@@ -1,4 +1,7 @@
 import { notFound } from "next/navigation";
+import Image from "next/image";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import {
@@ -80,6 +83,17 @@ const COLOR_MAP: Record<string, ColorConfig> = {
     border: "border-pili-info",
     bgLight: "bg-pili-info/10",
   },
+  /**
+   * O vinho e escuro demais para texto sobre preto (contraste ~1,5:1), entao
+   * ele fica nas superficies e o vermelho da marca assume o que precisa ser
+   * lido. O manual trata o vinho justamente como sombra do vermelho.
+   */
+  "pili-wine": {
+    bg: "bg-pili-wine",
+    text: "text-pili-safety",
+    border: "border-pili-wine",
+    bgLight: "bg-pili-wine/40",
+  },
   "pili-success": {
     bg: "bg-pili-success",
     text: "text-pili-success",
@@ -93,6 +107,21 @@ const COLOR_MAP: Record<string, ColorConfig> = {
     bgLight: "bg-purple-600/10",
   },
 };
+
+/**
+ * Caminho da captura da plataforma no idioma pedido.
+ *
+ * Enquanto o arquivo nao existir em public/, a pagina segue mostrando o quadro
+ * com o nome da plataforma — melhor do que uma imagem quebrada.
+ */
+function capturaDaPlataforma(
+  screenshot: Record<string, string> | undefined,
+  locale: string,
+): string | null {
+  const caminho = screenshot?.[locale] ?? screenshot?.["pt-BR"];
+  if (!caminho) return null;
+  return existsSync(join(process.cwd(), "public", caminho)) ? caminho : null;
+}
 
 export function generateStaticParams() {
   return ECOSYSTEM_PROJECTS.map((p) => ({ projeto: p.slug }));
@@ -127,6 +156,7 @@ export default async function EcosystemProjectPage({
   if (!project) notFound();
 
   const colors = COLOR_MAP[project.color] ?? DEFAULT_COLORS;
+  const captura = capturaDaPlataforma(project.screenshot, locale);
 
   const breadcrumbJsonLd = generateBreadcrumbJsonLd([
     { name: "Ecossistema", url: "/pt-BR/ecossistema" },
@@ -205,22 +235,32 @@ export default async function EcosystemProjectPage({
             </AnimateOnScroll>
           </div>
 
-          {/* Screenshot placeholder */}
+          {/* Captura da plataforma — ou o quadro vazio, se ainda nao houver. */}
           <AnimateOnScroll delay={0.2} direction="right">
             <div className="relative mt-12 lg:mt-0">
               <div
-                className={`aspect-[16/10] w-full border ${colors.border} bg-pili-graphite`}
+                className={`relative aspect-[16/10] w-full overflow-hidden border ${colors.border} bg-pili-graphite`}
               >
-                <div className="flex h-full w-full flex-col items-center justify-center gap-4 p-8">
-                  <div
-                    className={`flex h-16 w-16 items-center justify-center ${colors.bgLight}`}
-                  >
-                    <Monitor className={`h-8 w-8 ${colors.text}`} />
+                {captura ? (
+                  <Image
+                    src={captura}
+                    alt={`${project.name} — interface da plataforma`}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full w-full flex-col items-center justify-center gap-4 p-8">
+                    <div
+                      className={`flex h-16 w-16 items-center justify-center ${colors.bgLight}`}
+                    >
+                      <Monitor className={`h-8 w-8 ${colors.text}`} />
+                    </div>
+                    <span className="font-mono text-xs uppercase tracking-wider text-pili-cement">
+                      {project.name} — Interface da plataforma
+                    </span>
                   </div>
-                  <span className="font-mono text-xs uppercase tracking-wider text-pili-cement">
-                    {project.name} — Interface da plataforma
-                  </span>
-                </div>
+                )}
               </div>
             </div>
           </AnimateOnScroll>
