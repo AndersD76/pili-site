@@ -1,7 +1,8 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { db } from "@/lib/db";
+import { TAG_TOMBADORES } from "@/lib/mercado-graos/logistica";
 import { requireAdmin } from "@/lib/auth-guard";
 
 /** Teto de segurança nas listagens do painel. */
@@ -233,6 +234,7 @@ export async function createProduct(data: FormData) {
     await salvarFaqs(product.id, parsed.data.faqs);
     await salvarTraducaoEs(product.id, parsed.data);
 
+    updateTag(TAG_TOMBADORES);
     revalidatePath("/admin/produtos");
     revalidatePath("/[locale]/(marketing)/produtos", "page");
     revalidatePath("/[locale]/(marketing)/produtos/[slug]", "page");
@@ -308,6 +310,7 @@ export async function updateProduct(id: string, data: FormData) {
     await salvarFaqs(id, parsed.data.faqs);
     await salvarTraducaoEs(id, parsed.data);
 
+    updateTag(TAG_TOMBADORES);
     revalidatePath("/admin/produtos");
     revalidatePath("/[locale]/(marketing)/produtos", "page");
     revalidatePath("/[locale]/(marketing)/produtos/[slug]", "page");
@@ -328,6 +331,7 @@ export async function deleteProduct(id: string) {
 
   try {
     await db.product.delete({ where: { id } });
+    updateTag(TAG_TOMBADORES);
     revalidatePath("/admin/produtos");
     revalidatePath("/[locale]/(marketing)/produtos", "page");
     revalidatePath("/[locale]/(marketing)/produtos/[slug]", "page");
@@ -354,6 +358,7 @@ export async function toggleProductFeatured(id: string) {
       data: { featured: !product.featured },
     });
 
+    updateTag(TAG_TOMBADORES);
     revalidatePath("/admin/produtos");
     revalidatePath("/[locale]/(marketing)/produtos", "page");
     revalidatePath("/[locale]/(marketing)/produtos/[slug]", "page");

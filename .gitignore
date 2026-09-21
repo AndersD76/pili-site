@@ -52,3 +52,7 @@ scripts/clientes-sem-email.csv
 /public/images/engenharia/
 /public/images/história/
 /public/images/pessoas/
+
+# Saidas locais do SEO programatico: relatorio do gate (regenerado por
+# `pnpm seo:atualizar`) e registro das URLs ja enviadas ao IndexNow.
+/data/seo/

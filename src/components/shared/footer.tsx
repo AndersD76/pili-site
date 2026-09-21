@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { getSiteSettings, redesSociais } from "@/lib/site-settings";
 import { getFiliais, pontosDoMapa } from "@/lib/filiais";
@@ -31,6 +31,7 @@ const COMPANY_LINKS = [
 
 export async function Footer() {
   const t = await getTranslations("footer");
+  const locale = await getLocale();
   const [settings, filiais] = await Promise.all([
     getSiteSettings(),
     getFiliais(),
@@ -135,6 +136,36 @@ export async function Footer() {
                 </Link>
               </li>
             </ul>
+
+            {/* As páginas de mercado de grãos existem só em pt-BR (dados do
+                Brasil). O rodapé é a porta de entrada delas em todas as
+                páginas do site — sem este link, os hubs ficariam órfãos. */}
+            {locale === "pt-BR" && (
+              <>
+                <h3 className="mt-8 text-xs font-semibold uppercase tracking-widest text-pili-cement">
+                  Mercado de grãos
+                </h3>
+                <ul className="mt-4 flex flex-col gap-2.5">
+                  {[
+                    { label: "Armazenagem no Brasil", href: "/armazenagem" },
+                    { label: "Produção de soja", href: "/producao/soja" },
+                    { label: "Produção de milho", href: "/producao/milho" },
+                    { label: "Empresas armazenadoras", href: "/armazenadores" },
+                    { label: "Unidade de recebimento", href: "/unidade-de-recebimento" },
+                    { label: "Tombador por veículo", href: "/tombador-para" },
+                  ].map((item) => (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        className="text-sm text-pili-mist transition-colors hover:text-pili-white"
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
           </div>
 
           {/* Col 5 — Contact */}

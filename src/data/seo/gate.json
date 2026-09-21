@@ -1,0 +1,6 @@
+{
+  "municipio": { "producaoMinimaT": 10000 },
+  "municipioCultura": { "producaoMinimaT": 10000 },
+  "ufCultura": { "producaoMinimaT": 50000 },
+  "empresa": { "unidadesMinimas": 3, "municipiosMinimos": 2 }
+}

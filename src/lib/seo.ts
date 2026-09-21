@@ -24,6 +24,12 @@ interface PageSeoParams {
   image?: string;
   locale?: string;
   noIndex?: boolean;
+  /**
+   * Idiomas em que a página existe. Padrão: os dois. As páginas de mercado de
+   * grãos são só em pt-BR — anunciar uma versão em espanhol inexistente pelo
+   * hreflang mandaria o Google rastrear um 404.
+   */
+  idiomas?: ("pt-BR" | "es")[];
 }
 
 export function generatePageMetadata({
@@ -33,6 +39,7 @@ export function generatePageMetadata({
   image = DEFAULT_OG_IMAGE,
   locale = "pt-BR",
   noIndex = false,
+  idiomas = ["pt-BR", "es"],
 }: PageSeoParams): Metadata {
   const url = `${SITE_URL}/${locale}${path}`;
   const fullTitle = `${title} | ${SITE_NAME}`;
@@ -46,8 +53,9 @@ export function generatePageMetadata({
     alternates: {
       canonical: url,
       languages: {
-        "pt-BR": `${SITE_URL}/pt-BR${path}`,
-        es: `${SITE_URL}/es${path}`,
+        ...Object.fromEntries(
+          idiomas.map((idioma) => [idioma, `${SITE_URL}/${idioma}${path}`]),
+        ),
         // Sem `x-default` o Google escolhe sozinho o que servir a quem não é
         // pt-BR nem es — um comprador em inglês pode cair no espanhol. A PILI
         // exporta para 3 países, então o português é o destino neutro.
@@ -209,6 +217,44 @@ export function generateBreadcrumbJsonLd(
       name: item.name,
       item: `${SITE_URL}${item.url}`,
     })),
+  };
+}
+
+/**
+ * Dataset — para as páginas montadas sobre dado público.
+ *
+ * Declara de onde vem cada número e quando a fonte foi atualizada; o Google
+ * usa isso no Dataset Search e é o mesmo carimbo que a página mostra ao
+ * leitor. Sem avaliação nem nota: não existe review verificável aqui.
+ */
+export function generateDatasetJsonLd(params: {
+  nome: string;
+  descricao: string;
+  path: string;
+  atualizadoEm: string;
+  fontes: { nome: string; url: string }[];
+  locais?: string[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    name: params.nome,
+    description: params.descricao,
+    url: `${SITE_URL}/pt-BR${params.path}`,
+    inLanguage: "pt-BR",
+    dateModified: params.atualizadoEm,
+    isAccessibleForFree: true,
+    creator: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+    isBasedOn: params.fontes.map((f) => f.url),
+    citation: params.fontes.map((f) => f.nome),
+    ...(params.locais?.length
+      ? {
+          spatialCoverage: params.locais.map((nome) => ({
+            "@type": "Place",
+            name: nome,
+          })),
+        }
+      : {}),
   };
 }
 

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
 import { Calculator, Lock, Ruler, Weight, Timer, Info } from "lucide-react";
 import { Link } from "@/i18n/routing";
 import {
@@ -57,8 +58,22 @@ function arredondar(n: number, casas = 0) {
 export function CalculadoraForm({ tombadores }: { tombadores: Tombador[] }) {
   const t = useTranslations();
 
-  const [veiculo, setVeiculo] = useState<TipoVeiculo>("carreta");
-  const [produto, setProduto] = useState<TipoProduto>("soja");
+  // Quem chega de uma página de município ou de veículo traz o contexto no
+  // endereço (?produto=milho&veiculo=bitrem); pedir de novo o que a página já
+  // sabia seria atrito à toa.
+  const busca = useSearchParams();
+  const veiculoInicial = busca.get("veiculo");
+  const produtoInicial = busca.get("produto");
+  const [veiculo, setVeiculo] = useState<TipoVeiculo>(
+    veiculoInicial && veiculoInicial in VEICULOS
+      ? (veiculoInicial as TipoVeiculo)
+      : "carreta",
+  );
+  const [produto, setProduto] = useState<TipoProduto>(
+    produtoInicial && produtoInicial in DENSIDADE
+      ? (produtoInicial as TipoProduto)
+      : "soja",
+  );
   const [veiculosPorDia, setVeiculosPorDia] = useState("");
   const [horasPorDia, setHorasPorDia] = useState("10");
   const [erro, setErro] = useState<string | null>(null);

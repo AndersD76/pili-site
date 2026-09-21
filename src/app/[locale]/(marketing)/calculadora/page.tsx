@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { getTombadoresCalculadora } from "@/lib/calculadora-dados";
 import { CalculadoraForm } from "@/components/marketing/calculadora-form";
@@ -40,7 +41,11 @@ export default async function CalculadoraPage({
       <section className="py-16 px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
           {tombadores.length > 0 ? (
-            <CalculadoraForm tombadores={tombadores} />
+            // Suspense: o formulário lê ?produto= e ?veiculo= da URL para vir
+            // preenchido a partir das páginas de município e de veículo.
+            <Suspense fallback={<div className="min-h-96" />}>
+              <CalculadoraForm tombadores={tombadores} />
+            </Suspense>
           ) : (
             // Catálogo indisponível: melhor dizer do que mostrar um formulário
             // que não tem como responder.
