@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import { db } from "./db";
 import { COMPANY, SOCIAL, ECOSYSTEM, STATS } from "./constants";
 import { logError } from "./prisma-errors";
@@ -67,11 +68,27 @@ const FALLBACK: SiteSettingsData = {
   statsCapacidade: STATS.maxCapacity,
 };
 
+/** Tag do cache compartilhado — a action do painel chama `updateTag` com ela. */
+export const TAG_SITE_SETTINGS = "site-settings";
+
 /**
- * Uma consulta por requisição, no máximo — `cache` do React deduplica as
- * chamadas dentro do mesmo render.
+ * Cache compartilhado entre requisições e entre as páginas do build.
+ *
+ * O cabeçalho e o rodapé leem isto em todas as páginas do site. Com milhares
+ * de páginas estáticas, uma consulta ao banco por página transformava o build
+ * numa fila de idas e voltas até o Neon. A action do painel invalida a tag ao
+ * salvar, então a mudança continua aparecendo na hora.
+ *
+ * `cache` do React por fora deduplica as chamadas dentro do mesmo render.
  */
-export const getSiteSettings = cache(async (): Promise<SiteSettingsData> => {
+export const getSiteSettings = cache(
+  unstable_cache(lerSiteSettings, [TAG_SITE_SETTINGS], {
+    tags: [TAG_SITE_SETTINGS],
+    revalidate: 3600,
+  }),
+);
+
+async function lerSiteSettings(): Promise<SiteSettingsData> {
   try {
     const row = await db.siteSettings.findUnique({ where: { id: "default" } });
     if (!row) return FALLBACK;
@@ -101,7 +118,7 @@ export const getSiteSettings = cache(async (): Promise<SiteSettingsData> => {
     logError("SITE_SETTINGS", err);
     return FALLBACK;
   }
-});
+}
 
 /** Só os dígitos, para montar links `wa.me` e `tel:`. */
 export function onlyDigits(value: string): string {

@@ -1,7 +1,8 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { db } from "@/lib/db";
+import { TAG_SITE_SETTINGS } from "@/lib/site-settings";
 import { requireAdmin } from "@/lib/auth-guard";
 import { logError } from "@/lib/prisma-errors";
 import {
@@ -55,6 +56,7 @@ export async function updateSiteSettings(
     });
 
     // Os dados aparecem no rodapé de todas as páginas públicas.
+    updateTag(TAG_SITE_SETTINGS);
     revalidatePath("/", "layout");
     revalidatePath("/admin/config");
 

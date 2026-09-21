@@ -1,7 +1,8 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { db } from "@/lib/db";
+import { TAG_FILIAIS } from "@/lib/filiais";
 import { requireAdmin } from "@/lib/auth-guard";
 import { logError } from "@/lib/prisma-errors";
 import {
@@ -38,6 +39,7 @@ function paraRegistro(d: FilialInput) {
 
 /** O rodapé usa estes dados em todas as páginas públicas. */
 function revalidarTudo() {
+  updateTag(TAG_FILIAIS);
   revalidatePath("/", "layout");
   revalidatePath("/admin/filiais");
 }

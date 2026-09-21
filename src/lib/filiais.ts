@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import { db } from "./db";
 import { logError } from "./prisma-errors";
 import type { FilialTipo } from "@prisma/client";
@@ -24,14 +25,22 @@ export interface FilialData {
   lng: number | null;
 }
 
+/** Tag do cache compartilhado — a action do painel chama `updateTag` com ela. */
+export const TAG_FILIAIS = "filiais";
+
 /**
  * Unidades ativas, na ordem de exibição.
  *
  * Falha de banco devolve lista vazia em vez de derrubar a página: o rodapé
  * aparece em todo o site, e uma consulta indisponível não pode tirar o site do
- * ar por causa de um bloco secundário.
+ * ar por causa de um bloco secundário. Fica em cache compartilhado pelo mesmo
+ * motivo de `getSiteSettings`: o rodapé lê isto em milhares de páginas.
  */
-export const getFiliais = cache(async (): Promise<FilialData[]> => {
+export const getFiliais = cache(
+  unstable_cache(lerFiliais, [TAG_FILIAIS], { tags: [TAG_FILIAIS], revalidate: 3600 }),
+);
+
+async function lerFiliais(): Promise<FilialData[]> {
   try {
     return await db.filial.findMany({
       where: { ativa: true },
@@ -53,7 +62,7 @@ export const getFiliais = cache(async (): Promise<FilialData[]> => {
     logError("FILIAIS", err);
     return [];
   }
-});
+}
 
 /** Todas as unidades, inclusive inativas — usado só pelo painel. */
 export async function getFiliaisAdmin() {
