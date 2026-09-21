@@ -63,6 +63,23 @@ const nextConfig: NextConfig = {
        * pelos robos e ainda encurta a cadeia apex -> www -> idioma.
        */
       { source: "/", destination: "/pt-BR", permanent: true },
+      /**
+       * Slugs de produto renomeados pelo painel em 21/09/2026. Os endereços
+       * antigos estavam no sitemap, no catálogo em PDF e em mensagens de
+       * WhatsApp; sem isto respondiam 404 e perdiam o que já tinham indexado.
+       */
+      ...[10, 11, 12, 18, 21, 26, 30].map((m) => ({
+        source: `/:locale(pt-BR|es)/produtos/tombador-${m}m-fixo`,
+        destination: `/:locale/produtos/tombador-caminhao-${m}m-fixo`,
+        permanent: true,
+      })),
+      // O sucessor direto (tombador-26m-graos) ainda não tem dados para ser
+      // publicado; até lá o endereço antigo leva ao 26 m que está no ar.
+      {
+        source: "/:locale(pt-BR|es)/produtos/tombador-26m",
+        destination: "/:locale/produtos/tombador-caminhao-26m-fixo",
+        permanent: false,
+      },
       // VK2 legacy redirects (add mappings as discovered)
     ];
   },
