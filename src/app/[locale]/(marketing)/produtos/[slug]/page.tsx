@@ -69,6 +69,8 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
     image: product.image,
     slug: product.slug,
     category: product.category,
+    // `specs` chega como lista do CMS; o schema.org quer pares nome/valor.
+    specs: Object.fromEntries(product.specs.map((e) => [e.label, e.value])),
   });
 
   const breadcrumbJsonLd = generateBreadcrumbJsonLd([
