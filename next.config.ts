@@ -80,7 +80,62 @@ const nextConfig: NextConfig = {
         destination: "/:locale/produtos/tombador-caminhao-26m-fixo",
         permanent: false,
       },
-      // VK2 legacy redirects (add mappings as discovered)
+      /**
+       * Enderecos do site anterior (Laravel), formato /produto/<Nome>/<id>.
+       *
+       * O Google ainda devolve esses enderecos nas buscas -- foram anos de
+       * indexacao. Depois da migracao respondiam 404: o visitante batia numa
+       * pagina de erro e a autoridade acumulada nao passava para o endereco
+       * novo.
+       *
+       * O nome vinha com "+" no lugar do espaco, e "+" e modificador
+       * reservado do path-to-regexp: escrito cru, o Next recusa a rota com
+       * "Unexpected MODIFIER". Codificar para "%2B" resolve sem escapar
+       * caractere a caractere.
+       */
+      ...Object.entries({
+        "Tombador+10+Metros+Fixo": "tombador-caminhao-10m-fixo",
+        "Tombador+11+Metros+Fixo": "tombador-caminhao-11m-fixo",
+        "Tombador+12+Metros+Fixo": "tombador-caminhao-12m-fixo",
+        "Tombador+18+Metros+Fixo": "tombador-caminhao-18m-fixo",
+        "Tombador+21+Metros+Fixo": "tombador-caminhao-21m-fixo",
+        "Tombador+26+Metros+Fixo": "tombador-caminhao-26m-fixo",
+        "Tombador+30+Metros+Fixo": "tombador-caminhao-30m-fixo",
+        "Tombador+10+Metros+Movel": "tombador-10m-movel",
+        "Tombador+11+Metros+Movel": "tombador-11m-movel",
+        "Tombador+12+Metros+Movel": "tombador-12m-movel",
+        "Tombador+18+Metros+Movel": "tombador-18m-movel",
+        "Tombador+21+Metros+Movel": "tombador-21m-movel",
+        "Tombador+26m+Cilindro+Externo": "tombador-26m-graos",
+        "Tombador+com+Cabine+Externa": "tombador-cabine-externa",
+        "Tombador+com+sistema+de+pesagem": "tombador-com-sistema-de-pesagem",
+        "Tombador+de+Batatas": "tombador-de-batatas",
+        "Coletor+de+Amostra+de+Graos+PILI": "coletor-amostras",
+        "Coletor+de+Amostra+de+Graos+Movel": "coletor-de-amostra-de-graos-movel",
+        "Unidade+de+Transbordo+PILI": "unidade-transbordo",
+        "Central+Hidraulica+PILI": "central-hidraulica",
+      }).flatMap(([nome, slug]) => {
+        // `encodeURIComponent` transforma o "+" em "%2B", que o
+        // path-to-regexp trata como literal em vez de modificador.
+        const caminho = `/produto/${encodeURIComponent(nome)}`;
+        const destino = `/pt-BR/produtos/${slug}`;
+        return [
+          // Com o id no fim, que e o formato indexado pelo Google.
+          { source: `${caminho}/:id`, destination: destino, permanent: true },
+          // Sem o id: aparecia nos links internos do site antigo.
+          { source: caminho, destination: destino, permanent: true },
+        ];
+      }),
+      /**
+       * Qualquer outro /produto/... do site antigo vai para a listagem, em vez
+       * de 404. Precisa vir DEPOIS dos mapeamentos acima: o Next usa a
+       * primeira regra que casar.
+       */
+      {
+        source: "/produto/:resto*",
+        destination: "/pt-BR/produtos",
+        permanent: true,
+      },
     ];
   },
   async headers() {

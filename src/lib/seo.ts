@@ -160,6 +160,21 @@ export function generateProductJsonLd(product: {
       name: COMPANY.name,
     },
     category: CATEGORIA_LEGIVEL[product.category] ?? product.category,
+    // As specs ja aparecem como texto na pagina, mas o Google so as entende
+    // como ficha tecnica se vierem estruturadas. `additionalProperty` e o
+    // campo que o schema.org reserva para isso: capacidade, comprimento,
+    // angulo e ciclo passam a ser dado comparavel, nao texto solto.
+    ...(product.specs && Object.keys(product.specs).length > 0
+      ? {
+          additionalProperty: Object.entries(product.specs).map(
+            ([nome, valor]) => ({
+              "@type": "PropertyValue",
+              name: nome,
+              value: valor,
+            }),
+          ),
+        }
+      : {}),
   };
 }
 

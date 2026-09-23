@@ -1,4 +1,7 @@
-import { generatePageMetadata } from "@/lib/seo";
+import { generatePageMetadata,
+  generateBreadcrumbJsonLd,
+  jsonLdScript,
+} from "@/lib/seo";
 import { MapaLocalizacao } from "@/components/marketing/mapa-localizacao";
 import {
   getSiteSettings,
@@ -70,6 +73,19 @@ export default async function ContatoPage({
 
   return (
     <main className="pt-[var(--header-height)]">
+      {/* Breadcrumb do schema.org: o Google usa para desenhar a trilha
+          no resultado da busca, no lugar da URL crua. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLdScript(
+            generateBreadcrumbJsonLd([
+              { name: "Home", url: "/" },
+              { name: "Contato", url: "/pt-BR/contato" },
+            ]),
+          ),
+        }}
+      />
       {/* Hero */}
       <section className="bg-pili-black py-20 px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">

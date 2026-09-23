@@ -2,7 +2,10 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { getProdutos } from "@/lib/content";
 import { ProductCard } from "@/components/marketing/product-card";
 import { Link } from "@/i18n/routing";
-import { generatePageMetadata } from "@/lib/seo";
+import { generatePageMetadata,
+  generateBreadcrumbJsonLd,
+  jsonLdScript,
+} from "@/lib/seo";
 import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
 import { ArrowRight } from "lucide-react";
 
@@ -50,6 +53,19 @@ export default async function ProdutosPage({
 
   return (
     <main className="pt-[var(--header-height)]">
+      {/* Breadcrumb do schema.org: o Google usa para desenhar a trilha
+          no resultado da busca, no lugar da URL crua. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLdScript(
+            generateBreadcrumbJsonLd([
+              { name: "Home", url: "/" },
+              { name: "Produtos", url: "/pt-BR/produtos" },
+            ]),
+          ),
+        }}
+      />
       {/* Hero */}
       <section className="relative bg-pili-black py-24 px-6 lg:px-8">
         <div className="absolute inset-0 grid-pattern opacity-20" />
