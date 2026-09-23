@@ -21,10 +21,18 @@ export function HeroCarousel({
   slides,
   badge,
   acoes,
+  titulo,
 }: {
   slides: SlideData[];
   badge?: React.ReactNode;
   acoes?: React.ReactNode;
+  /**
+   * H1 da pagina, fixo. Antes o H1 era o titulo do slide, que gira: a home
+   * anunciava "Tombadores com Unidade de Transbordo" -- um produto de nicho --
+   * como tema da pagina inteira, e mudava de assunto a cada rotacao. O H1 e o
+   * sinal de tema mais forte que existe e precisa ser estavel.
+   */
+  titulo: string;
 }) {
   const [atual, setAtual] = useState(0);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -90,8 +98,14 @@ export function HeroCarousel({
         {badge}
 
         <h1 className="font-display text-[length:var(--text-display-1)] font-black uppercase leading-[0.95] tracking-tight text-pili-white">
-          {slide.titulo}
+          {titulo}
         </h1>
+
+        {/* O titulo do slide continua com o mesmo peso visual, mas como
+            paragrafo: so o H1 acima define o tema da pagina. */}
+        <p className="mt-4 font-display text-2xl font-bold uppercase leading-tight tracking-tight text-pili-safety lg:text-3xl">
+          {slide.titulo}
+        </p>
 
         {slide.subtitulo && (
           <div className="mt-6 flex items-center gap-4">

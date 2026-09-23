@@ -184,11 +184,15 @@
       "manutencao": "Menor custo de manutenção por tonelada",
       "payback": "Payback médio entre 18 e 36 meses"
     },
-    "clientsSubtitle": "Equipamentos PILI em operação. Clique para ver a obra e os números medidos."
+    "clientsSubtitle": "Equipamentos PILI em operação. Clique para ver a obra e os números medidos.",
+    "h1": "Tombadores de grãos e plataformas de descarga",
+    "introTitulo": "Tombador de descarga: o que é e como escolher",
+    "introTexto": "O tombador de grãos — também chamado de plataforma de descarga ou plataforma de tombamento — inclina o caminhão para que a carga saia por gravidade, sem pá-carregadeira e sem operador dentro da carroceria. A PILI fabrica tombadores hidráulicos de 9 a 30 metros, para 35 a 100 toneladas, atendendo de caminhão toco a rodotrem e bitrem.",
+    "introTexto2": "A escolha do modelo parte de três números: o comprimento do maior veículo que descarrega na unidade, o peso bruto total e quantos caminhões passam por dia. O ciclo de descarga da linha PILI vai de 65 a 360 segundos conforme o porte, e todos os equipamentos seguem NR-12 e NR-10."
   },
   "produtos": {
-    "metaTitle": "Tombadores hidráulicos e equipamentos de descarga",
-    "metaDesc": "Tombadores hidráulicos de 9 a 30 metros, coletores de amostras e unidades de transbordo. Conheça a linha completa PILI Industrial.",
+    "metaTitle": "Tombadores de grãos e plataformas de descarga",
+    "metaDesc": "Tombadores hidráulicos de 9 a 30 metros e 35 a 100 toneladas. Plataformas de descarga para caminhão toco, truck, carreta, rodotrem e bitrem, com coletor de amostras e unidade de transbordo.",
     "helpTitle": "Precisa de ajuda para escolher?",
     "applications": "Aplicações",
     "useCases": "Casos de uso",
@@ -214,7 +218,7 @@
       "metaTitle": "Comparar tombadores"
     },
     "eyebrow": "Linha completa",
-    "intro": "Plataformas de descarga de 9 a 30 metros, coletores de amostras e equipamentos especiais. Todos fabricados em Erechim/RS com aço de alta resistência.",
+    "intro": "Tombadores de grãos — também chamados de plataformas de descarga ou plataformas de tombamento — de 9 a 30 metros, além de coletores de amostras e unidades de transbordo. Todos em conformidade com NR-12 e NR-10.",
     "models": "modelos",
     "helpText": "Use nossa calculadora de capacidade ou fale diretamente com a equipe técnica da PILI para receber uma recomendação personalizada.",
     "calculator": "Calculadora",
