@@ -132,6 +132,7 @@ export default async function HomePage({
       <section className="relative flex min-h-svh items-center bg-pili-black px-6 pb-16 pt-[calc(var(--header-height)+2.5rem)] lg:px-16">
         <HeroCarousel
           slides={slides}
+          titulo={t("home.h1")}
           badge={
             <div className="mb-5 inline-flex items-center gap-3 border border-pili-iron/60 bg-pili-black/60 px-4 py-2 backdrop-blur-sm">
               <div className="h-2 w-2 bg-pili-safety" />
@@ -179,6 +180,31 @@ export default async function HomePage({
         paises={settings.statsPaises}
         capacidade={settings.statsCapacidade}
       />
+
+      {/* ──── 2b. O QUE É UM TOMBADOR ──── */}
+      {/*
+        A home tinha 647 palavras e mencionava o termo principal quase so em
+        titulo de card. Quem pesquisa "tombador de descarga" ou "plataforma de
+        tombamento" precisa encontrar o assunto explicado em texto corrido --
+        e o mercado usa os tres termos como sinonimos, entao o texto cobre os
+        tres de uma vez, como fazem as paginas que ranqueiam hoje.
+      */}
+      <section className="border-y border-pili-mist bg-pili-paper py-20 px-6 lg:px-8">
+        <div className="mx-auto max-w-3xl">
+          <AnimateOnScroll>
+            <h2 className="font-display text-[length:var(--text-h2)] font-black uppercase tracking-tight text-pili-black">
+              {t("home.introTitulo")}
+            </h2>
+            <div className="mt-4 h-1 w-16 bg-pili-safety" />
+            <p className="mt-6 text-[length:var(--text-body-lg)] leading-relaxed text-pili-iron">
+              {t("home.introTexto")}
+            </p>
+            <p className="mt-4 text-[length:var(--text-body-lg)] leading-relaxed text-pili-iron">
+              {t("home.introTexto2")}
+            </p>
+          </AnimateOnScroll>
+        </div>
+      </section>
 
       {/* ──── 3. PRODUTOS EM DESTAQUE ──── */}
       <section className="py-24 px-6 lg:px-8">

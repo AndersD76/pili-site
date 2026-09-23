@@ -184,11 +184,15 @@
       "manutencao": "Menor costo de mantenimiento por tonelada",
       "payback": "Retorno promedio entre 18 y 36 meses"
     },
-    "clientsSubtitle": "Equipos PILI en operación. Haga clic para ver la obra y los números medidos."
+    "clientsSubtitle": "Equipos PILI en operación. Haga clic para ver la obra y los números medidos.",
+    "h1": "Volcadores de granos y plataformas de descarga",
+    "introTitulo": "Volcador de descarga: qué es y cómo elegir",
+    "introTexto": "El volcador de granos — también llamado plataforma de descarga o plataforma de volteo — inclina el camión para que la carga salga por gravedad, sin cargadora y sin operador dentro de la caja. PILI fabrica volcadores hidráulicos de 9 a 30 metros, para 35 a 100 toneladas, atendiendo desde camión sencillo hasta tren de carretera y bitrén.",
+    "introTexto2": "La elección del modelo parte de tres números: el largo del mayor vehículo que descarga en la unidad, el peso bruto total y cuántos camiones pasan por día. El ciclo de descarga de la línea PILI va de 65 a 360 segundos según el porte, y todos los equipos cumplen NR-12 y NR-10."
   },
   "produtos": {
-    "metaTitle": "Volcadores hidráulicos y equipos de descarga",
-    "metaDesc": "Volcadores hidráulicos de 9 a 30 metros, colectores de muestras y unidades de trasbordo. Conozca la línea completa PILI Industrial.",
+    "metaTitle": "Volcadores de granos y plataformas de descarga",
+    "metaDesc": "Volcadores hidráulicos de 9 a 30 metros y 35 a 100 toneladas. Plataformas de descarga para camión sencillo, truck, semirremolque, tren de carretera y bitrén, con colector de muestras y unidad de trasbordo.",
     "helpTitle": "¿Necesita ayuda para elegir?",
     "applications": "Aplicaciones",
     "useCases": "Casos de uso",
@@ -214,7 +218,7 @@
       "metaTitle": "Comparar volcadores"
     },
     "eyebrow": "Línea completa",
-    "intro": "Plataformas de descarga de 9 a 30 metros, colectores de muestras y equipos especiales. Todos fabricados en Erechim/RS con acero de alta resistencia.",
+    "intro": "Volcadores de granos — también llamados plataformas de descarga o plataformas de volteo — de 9 a 30 metros, además de colectores de muestras y unidades de trasbordo. Todos conformes a NR-12 y NR-10.",
     "models": "modelos",
     "helpText": "Use nuestra calculadora de capacidad o hable directamente con el equipo técnico de PILI para recibir una recomendación personalizada.",
     "calculator": "Calculadora",
