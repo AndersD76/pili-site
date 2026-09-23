@@ -376,7 +376,16 @@
       "OUTRO": "Otro"
     },
     "unlock": "Liberar descarga",
-    "consentMiddle": "política de privacidad"
+    "consentMiddle": "política de privacidad",
+    "eyebrow": "Línea completa",
+    "capaTexto": "{quantidade} equipos con ficha técnica, dimensiones y aplicaciones. Use las flechas o deslice para hojear.",
+    "fechar": "Cerrar el catálogo",
+    "anterior": "Página anterior",
+    "proxima": "Página siguiente",
+    "pdf": "Descargar en PDF",
+    "abrir": "Hojear el catálogo",
+    "releasedTextRevista": "Catálogo liberado. Hojee aquí o descargue el PDF.",
+    "specs": "Ficha técnica"
   },
   "calculadora": {
     "title": "Calculadora de capacidad",
