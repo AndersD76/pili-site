@@ -160,6 +160,24 @@ export function generateProductJsonLd(product: {
       name: COMPANY.name,
     },
     category: CATEGORIA_LEGIVEL[product.category] ?? product.category,
+    // O Google recusa o rich result de produto sem `offers`, `review` ou
+    // `aggregateRating` -- e o Search Console marcava "1 erro critico" por
+    // isso. Avaliacao e resenha teriam de ser inventadas; a oferta e real:
+    // equipamento sob encomenda, orcado caso a caso.
+    //
+    // Sem `price`, `PreOrder` é a disponibilidade que descreve o que de fato
+    // acontece: o cliente pede, a PILI fabrica. `priceCurrency` sozinho e
+    // valido quando a oferta nao publica valor.
+    offers: {
+      "@type": "Offer",
+      url: `${SITE_URL}/pt-BR/produtos/${product.slug}`,
+      priceCurrency: "BRL",
+      availability: "https://schema.org/PreOrder",
+      seller: {
+        "@type": "Organization",
+        name: SITE_NAME,
+      },
+    },
     // As specs ja aparecem como texto na pagina, mas o Google so as entende
     // como ficha tecnica se vierem estruturadas. `additionalProperty` e o
     // campo que o schema.org reserva para isso: capacidade, comprimento,
