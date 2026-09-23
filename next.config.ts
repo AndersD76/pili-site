@@ -35,6 +35,21 @@ const nextConfig: NextConfig = {
   // arquivos no build. Fixar a raiz elimina o aviso e o risco.
   turbopack: { root: import.meta.dirname },
   outputFileTracingRoot: import.meta.dirname,
+  /**
+   * Um worker por vez na geracao estatica.
+   *
+   * O build gera 5.735 paginas, quase todas das rotas de municipio, e cada
+   * worker carrega a base do IBGE e da Conab na propria memoria. Em paralelo
+   * isso multiplica o consumo e o container do Railway e morto no meio da
+   * geracao -- o build passa da compilacao, empurra a imagem e so entao falha.
+   *
+   * Serial e mais lento, mas cabe na memoria disponivel. Se um dia a maquina
+   * do deploy crescer, este numero pode subir de novo.
+   */
+  experimental: {
+    workerThreads: false,
+    cpus: 1,
+  },
   images: {
     remotePatterns: [
       {
