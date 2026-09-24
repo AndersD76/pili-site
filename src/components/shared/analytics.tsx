@@ -32,9 +32,9 @@ export function Analytics({
   const medindo = consent === "accepted" && Boolean(gaId);
 
   /*
-   * Um ouvinte só para os links que são conversão. Botões de WhatsApp e do
-   * PDF existem em dezenas de componentes, inclusive nas milhares de páginas
-   * de mercado de grãos; marcar cada um espalharia a medição pelo código.
+   * Um ouvinte só para os links de WhatsApp: os botões existem em dezenas de
+   * componentes, inclusive nas milhares de páginas de mercado de grãos, e
+   * marcar cada um espalharia a medição pelo código.
    */
   useEffect(() => {
     if (!medindo) return;
@@ -44,11 +44,6 @@ export function Analytics({
       const href = link.href;
       if (/wa\.me|api\.whatsapp\.com/.test(href)) {
         registrarEvento("whatsapp_click", { pagina: window.location.pathname });
-      } else if (href.includes("/api/catalogo/pdf")) {
-        registrarEvento("file_download", {
-          file_name: "catalogo",
-          pagina: window.location.pathname,
-        });
       }
     }
     document.addEventListener("click", aoClicar, { capture: true });

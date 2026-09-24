@@ -122,7 +122,9 @@ export async function GET(request: Request) {
         : "catalogo-pili-industrial.pdf";
     const cabecalhos = {
       "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="${nome}"`,
+      // O catálogo é só para ver na tela: aberto direto, o navegador mostra
+      // o PDF em vez de salvar.
+      "Content-Disposition": `inline; filename="${nome}"`,
       // Sem cache compartilhado; o navegador revalida pelo ETag.
       "Cache-Control": "private, no-cache",
       ETag: etag,
