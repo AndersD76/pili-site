@@ -30,8 +30,8 @@ export function FloatingWidgets({ whatsapp }: { whatsapp: string }) {
     // reserva a própria altura mais o respiro de 1.5rem.
     <div
       className={
-        consent === "none"
-          ? "contents [--fab-bottom:11rem] sm:[--fab-bottom:7.5rem]"
+        consent === "none" || consent === "unknown"
+          ? "reserva-cookies contents [--fab-bottom:11rem] sm:[--fab-bottom:7.5rem]"
           : "contents [--fab-bottom:1.5rem]"
       }
     >

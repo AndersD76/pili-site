@@ -3,8 +3,8 @@
 import { useSyncExternalStore } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
+import { CONSENT_KEY } from "@/lib/consent";
 
-export const CONSENT_KEY = "pili-cookie-consent";
 export type ConsentValue = "accepted" | "rejected" | "none" | "unknown";
 
 /** Evento próprio: `storage` do navegador não dispara na aba que gravou. */
@@ -39,10 +39,12 @@ export function CookieBanner() {
   const t = useTranslations("cookies");
   const consent = useCookieConsent();
 
-  if (consent !== "none") return null;
+  // No servidor o consentimento é "unknown": o aviso vai no HTML e o CSS
+  // (`html[data-consent]`) o esconde para quem já respondeu.
+  if (consent === "accepted" || consent === "rejected") return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-pili-iron bg-pili-graphite p-4 sm:p-6">
+    <div className="aviso-cookies fixed inset-x-0 bottom-0 z-50 border-t border-pili-iron bg-pili-graphite p-4 sm:p-6">
       <div className="mx-auto flex max-w-5xl flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-pili-mist">
           {t("text")}{" "}

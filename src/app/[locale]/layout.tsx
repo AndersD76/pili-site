@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { fontVariables } from "@/lib/fonts";
 import { SITE_NAME, SITE_DESCRIPTION } from "@/lib/constants";
+import { CONSENT_KEY } from "@/lib/consent";
 import "../globals.css";
 
 export const metadata: Metadata = {
@@ -48,6 +49,20 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning className={fontVariables}>
+      <head>
+        {/*
+         * Marca no <html> quem já respondeu ao aviso de cookies, antes da
+         * primeira pintura. O aviso vem no HTML do servidor e o CSS o esconde
+         * para essas pessoas; sem isto ele só aparecia depois de todo o
+         * JavaScript carregar, e no celular era o último elemento da tela a
+         * surgir (~9 s de LCP).
+         */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var c=localStorage.getItem(${JSON.stringify(CONSENT_KEY)});if(c==="accepted"||c==="rejected")document.documentElement.dataset.consent=c}catch(e){}`,
+          }}
+        />
+      </head>
       <body className="min-h-screen bg-pili-white text-pili-black font-sans antialiased">
         <NextIntlClientProvider messages={messages}>
           {children}
