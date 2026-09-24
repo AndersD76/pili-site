@@ -255,9 +255,9 @@ export default function TrabalheConoscoPage() {
                       {...register("consent")}
                       className="mt-1 h-4 w-4 accent-pili-safety"
                     />
-                    <Label
+                    <label
                       htmlFor="app-consent"
-                      className="text-sm font-normal text-pili-concrete"
+                      className="text-sm leading-relaxed text-pili-concrete"
                     >
                       {t("trabalhe.consentPrefix")}{" "}
                       <Link
@@ -267,7 +267,7 @@ export default function TrabalheConoscoPage() {
                         {t("footer.privacy")}
                       </Link>{" "}
                       {t("trabalhe.consentSuffix")}
-                    </Label>
+                    </label>
                   </div>
                   {errors.consent && (
                     <p className="text-xs text-pili-danger">

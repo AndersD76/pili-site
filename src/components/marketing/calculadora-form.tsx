@@ -440,9 +440,9 @@ export function CalculadoraForm({ tombadores }: { tombadores: Tombador[] }) {
                       {...registerGate("consent")}
                       className="mt-0.5 h-4 w-4 accent-pili-safety"
                     />
-                    <Label
+                    <label
                       htmlFor="calc-consent"
-                      className="text-xs font-normal text-pili-concrete"
+                      className="text-xs leading-relaxed text-pili-concrete"
                     >
                       {t("calculadora.consentPrefix")}{" "}
                       <Link
@@ -452,7 +452,7 @@ export function CalculadoraForm({ tombadores }: { tombadores: Tombador[] }) {
                         {t("footer.privacy")}
                       </Link>{" "}
                       {t("calculadora.consentSuffix")}
-                    </Label>
+                    </label>
                   </div>
                   {gateErrors.consent && (
                     <p className="text-xs text-pili-danger">
