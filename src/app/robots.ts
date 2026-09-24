@@ -21,7 +21,11 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: "/",
+        // As fotos de produto saem de /api/media e estão no schema Product e
+        // no og:image. Com /api/ inteiro bloqueado o Google não as buscava:
+        // sem Google Imagens e sem foto no resultado aprimorado. A regra mais
+        // específica vence, então o resto de /api/ continua fechado.
+        allow: ["/", "/api/media/"],
         disallow: ["/admin/", "/portal/", "/api/"],
       },
     ],
