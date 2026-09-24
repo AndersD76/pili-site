@@ -108,7 +108,7 @@
   "common": {
     "learn_more": "Más información",
     "view_all": "Ver todos",
-    "download_catalog": "Descargar catálogo",
+    "download_catalog": "Ver catálogo",
     "talk_specialist": "Hablar con un especialista",
     "back": "Volver",
     "loading": "Cargando...",
@@ -358,9 +358,9 @@
     "released": "Catálogo liberado",
     "seeProducts": "Ver la línea de productos",
     "download": "Acceda al catálogo",
-    "formIntro": "Complete los datos para hojear el catálogo en pantalla o descargar el PDF.",
+    "formIntro": "Complete los datos para hojear el catálogo aquí en pantalla.",
     "country": "País",
-    "intro": "Descargue el catálogo completo con especificaciones técnicas, dimensionales y fotos de todos los equipos PILI Industrial.",
+    "intro": "Hojee el catálogo completo con especificaciones técnicas, dimensionales y fotos de todos los equipos PILI Industrial.",
     "releasedText": "Recibimos sus datos. Nuestro equipo comercial enviará el catálogo completo al correo informado en hasta un día hábil.",
     "consentPrefix": "He leído y acepto la",
     "consentSuffix": "y autorizo al equipo comercial de PILI a contactarme.",
@@ -379,13 +379,12 @@
     "unlock": "Liberar catálogo",
     "consentMiddle": "política de privacidad",
     "carregando": "Abriendo el catálogo",
-    "erroFolheto": "No fue posible abrir el catálogo aquí. Descargue el PDF para verlo.",
+    "erroFolheto": "No fue posible abrir el catálogo ahora. Cierre e intente de nuevo en unos instantes.",
     "fechar": "Cerrar el catálogo",
     "anterior": "Página anterior",
     "proxima": "Página siguiente",
-    "pdf": "Descargar en PDF",
     "abrir": "Hojear el catálogo",
-    "releasedTextRevista": "Catálogo liberado. Hojee aquí o descargue el PDF."
+    "releasedTextRevista": "Hojee las páginas aquí en pantalla."
   },
   "calculadora": {
     "title": "Calculadora de capacidad",

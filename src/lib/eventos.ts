@@ -12,7 +12,6 @@
 type Evento =
   | "generate_lead"
   | "whatsapp_click"
-  | "file_download"
   | "catalogo_folhear"
   | "calculadora_calcular";
 

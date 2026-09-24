@@ -10,7 +10,7 @@ import {
   type CatalogFormInput,
 } from "@/lib/validators/lead";
 import { Label } from "@/components/ui/label";
-import { BookOpen, Download, FileText } from "lucide-react";
+import { BookOpen, FileText } from "lucide-react";
 import { CatalogoFolheto } from "@/components/marketing/catalogo-folheto";
 import { registrarEvento } from "@/lib/eventos";
 
@@ -27,7 +27,10 @@ export default function CatalogoPage() {
     "idle" | "loading" | "unlocked" | "error"
   >("idle");
 
-  /** O folheto baixa e desenha o PDF só quando o visitante decide folhear. */
+  /**
+   * O catálogo só é visto na tela: o folheto busca e desenha o PDF quando o
+   * visitante decide folhear, e não há botão de download.
+   */
   const [folhetoAberto, setFolhetoAberto] = useState(false);
   const pdfHref = `/api/catalogo/pdf?locale=${locale}`;
 
@@ -77,9 +80,9 @@ export default function CatalogoPage() {
       <section className="py-16 px-6 lg:px-8">
         <div className="mx-auto max-w-2xl">
           {status === "unlocked" ? (
-            /* Download unlocked */
+            /* Catálogo liberado */
             <div className="border border-pili-success/30 bg-pili-success/5 p-10 text-center">
-              <Download className="mx-auto h-12 w-12 text-pili-success" />
+              <BookOpen className="mx-auto h-12 w-12 text-pili-success" />
               <h2 className="mt-6 font-display text-xl font-bold uppercase text-pili-black">
                 {t("catalogo.released")}
               </h2>
@@ -98,13 +101,6 @@ export default function CatalogoPage() {
                   <BookOpen className="h-4 w-4" />
                   {t("catalogo.abrir")}
                 </button>
-                <a
-                  href={pdfHref}
-                  className="inline-flex items-center gap-2 border border-pili-mist px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors hover:border-pili-black"
-                >
-                  <Download className="h-4 w-4" />
-                  {t("catalogo.pdf")}
-                </a>
                 <Link
                   href="/produtos"
                   className="inline-flex items-center gap-2 border border-pili-mist px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors hover:border-pili-black"

@@ -2,17 +2,17 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Download, Loader2, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { PDFDocumentLoadingTask, PDFDocumentProxy } from "pdfjs-dist";
 
 /**
  * Catálogo folheável: as páginas do PDF viradas na tela.
  *
- * O desenho é o do arquivo, não uma remontagem em HTML — o PDF sai do mesmo
- * endereço que o botão de download usa e o pdf.js desenha cada página num
- * canvas. Assim a capa, a malha da ficha técnica e a tipografia do manual
- * chegam iguais ao que a pessoa levaria impresso.
+ * O desenho é o do arquivo, não uma remontagem em HTML — o pdf.js desenha
+ * cada página do PDF gerado pelo site num canvas. Assim a capa, a malha da
+ * ficha técnica e a tipografia do manual chegam iguais às do arquivo. O
+ * catálogo é só para ver na tela: não há botão de download.
  *
  * Em tela larga o catálogo abre como revista, com duas páginas por vez e a
  * folha girando pela lombada. No celular vai uma página por vez, virando pela
@@ -35,7 +35,7 @@ const LARGURA_MAXIMA = 1400;
 const ASPECTO_A4 = 1.414;
 
 interface Props {
-  /** Endereço do PDF — o mesmo do botão de download. */
+  /** Endereço do PDF que o folheto desenha. */
   pdfHref: string;
   aoFechar: () => void;
 }
@@ -335,13 +335,6 @@ export function CatalogoFolheto({ pdfHref, aoFechar }: Props) {
         </span>
 
         <div className="flex items-center gap-2">
-          <a
-            href={pdfHref}
-            className="inline-flex items-center gap-2 border border-pili-iron px-3 py-2 text-xs font-semibold uppercase tracking-wider text-pili-mist transition-colors hover:border-pili-safety hover:text-pili-white"
-          >
-            <Download className="size-4" />
-            <span className="hidden sm:inline">{t("catalogo.pdf")}</span>
-          </a>
           <button
             type="button"
             onClick={aoFechar}
@@ -383,13 +376,13 @@ export function CatalogoFolheto({ pdfHref, aoFechar }: Props) {
         {erro && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-6 text-center">
             <p className="max-w-sm text-pili-mist">{t("catalogo.erroFolheto")}</p>
-            <a
-              href={pdfHref}
-              className="inline-flex items-center gap-2 bg-pili-safety px-6 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
+            <button
+              type="button"
+              onClick={aoFechar}
+              className="bg-pili-safety px-6 py-3 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
             >
-              <Download className="size-4" />
-              {t("catalogo.pdf")}
-            </a>
+              {t("catalogo.fechar")}
+            </button>
           </div>
         )}
 
