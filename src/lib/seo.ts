@@ -30,6 +30,14 @@ interface PageSeoParams {
    * hreflang mandaria o Google rastrear um 404.
    */
   idiomas?: ("pt-BR" | "es")[];
+  /**
+   * Acrescenta " | PILI Industrial" ao título. As páginas de mercado de grãos
+   * desligam: os títulos delas já carregam o dado (cidade, safra, déficit) e,
+   * com o sufixo, 299 de 300 passavam de 65 caracteres — o Google cortava
+   * justamente o número. O nome da empresa aparece no resultado pelo nome do
+   * site.
+   */
+  marca?: boolean;
 }
 
 export function generatePageMetadata({
@@ -40,9 +48,10 @@ export function generatePageMetadata({
   locale = "pt-BR",
   noIndex = false,
   idiomas = ["pt-BR", "es"],
+  marca = true,
 }: PageSeoParams): Metadata {
   const url = `${SITE_URL}/${locale}${path}`;
-  const fullTitle = `${title} | ${SITE_NAME}`;
+  const fullTitle = marca ? `${title} | ${SITE_NAME}` : title;
 
   return {
     // `title.absolute` impede que o `template` do layout raiz concatene a marca

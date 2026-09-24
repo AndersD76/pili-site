@@ -28,6 +28,7 @@ export const metadata: Metadata = generatePageMetadata({
     "Quanto grão cabe, quantas cargas enchem e que recepção cada porte de unidade exige — de 10 mil a 500 mil sacas, com o número de armazéns de cada porte no país.",
   path: "/unidade-de-recebimento",
   idiomas: ["pt-BR"],
+  marca: false,
 });
 
 export default async function PortesPage({

@@ -192,7 +192,9 @@
   },
   "produtos": {
     "metaTitle": "Volcadores de granos y plataformas de descarga",
-    "metaDesc": "Volcadores hidráulicos de 9 a 30 metros y 35 a 100 toneladas. Plataformas de descarga para camión sencillo, truck, semirremolque, tren de carretera y bitrén, con colector de muestras y unidad de trasbordo.",
+    "metaDesc": "Volcadores hidráulicos de 9 a 30 m y 35 a 100 t: plataformas de descarga para truck, semirremolque, bitrén y tren de carretera, con colector de muestras.",
+    "metaProduto": "{tagline}. Capacidad de {capacidade} y {comprimento} de largo, fabricado por PILI en Erechim (RS), Brasil.",
+    "metaProdutoSemSpecs": "{tagline}. Fabricado por PILI en Erechim (RS), Brasil, con proyecto a medida y conforme a la NR-12.",
     "helpTitle": "¿Necesita ayuda para elegir?",
     "applications": "Aplicaciones",
     "useCases": "Casos de uso",

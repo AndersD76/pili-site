@@ -67,11 +67,12 @@ export async function generateMetadata({
     title: `Armazenagem de grãos em ${u.nome}: ${
       s < 0 ? `déficit de ${toneladasCurto(-s)}` : `capacidade de ${toneladasCurto(u.armazenagem.estatica)}`
     }`,
-    description: `${u.nome} colheu ${toneladas(u.producaoT)} de grãos na safra ${ANO} e tem ${num(
+    description: `${u.nome} colheu ${toneladasCurto(u.producaoT)} de grãos na safra ${ANO} e tem ${num(
       u.armazenagem.unidades,
     )} armazéns cadastrados. Veja o saldo de armazenagem por município, as culturas e as empresas.`,
     path: `/armazenagem/${u.slug}`,
     idiomas: ["pt-BR"],
+    marca: false,
   });
 }
 

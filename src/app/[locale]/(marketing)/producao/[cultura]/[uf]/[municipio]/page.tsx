@@ -98,11 +98,12 @@ export async function generateMetadata({
   const { cultura, m, d } = dados;
   return generatePageMetadata({
     title: `Produção de ${NOME_CULTURA[cultura]} em ${m.nome} (${m.uf}) em ${ANO}: ${toneladasCurto(d.t)}`,
-    description: `${m.nome} (${m.uf}) colheu ${toneladas(d.t)} de ${NOME_CULTURA[cultura]} na safra ${ANO}${
+    description: `${m.nome} (${m.uf}) colheu ${toneladasCurto(d.t)} de ${NOME_CULTURA[cultura]} em ${ANO}${
       d.ha ? ` em ${num(d.ha)} ha` : ""
-    }. Veja rendimento, ranking no estado, cargas por veículo e a recepção necessária para a safra.`,
+    }. Veja rendimento, ranking no estado, cargas por veículo e recepção na safra.`,
     path: `/producao/${cultura}/${m.uf.toLowerCase()}/${m.slug}`,
     idiomas: ["pt-BR"],
+    marca: false,
   });
 }
 

@@ -67,6 +67,7 @@ export async function generateMetadata({
     description: `Quanto cada estado e município produziu de ${NOME_CULTURA[cultura]} na safra ${ANO}, com área colhida, variação sobre ${ANO_ANTERIOR} e ranking dos maiores produtores.`,
     path: `/producao/${cultura}`,
     idiomas: ["pt-BR"],
+    marca: false,
   });
 }
 

@@ -192,7 +192,9 @@
   },
   "produtos": {
     "metaTitle": "Tombadores de grãos e plataformas de descarga",
-    "metaDesc": "Tombadores hidráulicos de 9 a 30 metros e 35 a 100 toneladas. Plataformas de descarga para caminhão toco, truck, carreta, rodotrem e bitrem, com coletor de amostras e unidade de transbordo.",
+    "metaDesc": "Tombadores hidráulicos de 9 a 30 m e 35 a 100 t: plataformas de descarga para truck, carreta, bitrem e rodotrem, com coletor de amostras e transbordo.",
+    "metaProduto": "{tagline}. Capacidade de {capacidade} e {comprimento} de comprimento, fabricado pela PILI em Erechim (RS).",
+    "metaProdutoSemSpecs": "{tagline}. Fabricado pela PILI em Erechim (RS), com projeto sob medida e conformidade com a NR-12.",
     "helpTitle": "Precisa de ajuda para escolher?",
     "applications": "Aplicações",
     "useCases": "Casos de uso",

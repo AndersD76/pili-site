@@ -34,6 +34,7 @@ export const metadata: Metadata = generatePageMetadata({
   description: `As ${num(EMPRESAS.length)} maiores redes de armazéns de grãos cadastradas na Conab: unidades, capacidade estática e estados de cada uma.`,
   path: "/armazenadores",
   idiomas: ["pt-BR"],
+  marca: false,
 });
 
 export default async function ArmazenadoresPage({

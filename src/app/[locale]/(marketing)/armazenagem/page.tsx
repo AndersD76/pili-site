@@ -56,6 +56,7 @@ export const metadata: Metadata = generatePageMetadata({
   )} de capacidade estática. Veja onde falta armazém, por estado e município.`,
   path: "/armazenagem",
   idiomas: ["pt-BR"],
+  marca: false,
 });
 
 export default async function ArmazenagemPage({

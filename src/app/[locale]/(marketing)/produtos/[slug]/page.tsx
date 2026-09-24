@@ -36,10 +36,23 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   const product = await getProduto(slug);
   if (!product) return {};
+  const t = await getTranslations({ locale });
+  // Sem descrição própria no painel, o slogan sozinho (~50 caracteres) ia
+  // para o resultado de busca. Completa com capacidade e comprimento, que é
+  // o que quem pesquisa tombador compara.
+  const tagline = product.tagline.replace(/[.\s]+$/, "");
+  const descricaoPadrao =
+    product.capacity && product.length
+      ? t("produtos.metaProduto", {
+          tagline,
+          capacidade: product.capacity,
+          comprimento: product.length,
+        })
+      : t("produtos.metaProdutoSemSpecs", { tagline });
   return generatePageMetadata({
     locale,
     title: product.metaTitle ?? product.name,
-    description: product.metaDesc ?? product.tagline,
+    description: product.metaDesc ?? descricaoPadrao,
     path: `/produtos/${product.slug}`,
     image: product.image,
   });

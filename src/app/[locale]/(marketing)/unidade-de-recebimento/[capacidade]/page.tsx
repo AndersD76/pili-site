@@ -67,6 +67,7 @@ export async function generateMetadata({
     description: `Um armazém de ${rotulo(p.sacas)} guarda ${num(p.t)} t de grãos. Veja quantas carretas e bitrens enchem a unidade, a recepção necessária na colheita e o tombador indicado.`,
     path: `/unidade-de-recebimento/${slugPorte(p.sacas)}`,
     idiomas: ["pt-BR"],
+    marca: false,
   });
 }
 
