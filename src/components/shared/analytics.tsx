@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
 import Script from "next/script";
+import { registrarEvento } from "@/lib/eventos";
 import { useCookieConsent } from "./cookie-banner";
 
 /**
@@ -27,6 +29,31 @@ export function Analytics({
   pixelId?: string;
 }) {
   const consent = useCookieConsent();
+  const medindo = consent === "accepted" && Boolean(gaId);
+
+  /*
+   * Um ouvinte só para os links que são conversão. Botões de WhatsApp e do
+   * PDF existem em dezenas de componentes, inclusive nas milhares de páginas
+   * de mercado de grãos; marcar cada um espalharia a medição pelo código.
+   */
+  useEffect(() => {
+    if (!medindo) return;
+    function aoClicar(e: MouseEvent) {
+      const link = (e.target as Element | null)?.closest?.("a[href]");
+      if (!(link instanceof HTMLAnchorElement)) return;
+      const href = link.href;
+      if (/wa\.me|api\.whatsapp\.com/.test(href)) {
+        registrarEvento("whatsapp_click", { pagina: window.location.pathname });
+      } else if (href.includes("/api/catalogo/pdf")) {
+        registrarEvento("file_download", {
+          file_name: "catalogo",
+          pagina: window.location.pathname,
+        });
+      }
+    }
+    document.addEventListener("click", aoClicar, { capture: true });
+    return () => document.removeEventListener("click", aoClicar, { capture: true });
+  }, [medindo]);
 
   if (consent !== "accepted") return null;
 
