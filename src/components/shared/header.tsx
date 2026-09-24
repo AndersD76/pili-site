@@ -66,6 +66,8 @@ export function Header({ piliTechUrl }: { piliTechUrl: string | null }) {
           <img
             src="/images/logo-pili-white.png"
             alt="PILI Industrial"
+            width={1200}
+            height={404}
             className="h-14 w-auto"
           />
         </Link>
