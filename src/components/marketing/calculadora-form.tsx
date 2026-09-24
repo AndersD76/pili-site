@@ -23,6 +23,7 @@ import {
 } from "@/lib/calculadora";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { registrarEvento } from "@/lib/eventos";
 
 const VEICULOS_ORDEM: TipoVeiculo[] = [
   "caminhao",
@@ -103,6 +104,7 @@ export function CalculadoraForm({ tombadores }: { tombadores: Tombador[] }) {
     const horas = parseInt(horasPorDia, 10) || 10;
 
     setErro(null);
+    registrarEvento("calculadora_calcular", { veiculo, produto });
     setResultado(
       recomendar(tombadores, {
         veiculo,
@@ -132,6 +134,7 @@ export function CalculadoraForm({ tombadores }: { tombadores: Tombador[] }) {
         }),
       });
       if (!res.ok) throw new Error("Failed");
+      registrarEvento("generate_lead", { formulario: "CALCULADORA" });
       setLiberado(true);
     } catch {
       setGateStatus("error");

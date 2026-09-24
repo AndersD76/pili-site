@@ -80,6 +80,7 @@ export async function generateMetadata({
     description: `${u.nome} colheu ${toneladas(d.t)} de ${NOME_CULTURA[cultura]} na safra ${ANO}. Veja a produção, área e rendimento de cada município e o ranking do estado.`,
     path: `/producao/${cultura}/${u.slug}`,
     idiomas: ["pt-BR"],
+    marca: false,
   });
 }
 

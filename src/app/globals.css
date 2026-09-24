@@ -342,3 +342,16 @@ main {
     animation: none;
   }
 }
+
+/*
+ * Aviso de cookies renderizado no servidor: o script do <head> marca
+ * `data-consent` em quem já respondeu, e o aviso some antes da primeira
+ * pintura. A reserva dos botões flutuantes volta ao normal junto.
+ */
+html[data-consent] .aviso-cookies {
+  display: none;
+}
+
+html[data-consent] .reserva-cookies {
+  --fab-bottom: 1.5rem;
+}

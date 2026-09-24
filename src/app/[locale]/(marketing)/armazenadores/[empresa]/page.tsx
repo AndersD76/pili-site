@@ -48,9 +48,13 @@ export async function generateMetadata({
     title: `${nomeEmpresa(e.nome)}: ${num(e.unidades)} armazéns em ${num(e.municipios.length)} municípios`,
     description: `Unidades armazenadoras de ${nomeEmpresa(e.nome)} cadastradas na Conab: ${num(e.unidades)} armazéns, ${toneladas(
       e.estatica,
-    )} de capacidade estática em ${e.ufs.join(", ")}. Veja cada município.`,
+    )} de capacidade estática em ${
+      // A lista de siglas estourava a descrição nas redes nacionais.
+      e.ufs.length > 4 ? `${e.ufs.length} estados` : e.ufs.join(", ")
+    }. Veja cada município.`,
     path: `/armazenadores/${e.slug}`,
     idiomas: ["pt-BR"],
+    marca: false,
   });
 }
 

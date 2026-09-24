@@ -20,6 +20,7 @@ export const metadata: Metadata = generatePageMetadata({
     "Qual tombador descarrega cada composição rodoviária: comprimento e peso pelo CONTRAN, toneladas por viagem e os modelos PILI compatíveis.",
   path: "/tombador-para",
   idiomas: ["pt-BR"],
+  marca: false,
 });
 
 const VEICULOS_PAGINA: TipoVeiculo[] = ["caminhao", "carreta", "bitrem", "rodotrem"];

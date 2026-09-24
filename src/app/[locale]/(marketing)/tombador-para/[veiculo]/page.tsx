@@ -53,6 +53,7 @@ export async function generateMetadata({
     description: `Qual tombador descarrega ${NOME_VEICULO[veiculo]}: comprimento e peso do veículo pelo CONTRAN, toneladas por viagem de cada grão e os modelos PILI que comportam a composição.`,
     path: `/tombador-para/${veiculo}`,
     idiomas: ["pt-BR"],
+    marca: false,
   });
 }
 

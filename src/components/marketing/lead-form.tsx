@@ -8,6 +8,7 @@ import { leadSchema, type LeadInput } from "@/lib/validators/lead";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { APPLICATIONS } from "@/lib/constants";
+import { registrarEvento } from "@/lib/eventos";
 
 interface LeadFormProps {
   productInterest?: string;
@@ -75,6 +76,7 @@ export function LeadForm({
         }),
       });
       if (!res.ok) throw new Error("Failed");
+      registrarEvento("generate_lead", { formulario: source });
       setStatus("success");
       reset();
     } catch {

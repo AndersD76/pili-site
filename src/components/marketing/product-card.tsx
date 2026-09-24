@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import {
   ArrowRight,
@@ -50,10 +51,18 @@ export function ProductCard({
       >
         {/* Image area */}
         <div className="relative aspect-4/3 overflow-hidden bg-pili-graphite">
-          <img
+          {/*
+           * Pelo otimizador do Next: as fotos do banco têm até 1 MB e saíam no
+           * tamanho original, com preload das cinco da home disputando banda
+           * com o que abre a página. Aqui chegam em WebP/AVIF, na largura do
+           * card e só quando entram na tela.
+           */}
+          <Image
             src={resolvedImage}
             alt={name}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
           {/* Category icon top-right */}
           <div className="absolute right-3 top-3">

@@ -90,11 +90,12 @@ export async function generateMetadata({
     title: `Armazenagem de grãos em ${m.nome} (${m.uf}): ${
       s < 0 ? `déficit de ${toneladasCurto(-s)}` : `sobra de ${toneladasCurto(s)}`
     }`,
-    description: `${m.nome} (${m.uf}) colheu ${toneladas(m.producaoT)} de grãos na safra ${ANO} e tem ${num(
+    description: `${m.nome} (${m.uf}) colheu ${toneladasCurto(m.producaoT)} de grãos em ${ANO} e tem ${num(
       m.armazenagem.unidades,
-    )} armazéns com ${toneladas(m.armazenagem.estatica)} de capacidade. Veja o saldo, as culturas e a recepção necessária.`,
+    )} armazéns com ${toneladasCurto(m.armazenagem.estatica)}. Veja o saldo, as culturas e a recepção na safra.`,
     path: caminho(m.uf, m.slug),
     idiomas: ["pt-BR"],
+    marca: false,
   });
 }
 

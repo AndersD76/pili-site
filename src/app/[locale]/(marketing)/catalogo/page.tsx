@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BookOpen, Download, FileText } from "lucide-react";
 import { CatalogoFolheto } from "@/components/marketing/catalogo-folheto";
+import { registrarEvento } from "@/lib/eventos";
 
 export default function CatalogoPage() {
   const t = useTranslations();
@@ -48,6 +49,7 @@ export default function CatalogoPage() {
         }),
       });
       if (!res.ok) throw new Error("Failed");
+      registrarEvento("generate_lead", { formulario: "CATALOGO" });
       setStatus("unlocked");
     } catch {
       setStatus("error");
@@ -83,7 +85,10 @@ export default function CatalogoPage() {
               <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
                 <button
                   type="button"
-                  onClick={() => setFolhetoAberto(true)}
+                  onClick={() => {
+                    registrarEvento("catalogo_folhear", { idioma: locale });
+                    setFolhetoAberto(true);
+                  }}
                   className="inline-flex items-center gap-2 bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
                 >
                   <BookOpen className="h-4 w-4" />
