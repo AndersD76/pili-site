@@ -217,7 +217,6 @@
       "metaDesc": "Compare lado a lado capacidad, longitud y especificaciones técnicas de los volcadores hidráulicos PILI Industrial.",
       "metaTitle": "Comparar volcadores"
     },
-    "eyebrow": "Línea completa",
     "intro": "Volcadores de granos — también llamados plataformas de descarga o plataformas de volteo — de 9 a 30 metros, además de colectores de muestras y unidades de trasbordo. Todos conformes a NR-12 y NR-10.",
     "models": "modelos",
     "helpText": "Use nuestra calculadora de capacidad o hable directamente con el equipo técnico de PILI para recibir una recomendación personalizada.",
@@ -377,15 +376,14 @@
     },
     "unlock": "Liberar descarga",
     "consentMiddle": "política de privacidad",
-    "eyebrow": "Línea completa",
-    "capaTexto": "{quantidade} equipos con ficha técnica, dimensiones y aplicaciones. Use las flechas o deslice para hojear.",
+    "carregando": "Abriendo el catálogo",
+    "erroFolheto": "No fue posible abrir el catálogo aquí. Descargue el PDF para verlo.",
     "fechar": "Cerrar el catálogo",
     "anterior": "Página anterior",
     "proxima": "Página siguiente",
     "pdf": "Descargar en PDF",
     "abrir": "Hojear el catálogo",
-    "releasedTextRevista": "Catálogo liberado. Hojee aquí o descargue el PDF.",
-    "specs": "Ficha técnica"
+    "releasedTextRevista": "Catálogo liberado. Hojee aquí o descargue el PDF."
   },
   "calculadora": {
     "title": "Calculadora de capacidad",
