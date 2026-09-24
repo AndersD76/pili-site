@@ -11,9 +11,8 @@ import {
 } from "@/lib/validators/lead";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { BookOpen, Download, FileText, Loader2 } from "lucide-react";
-import { CatalogoRevista } from "@/components/marketing/catalogo-revista";
-import type { ProdutoRevista } from "@/lib/catalogo-dados";
+import { BookOpen, Download, FileText } from "lucide-react";
+import { CatalogoFolheto } from "@/components/marketing/catalogo-folheto";
 
 export default function CatalogoPage() {
   const t = useTranslations();
@@ -23,34 +22,9 @@ export default function CatalogoPage() {
     "idle" | "loading" | "unlocked" | "error"
   >("idle");
 
-  /**
-   * Produtos da revista, buscados só quando o visitante decide folhear.
-   * Carregar junto com a página custaria uma consulta ao banco para todo
-   * mundo, inclusive quem nunca abre o catálogo.
-   */
-  const [produtos, setProdutos] = useState<ProdutoRevista[] | null>(null);
-  const [carregandoRevista, setCarregandoRevista] = useState(false);
-  const [revistaAberta, setRevistaAberta] = useState(false);
-
-  async function abrirRevista() {
-    if (produtos) {
-      setRevistaAberta(true);
-      return;
-    }
-    setCarregandoRevista(true);
-    try {
-      const res = await fetch(`/api/catalogo/revista?locale=${locale}`);
-      if (!res.ok) throw new Error("Falha ao carregar");
-      const dados = (await res.json()) as { produtos: ProdutoRevista[] };
-      setProdutos(dados.produtos);
-      setRevistaAberta(true);
-    } catch {
-      // Sem a revista, o PDF ao lado continua servindo.
-      setStatus("error");
-    } finally {
-      setCarregandoRevista(false);
-    }
-  }
+  /** O folheto baixa e desenha o PDF só quando o visitante decide folhear. */
+  const [folhetoAberto, setFolhetoAberto] = useState(false);
+  const pdfHref = `/api/catalogo/pdf?locale=${locale}`;
 
   const {
     register,
@@ -109,19 +83,14 @@ export default function CatalogoPage() {
               <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
                 <button
                   type="button"
-                  onClick={abrirRevista}
-                  disabled={carregandoRevista}
-                  className="inline-flex items-center gap-2 bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep disabled:opacity-60"
+                  onClick={() => setFolhetoAberto(true)}
+                  className="inline-flex items-center gap-2 bg-pili-safety px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-white transition-colors hover:bg-pili-safety-deep"
                 >
-                  {carregandoRevista ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <BookOpen className="h-4 w-4" />
-                  )}
+                  <BookOpen className="h-4 w-4" />
                   {t("catalogo.abrir")}
                 </button>
                 <a
-                  href={`/api/catalogo/pdf?locale=${locale}`}
+                  href={pdfHref}
                   className="inline-flex items-center gap-2 border border-pili-mist px-8 py-4 text-sm font-semibold uppercase tracking-wider text-pili-black transition-colors hover:border-pili-black"
                 >
                   <Download className="h-4 w-4" />
@@ -256,11 +225,10 @@ export default function CatalogoPage() {
         </div>
       </section>
 
-      {revistaAberta && produtos && (
-        <CatalogoRevista
-          produtos={produtos}
-          pdfHref={`/api/catalogo/pdf?locale=${locale}`}
-          aoFechar={() => setRevistaAberta(false)}
+      {folhetoAberto && (
+        <CatalogoFolheto
+          pdfHref={pdfHref}
+          aoFechar={() => setFolhetoAberto(false)}
         />
       )}
     </main>

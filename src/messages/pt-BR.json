@@ -217,7 +217,6 @@
       "metaDesc": "Compare lado a lado capacidade, comprimento e especificações técnicas dos tombadores hidráulicos PILI Industrial.",
       "metaTitle": "Comparar tombadores"
     },
-    "eyebrow": "Linha completa",
     "intro": "Tombadores de grãos — também chamados de plataformas de descarga ou plataformas de tombamento — de 9 a 30 metros, além de coletores de amostras e unidades de transbordo. Todos em conformidade com NR-12 e NR-10.",
     "models": "modelos",
     "helpText": "Use nossa calculadora de capacidade ou fale diretamente com a equipe técnica da PILI para receber uma recomendação personalizada.",
@@ -377,15 +376,14 @@
     },
     "unlock": "Liberar download",
     "consentMiddle": "política de privacidade",
-    "eyebrow": "Linha completa",
-    "capaTexto": "{quantidade} equipamentos com ficha técnica, dimensões e aplicações. Use as setas ou arraste para folhear.",
+    "carregando": "Abrindo o catálogo",
+    "erroFolheto": "Não foi possível abrir o catálogo aqui. Baixe o PDF para ver.",
     "fechar": "Fechar o catálogo",
     "anterior": "Página anterior",
     "proxima": "Próxima página",
     "pdf": "Baixar em PDF",
     "abrir": "Folhear o catálogo",
-    "releasedTextRevista": "Catálogo liberado. Folheie aqui ou baixe o PDF.",
-    "specs": "Ficha técnica"
+    "releasedTextRevista": "Catálogo liberado. Folheie aqui ou baixe o PDF."
   },
   "calculadora": {
     "title": "Calculadora de capacidade",
