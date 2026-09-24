@@ -29,6 +29,23 @@ const csp = [
   "upgrade-insecure-requests",
 ].join("; ");
 
+/**
+ * Produtos do site antigo que ainda nao estao publicados (faltam dados) e por
+ * isso respondem 404. Conferido em producao em 24/09/2026.
+ */
+const AGUARDANDO_PUBLICACAO = new Set([
+  "tombador-10m-movel",
+  "tombador-11m-movel",
+  "tombador-12m-movel",
+  "tombador-18m-movel",
+  "tombador-26m-graos",
+  "tombador-cabine-externa",
+  "tombador-com-sistema-de-pesagem",
+  "tombador-de-batatas",
+  "coletor-de-amostra-de-graos-movel",
+  "central-hidraulica",
+]);
+
 const nextConfig: NextConfig = {
   // Existe um `package-lock.json` órfão acima do projeto (no diretório do
   // usuário) que o Next elegia como raiz do workspace, afetando o tracing de
@@ -105,8 +122,17 @@ const nextConfig: NextConfig = {
        *
        * O nome vinha com "+" no lugar do espaco, e "+" e modificador
        * reservado do path-to-regexp: escrito cru, o Next recusa a rota com
-       * "Unexpected MODIFIER". Codificar para "%2B" resolve sem escapar
-       * caractere a caractere.
+       * "Unexpected MODIFIER". Escapado como "\+" ele vira literal.
+       *
+       * So "%2B" nao bastava: a regra casava apenas o endereco codificado, e
+       * o Google pede com o "+" literal -- o visitante caia no curinga da
+       * listagem em vez do produto. Vao as duas formas.
+       *
+       * Produto sem dado completo nao e publicado e a pagina dele da 404.
+       * Enquanto isso o endereco antigo vai para a listagem com redirect
+       * temporario: o navegador guarda 308 para sempre, e quando o produto
+       * for publicado o endereco precisa poder apontar para ele. Ao publicar,
+       * tire o slug de AGUARDANDO_PUBLICACAO.
        */
       ...Object.entries({
         "Tombador+10+Metros+Fixo": "tombador-caminhao-10m-fixo",
@@ -130,16 +156,18 @@ const nextConfig: NextConfig = {
         "Unidade+de+Transbordo+PILI": "unidade-transbordo",
         "Central+Hidraulica+PILI": "central-hidraulica",
       }).flatMap(([nome, slug]) => {
-        // `encodeURIComponent` transforma o "+" em "%2B", que o
-        // path-to-regexp trata como literal em vez de modificador.
-        const caminho = `/produto/${encodeURIComponent(nome)}`;
-        const destino = `/pt-BR/produtos/${slug}`;
-        return [
-          // Com o id no fim, que e o formato indexado pelo Google.
-          { source: `${caminho}/:id`, destination: destino, permanent: true },
-          // Sem o id: aparecia nos links internos do site antigo.
-          { source: caminho, destination: destino, permanent: true },
+        const publicado = !AGUARDANDO_PUBLICACAO.has(slug);
+        const destino = publicado ? `/pt-BR/produtos/${slug}` : "/pt-BR/produtos";
+        const caminhos = [
+          `/produto/${nome.replaceAll("+", "\\+")}`,
+          `/produto/${encodeURIComponent(nome)}`,
         ];
+        return caminhos.flatMap((caminho) => [
+          // Com o id no fim, que e o formato indexado pelo Google.
+          { source: `${caminho}/:id`, destination: destino, permanent: publicado },
+          // Sem o id: aparecia nos links internos do site antigo.
+          { source: caminho, destination: destino, permanent: publicado },
+        ]);
       }),
       /**
        * Qualquer outro /produto/... do site antigo vai para a listagem, em vez
