@@ -9,11 +9,15 @@ import {
   catalogFormSchema,
   type CatalogFormInput,
 } from "@/lib/validators/lead";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BookOpen, Download, FileText } from "lucide-react";
 import { CatalogoFolheto } from "@/components/marketing/catalogo-folheto";
 import { registrarEvento } from "@/lib/eventos";
+
+/** Mesmo desenho dos campos do formulário de contato (`lead-form.tsx`). */
+const CAMPO =
+  "h-10 w-full border border-pili-mist bg-pili-white px-3 py-2 text-sm text-pili-black transition-colors focus:border-pili-safety focus:outline-none focus:ring-1 focus:ring-pili-safety";
+const ROTULO = "mb-1.5 text-pili-graphite";
 
 export default function CatalogoPage() {
   const t = useTranslations();
@@ -130,8 +134,8 @@ export default function CatalogoPage() {
               >
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
-                    <Label htmlFor="cat-name">{t("forms.name")} *</Label>
-                    <Input id="cat-name" {...register("name")} />
+                    <Label htmlFor="cat-name" className={ROTULO}>{t("forms.name")} *</Label>
+                    <input id="cat-name" {...register("name")} className={CAMPO} />
                     {errors.name && (
                       <p className="mt-1 text-xs text-pili-danger">
                         {errors.name.message}
@@ -140,8 +144,8 @@ export default function CatalogoPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="cat-email">{t("forms.email")} *</Label>
-                    <Input id="cat-email" type="email" {...register("email")} />
+                    <Label htmlFor="cat-email" className={ROTULO}>{t("forms.email")} *</Label>
+                    <input id="cat-email" type="email" {...register("email")} className={CAMPO} />
                     {errors.email && (
                       <p className="mt-1 text-xs text-pili-danger">
                         {errors.email.message}
@@ -150,8 +154,8 @@ export default function CatalogoPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="cat-company">{t("forms.company")} *</Label>
-                    <Input id="cat-company" {...register("company")} />
+                    <Label htmlFor="cat-company" className={ROTULO}>{t("forms.company")} *</Label>
+                    <input id="cat-company" {...register("company")} className={CAMPO} />
                     {errors.company && (
                       <p className="mt-1 text-xs text-pili-danger">
                         {errors.company.message}
@@ -160,11 +164,11 @@ export default function CatalogoPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="cat-country">{t("catalogo.country")} *</Label>
+                    <Label htmlFor="cat-country" className={ROTULO}>{t("catalogo.country")} *</Label>
                     <select
                       id="cat-country"
                       {...register("country")}
-                      className="flex h-10 w-full border border-pili-mist bg-pili-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pili-safety"
+                      className={CAMPO}
                     >
                       <option value="BR">{t("catalogo.countries.BR")}</option>
                       <option value="PY">{t("catalogo.countries.PY")}</option>
@@ -191,9 +195,13 @@ export default function CatalogoPage() {
                     {...register("consent")}
                     className="mt-1 h-4 w-4 accent-pili-safety"
                   />
-                  <Label
+                  {/*
+                   * <label> comum, e não o <Label> do shadcn: ele é flex, e cada
+                   * trecho de texto em volta do link virava uma coluna.
+                   */}
+                  <label
                     htmlFor="cat-consent"
-                    className="text-sm font-normal text-pili-concrete"
+                    className="text-sm leading-relaxed text-pili-concrete"
                   >
                     {t("catalogo.consentPrefix")}{" "}
                     <Link
@@ -203,7 +211,7 @@ export default function CatalogoPage() {
                       {t("catalogo.consentMiddle")}
                     </Link>{" "}
                     {t("catalogo.consentSuffix")}
-                  </Label>
+                  </label>
                 </div>
                 {errors.consent && (
                   <p className="text-xs text-pili-danger">
