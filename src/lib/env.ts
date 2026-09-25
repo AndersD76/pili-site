@@ -51,8 +51,10 @@ const schema = z.object({
   NEXT_PUBLIC_SITE_URL: z.string().url().optional(),
   /** Lidas no servidor: mudam com um restart, sem precisar de novo build. */
   GA_ID: z.string().optional(),
+  GTM_ID: z.string().optional(),
   META_PIXEL_ID: z.string().optional(),
   NEXT_PUBLIC_GA_ID: z.string().optional(),
+  NEXT_PUBLIC_GTM_ID: z.string().optional(),
   NEXT_PUBLIC_META_PIXEL_ID: z.string().optional(),
 
   // Ecossistema.
