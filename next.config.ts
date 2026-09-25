@@ -16,12 +16,16 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   // Tiles do mapa de unidades no rodape. O Leaflet busca cada tile como <img>:
   // sem estes hosts aqui o mapa sobe cinza, sem erro visivel alem do console.
-  "img-src 'self' data: blob: https://utfs.io https://uploadthing.com https://pili.ind.br https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://www.google-analytics.com https://www.facebook.com",
+  // O Google Ads e o GA marcam conversao com <img> de 1x1 nestes hosts; sem
+  // eles a tag dispara e a conversao nunca chega.
+  "img-src 'self' data: blob: https://utfs.io https://uploadthing.com https://pili.ind.br https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com https://www.google.com.br https://googleads.g.doubleclick.net https://www.facebook.com",
   "font-src 'self' data:",
-  `connect-src 'self' https://*.upstash.io https://vitals.vercel-insights.com https://www.google-analytics.com https://connect.facebook.net${isDev ? " ws: http://localhost:*" : ""}`,
+    // O GTM baixa a configuracao do container e as tags enviam por fetch/beacon.
+  `connect-src 'self' https://*.upstash.io https://vitals.vercel-insights.com https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://*.google-analytics.com https://googleads.g.doubleclick.net https://connect.facebook.net${isDev ? " ws: http://localhost:*" : ""}`,
   "frame-ancestors 'none'",
   // Mapa da pagina de contato (OpenStreetMap, sem chave de API).
-  "frame-src https://www.openstreetmap.org",
+  // O rastreamento de conversao do Ads abre um iframe oculto no doubleclick.
+  "frame-src https://www.openstreetmap.org https://td.doubleclick.net https://www.googletagmanager.com",
   "base-uri 'self'",
   "form-action 'self'",
   "worker-src 'self' blob:",

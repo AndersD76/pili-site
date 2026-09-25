@@ -23,9 +23,19 @@ import { useCookieConsent } from "./cookie-banner";
  */
 export function Analytics({
   gaId,
+  gtmId,
   pixelId,
 }: {
   gaId?: string;
+  /**
+   * Contêiner do Google Tag Manager.
+   *
+   * Existe para a agência gerenciar as tags de campanha (Google Ads, remarketing)
+   * sem depender de deploy. O GA4 continua carregado direto por `gaId`: é a
+   * medição do site, e deixá-la dentro do contêiner tornaria o dado do próprio
+   * negócio refém de quem administra o GTM.
+   */
+  gtmId?: string;
   pixelId?: string;
 }) {
   const consent = useCookieConsent();
@@ -64,6 +74,12 @@ export function Analytics({
             {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${gaId}',{anonymize_ip:true});`}
           </Script>
         </>
+      )}
+
+      {gtmId && (
+        <Script id="gtm-init" strategy="afterInteractive">
+          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`}
+        </Script>
       )}
 
       {pixelId && (

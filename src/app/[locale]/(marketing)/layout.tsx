@@ -42,6 +42,7 @@ export default async function MarketingLayout({
       <CookieBanner />
       <Analytics
         gaId={process.env.GA_ID ?? process.env.NEXT_PUBLIC_GA_ID}
+        gtmId={process.env.GTM_ID ?? process.env.NEXT_PUBLIC_GTM_ID}
         pixelId={
           process.env.META_PIXEL_ID ?? process.env.NEXT_PUBLIC_META_PIXEL_ID
         }
