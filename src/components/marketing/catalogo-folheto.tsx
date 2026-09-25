@@ -20,7 +20,17 @@ import type { PDFDocumentLoadingTask, PDFDocumentProxy } from "pdfjs-dist";
  */
 
 /** Duração da virada, em segundos. */
-const VIRADA_S = 0.62;
+const VIRADA_S = 0.92;
+
+/**
+ * Curva da virada.
+ *
+ * `[0.3, 0, 0.2, 1]` arrancava rapido e freava no fim, o que parece um slide
+ * trocando, nao papel virando. Papel comeca devagar, ganha peso quando passa
+ * da vertical e assenta sem repique -- e o que esta curva faz, com a saida
+ * mais longa que a entrada.
+ */
+const CURVA_VIRADA = [0.42, 0.02, 0.18, 1] as const;
 
 /** Páginas guardadas em memória. A 24ª desenhada descarta a mais antiga. */
 const MAX_CACHE = 24;
@@ -439,7 +449,7 @@ export function CatalogoFolheto({ pdfHref, aoFechar }: Props) {
                   }}
                   initial={{ rotateY: 0 }}
                   animate={{ rotateY: virando === 1 ? -180 : 180 }}
-                  transition={{ duration: VIRADA_S, ease: [0.3, 0, 0.2, 1] }}
+                  transition={{ duration: VIRADA_S, ease: [...CURVA_VIRADA] }}
                   onAnimationComplete={() => {
                     setIndice((i) => i + (virando ?? 0));
                     setVirando(null);
