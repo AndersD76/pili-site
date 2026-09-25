@@ -221,7 +221,8 @@ const s = StyleSheet.create({
     bottom: 74,
     left: 0,
     right: 0,
-    height: 236,
+    // Proporcional a altura util da paisagem (595 pt), como as demais alturas.
+    height: 170,
     objectFit: "cover",
   },
   capaRodape: {
@@ -571,17 +572,22 @@ function PaginaFicha({
    * Sem ficha tecnica sobra pagina: a foto cresce para ocupar. Quando nem foto
    * existe, o bloco cinza fica menor — placeholder gigante so chama atencao
    * para o que falta.
+   *
+   * Os valores foram recalculados para a paisagem: a altura util caiu de 842
+   * para 595 pt, e as alturas do retrato estouravam a pagina. Em paisagem a
+   * foto tambem e mais larga, entao precisa de menos altura para o mesmo peso
+   * visual.
    */
   const alturaHero = temFicha
     ? features.length >= 4
-      ? 214
-      : 252
+      ? 150
+      : 176
     : p.imagens[0]
-      ? 420
-      : 262;
+      ? 300
+      : 184;
 
   return (
-    <Page size="A4" style={s.page}>
+    <Page size="A4" orientation="landscape" style={s.page}>
       <Cabecalho t={t} />
 
       {p.imagens[0] ? (
@@ -708,7 +714,7 @@ function PaginaDetalhe({
   const faqs = extras.length === 1 && !temBlocoDeFicha ? p.faqs.slice(0, 3) : [];
 
   return (
-    <Page size="A4" style={s.page}>
+    <Page size="A4" orientation="landscape" style={s.page}>
       <Cabecalho t={t} />
 
       <View style={[s.bloco, { paddingBottom: 10 }]}>
@@ -898,7 +904,7 @@ export function CatalogoPdf({
       subject={t.capaSubtitulo}
       language={locale === "es" ? "es-419" : locale}
     >
-      <Page size="A4" style={[s.page, s.capa]}>
+      <Page size="A4" orientation="landscape" style={[s.page, s.capa]}>
         <Cabecalho t={t} />
         <View style={s.capaCorpo}>
           <Image src={logoWhiteDataUri} style={s.capaLogo} />
@@ -916,7 +922,7 @@ export function CatalogoPdf({
         </View>
       </Page>
 
-      <Page size="A4" style={s.page}>
+      <Page size="A4" orientation="landscape" style={s.page}>
         <Cabecalho t={t} />
         <View style={[s.bloco, { paddingTop: 28 }]}>
           <Text style={s.indiceTitulo}>{t.indiceTitulo}</Text>
@@ -960,7 +966,7 @@ export function CatalogoPdf({
         />,
       ])}
 
-      <Page size="A4" style={[s.page, s.contracapa]}>
+      <Page size="A4" orientation="landscape" style={[s.page, s.contracapa]}>
         <Cabecalho t={t} />
         <View style={s.contracapaCorpo}>
           <Image
