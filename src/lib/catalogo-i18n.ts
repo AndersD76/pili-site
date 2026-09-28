@@ -17,6 +17,14 @@ export interface TextosCatalogo {
   capaTitulo: string;
   capaSubtitulo: string;
   capaChamada: string;
+  comoLerTitulo: string;
+  comoLerTexto: string;
+  comoLerFicha: string;
+  comoLerFichaTexto: string;
+  comoLerDetalhe: string;
+  comoLerDetalheTexto: string;
+  comoLerNormas: string;
+  comoLerNormasTexto: string;
   indiceTitulo: string;
   indiceLegenda: string;
   pagina: string;
@@ -48,6 +56,18 @@ export const TEXTOS: Record<LocaleCatalogo, TextosCatalogo> = {
     capaSubtitulo:
       "Tombadores hidráulicos e equipamentos para movimentação de granéis",
     capaChamada: "De 10 a 30 metros. De 40 a 100 toneladas.",
+    comoLerTitulo: "Como ler este catálogo",
+    comoLerTexto:
+      "Cada equipamento ocupa duas páginas: à esquerda a ficha técnica, à direita o detalhamento construtivo. Os números são de projeto, medidos em operação.",
+    comoLerFicha: "Página da esquerda",
+    comoLerFichaTexto:
+      "Capacidade, comprimento, largura, ângulo, motor e ciclo. É a folha de dados para dimensionar o equipamento contra a sua operação.",
+    comoLerDetalhe: "Página da direita",
+    comoLerDetalheTexto:
+      "Construção, automação, aplicações atendidas e as dúvidas mais frequentes da engenharia sobre aquele modelo.",
+    comoLerNormas: "Normas",
+    comoLerNormasTexto:
+      "Todos os equipamentos são projetados em conformidade com NR-12 e NR-10. A estrutura é em aço ASTM A572 Gr.50.",
     indiceTitulo: "Índice",
     indiceLegenda: "Linha completa de equipamentos",
     pagina: "Pág.",
@@ -79,6 +99,18 @@ export const TEXTOS: Record<LocaleCatalogo, TextosCatalogo> = {
     capaSubtitulo:
       "Volcadores hidráulicos y equipos para el movimiento de graneles",
     capaChamada: "De 10 a 30 metros. De 40 a 100 toneladas.",
+    comoLerTitulo: "Cómo leer este catálogo",
+    comoLerTexto:
+      "Cada equipo ocupa dos páginas: a la izquierda la ficha técnica, a la derecha el detalle constructivo. Los números son de proyecto, medidos en operación.",
+    comoLerFicha: "Página izquierda",
+    comoLerFichaTexto:
+      "Capacidad, largo, ancho, ángulo, motor y ciclo. Es la hoja de datos para dimensionar el equipo frente a su operación.",
+    comoLerDetalhe: "Página derecha",
+    comoLerDetalheTexto:
+      "Construcción, automatización, aplicaciones atendidas y las dudas más frecuentes de la ingeniería sobre ese modelo.",
+    comoLerNormas: "Normas",
+    comoLerNormasTexto:
+      "Todos los equipos se diseñan conforme a NR-12 y NR-10. La estructura es en acero ASTM A572 Gr.50.",
     indiceTitulo: "Índice",
     indiceLegenda: "Línea completa de equipos",
     pagina: "Pág.",
