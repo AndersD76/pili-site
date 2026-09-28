@@ -580,14 +580,14 @@ function PaginaFicha({
    */
   const alturaHero = temFicha
     ? features.length >= 4
-      ? 150
-      : 176
+      ? 118
+      : 140
     : p.imagens[0]
-      ? 300
-      : 184;
+      ? 250
+      : 150;
 
   return (
-    <Page size="A4" orientation="landscape" style={s.page}>
+    <Page size="A4" orientation="landscape" style={s.page} wrap={false}>
       <Cabecalho t={t} />
 
       {p.imagens[0] ? (
@@ -714,7 +714,7 @@ function PaginaDetalhe({
   const faqs = extras.length === 1 && !temBlocoDeFicha ? p.faqs.slice(0, 3) : [];
 
   return (
-    <Page size="A4" orientation="landscape" style={s.page}>
+    <Page size="A4" orientation="landscape" style={s.page} wrap={false}>
       <Cabecalho t={t} />
 
       <View style={[s.bloco, { paddingBottom: 10 }]}>
@@ -884,8 +884,16 @@ export function CatalogoPdf({
 
   const t = TEXTOS[locale];
   const lista = ordenar(produtos);
-  // Capa (1) + indice (2); a partir da 3, duas paginas por produto.
-  const paginaDoProduto = (i: number) => 3 + i * 2;
+  /**
+   * Capa (1), indice (2), apresentacao (3); cada produto ocupa a abertura
+   * seguinte, comecando na 4.
+   *
+   * A apresentacao existe para alinhar as aberturas. Sem ela a ficha caia em
+   * pagina impar e o leitor mostrava o "por dentro" de um produto ao lado da
+   * ficha do produto seguinte -- duas coisas sem relacao na mesma tela. Com
+   * ela, ficha e detalhe do mesmo equipamento ficam sempre lado a lado.
+   */
+  const paginaDoProduto = (i: number) => 4 + i * 2;
 
   const grupos = ORDEM_CATEGORIAS.map((cat) => ({
     cat,
@@ -943,6 +951,54 @@ export function CatalogoPdf({
               ))}
             </View>
           ))}
+        </View>
+      </Page>
+
+      {/*
+        Apresentacao: par do indice na abertura, e o que alinha o catalogo.
+        Sem esta pagina a ficha de cada produto caia em pagina impar e o
+        leitor mostrava o detalhe de um equipamento ao lado da ficha do
+        seguinte. Nao e pagina de enchimento: explica como ler a ficha e
+        fecha com os numeros da fabrica.
+      */}
+      <Page size="A4" orientation="landscape" style={s.page}>
+        <Cabecalho t={t} />
+        <View style={[s.bloco, { paddingTop: 28 }]}>
+          <Text style={s.indiceTitulo}>{t.comoLerTitulo}</Text>
+          <Text style={s.indiceLegenda}>{t.comoLerTexto}</Text>
+
+          <View style={[s.features, { marginTop: 26 }]}>
+            {[
+              { titulo: t.comoLerFicha, texto: t.comoLerFichaTexto },
+              { titulo: t.comoLerDetalhe, texto: t.comoLerDetalheTexto },
+              { titulo: t.comoLerNormas, texto: t.comoLerNormasTexto },
+            ].map((d, i) => (
+              <View key={i} style={[s.feature, { width: "33.33%", paddingRight: 18 }]}>
+                <View style={{ flex: 1 }}>
+                  <Text style={s.featureTitulo}>{d.titulo}</Text>
+                  <Text style={s.featureTexto}>{d.texto}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
+
+          <View style={[s.stats, { marginTop: 18, borderTopWidth: 1, borderTopColor: MIST }]}>
+            {[
+              { valor: stats.equipamentos, label: t.statEquipamentos },
+              { valor: stats.paises, label: t.statPaises },
+              { valor: stats.anos, label: t.statAnos },
+            ].map((d, i) => (
+              <View key={i} style={[s.stat, i > 0 ? s.statDivisor : {}]}>
+                <Text style={s.statValor}>{d.valor}</Text>
+                <Text style={s.statLabel}>{d.label}</Text>
+              </View>
+            ))}
+          </View>
+
+          <View style={[s.declaracao, { marginHorizontal: 0, marginTop: 18 }]}>
+            <View style={s.declaracaoBarra} />
+            <Text style={s.declaracaoTexto}>{t.declaracao}</Text>
+          </View>
         </View>
       </Page>
 
