@@ -54,7 +54,7 @@ export default async function OrcamentoPage({
               {t("orcamento.projectDataText")}
             </p>
             <div className="mt-8">
-              <LeadForm compact={false} source="ORCAMENTO" />
+              <LeadForm compact={false} source="FORMULARIO" />
             </div>
           </div>
         </div>
