@@ -236,7 +236,7 @@ export default async function CaseDetailPage({
               productInterest={
                 relatedProducts[0]?.name ?? caseData.application
               }
-              source="CASE_STUDY"
+              source="FORMULARIO"
             />
           </div>
         </div>

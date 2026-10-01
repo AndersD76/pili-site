@@ -182,7 +182,7 @@ export default async function ContatoPage({
               {t("contato.formIntro")}
             </p>
             <div className="mt-8">
-              <LeadForm source="CONTATO" />
+              <LeadForm source="FORMULARIO" />
             </div>
           </div>
         </div>

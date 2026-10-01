@@ -290,7 +290,7 @@ export default async function SectorPage({
             {t("solucoes.quoteSubtitle", { sector: rotulo.toLowerCase() })}
           </p>
           <div className="mt-10">
-            <LeadForm dark source={`SOLUCAO_${setor.toUpperCase()}`} />
+            <LeadForm dark source="FORMULARIO" />
           </div>
         </div>
       </section>

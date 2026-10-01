@@ -4,7 +4,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { leadSchema, type LeadInput } from "@/lib/validators/lead";
+import {
+  leadSchema,
+  type LeadInput,
+  type LeadSourceLiteral,
+} from "@/lib/validators/lead";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { APPLICATIONS } from "@/lib/constants";
@@ -12,7 +16,14 @@ import { registrarEvento } from "@/lib/eventos";
 
 interface LeadFormProps {
   productInterest?: string;
-  source?: string;
+  /**
+   * Origem gravada no lead. Tipada pelos valores que o servidor aceita: como
+   * `string`, as páginas de contato, orçamento, soluções e obras mandavam
+   * "CONTATO", "ORCAMENTO", "SOLUCAO_..." e "CASE_STUDY" desde o lançamento,
+   * a API recusava e o visitante via "Ocorreu um erro". A página de origem
+   * fica em `pageUrl`.
+   */
+  source?: LeadSourceLiteral;
   compact?: boolean;
   /** Formulário sobre fundo escuro (seções `bg-pili-black`). */
   dark?: boolean;
