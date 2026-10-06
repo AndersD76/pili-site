@@ -54,3 +54,19 @@ geradas a partir de dado público da Conab (cadastro de armazéns) e do IBGE
   URLs novas ou alteradas.
 - **Privacidade:** armazéns de pessoa física entram só em totais; nome, endereço
   e e-mail nunca saem do script.
+
+## Memória em produção (Railway)
+
+- **Heap do Node limitado a 512 MB** no script `start`. Sem o limite o V8 se
+  dimensiona pelo container (24 GB no Railway, o que dá um teto de ~4 GB) e
+  adia a coleta de lixo. Medido sob varredura de robô em todas as páginas, o
+  heap vivo fica em ~120 MB e não passa de ~220 MB.
+- **O grosso da memória que o Railway cobra não é do Node.** É o cache de
+  página do Linux sobre os arquivos do ISR em `.next/server/app`: ~2,8 GB em
+  ~77 mil arquivos, porque cada página de mercado de grãos grava ~470 KB entre
+  HTML, RSC e segmentos. Cada leitura e cada regeneração desses arquivos entra
+  na conta do container. Uma varredura completa leva o container de 0,5 GB a
+  3,7 GB; as regenerações seguintes, a 6,7 GB. O Node fica em ~0,4 GB.
+- **O que segura isso é o limite de memória do serviço** (Settings → Resource
+  limits). Com 1 GB o kernel devolve o cache ao chegar no teto: o mesmo teste
+  ficou em 1 GB, sem OOM e sem perder velocidade.
