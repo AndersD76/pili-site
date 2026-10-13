@@ -50,7 +50,7 @@ export default async function BlogPage() {
         </div>
       )}
 
-      <div className="rounded-lg border border-pili-mist bg-pili-white">
+      <div className="overflow-hidden rounded-lg border border-pili-mist bg-pili-white">
         <Table>
           <TableHeader>
             <TableRow>
