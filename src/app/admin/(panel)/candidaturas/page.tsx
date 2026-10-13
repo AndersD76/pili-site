@@ -60,8 +60,13 @@ export default async function CandidaturasPage() {
           </p>
         </div>
       ) : (
-        <div className="rounded-lg border border-pili-mist bg-pili-white">
-          <Table>
+        <div className="overflow-hidden rounded-lg border border-pili-mist bg-pili-white">
+          {/*
+            `min-w` na tabela: sem ela as seis colunas se espremem ate a de
+            acoes sair da tela. Com a largura minima a tabela rola na
+            horizontal dentro do card, em vez de cortar conteudo.
+          */}
+          <Table className="min-w-[1100px]">
             <TableHeader>
               <TableRow>
                 <TableHead>Candidato</TableHead>
@@ -78,7 +83,7 @@ export default async function CandidaturasPage() {
                   <TableCell>
                     <div className="font-medium text-pili-black">{c.name}</div>
                     {c.message && (
-                      <p className="mt-1 max-w-md text-xs leading-relaxed text-pili-concrete">
+                      <p className="mt-1 max-w-xs text-xs leading-relaxed text-pili-concrete">
                         {c.message.length > 160
                           ? `${c.message.slice(0, 160)}…`
                           : c.message}

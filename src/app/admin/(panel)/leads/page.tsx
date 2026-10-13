@@ -160,7 +160,7 @@ export default async function LeadsPage({ searchParams }: PageProps) {
           </p>
         </div>
       ) : (
-        <div className="rounded-lg border">
+        <div className="overflow-hidden rounded-lg border">
           <Table>
             <TableHeader>
               <TableRow>
