@@ -80,13 +80,20 @@ export default async function CandidaturasPage() {
             <TableBody>
               {candidaturas.map((c) => (
                 <TableRow key={c.id} className={c.reviewedAt ? "opacity-60" : undefined}>
-                  <TableCell>
+                  {/*
+                    O TableCell vem com `whitespace-nowrap`: a mensagem não
+                    quebrava linha e invadia as colunas de área e contato.
+                    Aqui a coluna tem largura própria e o texto quebra,
+                    limitado a duas linhas; o texto inteiro fica no `title`.
+                  */}
+                  <TableCell className="w-80 max-w-80 whitespace-normal">
                     <div className="font-medium text-pili-black">{c.name}</div>
                     {c.message && (
-                      <p className="mt-1 max-w-xs text-xs leading-relaxed text-pili-concrete">
-                        {c.message.length > 160
-                          ? `${c.message.slice(0, 160)}…`
-                          : c.message}
+                      <p
+                        className="mt-1 line-clamp-2 text-xs leading-relaxed text-pili-concrete"
+                        title={c.message}
+                      >
+                        {c.message}
                       </p>
                     )}
                   </TableCell>
