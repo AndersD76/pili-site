@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jobApplicationFormSchema } from "@/lib/validators/lead";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { CAMPO_ARMADILHA, caiuNaArmadilha } from "@/lib/armadilha";
 import { logError } from "@/lib/prisma-errors";
 import { db } from "@/lib/db";
 import { detectCvType, MAX_CV_SIZE } from "@/lib/media";
@@ -35,6 +36,12 @@ export async function POST(request: NextRequest) {
       form = await request.formData();
     } catch {
       return NextResponse.json({ error: "Invalid body" }, { status: 400 });
+    }
+
+    // Honeypot preenchido: o mesmo robô dos leads chegou a mandar candidaturas
+    // com nome e mensagem aleatórios. Responde como sucesso e descarta.
+    if (caiuNaArmadilha(form.get(CAMPO_ARMADILHA))) {
+      return NextResponse.json({ success: true }, { status: 201 });
     }
 
     const parsed = jobApplicationFormSchema.safeParse({

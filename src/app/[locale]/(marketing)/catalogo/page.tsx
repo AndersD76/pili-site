@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type BaseSyntheticEvent } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocale, useTranslations } from "next-intl";
@@ -13,6 +13,11 @@ import { Label } from "@/components/ui/label";
 import { BookOpen, FileText } from "lucide-react";
 import { CatalogoFolheto } from "@/components/marketing/catalogo-folheto";
 import { registrarEvento } from "@/lib/eventos";
+import { CAMPO_ARMADILHA } from "@/lib/armadilha";
+import {
+  CampoArmadilha,
+  lerArmadilha,
+} from "@/components/shared/campo-armadilha";
 
 /** Mesmo desenho dos campos do formulário de contato (`lead-form.tsx`). */
 const CAMPO =
@@ -43,7 +48,10 @@ export default function CatalogoPage() {
     defaultValues: { name: "", email: "", company: "", country: "BR" },
   });
 
-  async function onSubmit(values: CatalogFormInput) {
+  async function onSubmit(
+    values: CatalogFormInput,
+    evento?: BaseSyntheticEvent,
+  ) {
     setStatus("loading");
     try {
       const res = await fetch("/api/leads", {
@@ -53,6 +61,7 @@ export default function CatalogoPage() {
           ...values,
           source: "CATALOGO",
           pageUrl: window.location.href,
+          [CAMPO_ARMADILHA]: lerArmadilha(evento),
         }),
       });
       if (!res.ok) throw new Error("Failed");
@@ -126,8 +135,9 @@ export default function CatalogoPage() {
 
               <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="mt-8 flex flex-col gap-4"
+                className="relative mt-8 flex flex-col gap-4"
               >
+                <CampoArmadilha />
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <Label htmlFor="cat-name" className={ROTULO}>{t("forms.name")} *</Label>

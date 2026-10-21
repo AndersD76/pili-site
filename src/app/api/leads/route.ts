@@ -4,6 +4,7 @@ import {
   type LeadSourceLiteral,
 } from "@/lib/validators/lead";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { CAMPO_ARMADILHA, caiuNaArmadilha } from "@/lib/armadilha";
 import { sendLeadEmails } from "@/lib/email/send-lead-emails";
 import { logError } from "@/lib/prisma-errors";
 import { db } from "@/lib/db";
@@ -43,6 +44,17 @@ export async function POST(request: NextRequest) {
       body = await request.json();
     } catch {
       return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+    }
+
+    // Honeypot preenchido: responde como sucesso e descarta, sem gravar nem
+    // mandar e-mail. Um erro ensinaria o robô a deixar o campo vazio. Fica
+    // antes da validação para o valor nunca chegar ao `db.lead.create`.
+    if (
+      typeof body === "object" &&
+      body !== null &&
+      caiuNaArmadilha((body as Record<string, unknown>)[CAMPO_ARMADILHA])
+    ) {
+      return NextResponse.json({ success: true }, { status: 201 });
     }
 
     const parsed = leadRequestSchema.safeParse(body);
