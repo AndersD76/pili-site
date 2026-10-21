@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useState, type BaseSyntheticEvent } from "react";
 import { useTranslations } from "next-intl";
 import {
   leadSchema,
@@ -13,6 +13,11 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { APPLICATIONS } from "@/lib/constants";
 import { registrarEvento } from "@/lib/eventos";
+import { CAMPO_ARMADILHA } from "@/lib/armadilha";
+import {
+  CampoArmadilha,
+  lerArmadilha,
+} from "@/components/shared/campo-armadilha";
 
 interface LeadFormProps {
   productInterest?: string;
@@ -74,7 +79,7 @@ export function LeadForm({
     },
   });
 
-  async function onSubmit(data: LeadInput) {
+  async function onSubmit(data: LeadInput, evento?: BaseSyntheticEvent) {
     setStatus("loading");
     try {
       const res = await fetch("/api/leads", {
@@ -84,6 +89,7 @@ export function LeadForm({
           ...data,
           source,
           pageUrl: window.location.href,
+          [CAMPO_ARMADILHA]: lerArmadilha(evento),
         }),
       });
       if (!res.ok) throw new Error("Failed");
@@ -113,8 +119,9 @@ export function LeadForm({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className={cn("flex flex-col gap-4", className)}
+      className={cn("relative flex flex-col gap-4", className)}
     >
+      <CampoArmadilha />
       <div
         className={cn(
           "grid gap-4",

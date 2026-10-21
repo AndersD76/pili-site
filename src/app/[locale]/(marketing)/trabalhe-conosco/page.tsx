@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type BaseSyntheticEvent } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { COMPANY, STATS } from "@/lib/constants";
@@ -11,6 +11,11 @@ import {
 } from "@/lib/validators/lead";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { CAMPO_ARMADILHA } from "@/lib/armadilha";
+import {
+  CampoArmadilha,
+  lerArmadilha,
+} from "@/components/shared/campo-armadilha";
 import { Users } from "lucide-react";
 import { useTranslations } from "next-intl";
 import {
@@ -48,7 +53,10 @@ export default function TrabalheConoscoPage() {
     defaultValues: { name: "", email: "", phone: "", area: "", message: "" },
   });
 
-  async function onSubmit(values: JobApplicationFormInput) {
+  async function onSubmit(
+    values: JobApplicationFormInput,
+    evento?: BaseSyntheticEvent,
+  ) {
     setErroCv(null);
 
     if (cv) {
@@ -75,6 +83,7 @@ export default function TrabalheConoscoPage() {
       body.set("area", values.area);
       body.set("message", values.message ?? "");
       body.set("consent", String(values.consent));
+      body.set(CAMPO_ARMADILHA, lerArmadilha(evento));
       if (cv) body.set("cv", cv);
 
       const res = await fetch("/api/candidaturas", { method: "POST", body });
@@ -159,8 +168,9 @@ export default function TrabalheConoscoPage() {
 
                 <form
                   onSubmit={handleSubmit(onSubmit)}
-                  className="mt-6 flex flex-col gap-4"
+                  className="relative mt-6 flex flex-col gap-4"
                 >
+                  <CampoArmadilha />
                   <div>
                     <Label htmlFor="app-name">{t("trabalhe.fullName")} *</Label>
                     <Input id="app-name" {...register("name")} />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type BaseSyntheticEvent } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
@@ -23,6 +23,11 @@ import {
 } from "@/lib/calculadora";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { CAMPO_ARMADILHA } from "@/lib/armadilha";
+import {
+  CampoArmadilha,
+  lerArmadilha,
+} from "@/components/shared/campo-armadilha";
 import { registrarEvento } from "@/lib/eventos";
 
 const VEICULOS_ORDEM: TipoVeiculo[] = [
@@ -116,7 +121,10 @@ export function CalculadoraForm({ tombadores }: { tombadores: Tombador[] }) {
     setLiberado(false);
   }
 
-  async function liberar(values: CalculatorGateInput) {
+  async function liberar(
+    values: CalculatorGateInput,
+    evento?: BaseSyntheticEvent,
+  ) {
     setGateStatus("loading");
     try {
       const res = await fetch("/api/leads", {
@@ -131,6 +139,7 @@ export function CalculadoraForm({ tombadores }: { tombadores: Tombador[] }) {
           productInterest: resultado?.tombador.nome,
           grainType: produto,
           pageUrl: window.location.href,
+          [CAMPO_ARMADILHA]: lerArmadilha(evento),
         }),
       });
       if (!res.ok) throw new Error("Failed");
@@ -403,8 +412,9 @@ export function CalculadoraForm({ tombadores }: { tombadores: Tombador[] }) {
 
                 <form
                   onSubmit={handleGateSubmit(liberar)}
-                  className="mt-4 flex flex-col gap-3"
+                  className="relative mt-4 flex flex-col gap-3"
                 >
+                  <CampoArmadilha />
                   <div className="flex gap-2">
                     <div className="flex-1">
                       <Label htmlFor="calc-email" className="sr-only">
