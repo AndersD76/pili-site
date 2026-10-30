@@ -50,6 +50,33 @@ async function salvarFaqs(
   });
 }
 
+/**
+ * Regrava os diferenciais de um idioma. Substituição completa, como as
+ * perguntas: a ordem da lista no formulário vira o `order` no banco.
+ *
+ * Lista vazia em espanhol apaga os diferenciais em espanhol, e o site cai nos
+ * de português — mesma regra da tradução do produto.
+ */
+async function salvarDiferenciais(
+  productId: string,
+  locale: "pt_BR" | "es",
+  lista: { title: string; description: string; icon: string }[],
+) {
+  await db.feature.deleteMany({ where: { productId, locale } });
+  if (lista.length === 0) return;
+
+  await db.feature.createMany({
+    data: lista.map((f, i) => ({
+      productId,
+      locale,
+      title: f.title,
+      description: f.description,
+      icon: f.icon || null,
+      order: i,
+    })),
+  });
+}
+
 async function salvarTraducaoEs(
   productId: string,
   d: {
@@ -96,6 +123,12 @@ function parseProductForm(data: FormData) {
     return { ok: false as const, error: "Formato das perguntas inválido" };
   }
 
+  const features = formJsonArray(data, "features");
+  const featuresEs = formJsonArray(data, "featuresEs");
+  if (features === null || featuresEs === null) {
+    return { ok: false as const, error: "Formato dos diferenciais inválido" };
+  }
+
   const tagline = formString(data, "tagline").trim();
 
   const metaTitle = formString(data, "metaTitle").trim();
@@ -113,6 +146,8 @@ function parseProductForm(data: FormData) {
     featured: formBool(data, "featured"),
     specs,
     faqs,
+    features,
+    featuresEs,
     nameEs: formString(data, "nameEs"),
     taglineEs: formString(data, "taglineEs"),
     descriptionEs: formString(data, "descriptionEs"),
@@ -138,6 +173,10 @@ export async function getProducts() {
         translations: {
           where: { locale: "pt_BR" },
         },
+        // O suficiente para a lista explicar por que um produto ativo não
+        // aparece no site: a regra de publicação exige ficha técnica e foto.
+        _count: { select: { specs: true } },
+        media: { select: { filename: true, type: true } },
       },
       orderBy: [{ order: "asc" }, { createdAt: "asc" }],
       take: MAX_LIST,
@@ -232,6 +271,8 @@ export async function createProduct(data: FormData) {
     });
 
     await salvarFaqs(product.id, parsed.data.faqs);
+    await salvarDiferenciais(product.id, "pt_BR", parsed.data.features);
+    await salvarDiferenciais(product.id, "es", parsed.data.featuresEs);
     await salvarTraducaoEs(product.id, parsed.data);
 
     updateTag(TAG_TOMBADORES);
@@ -308,6 +349,8 @@ export async function updateProduct(id: string, data: FormData) {
     ]);
 
     await salvarFaqs(id, parsed.data.faqs);
+    await salvarDiferenciais(id, "pt_BR", parsed.data.features);
+    await salvarDiferenciais(id, "es", parsed.data.featuresEs);
     await salvarTraducaoEs(id, parsed.data);
 
     updateTag(TAG_TOMBADORES);

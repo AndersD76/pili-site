@@ -24,6 +24,24 @@ export function firstIssue(error: z.ZodError): string {
 const metaTitle = z.string().trim().max(70, "Máximo de 70 caracteres").nullable();
 const metaDesc = z.string().trim().max(160, "Máximo de 160 caracteres").nullable();
 
+/**
+ * Um card de "Diferenciais". O ícone é nome de ícone do Lucide; vazio vira
+ * `null` no banco e o card sai sem ícone.
+ */
+const diferencialInputSchema = z.object({
+  title: z.string().trim().min(1, "Título do diferencial obrigatório").max(120),
+  description: z
+    .string()
+    .trim()
+    .min(1, "Descrição do diferencial obrigatória")
+    .max(600),
+  icon: z
+    .string()
+    .trim()
+    .max(40)
+    .regex(/^[A-Za-z]*$/, "Ícone inválido"),
+});
+
 export const productInputSchema = z.object({
   metaTitle,
   metaDesc,
@@ -54,6 +72,10 @@ export const productInputSchema = z.object({
       }),
     )
     .max(30, "Máximo de 30 perguntas"),
+  // Diferenciais, um conjunto por idioma. Lista vazia em espanhol faz o site
+  // cair nos de português.
+  features: z.array(diferencialInputSchema).max(12, "Máximo de 12 diferenciais"),
+  featuresEs: z.array(diferencialInputSchema).max(12, "Máximo de 12 diferenciais"),
   nameEs: z.string().trim().max(200),
   taglineEs: z.string().trim().max(300),
   descriptionEs: z.string().trim().max(20000),

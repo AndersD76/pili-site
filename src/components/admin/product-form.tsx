@@ -1,10 +1,16 @@
 ﻿"use client";
 
 import { useRouter } from "next/navigation";
-import { useForm, useFieldArray } from "react-hook-form";
+import {
+  useForm,
+  useFieldArray,
+  type Control,
+  type FieldErrors,
+  type UseFormRegister,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Plus, Trash2, Loader2 } from "lucide-react";
+import { Plus, Trash2, Loader2, ChevronUp, ChevronDown } from "lucide-react";
 import { useState, useTransition } from "react";
 
 import { createProduct, updateProduct } from "@/app/admin/(panel)/produtos/actions";
@@ -46,6 +52,46 @@ const CATEGORY_OPTIONS: { value: ProductCategory; label: string }[] = [
   { value: "ESPECIAL", label: "Especial" },
 ];
 
+/**
+ * Ícones que o catálogo em PDF sabe desenhar. O site aceita qualquer ícone do
+ * Lucide, mas o PDF tem desenho próprio e cai num genérico para o resto — por
+ * isso o seletor fica restrito aos que funcionam nos dois lugares. `Cog` entra
+ * por já estar em uso em vários produtos: sem ele, abrir e salvar um desses
+ * produtos trocaria o ícone sem ninguém pedir.
+ */
+const ICONES_DIFERENCIAL = [
+  { valor: "Shield", rotulo: "Segurança (escudo)" },
+  { valor: "Truck", rotulo: "Caminhão" },
+  { valor: "Activity", rotulo: "Desempenho (gráfico)" },
+  { valor: "Zap", rotulo: "Potência (raio)" },
+  { valor: "Gauge", rotulo: "Medidor" },
+  { valor: "Cog", rotulo: "Engrenagem" },
+  { valor: "Wrench", rotulo: "Manutenção (chave)" },
+  { valor: "Timer", rotulo: "Tempo de ciclo" },
+  { valor: "Weight", rotulo: "Capacidade (peso)" },
+  { valor: "Ruler", rotulo: "Dimensões (régua)" },
+  { valor: "AlertTriangle", rotulo: "Alerta" },
+  { valor: "Factory", rotulo: "Fábrica" },
+] as const;
+
+const diferencialSchema = z.object({
+  title: z.string().min(1, "Campo obrigatório"),
+  description: z.string().min(1, "Campo obrigatório"),
+  icon: z.string(),
+});
+
+type Diferencial = z.infer<typeof diferencialSchema>;
+
+function diferenciaisDe(
+  features: Feature[] | undefined,
+  locale: "pt_BR" | "es",
+): Diferencial[] {
+  return (features ?? [])
+    .filter((f) => f.locale === locale)
+    .sort((a, b) => a.order - b.order)
+    .map((f) => ({ title: f.title, description: f.description, icon: f.icon ?? "" }));
+}
+
 const productSchema = z.object({
   slug: z
     .string()
@@ -84,6 +130,9 @@ const productSchema = z.object({
       answer: z.string().min(1, "Campo obrigatório"),
     }),
   ),
+  // Diferenciais por idioma. O espanhol vazio faz o site cair no português.
+  features: z.array(diferencialSchema),
+  featuresEs: z.array(diferencialSchema),
 });
 
 type ProductFormValues = z.infer<typeof productSchema>;
@@ -136,6 +185,8 @@ export function ProductForm({
           question: f.question,
           answer: f.answer,
         })) ?? [],
+      features: diferenciaisDe(product?.features, "pt_BR"),
+      featuresEs: diferenciaisDe(product?.features, "es"),
       metaTitle: ptTranslation?.metaTitle ?? "",
       metaDesc: ptTranslation?.metaDesc ?? "",
       nameEs: esTranslation?.name ?? "",
@@ -177,6 +228,8 @@ export function ProductForm({
     formData.set("featured", String(values.featured));
     formData.set("active", String(values.active));
     formData.set("specs", JSON.stringify(values.specs));
+    formData.set("features", JSON.stringify(values.features));
+    formData.set("featuresEs", JSON.stringify(values.featuresEs));
     formData.set("faqs", JSON.stringify(values.faqs));
     formData.set("metaTitle", values.metaTitle ?? "");
     formData.set("metaDesc", values.metaDesc ?? "");
@@ -423,6 +476,15 @@ export function ProductForm({
             <p className="text-xs text-red-600">{errors.metaDescEs.message}</p>
           )}
         </div>
+
+        <ListaDiferenciais
+          campo="featuresEs"
+          titulo="Diferenciales"
+          ajuda="Versão em espanhol dos diferenciais. Deixe vazio para o site em espanhol mostrar os de português."
+          control={control}
+          register={register}
+          errors={errors}
+        />
       </div>
 
       <Separator />
@@ -486,6 +548,17 @@ export function ProductForm({
           </div>
         ))}
       </div>
+
+      <Separator />
+
+      <ListaDiferenciais
+        campo="features"
+        titulo="Diferenciais"
+        ajuda="Os cards da seção Diferenciais na página do produto e no catálogo. Use os números da ficha técnica: potência, ciclo e capacidade aqui precisam bater com as especificações."
+        control={control}
+        register={register}
+        errors={errors}
+      />
 
       <Separator />
 
@@ -574,5 +647,139 @@ export function ProductForm({
         </Button>
       </div>
     </form>
+  );
+}
+
+/**
+ * Lista editável de diferenciais — os cards "Diferenciais" da página do produto
+ * e do catálogo em PDF.
+ *
+ * Antes não havia como editar isto no painel: só direto no banco. Foi assim que
+ * os diferenciais ficaram anunciando 3 a 4 vezes a potência da ficha técnica
+ * (150 CV num tombador de 40 cv) sem que ninguém conseguisse corrigir.
+ */
+function ListaDiferenciais({
+  campo,
+  titulo,
+  ajuda,
+  control,
+  register,
+  errors,
+}: {
+  campo: "features" | "featuresEs";
+  titulo: string;
+  ajuda: string;
+  control: Control<ProductFormValues>;
+  register: UseFormRegister<ProductFormValues>;
+  errors: FieldErrors<ProductFormValues>;
+}) {
+  const { fields, append, remove, move } = useFieldArray({
+    control,
+    name: campo,
+  });
+  const erros = errors[campo];
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <h2 className="font-display text-lg font-semibold text-pili-black">
+            {titulo}
+          </h2>
+          <p className="mt-1 text-sm text-pili-concrete">{ajuda}</p>
+        </div>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="shrink-0"
+          onClick={() => append({ title: "", description: "", icon: "Shield" })}
+        >
+          <Plus className="size-4" />
+          Adicionar
+        </Button>
+      </div>
+
+      {fields.length === 0 && (
+        <p className="text-sm text-pili-concrete">
+          Nenhum diferencial adicionado
+        </p>
+      )}
+
+      {fields.map((field, index) => (
+        <div
+          key={field.id}
+          className="flex items-start gap-3 rounded-lg border border-pili-mist p-4"
+        >
+          <div className="flex-1 space-y-2">
+            <div className="grid gap-2 sm:grid-cols-[1fr_14rem]">
+              <Input
+                {...register(`${campo}.${index}.title`)}
+                placeholder="Sistema hidráulico redundante"
+              />
+              <select
+                {...register(`${campo}.${index}.icon`)}
+                className="h-9 rounded-md border border-pili-mist bg-pili-white px-3 text-sm text-pili-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pili-safety"
+                aria-label="Ícone"
+              >
+                <option value="">Sem ícone</option>
+                {ICONES_DIFERENCIAL.map((i) => (
+                  <option key={i.valor} value={i.valor}>
+                    {i.rotulo}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {erros?.[index]?.title && (
+              <p className="text-xs text-red-600">
+                {erros[index]?.title?.message}
+              </p>
+            )}
+            <Textarea
+              {...register(`${campo}.${index}.description`)}
+              placeholder="Uma frase sobre o benefício, com o número da ficha técnica quando houver."
+              className="min-h-16"
+            />
+            {erros?.[index]?.description && (
+              <p className="text-xs text-red-600">
+                {erros[index]?.description?.message}
+              </p>
+            )}
+          </div>
+          <div className="flex shrink-0 flex-col gap-1">
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              disabled={index === 0}
+              onClick={() => move(index, index - 1)}
+            >
+              <ChevronUp className="size-4" />
+              <span className="sr-only">Mover para cima</span>
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              disabled={index === fields.length - 1}
+              onClick={() => move(index, index + 1)}
+            >
+              <ChevronDown className="size-4" />
+              <span className="sr-only">Mover para baixo</span>
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="text-red-600 hover:text-red-700"
+              onClick={() => remove(index)}
+            >
+              <Trash2 className="size-4" />
+              <span className="sr-only">Remover diferencial</span>
+            </Button>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 }
