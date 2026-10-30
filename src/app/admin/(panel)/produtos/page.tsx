@@ -5,6 +5,7 @@ import { requireRole } from "@/lib/auth-guard";
 import { getProducts, toggleProductFeatured } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { motivoForaDoSite } from "@/lib/produto-publicavel";
 import {
   Table,
   TableBody,
@@ -60,6 +61,7 @@ export default async function ProdutosPage() {
               <TableHead>Categoria</TableHead>
               <TableHead>Ativo</TableHead>
               <TableHead>Destaque</TableHead>
+              <TableHead>No site</TableHead>
               <TableHead className="text-right">Ações</TableHead>
             </TableRow>
           </TableHeader>
@@ -76,6 +78,11 @@ export default async function ProdutosPage() {
             )}
             {products.map((product) => {
               const translation = product.translations[0];
+              const foraDoSite = motivoForaDoSite({
+                active: product.active,
+                specs: product._count.specs,
+                media: product.media,
+              });
               return (
                 <TableRow key={product.id}>
                   <TableCell className="font-medium">
@@ -119,6 +126,20 @@ export default async function ProdutosPage() {
                         />
                       </Button>
                     </form>
+                  </TableCell>
+                  <TableCell>
+                    {foraDoSite ? (
+                      <div className="flex flex-col items-start gap-1">
+                        <Badge variant="outline" className="border-pili-warning/40 bg-pili-warning/10 text-pili-warning">
+                          Não aparece
+                        </Badge>
+                        <span className="text-xs text-pili-concrete">
+                          {foraDoSite.join(" · ")}
+                        </span>
+                      </div>
+                    ) : (
+                      <Badge variant="secondary">Visível</Badge>
+                    )}
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-1">

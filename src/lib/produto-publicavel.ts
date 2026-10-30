@@ -40,3 +40,24 @@ export const PRODUTO_PUBLICAVEL: Prisma.ProductWhereInput = {
   specs: { some: {} },
   media: { some: TEM_FOTO_REAL },
 };
+
+/**
+ * Por que um produto não aparece no site — `null` quando aparece.
+ *
+ * Espelha `PRODUTO_PUBLICAVEL` para o painel. Sem isto, um produto ativo e em
+ * destaque sem ficha técnica sumia do site sem explicação: quem editava
+ * concluía que a estrela e o "ativo" não funcionavam.
+ */
+export function motivoForaDoSite(p: {
+  active: boolean;
+  specs: number;
+  media: { filename: string; type: string }[];
+}): string[] | null {
+  const motivos: string[] = [];
+  if (!p.active) motivos.push("Inativo");
+  if (p.specs === 0) motivos.push("Falta ficha técnica");
+  if (!p.media.some((m) => m.type === "image" && fotoUsavel(m.filename))) {
+    motivos.push("Falta foto");
+  }
+  return motivos.length > 0 ? motivos : null;
+}

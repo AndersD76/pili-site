@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, type BaseSyntheticEvent } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import {
   leadSchema,
   type LeadInput,
@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { APPLICATIONS } from "@/lib/constants";
 import { registrarEvento } from "@/lib/eventos";
 import { CAMPO_ARMADILHA } from "@/lib/armadilha";
+import { mascaraTelefoneBR } from "@/lib/telefone";
 import {
   CampoArmadilha,
   lerArmadilha,
@@ -52,6 +53,7 @@ export function LeadForm({
   className,
 }: LeadFormProps) {
   const t = useTranslations("forms");
+  const emPortugues = useLocale() === "pt-BR";
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
     "idle",
   );
@@ -78,6 +80,7 @@ export function LeadForm({
       productInterest: productInterest ?? undefined,
     },
   });
+  const telefone = register("phone");
 
   async function onSubmit(data: LeadInput, evento?: BaseSyntheticEvent) {
     setStatus("loading");
@@ -160,7 +163,16 @@ export function LeadForm({
           <input
             id="phone"
             type="tel"
-            {...register("phone")}
+            {...telefone}
+            // A máscara brasileira só no site em português: na versão em
+            // espanhol o número é do Paraguai, da Argentina ou do Uruguai.
+            onChange={(e) => {
+              if (emPortugues) {
+                e.target.value = mascaraTelefoneBR(e.target.value);
+              }
+              void telefone.onChange(e);
+            }}
+            placeholder={emPortugues ? "(54) 99999-9999" : undefined}
             className={campo}
           />
           {errors.phone && (
