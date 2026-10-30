@@ -12,12 +12,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CAMPO_ARMADILHA } from "@/lib/armadilha";
+import { mascaraTelefoneBR } from "@/lib/telefone";
 import {
   CampoArmadilha,
   lerArmadilha,
 } from "@/components/shared/campo-armadilha";
 import { Users } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import {
   ACCEPT_CV_ATTRIBUTE,
   MAX_CV_SIZE,
@@ -37,6 +38,7 @@ const AREAS = [
 
 export default function TrabalheConoscoPage() {
   const t = useTranslations();
+  const emPortugues = useLocale() === "pt-BR";
   const [cv, setCv] = useState<File | null>(null);
   const [erroCv, setErroCv] = useState<string | null>(null);
   const [status, setStatus] = useState<
@@ -52,6 +54,7 @@ export default function TrabalheConoscoPage() {
     resolver: zodResolver(jobApplicationFormSchema),
     defaultValues: { name: "", email: "", phone: "", area: "", message: "" },
   });
+  const telefone = register("phone");
 
   async function onSubmit(
     values: JobApplicationFormInput,
@@ -198,7 +201,20 @@ export default function TrabalheConoscoPage() {
 
                     <div>
                       <Label htmlFor="app-phone">{t("forms.phone")} *</Label>
-                      <Input id="app-phone" type="tel" {...register("phone")} />
+                      <Input
+                        id="app-phone"
+                        type="tel"
+                        {...telefone}
+                        // Máscara brasileira só no site em português, como no
+                        // formulário de contato.
+                        onChange={(e) => {
+                          if (emPortugues) {
+                            e.target.value = mascaraTelefoneBR(e.target.value);
+                          }
+                          void telefone.onChange(e);
+                        }}
+                        placeholder={emPortugues ? "(54) 99999-9999" : undefined}
+                      />
                       {errors.phone && (
                         <p className="mt-1 text-xs text-pili-danger">
                           {errors.phone.message}
