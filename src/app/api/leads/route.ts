@@ -5,6 +5,8 @@ import {
 } from "@/lib/validators/lead";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { CAMPO_ARMADILHA, caiuNaArmadilha } from "@/lib/armadilha";
+import { consultarCnpj } from "@/lib/brasil-api";
+import { tipoDocumento } from "@/lib/documento";
 import { sendLeadEmails } from "@/lib/email/send-lead-emails";
 import { logError } from "@/lib/prisma-errors";
 import { db } from "@/lib/db";
@@ -68,6 +70,29 @@ export async function POST(request: NextRequest) {
 
     const { consent, source, pageUrl, utm, ...leadData } = parsed.data;
 
+    // CNPJ informado: confere na BrasilAPI se a empresa existe e segue ativa.
+    // O dígito já foi conferido no schema; aqui é a existência. Fora do ar, a
+    // consulta devolve "indisponivel" e o lead segue — melhor um CNPJ sem
+    // conferir do que um cliente de verdade recusado porque a API caiu.
+    if (leadData.cnpj && tipoDocumento(leadData.cnpj) === "cnpj") {
+      const consulta = await consultarCnpj(leadData.cnpj);
+      const recusa =
+        consulta.status === "inexistente"
+          ? "CNPJ não encontrado na Receita Federal"
+          : consulta.status === "ok" && consulta.encerrada
+            ? `Este CNPJ consta como ${consulta.situacao.toLowerCase()} na Receita Federal`
+            : null;
+      if (recusa) {
+        return NextResponse.json(
+          {
+            error: "Validation failed",
+            issues: [{ code: "custom", path: ["cnpj"], message: recusa }],
+          },
+          { status: 400 },
+        );
+      }
+    }
+
     // Falha de compilação se `LeadSource` divergir dos literais do validador.
     const leadSource: LeadSource = source;
 
@@ -90,6 +115,7 @@ export async function POST(request: NextRequest) {
       email: leadData.email,
       phone: leadData.phone,
       company: leadData.company,
+      cnpj: leadData.cnpj,
       application: leadData.application,
       productInterest: leadData.productInterest,
       message: leadData.message,

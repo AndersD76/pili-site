@@ -6,6 +6,7 @@ import { useState, type BaseSyntheticEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import {
   leadSchema,
+  leadSchemaPtBR,
   type LeadInput,
   type LeadSourceLiteral,
 } from "@/lib/validators/lead";
@@ -15,6 +16,7 @@ import { APPLICATIONS } from "@/lib/constants";
 import { registrarEvento } from "@/lib/eventos";
 import { CAMPO_ARMADILHA } from "@/lib/armadilha";
 import { mascaraTelefoneBR } from "@/lib/telefone";
+import { apenasDigitos, cnpjValido, mascaraDocumento } from "@/lib/documento";
 import {
   CampoArmadilha,
   lerArmadilha,
@@ -37,6 +39,20 @@ interface LeadFormProps {
 }
 
 /**
+ * Opções de "Produto de interesse". Era texto livre e chegou a gravar "Robux".
+ *
+ * O `valor` fica em português nos dois idiomas: é o que o comercial lê no
+ * painel. Só o rótulo é traduzido.
+ */
+const PRODUTOS_INTERESSE = [
+  { valor: "Tombador fixo", chave: "fixo" },
+  { valor: "Tombador móvel", chave: "movel" },
+  { valor: "Coletor de amostras", chave: "coletor" },
+  { valor: "Unidade de transbordo", chave: "transbordo" },
+  { valor: "Projeto especial", chave: "especial" },
+] as const;
+
+/**
  * Formulário de captação de leads.
  *
  * Os campos vinham em duas variantes escritas à mão (`dark ? <input> : <Input>`)
@@ -57,6 +73,10 @@ export function LeadForm({
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
     "idle",
   );
+  /** Razão social achada pelo CNPJ, mostrada embaixo do campo. */
+  const [empresaEncontrada, setEmpresaEncontrada] = useState<string | null>(
+    null,
+  );
 
   const controle = cn(
     "w-full border px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-1 focus:ring-pili-safety",
@@ -72,15 +92,64 @@ export function LeadForm({
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
+    getValues,
+    setError,
+    clearErrors,
   } = useForm<LeadInput>({
-    resolver: zodResolver(leadSchema),
+    // No site em português o telefone precisa estar no formato brasileiro; em
+    // espanhol o número é de outro país e segue livre.
+    resolver: zodResolver(emPortugues ? leadSchemaPtBR : leadSchema),
     defaultValues: {
       country: "BR",
       consent: undefined,
       productInterest: productInterest ?? undefined,
     },
   });
+  // Select ou campo opcional deixado em branco chega como "". O `z.enum` da
+  // aplicação recusa "" e, sem mensagem embaixo do select, o botão parecia não
+  // fazer nada para quem não escolhia uma aplicação.
+  const vazioComoAusente = { setValueAs: (v: string) => v || undefined };
   const telefone = register("phone");
+  const documento = register("cnpj", vazioComoAusente);
+
+  /**
+   * Com um CNPJ válido, busca a razão social e preenche a empresa. Só troca o
+   * campo se ele estiver vazio ou com o que o próprio preenchimento colocou
+   * antes — nunca o que a pessoa digitou.
+   */
+  async function buscarEmpresa(valor: string) {
+    const anterior = empresaEncontrada;
+    setEmpresaEncontrada(null);
+    const digitos = apenasDigitos(valor);
+    if (digitos.length !== 14 || !cnpjValido(digitos)) return;
+
+    try {
+      const res = await fetch(`/api/cnpj/${digitos}`);
+      const dados = (await res.json()) as {
+        status: string;
+        razaoSocial?: string;
+        encerrada?: boolean;
+      };
+      if (dados.status === "inexistente") {
+        setError("cnpj", { message: t("cnpjNaoEncontrado") });
+        return;
+      }
+      if (dados.status !== "ok" || !dados.razaoSocial) return;
+      if (dados.encerrada) {
+        setError("cnpj", { message: t("cnpjEncerrado") });
+        return;
+      }
+      clearErrors("cnpj");
+      setEmpresaEncontrada(dados.razaoSocial);
+      const atual = getValues("company")?.trim();
+      if (!atual || atual === anterior) {
+        setValue("company", dados.razaoSocial, { shouldValidate: true });
+      }
+    } catch {
+      // Sem resposta o formulário segue sem preencher: o servidor confere de novo.
+    }
+  }
 
   async function onSubmit(data: LeadInput, evento?: BaseSyntheticEvent) {
     setStatus("loading");
@@ -95,6 +164,24 @@ export function LeadForm({
           [CAMPO_ARMADILHA]: lerArmadilha(evento),
         }),
       });
+      // Recusa de validação (telefone, empresa, CNPJ baixado): a mensagem vai
+      // para o campo, em vez do "erro ao enviar" genérico que não diz o que
+      // corrigir.
+      if (res.status === 400) {
+        const corpo = (await res.json().catch(() => null)) as {
+          issues?: { path?: (string | number)[]; message?: string }[];
+        } | null;
+        const porCampo = (corpo?.issues ?? []).filter(
+          (i) => typeof i.path?.[0] === "string" && i.message,
+        );
+        if (porCampo.length > 0) {
+          for (const i of porCampo) {
+            setError(i.path![0] as keyof LeadInput, { message: i.message });
+          }
+          setStatus("idle");
+          return;
+        }
+      }
       if (!res.ok) throw new Error("Failed");
       registrarEvento("generate_lead", { formulario: source });
       setStatus("success");
@@ -190,6 +277,45 @@ export function LeadForm({
           )}
         </div>
 
+        {/* CPF e CNPJ só existem no Brasil: no site em espanhol o campo some. */}
+        {emPortugues && !compact && (
+          <div className="space-y-1.5">
+            <Label htmlFor="cnpj" className={rotulo}>
+              {t("documento")}
+            </Label>
+            <input
+              id="cnpj"
+              inputMode="numeric"
+              {...documento}
+              onChange={(e) => {
+                e.target.value = mascaraDocumento(e.target.value);
+                void documento.onChange(e);
+              }}
+              onBlur={(e) => {
+                void documento.onBlur(e);
+                void buscarEmpresa(e.target.value);
+              }}
+              className={campo}
+            />
+            {errors.cnpj ? (
+              <p className="text-xs text-pili-danger">{errors.cnpj.message}</p>
+            ) : empresaEncontrada ? (
+              <p className="text-xs text-pili-success">
+                {t("empresaEncontrada", { nome: empresaEncontrada })}
+              </p>
+            ) : (
+              <p
+                className={cn(
+                  "text-xs",
+                  dark ? "text-pili-cement" : "text-pili-concrete",
+                )}
+              >
+                {t("documentoAjuda")}
+              </p>
+            )}
+          </div>
+        )}
+
         {!compact && (
           <>
             <div className="space-y-1.5">
@@ -198,7 +324,7 @@ export function LeadForm({
               </Label>
               <select
                 id="application"
-                {...register("application")}
+                {...register("application", vazioComoAusente)}
                 className={campo}
               >
                 <option value="">{t("select")}</option>
@@ -215,12 +341,26 @@ export function LeadForm({
               <Label htmlFor="productInterest" className={rotulo}>
                 {t("productInterest")}
               </Label>
-              <input
+              <select
                 id="productInterest"
-                {...register("productInterest")}
-                defaultValue={productInterest}
+                {...register("productInterest", vazioComoAusente)}
                 className={campo}
-              />
+              >
+                <option value="">{t("select")}</option>
+                {/* A página de produto já manda o equipamento: ele entra como
+                    opção, para não se perder na troca de texto por lista. */}
+                {productInterest &&
+                  !PRODUTOS_INTERESSE.some(
+                    (p) => p.valor === productInterest,
+                  ) && (
+                    <option value={productInterest}>{productInterest}</option>
+                  )}
+                {PRODUTOS_INTERESSE.map((p) => (
+                  <option key={p.chave} value={p.valor}>
+                    {t(`produtos.${p.chave}`)}
+                  </option>
+                ))}
+              </select>
             </div>
           </>
         )}

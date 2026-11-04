@@ -8,6 +8,7 @@ interface SendLeadEmailsInput {
   email: string;
   phone?: string;
   company?: string;
+  cnpj?: string;
   application?: string;
   productInterest?: string;
   message?: string;
@@ -38,6 +39,7 @@ export async function sendLeadEmails(input: SendLeadEmailsInput) {
     email,
     phone,
     company,
+    cnpj,
     application,
     productInterest,
     message,
@@ -58,6 +60,7 @@ export async function sendLeadEmails(input: SendLeadEmailsInput) {
           email={email}
           phone={phone}
           company={company}
+          cnpj={cnpj}
           application={application}
           productInterest={productInterest}
           message={message}

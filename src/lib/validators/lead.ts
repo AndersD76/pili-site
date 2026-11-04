@@ -1,10 +1,21 @@
 import { z } from "zod";
+import { tipoDocumento } from "@/lib/documento";
+import { telefoneBRValido, telefoneEstrangeiro } from "@/lib/telefone";
 
 /* ---------- blocos reutilizáveis ---------- */
 
 const name = z.string().trim().min(2, "Informe seu nome").max(120);
 const email = z.string().trim().email("E-mail inválido").max(200);
-const company = z.string().trim().min(2, "Informe a empresa").max(120);
+/**
+ * Empresa precisa ter ao menos uma letra. Um lead de 04/11/2026 trouxe um
+ * telefone ("34998963866") no lugar do nome da empresa e passou.
+ */
+const company = z
+  .string()
+  .trim()
+  .min(2, "Informe a empresa")
+  .max(120)
+  .regex(/\p{L}/u, "Informe o nome da empresa");
 
 /**
  * Telefone é opcional: os gates de catálogo e calculadora convertem apenas com
@@ -39,7 +50,14 @@ export const leadSchema = z.object({
   email,
   phone,
   company,
-  cnpj: z.string().trim().max(20).optional(),
+  // CPF ou CNPJ, opcional. A coluna se chama `cnpj` por histórico, mas aceita
+  // os dois: muito produtor rural compra como pessoa física.
+  cnpj: z
+    .string()
+    .trim()
+    .max(20)
+    .optional()
+    .refine((v) => !v || tipoDocumento(v) !== null, "CPF ou CNPJ inválido"),
   country,
   state: z.string().trim().max(60).optional(),
   city: z.string().trim().max(120).optional(),
@@ -84,6 +102,34 @@ export const LEAD_SOURCES = [
 
 export type LeadSourceLiteral = (typeof LEAD_SOURCES)[number];
 
+/* ---------- telefone brasileiro ---------- */
+
+const TELEFONE_INVALIDO = "Telefone inválido — confira o DDD e o número";
+
+/**
+ * O telefone deve seguir o formato brasileiro?
+ *
+ * Não quando vem do site em espanhol, nem quando tem DDI de outro país. O país
+ * do lead não serve para decidir: o formulário não tem seletor e manda "BR"
+ * sempre, inclusive do site em espanhol — um telefone boliviano chegou assim.
+ */
+function precisaTelefoneBR(phone: string | undefined, pageUrl?: string): boolean {
+  if (!phone) return false;
+  if (telefoneEstrangeiro(phone)) return false;
+  if (pageUrl && /\/es(\/|$|\?)/.test(pageUrl)) return false;
+  return true;
+}
+
+/**
+ * Validação do formulário no site em português. A mesma regra roda de novo no
+ * servidor, em `leadRequestSchema`; aqui ela só avisa antes do envio.
+ */
+export const leadSchemaPtBR = leadSchema.superRefine((d, ctx) => {
+  if (precisaTelefoneBR(d.phone) && !telefoneBRValido(d.phone!)) {
+    ctx.addIssue({ code: "custom", path: ["phone"], message: TELEFONE_INVALIDO });
+  }
+});
+
 /* ---------- corpo aceito por POST /api/leads ---------- */
 
 /**
@@ -91,11 +137,17 @@ export type LeadSourceLiteral = (typeof LEAD_SOURCES)[number];
  * formulário visível — precisam ser validados no servidor em vez de gravados
  * como vieram.
  */
-export const leadRequestSchema = leadSchema.extend({
-  source: z.enum(LEAD_SOURCES).default("FORMULARIO"),
-  pageUrl: z.string().url().max(2000).optional(),
-  utm: z.record(z.string().max(300)).optional(),
-});
+export const leadRequestSchema = leadSchema
+  .extend({
+    source: z.enum(LEAD_SOURCES).default("FORMULARIO"),
+    pageUrl: z.string().url().max(2000).optional(),
+    utm: z.record(z.string().max(300)).optional(),
+  })
+  .superRefine((d, ctx) => {
+    if (precisaTelefoneBR(d.phone, d.pageUrl) && !telefoneBRValido(d.phone!)) {
+      ctx.addIssue({ code: "custom", path: ["phone"], message: TELEFONE_INVALIDO });
+    }
+  });
 
 export type LeadRequestInput = z.infer<typeof leadRequestSchema>;
 

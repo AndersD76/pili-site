@@ -232,7 +232,7 @@ export async function exportLeadsCsv(params: {
       "Email",
       "Telefone",
       "Empresa",
-      "CNPJ",
+      "CPF/CNPJ",
       "País",
       "Estado",
       "Cidade",
