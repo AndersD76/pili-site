@@ -96,6 +96,11 @@
     "consent": "Aceito a política de privacidade",
     "success": "Enviado com sucesso! Entraremos em contato em breve.",
     "error": "Ocorreu um erro. Tente novamente.",
+    "documento": "CPF ou CNPJ",
+    "documentoAjuda": "Opcional. Com o CNPJ, preenchemos a razão social.",
+    "empresaEncontrada": "Empresa encontrada: {nome}",
+    "cnpjNaoEncontrado": "CNPJ não encontrado na Receita Federal",
+    "cnpjEncerrado": "Este CNPJ consta como baixado na Receita Federal",
     "applications": {
       "porto": "Porto",
       "cooperativa": "Cooperativa",
@@ -103,6 +108,13 @@
       "fertilizante": "Fertilizante",
       "cimento": "Cimento",
       "outro": "Outro"
+    },
+    "produtos": {
+      "fixo": "Tombador fixo",
+      "movel": "Tombador móvel",
+      "coletor": "Coletor de amostras",
+      "transbordo": "Unidade de transbordo",
+      "especial": "Projeto especial"
     }
   },
   "common": {

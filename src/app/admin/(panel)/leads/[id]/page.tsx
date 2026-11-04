@@ -99,7 +99,7 @@ export default async function LeadDetailPage({ params }: PageProps) {
                   />
                 )}
                 {lead.cnpj && (
-                  <InfoRow icon={Tag} label="CNPJ" value={lead.cnpj} />
+                  <InfoRow icon={Tag} label="CPF/CNPJ" value={lead.cnpj} />
                 )}
                 <InfoRow
                   icon={MapPin}

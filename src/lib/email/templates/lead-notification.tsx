@@ -15,6 +15,7 @@ interface LeadNotificationProps {
   email: string;
   phone?: string;
   company?: string;
+  cnpj?: string;
   application?: string;
   productInterest?: string;
   message?: string;
@@ -27,6 +28,7 @@ export function LeadNotificationEmail({
   email,
   phone,
   company,
+  cnpj,
   application,
   productInterest,
   message,
@@ -61,6 +63,13 @@ export function LeadNotificationEmail({
               <>
                 <Text style={label}>Empresa</Text>
                 <Text style={value}>{company}</Text>
+              </>
+            )}
+
+            {cnpj && (
+              <>
+                <Text style={label}>CPF/CNPJ</Text>
+                <Text style={value}>{cnpj}</Text>
               </>
             )}
 

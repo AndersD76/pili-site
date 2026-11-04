@@ -27,7 +27,7 @@ describe("leadRequestSchema", () => {
   it("aceita o payload do formulário completo", () => {
     const r = leadRequestSchema.safeParse({
       ...leadBase,
-      phone: "5499999000",
+      phone: "54999990000",
       source: "FORMULARIO",
     });
     expect(r.success).toBe(true);
@@ -46,7 +46,7 @@ describe("leadRequestSchema", () => {
   it("aceita TRABALHE_CONOSCO como origem", () => {
     const r = leadRequestSchema.safeParse({
       ...leadBase,
-      phone: "5499999000",
+      phone: "54999990000",
       source: "TRABALHE_CONOSCO",
     });
     expect(r.success).toBe(true);
@@ -117,3 +117,65 @@ describe("LEAD_SOURCES", () => {
     expect(new Set(LEAD_SOURCES).size).toBe(LEAD_SOURCES.length);
   });
 });
+
+/**
+ * Regras de 04/11/2026, depois de um lead de criança pedindo Robux: telefone
+ * com DDD inexistente e um telefone no campo de empresa. Os casos que NÃO
+ * podem ser recusados importam tanto quanto os que devem: cada falso positivo
+ * é um cliente que viu "erro" e desistiu.
+ */
+describe("leadRequestSchema — telefone, empresa e documento", () => {
+  const completo = { ...leadBase, source: "FORMULARIO" as const };
+
+  it("recusa o lead do Robux", () => {
+    const r = leadRequestSchema.safeParse({
+      ...completo,
+      phone: "(23) 19850-7853",
+      company: "34998963866",
+      pageUrl: "https://www.pili.ind.br/pt-BR/orcamento",
+    });
+    expect(r.success).toBe(false);
+    const campos = r.success ? [] : r.error.issues.map((i) => i.path[0]);
+    expect(campos).toContain("phone");
+    expect(campos).toContain("company");
+  });
+
+  it("aceita telefone brasileiro real, com e sem mascara", () => {
+    for (const phone of ["(54) 99141-2971", "(54) 3522-2828", "+55 54 99141-2971"]) {
+      expect(leadRequestSchema.safeParse({ ...completo, phone }).success).toBe(true);
+    }
+  });
+
+  it("aceita telefone de outro pais com DDI", () => {
+    const r = leadRequestSchema.safeParse({ ...completo, phone: "+59175016944" });
+    expect(r.success).toBe(true);
+  });
+
+  // O formulario manda pais "BR" ate no site em espanhol; o numero de la nao
+  // pode ser cobrado no formato brasileiro.
+  it("aceita qualquer formato vindo do site em espanhol", () => {
+    const r = leadRequestSchema.safeParse({
+      ...completo,
+      phone: "0981 123 456",
+      pageUrl: "https://www.pili.ind.br/es/orcamento",
+    });
+    expect(r.success).toBe(true);
+  });
+
+  it("aceita CPF e CNPJ validos, e documento em branco", () => {
+    for (const cnpj of ["05.620.512/0001-74", "529.982.247-25", "", undefined]) {
+      expect(leadRequestSchema.safeParse({ ...completo, cnpj }).success).toBe(true);
+    }
+  });
+
+  it("recusa documento que nao fecha como CPF nem CNPJ", () => {
+    const r = leadRequestSchema.safeParse({ ...completo, cnpj: "34998963866" });
+    expect(r.success).toBe(false);
+  });
+
+  it("empresa com nome em espanhol passa", () => {
+    const r = leadRequestSchema.safeParse({ ...completo, company: "Agrícola San José S.A." });
+    expect(r.success).toBe(true);
+  });
+});
+
