@@ -38,6 +38,9 @@ export async function consultarCnpj(cnpj: string): Promise<ConsultaCnpj> {
 
   try {
     const res = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${d}`, {
+      // Sem User-Agent a BrasilAPI responde 403 ao `fetch` do Node — e o
+      // fail-open transformava toda consulta em "indisponível" sem alarde.
+      headers: { "User-Agent": "pili-site/1.0 (+https://www.pili.ind.br)" },
       signal: AbortSignal.timeout(LIMITE_MS),
       // O cadastro de uma empresa muda pouco; um dia de cache poupa a API e
       // deixa o preenchimento instantâneo para quem volta ao formulário.
